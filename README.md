@@ -86,6 +86,11 @@ flowchart TB
 | 👤 You lose Shard A | Combine B + C → **Still recoverable** |
 | 💀 You die | Server sends C to beneficiary → **B + C = Recovery** |
 
+<p align="center">
+  <img src="app/static/guardian.jpg" alt="Guardian" width="600">
+</p>
+
+---
 
 ### Tech Stack
 
@@ -107,10 +112,22 @@ flowchart TB
 
 3.  Visit `http://localhost:8000`
 
+---
+
 ### Security Note
+
+<p align="center">
+  <img src="app/static/notrust.jpg" alt="No Trust Required" width="500">
+</p>
 
 This is an MVP/Proof of Concept. In a real production environment:
 *   Use HTTPS.
 *   Audit the `secrets.js` library.
 *   Ensure the database is secure.
 *   Use a real email provider (SendGrid/AWS SES) instead of the mock logger.
+
+---
+
+<p align="center">
+  <b>Built with 🔐 by the Shardium Team</b>
+</p>
