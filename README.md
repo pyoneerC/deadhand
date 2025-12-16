@@ -4,11 +4,31 @@
 
 # Shardium
 
+<p align="center">
+  <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
+  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/Crypto-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
+</p>
+
 ### 🔐 Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing
+
+---
 
 ## The "Trustless Dead Man's Switch"
 
 Shardium is a SaaS concept that uses **Shamir's Secret Sharing** to split a crypto seed phrase into 3 shards. It ensures that no single entity (including the server) has the full key, solving the "Trust Paradox."
+
+## ✨ Features
+
+- 🔐 **Client-Side Encryption** - Your seed phrase never leaves your browser unencrypted
+- 🧩 **Shamir's Secret Sharing** - Mathematically proven 2-of-3 threshold scheme
+- 📧 **Automated Dead Man's Switch** - 30-day heartbeat checks, triggers after 90 days
+- 🖨️ **PDF Export** - Print shards for physical backup
+- 👥 **Beneficiary System** - Seamless crypto inheritance
+- 🚫 **Zero Trust Architecture** - Even we can't access your keys
+- 🌐 **Fully Open Source** - Audit the code yourself
+
 
 ## How It Works
 
@@ -130,4 +150,59 @@ This is an MVP/Proof of Concept. In a real production environment:
 
 <p align="center">
   <b>Built with 🔐 by the Shardium Team</b>
+</p>
+
+---
+
+## 🤝 Contributing
+
+Contributions are welcome! Here's how you can help:
+
+1. **Fork** the repository
+2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
+3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
+4. **Push** to the branch (`git push origin feature/amazing-feature`)
+5. **Open** a Pull Request
+
+### Areas We Need Help With:
+- [ ] Production-grade email integration
+- [ ] Multi-language support
+- [ ] Mobile app wrapper
+- [ ] Hardware wallet integration
+- [ ] Additional threshold schemes (3-of-5, etc.)
+
+---
+
+## 📄 License
+
+This project is licensed under the **MIT License** - see below for details:
+
+```
+MIT License
+
+Copyright (c) 2024 Shardium
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+<p align="center">
+  <b>⭐ Star this repo if you find it useful! ⭐</b>
 </p>
