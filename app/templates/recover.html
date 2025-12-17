@@ -12,6 +12,12 @@
     </div>
 
     <div class="glass-panel p-8 rounded-2xl shadow-xl space-y-6">
+
+        <!-- Offline Mode Banner -->
+        <div id="connection-status" class="rounded-xl transition-all duration-300">
+            <!-- Filled by JavaScript -->
+        </div>
+
         <div>
             <label class="block text-sm font-bold text-gray-300 mb-2">Shard 1</label>
             <input type="text" id="shard-1"
@@ -28,7 +34,7 @@
 
         <button onclick="recoverSeed()"
             class="w-full py-4 bg-brand-600 hover:bg-brand-500 text-white font-bold rounded-xl transition shadow-lg shadow-brand-900/20">
-            Reconstruct Seed Phrase
+            🔓 Reconstruct Seed Phrase <span class="text-sm font-normal opacity-75">(100% Local)</span>
         </button>
 
         <div id="result-container" class="hidden mt-8 pt-8 border-t border-white/10">
@@ -40,13 +46,61 @@
                 </div>
             </div>
             <p class="text-xs text-red-500 mt-4 text-center">
-                Warning: Once recovered, move your funds immediately. This seed has been exposed.
+                ⚠️ Warning: Once recovered, move your funds immediately. This seed has been exposed.
             </p>
         </div>
     </div>
 </div>
 
 <script>
+    // ===== OFFLINE DETECTION =====
+    function updateConnectionStatus() {
+        const statusEl = document.getElementById('connection-status');
+
+        if (navigator.onLine) {
+            // ONLINE - Show warning
+            statusEl.innerHTML = `
+                <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-yellow-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                            <svg class="w-5 h-5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-yellow-400">🌐 You're Online</div>
+                            <div class="text-sm text-yellow-300/70">For maximum security, <strong>disconnect your internet</strong> before entering your shards. Recovery works 100% offline!</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        } else {
+            // OFFLINE - Show success
+            statusEl.innerHTML = `
+                <div class="bg-green-500/10 border border-green-500/30 rounded-xl p-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center flex-shrink-0 animate-pulse">
+                            <svg class="w-5 h-5 text-green-400" fill="currentColor" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                            </svg>
+                        </div>
+                        <div>
+                            <div class="font-bold text-green-400">✈️ Airplane Mode - Maximum Security!</div>
+                            <div class="text-sm text-green-300/70">Perfect! Your seed phrase recovery happens 100% locally. Nothing touches the network.</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    }
+
+    // Listen for online/offline events
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
+
+    // Initial check
+    document.addEventListener('DOMContentLoaded', updateConnectionStatus);
+
     function recoverSeed() {
         const s1 = document.getElementById('shard-1').value.trim();
         const s2 = document.getElementById('shard-2').value.trim();
@@ -65,7 +119,7 @@
             document.getElementById('result-container').classList.remove('hidden');
         } catch (e) {
             console.error(e);
-            alert("Reconstruction failed. Are these valid shards from the same set?");
+            alert("❌ Reconstruction failed. Are these valid shards from the same set?");
         }
     }
 </script>
