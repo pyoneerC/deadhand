@@ -1,4 +1,5 @@
 import secrets
+import hashlib
 from fastapi import FastAPI, Request, Depends, Form, HTTPException
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
@@ -100,12 +101,20 @@ async def create_vault(
         return templates.TemplateResponse("index.html", {"request": request, "error": "User already exists with this email."})
 
     heartbeat_token = secrets.token_urlsafe(32)
+    created_timestamp = datetime.now()
+    
+    # IMMUTABILITY PROTECTION: Create hash of critical config
+    # If attacker modifies beneficiary_email or shard_c, hash won't match
+    config_string = f"{beneficiary_email}|{shard_c}|{created_timestamp.isoformat()}"
+    config_hash = hashlib.sha256(config_string.encode()).hexdigest()
+    
     new_user = User(
         email=email,
         beneficiary_email=beneficiary_email,
         shard_c=shard_c,
+        config_hash=config_hash,  # Immutable commitment
         heartbeat_token=heartbeat_token,
-        last_heartbeat=datetime.now()
+        last_heartbeat=created_timestamp
     )
     db.add(new_user)
     db.commit()
@@ -273,13 +282,24 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                 <h2>Final Warning!</h2>
                 <p>We haven't heard from you in 60 days.</p>
                 <p><strong>In 30 days, Shard C will be sent to your beneficiary.</strong></p>
-                <p><a href="https://shardium.maxcomperatore.com/heartbeat/{user.id}/{user.heartbeat_token}">✅ Click Here to Confirm You're OK</a></p>
+                </p><a href="https://shardium.maxcomperatore.com/heartbeat/{user.id}/{user.heartbeat_token}">✅ Click Here to Confirm You're OK</a></p>
                 """
             )
             results["warnings_60d"].append(user.email)
         
         # 90-day death trigger
         elif days_since_heartbeat >= 90:
+            # INTEGRITY CHECK: Verify config hasn't been tampered with
+            if user.config_hash and user.created_at:
+                expected_config = f"{user.beneficiary_email}|{user.shard_c}|{user.created_at.isoformat()}"
+                expected_hash = hashlib.sha256(expected_config.encode()).hexdigest()
+                
+                if expected_hash != user.config_hash:
+                    # TAMPERING DETECTED! Log and skip this user
+                    results["tampering_detected"] = results.get("tampering_detected", [])
+                    results["tampering_detected"].append(user.email)
+                    continue  # Do NOT send shard to potentially fake beneficiary
+            
             user.is_dead = True
             send_email(
                 user.beneficiary_email,
