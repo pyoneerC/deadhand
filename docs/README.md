@@ -15,7 +15,7 @@ Welcome to the Shardium documentation. This guide will help you understand how S
 
 - [Create a Vault](/) - Split your seed phrase
 - [Recover a Key](/recover) - Combine shards to recover
-- [GitHub Repository](https://github.com/yourusername/shardium)
+- [GitHub Repository](https://github.com/pyoneerC/shardium)
 
 ## Support
 
