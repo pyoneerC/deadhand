@@ -20,6 +20,12 @@
             "dest": "/app/main.py"
         }
     ],
+    "crons": [
+        {
+            "path": "/api/cron/check-heartbeats",
+            "schedule": "0 0 * * *"
+        }
+    ],
     "env": {
         "PYTHONUNBUFFERED": "1"
     }

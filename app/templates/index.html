@@ -177,6 +177,23 @@
                 Activate Switch
             </h2>
 
+            <!-- Reconnect Reminder -->
+            <div id="reconnect-reminder" class="hidden bg-blue-500/10 border border-blue-500/30 rounded-xl p-4 mb-6">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-blue-500/20 rounded-full flex items-center justify-center flex-shrink-0">
+                        <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.14 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="font-bold text-blue-400">📶 Reconnect to Internet Now</div>
+                        <div class="text-sm text-blue-300/70">Your seed is already split. You need internet to submit
+                            the form and receive confirmation emails.</div>
+                    </div>
+                </div>
+            </div>
+
             <form action="/vault/create" method="POST" class="space-y-4">
                 <div>
                     <label class="block text-sm text-gray-400 mb-1">Your Email (for 30-day checks)</label>
@@ -377,6 +394,12 @@
     function proceedToFinal() {
         document.getElementById('step-2').classList.add('hidden');
         document.getElementById('step-3').classList.remove('hidden');
+
+        // Show reconnect reminder if user is offline
+        const reminder = document.getElementById('reconnect-reminder');
+        if (!navigator.onLine && reminder) {
+            reminder.classList.remove('hidden');
+        }
     }
 
     function copyToClipboard(id) {
