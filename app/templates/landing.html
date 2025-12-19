@@ -744,6 +744,166 @@
         </div>
     </section>
 
+    <!-- FAQ -->
+    <section class="py-24 border-t border-zinc-800">
+        <div class="max-w-3xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="text-xs font-mono text-zinc-500 mb-4">// FAQ</div>
+                <h2 class="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+                <p class="text-zinc-400">
+                    Everything you need to know about Shardium.
+                </p>
+            </div>
+
+            <div class="space-y-4">
+                <!-- FAQ 1 -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">Can Shardium steal my crypto?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            <strong class="text-accent">No.</strong> We only store Shard C, which is mathematically
+                            useless on its own.
+                            Shamir's Secret Sharing requires 2-of-3 shards to reconstruct the seed phrase.
+                            Even if our entire database was leaked, attackers would get nothing actionable.
+                            This is information-theoretic security — it can't be brute-forced.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">What if I lose my seed phrase?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            <strong class="text-accent">You can recover it.</strong> Combine Shard A + Shard B to
+                            reconstruct your original seed phrase instantly.
+                            You're your own backup — no need to panic, no third party required.
+                            This is one of the key advantages of the 2-of-3 system.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">What if Shardium shuts down?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            <strong class="text-accent">You still have access.</strong> With Shard A + Shard B, you can
+                            always recover your seed — Shard C isn't needed.
+                            Plus, Shardium is open source. You can self-host the entire system on your own
+                            infrastructure.
+                            Your crypto is never locked to our platform.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">How does the dead man's switch work?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            We send you a check-in email every <strong class="text-white">30 days</strong>.
+                            Click the link to reset the timer. If you don't respond for <strong class="text-white">90
+                                days</strong>,
+                            Shard C is automatically emailed to your designated beneficiary.
+                            They combine it with Shard B (the printed PDF you gave them) to recover the seed phrase.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">Can my beneficiary steal my crypto before I die?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            <strong class="text-accent">No.</strong> Your beneficiary only has Shard B, which is useless
+                            alone.
+                            They need Shard C, which is only released after 90 days of your inactivity.
+                            As long as you keep clicking the heartbeat link, they can't access anything.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 6 -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">Is this legal for inheritance purposes?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            Shardium is a <strong class="text-white">technical tool</strong>, not legal advice.
+                            It gives your beneficiary access to your seed phrase, but doesn't replace a proper will or
+                            estate plan.
+                            We recommend consulting with an estate attorney to ensure your crypto inheritance is legally
+                            documented.
+                        </p>
+                    </div>
+                </div>
+
+                <!-- FAQ 7 -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">Why should I pay when it's open source?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            You're paying for <strong class="text-white">managed infrastructure</strong>:
+                            reliable hosting, automatic heartbeat emails, encrypted storage, and uptime guarantees.
+                            Self-hosting is free forever, but you'd need to manage servers, databases, email sending,
+                            and cron jobs yourself.
+                            The paid plan is for people who want it to "just work."
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- CTA -->
     <section class="py-24 border-t border-zinc-800">
         <div class="max-w-2xl mx-auto px-6 text-center">
@@ -783,6 +943,27 @@
     </footer>
 
     <script>
+        // FAQ Accordion
+        function toggleFaq(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('.faq-icon');
+            const isOpen = !content.classList.contains('hidden');
+
+            // Close all other FAQs
+            document.querySelectorAll('.faq-content').forEach(c => {
+                c.classList.add('hidden');
+            });
+            document.querySelectorAll('.faq-icon').forEach(i => {
+                i.style.transform = 'rotate(0deg)';
+            });
+
+            // Toggle current
+            if (!isOpen) {
+                content.classList.remove('hidden');
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+
         let isYearly = false;
         let currentPrice = 16;
 
