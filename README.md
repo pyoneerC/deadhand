@@ -11,25 +11,31 @@
   <img src="https://img.shields.io/badge/Crypto-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
 </p>
 
-### 🔐 Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing
+### Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing
 
 ---
 
-## The "Trustless Dead Man's Switch"
+## The Problem
 
-Shardium is a SaaS concept that uses **Shamir's Secret Sharing** to split a crypto seed phrase into 3 shards. It ensures that no single entity (including the server) has the full key, solving the "Trust Paradox."
+You die. Your crypto dies with you. Your family has no idea how to access it.
 
-> 💡 *Inspired by [@PixOnChain](https://x.com/PixOnChain/status/2000589935980458262)*
+Traditional solutions require trusting someone with your seed phrase. That's not acceptable.
 
-## ✨ Features
+## The Solution
 
-- 🔐 **Client-Side Encryption** - Your seed phrase never leaves your browser unencrypted
-- 🧩 **Shamir's Secret Sharing** - Mathematically proven 2-of-3 threshold scheme
-- 📧 **Automated Dead Man's Switch** - 30-day heartbeat checks, triggers after 90 days
-- 🖨️ **PDF Export** - Print shards for physical backup
-- 👥 **Beneficiary System** - Seamless crypto inheritance
-- 🚫 **Zero Trust Architecture** - Even we can't access your keys
-- 🌐 **Fully Open Source** - Audit the code yourself
+Shardium uses **Shamir's Secret Sharing** to split your seed phrase into 3 shards. No single entity (including us) has the full key.
+
+> *Inspired by [@PixOnChain](https://x.com/PixOnChain/status/2000589935980458262)*
+
+## Features
+
+- **Client-Side Encryption** - Your seed phrase never leaves your browser unencrypted
+- **Shamir's Secret Sharing** - Mathematically proven 2-of-3 threshold scheme
+- **Automated Dead Man's Switch** - 30-day heartbeat checks, triggers after 90 days
+- **PDF Export** - Print shards for physical backup
+- **Beneficiary System** - Seamless crypto inheritance
+- **Zero Trust Architecture** - Even we can't access your keys
+- **Fully Open Source** - Audit the code yourself
 
 
 ## How It Works
@@ -38,15 +44,15 @@ Shardium is a SaaS concept that uses **Shamir's Secret Sharing** to split a cryp
 
 ```mermaid
 flowchart LR
-    subgraph Browser["🌐 Client Browser"]
-        SEED["🔑 Seed Phrase"]
+    subgraph Browser["Client Browser"]
+        SEED["Seed Phrase"]
         SPLIT["Shamir Split (2-of-3)"]
     end
     
     SEED --> SPLIT
-    SPLIT --> A["🟢 Shard A<br/>User Keeps"]
-    SPLIT --> B["🟡 Shard B<br/>Beneficiary"]
-    SPLIT --> C["🟣 Shard C<br/>Server"]
+    SPLIT --> A["Shard A<br/>User Keeps"]
+    SPLIT --> B["Shard B<br/>Beneficiary"]
+    SPLIT --> C["Shard C<br/>Server"]
     
     style SEED fill:#f59e0b,color:#000
     style A fill:#14b8a6,color:#000
@@ -58,20 +64,20 @@ flowchart LR
 
 ```mermaid
 sequenceDiagram
-    participant U as 👤 User
-    participant S as 🖥️ Shardium Server
-    participant B as 👥 Beneficiary
+    participant U as User
+    participant S as Shardium Server
+    participant B as Beneficiary
 
     Note over U,S: Every 30 days
-    S->>U: 📧 "Are you alive?" Email
+    S->>U: "Are you alive?" Email
     
     alt User Responds
-        U->>S: ✅ Click heartbeat link
+        U->>S: Click heartbeat link
         S->>S: Reset 30-day timer
     else User Missing (90 days)
-        S->>B: 🚨 Email Shard C
+        S->>B: Email Shard C
         Note over B: Combines Shard B + C
-        B->>B: 🔓 Recovers Seed Phrase
+        B->>B: Recovers Seed Phrase
     end
 ```
 
@@ -79,16 +85,16 @@ sequenceDiagram
 
 ```mermaid
 flowchart TB
-    subgraph Valid["✅ Valid Recovery (Any 2 Shards)"]
-        AB["A + B"] --> RECOVER1["🔓 Seed Recovered"]
-        AC["A + C"] --> RECOVER2["🔓 Seed Recovered"]
-        BC["B + C"] --> RECOVER3["🔓 Seed Recovered"]
+    subgraph Valid["Valid Recovery (Any 2 Shards)"]
+        AB["A + B"] --> RECOVER1["Seed Recovered"]
+        AC["A + C"] --> RECOVER2["Seed Recovered"]
+        BC["B + C"] --> RECOVER3["Seed Recovered"]
     end
     
-    subgraph Invalid["❌ Invalid (Single Shard = Zero Info)"]
-        A1["A alone"] --> FAIL1["🔒 Nothing"]
-        B1["B alone"] --> FAIL2["🔒 Nothing"]
-        C1["C alone"] --> FAIL3["🔒 Nothing"]
+    subgraph Invalid["Invalid (Single Shard = Zero Info)"]
+        A1["A alone"] --> FAIL1["Nothing"]
+        B1["B alone"] --> FAIL2["Nothing"]
+        C1["C alone"] --> FAIL3["Nothing"]
     end
     
     style RECOVER1 fill:#22c55e,color:#000
@@ -103,10 +109,10 @@ flowchart TB
 
 | Scenario | Outcome |
 |----------|---------|
-| 🖥️ Server hacked | Attacker has only Shard C → **Useless** |
-| 👥 Beneficiary is malicious | They have only Shard B → **Useless** |
-| 👤 You lose Shard A | Combine B + C → **Still recoverable** |
-| 💀 You die | Server sends C to beneficiary → **B + C = Recovery** |
+| Server hacked | Attacker has only Shard C → **Useless** |
+| Beneficiary is malicious | They have only Shard B → **Useless** |
+| You lose Shard A | Combine B + C → **Still recoverable** |
+| You die | Server sends C to beneficiary → **B + C = Recovery** |
 
 <p align="center">
   <img src="app/static/guardian.jpg" alt="Guardian" width="600">
@@ -116,9 +122,10 @@ flowchart TB
 
 ### Tech Stack
 
-*   **Backend**: FastAPI, SQLite, SQLAlchemy
+*   **Backend**: FastAPI, PostgreSQL, SQLAlchemy
 *   **Frontend**: HTML, TailwindCSS, HTMX
-*   **Cryptography**: `secrets.js` (Shamir's Secret Sharing) running in browser.
+*   **Cryptography**: `secrets.js` (Shamir's Secret Sharing) running in browser
+*   **Hosting**: Vercel
 
 ### How to Run
 
@@ -151,12 +158,12 @@ This is an MVP/Proof of Concept. In a real production environment:
 ---
 
 <p align="center">
-  <b>Built with 🔐 by the Shardium Team</b>
+  <b>Built by the Shardium Team</b>
 </p>
 
 ---
 
-## 🤝 Contributing
+## Contributing
 
 Contributions are welcome! Here's how you can help:
 
@@ -175,14 +182,14 @@ Contributions are welcome! Here's how you can help:
 
 ---
 
-## 📄 License
+## License
 
 This project is licensed under the **MIT License** - see below for details:
 
 ```
 MIT License
 
-Copyright (c) 2024 Shardium
+Copyright (c) 2025 Shardium
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -206,5 +213,5 @@ SOFTWARE.
 ---
 
 <p align="center">
-  <b>⭐ Star this repo if you find it useful! ⭐</b>
+  <b>Star this repo if you find it useful!</b>
 </p>
