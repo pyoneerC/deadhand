@@ -215,31 +215,33 @@
             </div>
 
             <!-- Shards Visual -->
-            <div class="grid md:grid-cols-3 gap-6 mb-12">
+            <div class="grid md:grid-cols-3 gap-6 mb-12 items-stretch">
                 <!-- Shard A -->
-                <div class="border-gradient rounded-lg p-8 text-center relative">
+                <div class="border-gradient rounded-lg p-8 text-center relative flex flex-col">
                     <div class="w-20 h-20 mx-auto mb-6 rounded-xl bg-zinc-800/50 flex items-center justify-center">
                         <img src="/static/A.jpg" alt="Shard A" class="w-14 h-14 object-contain">
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">Shard A</h3>
                     <p class="text-sm text-zinc-500">You keep this. Store in a safe or password manager.</p>
-                    <div class="absolute -right-4 top-1/2 -translate-y-1/2 text-zinc-600 text-2xl hidden md:block">+
-                    </div>
+                    <div
+                        class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-zinc-900 border border-zinc-700 rounded-full flex items-center justify-center text-zinc-500 text-lg hidden md:flex z-10">
+                        +</div>
                 </div>
 
                 <!-- Shard B -->
-                <div class="border-gradient rounded-lg p-8 text-center relative">
+                <div class="border-gradient rounded-lg p-8 text-center relative flex flex-col">
                     <div class="w-20 h-20 mx-auto mb-6 rounded-xl bg-zinc-800/50 flex items-center justify-center">
                         <img src="/static/B.jpg" alt="Shard B" class="w-14 h-14 object-contain">
                     </div>
                     <h3 class="text-lg font-semibold text-white mb-2">Shard B</h3>
                     <p class="text-sm text-zinc-500">Give to your beneficiary. Print it as PDF.</p>
-                    <div class="absolute -right-4 top-1/2 -translate-y-1/2 text-zinc-600 text-2xl hidden md:block">+
-                    </div>
+                    <div
+                        class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-zinc-900 border border-zinc-700 rounded-full flex items-center justify-center text-zinc-500 text-lg hidden md:flex z-10">
+                        +</div>
                 </div>
 
                 <!-- Shard C -->
-                <div class="border-gradient rounded-lg p-8 text-center">
+                <div class="border-gradient rounded-lg p-8 text-center flex flex-col">
                     <div class="w-20 h-20 mx-auto mb-6 rounded-xl bg-zinc-800/50 flex items-center justify-center">
                         <img src="/static/C.jpg" alt="Shard C" class="w-14 h-14 object-contain">
                     </div>
