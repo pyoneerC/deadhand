@@ -9,6 +9,7 @@
         content="Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing.">
 
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -80,6 +81,7 @@
                 <span class="font-semibold text-white tracking-tight">Shardium</span>
             </div>
             <div class="flex items-center gap-6">
+                <a href="#pricing" class="text-sm text-zinc-500 hover:text-white transition">Pricing</a>
                 <a href="https://github.com/pyoneerC/shardium" target="_blank"
                     class="text-sm text-zinc-500 hover:text-white transition">GitHub</a>
                 <a href="/docs" class="text-sm text-zinc-500 hover:text-white transition">Docs</a>
@@ -407,40 +409,240 @@
         </div>
     </section>
 
-    <!-- Early Access -->
-    <section class="py-24 border-t border-zinc-800 bg-zinc-900/30">
-        <div class="max-w-4xl mx-auto px-6 text-center">
-            <div class="text-xs font-mono text-zinc-500 mb-4">// EARLY ACCESS</div>
-            <h2 class="text-3xl font-bold text-white mb-4">Join the First Wave</h2>
-            <p class="text-zinc-400 max-w-xl mx-auto mb-10">
-                Shardium is new. Early adopters get priority support and input on the roadmap.
+    <!-- Pricing -->
+    <section id="pricing" class="py-24 border-t border-zinc-800 bg-zinc-900/30">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <div class="text-xs font-mono text-zinc-500 mb-4">// PRICING</div>
+                <h2 class="text-3xl font-bold text-white mb-4">Simple, Transparent Pricing</h2>
+                <p class="text-zinc-400 max-w-xl mx-auto mb-8">
+                    Self-host for free forever, or let us handle the infrastructure.
+                </p>
+
+                <!-- Billing Toggle -->
+                <div class="flex items-center justify-center gap-4">
+                    <span id="monthly-label" class="text-sm font-medium text-white">Monthly</span>
+                    <button id="billing-toggle" onclick="toggleBilling()"
+                        class="relative w-14 h-7 bg-zinc-800 rounded-full transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-accent/50">
+                        <span id="toggle-dot"
+                            class="absolute left-1 top-1 w-5 h-5 bg-zinc-400 rounded-full transition-all duration-300"></span>
+                    </button>
+                    <span id="yearly-label" class="text-sm font-medium text-zinc-500">Yearly</span>
+                    <span class="px-2 py-1 bg-accent/20 text-accent text-xs font-bold rounded">2 MONTHS FREE</span>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-6">
+                <!-- Free / Self-Hosted -->
+                <div class="border-gradient rounded-xl p-8">
+                    <div class="text-xs font-mono text-zinc-500 mb-4">SELF-HOSTED</div>
+                    <div class="flex items-baseline gap-1 mb-2">
+                        <span class="text-4xl font-bold text-white">$0</span>
+                        <span class="text-zinc-500">forever</span>
+                    </div>
+                    <p class="text-zinc-400 text-sm mb-6">Clone the repo, run it yourself.</p>
+
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Full source code access
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            MIT Licensed
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Discord community
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Community support
+                        </li>
+                    </ul>
+
+                    <a href="https://github.com/pyoneerC/shardium" target="_blank"
+                        class="block w-full py-3 border border-zinc-700 text-center rounded-lg font-medium text-zinc-300 hover:border-zinc-500 hover:text-white transition">
+                        Clone on GitHub
+                    </a>
+                </div>
+
+                <!-- Pro -->
+                <div class="border-gradient rounded-xl p-8 relative ring-2 ring-accent">
+                    <div
+                        class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-accent text-black text-xs font-bold rounded-full">
+                        MOST POPULAR
+                    </div>
+                    <div class="text-xs font-mono text-accent mb-4">PRO (HOSTED)</div>
+                    <div class="flex items-baseline gap-1 mb-2">
+                        <span id="pro-price" class="text-4xl font-bold text-white">$16</span>
+                        <span id="pro-period" class="text-zinc-500">/month</span>
+                    </div>
+                    <p id="pro-subtitle" class="text-zinc-400 text-sm mb-6">Billed monthly. Cancel anytime.</p>
+
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Unlimited vaults
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Fully managed hosting
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Automatic email reminders
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Premium Discord role
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Priority support
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            99.9% uptime SLA
+                        </li>
+                    </ul>
+
+                    <a href="/app"
+                        class="block w-full py-3 bg-accent text-center rounded-lg font-semibold text-black hover:bg-emerald-400 transition">
+                        Get Started
+                    </a>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="border-gradient rounded-xl p-8">
+                    <div class="text-xs font-mono text-zinc-500 mb-4">ENTERPRISE</div>
+                    <div class="flex items-baseline gap-1 mb-2">
+                        <span class="text-4xl font-bold text-white">Custom</span>
+                    </div>
+                    <p class="text-zinc-400 text-sm mb-6">For teams and organizations.</p>
+
+                    <ul class="space-y-3 mb-8">
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Everything in Pro
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Custom SLA
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            Dedicated support
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            White-label option
+                        </li>
+                        <li class="flex items-center gap-3 text-sm text-zinc-300">
+                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M5 13l4 4L19 7" />
+                            </svg>
+                            On-premise deployment
+                        </li>
+                    </ul>
+
+                    <a href="mailto:max.comperatore@gmail.com?subject=Shardium Enterprise"
+                        class="block w-full py-3 border border-zinc-700 text-center rounded-lg font-medium text-zinc-300 hover:border-zinc-500 hover:text-white transition">
+                        Contact Us
+                    </a>
+                </div>
+            </div>
+
+            <!-- Lifetime Deal -->
+            <div class="mt-10 border border-accent/30 bg-accent/5 rounded-xl p-6 md:p-8">
+                <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-xs font-mono text-accent">LIFETIME DEAL</span>
+                            <span
+                                class="px-2 py-0.5 bg-red-500/20 text-red-400 text-xs font-bold rounded">LIMITED</span>
+                        </div>
+                        <h3 class="text-2xl font-bold text-white mb-1">Pay once, use forever</h3>
+                        <p class="text-zinc-400 text-sm">No subscriptions. No renewals. Lifetime access to Pro features.
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-6">
+                        <div class="text-right">
+                            <div class="flex items-baseline gap-1">
+                                <span class="text-4xl font-bold text-white">$299</span>
+                                <span class="text-zinc-500">once</span>
+                            </div>
+                            <p class="text-xs text-zinc-500">17 of 50 remaining</p>
+                        </div>
+                        <a href="/app"
+                            class="px-6 py-3 bg-accent text-black font-semibold rounded-lg hover:bg-emerald-400 transition whitespace-nowrap">
+                            Get Lifetime
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="text-center text-zinc-500 text-sm mt-10">
+                All plans include: Client-side encryption, Shamir's Secret Sharing, 2-of-3 threshold recovery
             </p>
-
-            <div class="grid md:grid-cols-3 gap-6 mb-12">
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-2xl font-bold text-white mb-1">Free</div>
-                    <div class="text-sm text-zinc-500">During early access</div>
-                </div>
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-2xl font-bold text-white mb-1">Open Source</div>
-                    <div class="text-sm text-zinc-500">MIT Licensed</div>
-                </div>
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-2xl font-bold text-white mb-1">Community</div>
-                    <div class="text-sm text-zinc-500">Built in public</div>
-                </div>
-            </div>
-
-            <div class="flex flex-wrap justify-center gap-4">
-                <a href="https://github.com/pyoneerC/shardium" target="_blank"
-                    class="px-5 py-2.5 border border-zinc-700 rounded text-sm font-medium hover:border-zinc-500 hover:text-white transition">
-                    Star on GitHub
-                </a>
-                <a href="https://x.com/shardiumhq" target="_blank"
-                    class="px-5 py-2.5 border border-zinc-700 rounded text-sm font-medium hover:border-zinc-500 hover:text-white transition">
-                    Follow on Twitter
-                </a>
-            </div>
         </div>
     </section>
 
@@ -480,6 +682,65 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        let isYearly = false;
+        let currentPrice = 16;
+
+        function animatePrice(start, end, element) {
+            const { CountUp } = countUp;
+            const counter = new CountUp(element, end, {
+                startVal: start,
+                duration: 0.6,
+                prefix: '$',
+                decimalPlaces: 0,
+                useEasing: true,
+                useGrouping: false,
+            });
+            if (!counter.error) {
+                counter.start();
+            }
+        }
+
+        function toggleBilling() {
+            isYearly = !isYearly;
+
+            const toggleDot = document.getElementById('toggle-dot');
+            const monthlyLabel = document.getElementById('monthly-label');
+            const yearlyLabel = document.getElementById('yearly-label');
+            const proPrice = document.getElementById('pro-price');
+            const proPeriod = document.getElementById('pro-period');
+            const proSubtitle = document.getElementById('pro-subtitle');
+
+            if (isYearly) {
+                toggleDot.style.transform = 'translateX(1.75rem)';
+                toggleDot.classList.remove('bg-zinc-400');
+                toggleDot.classList.add('bg-accent');
+                monthlyLabel.classList.remove('text-white');
+                monthlyLabel.classList.add('text-zinc-500');
+                yearlyLabel.classList.remove('text-zinc-500');
+                yearlyLabel.classList.add('text-white');
+
+                animatePrice(16, 144, proPrice);
+                proPeriod.textContent = '/year';
+                proSubtitle.textContent = '$12/mo effective. 2 months free!';
+                currentPrice = 144;
+            } else {
+                toggleDot.style.transform = 'translateX(0)';
+                toggleDot.classList.remove('bg-accent');
+                toggleDot.classList.add('bg-zinc-400');
+                monthlyLabel.classList.remove('text-zinc-500');
+                monthlyLabel.classList.add('text-white');
+                yearlyLabel.classList.remove('text-white');
+                yearlyLabel.classList.add('text-zinc-500');
+
+                animatePrice(144, 16, proPrice);
+                proPeriod.textContent = '/month';
+                proSubtitle.textContent = 'Billed monthly. Cancel anytime.';
+                currentPrice = 16;
+            }
+        }
+    </script>
 
 </body>
 
