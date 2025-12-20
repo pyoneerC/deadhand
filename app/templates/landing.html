@@ -81,12 +81,48 @@
                 <span class="font-semibold text-white tracking-tight">Shardium</span>
             </div>
             <div class="flex items-center gap-4 md:gap-6">
-                <a href="#pricing" class="hidden md:block text-sm text-zinc-500 hover:text-white transition">Pricing</a>
+                <a href="#pricing" class="hidden md:block text-sm text-zinc-500 hover:text-white transition"
+                    data-i18n="nav_pricing">Pricing</a>
                 <a href="https://github.com/pyoneerC/shardium" target="_blank"
                     class="hidden md:block text-sm text-zinc-500 hover:text-white transition">GitHub</a>
-                <a href="/docs" class="hidden md:block text-sm text-zinc-500 hover:text-white transition">Docs</a>
+                <a href="/docs" class="hidden md:block text-sm text-zinc-500 hover:text-white transition"
+                    data-i18n="nav_docs">Docs</a>
+
+                <!-- Language Selector -->
+                <div id="lang-selector" class="relative">
+                    <button id="lang-btn" onclick="toggleLangDropdown()"
+                        class="flex items-center gap-1 text-sm text-zinc-500 hover:text-white transition px-2 py-1 rounded border border-zinc-800 hover:border-zinc-600">
+                        🇺🇸 <span class="hidden md:inline">English</span>
+                    </button>
+                    <div id="lang-dropdown"
+                        class="hidden absolute right-0 mt-2 w-40 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl overflow-hidden z-50">
+                        <button onclick="setLanguage('en')"
+                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇺🇸
+                            English</button>
+                        <button onclick="setLanguage('es')"
+                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇪🇸
+                            Español</button>
+                        <button onclick="setLanguage('pt')"
+                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇧🇷
+                            Português</button>
+                        <button onclick="setLanguage('de')"
+                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇩🇪
+                            Deutsch</button>
+                        <button onclick="setLanguage('zh')"
+                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇨🇳
+                            中文</button>
+                        <button onclick="setLanguage('ja')"
+                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇯🇵
+                            日本語</button>
+                        <button onclick="setLanguage('ko')"
+                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇰🇷
+                            한국어</button>
+                    </div>
+                </div>
+
                 <a href="/app"
-                    class="text-sm px-4 py-2 bg-white text-black font-medium rounded hover:bg-zinc-200 transition">
+                    class="text-sm px-4 py-2 bg-white text-black font-medium rounded hover:bg-zinc-200 transition"
+                    data-i18n="nav_launch">
                     Launch App
                 </a>
             </div>
@@ -96,27 +132,30 @@
     <!-- Hero -->
     <section class="min-h-screen flex items-center justify-center grid-bg pt-16">
         <div class="max-w-4xl mx-auto px-6 py-24 text-center">
-            <div class="inline-block px-3 py-1 mb-8 text-xs font-mono text-zinc-500 border border-zinc-800 rounded">
+            <div class="inline-block px-3 py-1 mb-8 text-xs font-mono text-zinc-500 border border-zinc-800 rounded"
+                data-i18n="hero_badge">
                 SHAMIR'S SECRET SHARING // 2-OF-3 THRESHOLD
             </div>
 
             <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight mb-6">
-                Crypto Inheritance<br>
-                <span class="text-gradient">Without Trust</span>
+                <span data-i18n="hero_title_1">Crypto Inheritance</span><br>
+                <span class="text-gradient" data-i18n="hero_title_2">Without Trust</span>
             </h1>
 
-            <p class="text-lg text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+            <p class="text-lg text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed" data-i18n="hero_subtitle">
                 Split your seed phrase into three shards. Any two can recover it.
                 Your beneficiary gets the third shard only when you stop responding.
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
                 <a href="/app"
-                    class="px-6 py-3 bg-accent text-black font-semibold rounded hover:bg-emerald-400 transition">
+                    class="px-6 py-3 bg-accent text-black font-semibold rounded hover:bg-emerald-400 transition"
+                    data-i18n="hero_cta">
                     Create Vault
                 </a>
                 <a href="#protocol"
-                    class="px-6 py-3 border border-zinc-700 text-zinc-300 font-medium rounded hover:border-zinc-500 hover:text-white transition">
+                    class="px-6 py-3 border border-zinc-700 text-zinc-300 font-medium rounded hover:border-zinc-500 hover:text-white transition"
+                    data-i18n="hero_cta_2">
                     View Protocol
                 </a>
             </div>
@@ -907,17 +946,18 @@
     <!-- CTA -->
     <section class="py-24 border-t border-zinc-800">
         <div class="max-w-2xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4">
+            <h2 class="text-3xl font-bold text-white mb-4" data-i18n="cta_title">
                 Don't Let Your Crypto Die With You
             </h2>
-            <p class="text-zinc-400 mb-8">
+            <p class="text-zinc-400 mb-8" data-i18n="cta_subtitle">
                 Set up your vault in under 5 minutes. Your seed phrase never leaves your device.
             </p>
             <a href="/app"
-                class="inline-block px-8 py-4 bg-accent text-black font-semibold rounded hover:bg-emerald-400 transition">
+                class="inline-block px-8 py-4 bg-accent text-black font-semibold rounded hover:bg-emerald-400 transition"
+                data-i18n="cta_button">
                 Create Your Vault
             </a>
-            <p class="text-zinc-600 text-sm mt-4">No credit card. No account required.</p>
+            <p class="text-zinc-600 text-sm mt-4" data-i18n="cta_note">No credit card. No account required.</p>
         </div>
     </section>
 
@@ -1021,6 +1061,9 @@
             }
         }
     </script>
+
+    <!-- Internationalization -->
+    <script src="/static/js/i18n.js"></script>
 
 </body>
 
