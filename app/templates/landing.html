@@ -940,6 +940,44 @@
                         </p>
                     </div>
                 </div>
+
+                <!-- FAQ 8 - SWITCHING COST FAQ -->
+                <div class="border-gradient rounded-lg overflow-hidden">
+                    <button onclick="toggleFaq(this)"
+                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
+                        <span class="font-medium text-white">What if I want to cancel or switch services?</span>
+                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
+                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-4">
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-3">
+                            <strong class="text-red-400">⚠️ Security Warning:</strong> If you simply stop using Shardium
+                            without proper migration,
+                            <strong class="text-white">Shard C remains in our database</strong> tied to your current
+                            seed phrase.
+                        </p>
+                        <p class="text-zinc-400 text-sm leading-relaxed mb-3">
+                            This means if our systems are ever compromised in the future, attackers would have 1/3 of
+                            your secret
+                            configuration. While one shard alone is mathematically useless, we recommend the <strong
+                                class="text-white">safe migration path</strong>:
+                        </p>
+                        <ol class="text-zinc-400 text-sm list-decimal list-inside space-y-1 mb-3">
+                            <li>Create a <strong class="text-white">new wallet</strong> with a fresh seed phrase</li>
+                            <li>Transfer all assets to the new wallet</li>
+                            <li>Set up Shardium (or another solution) for the new seed</li>
+                            <li>Only then deactivate your old vault</li>
+                        </ol>
+                        <p class="text-zinc-400 text-sm leading-relaxed">
+                            This way, even if old Shard C data is ever exposed, it's worthless because that wallet is
+                            empty.
+                            <strong class="text-accent">Your security is our priority</strong> — we'd rather you migrate
+                            safely than leave with risk.
+                        </p>
+                    </div>
+                </div>
             </div>
         </div>
     </section>
