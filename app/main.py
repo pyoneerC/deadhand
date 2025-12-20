@@ -458,20 +458,52 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         user.beneficiary_email,
                         "🔐 Shardium Activation - Recovery Key Inside",
                         f"""
-                        <h2>Important: Crypto Recovery Key</h2>
-                        <p>We have not heard from <strong>{user.email}</strong> for 90 days.</p>
-                        <p>As instructed, here is <strong>Shard C</strong>:</p>
-                        <div style="background:#f0f0f0; padding:15px; font-family:monospace; word-break:break-all;">
-                            {decrypt_shard(user.shard_c, user.heartbeat_token)}
+                        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #e2e8f0; padding: 40px; border-radius: 16px;">
+                            <div style="text-align: center; margin-bottom: 30px;">
+                                <div style="font-size: 28px; font-weight: bold; color: #14b8a6;">🔐 Shardium</div>
+                            </div>
+                            
+                            <h2 style="color: #fff; margin-bottom: 10px;">Important: Crypto Recovery Key</h2>
+                            <p style="color: #94a3b8;">We have not heard from <strong style="color: #fff;">{user.email}</strong> for 90 days.</p>
+                            <p style="color: #94a3b8;">As instructed, here is <strong style="color: #14b8a6;">Shard C</strong>:</p>
+                            
+                            <div style="background: #18181b; border: 2px dashed #3f3f46; padding: 20px; font-family: monospace; word-break: break-all; border-radius: 8px; color: #10b981; margin: 20px 0;">
+                                {decrypt_shard(user.shard_c, user.heartbeat_token)}
+                            </div>
+                            
+                            <div style="background: #1a1a1a; border-radius: 12px; padding: 20px; margin: 20px 0; border: 1px solid #333;">
+                                <h3 style="color: #14b8a6; margin-top: 0;">📋 Recovery Steps</h3>
+                                <ol style="color: #cbd5e1; padding-left: 20px;">
+                                    <li style="margin-bottom: 8px;">Locate <strong>Shard B</strong> (the printed document you received)</li>
+                                    <li style="margin-bottom: 8px;">Go to <a href="https://shardium.maxcomperatore.com/recover" style="color: #14b8a6;">shardium.maxcomperatore.com/recover</a></li>
+                                    <li style="margin-bottom: 8px;">Enter both Shard B and Shard C</li>
+                                    <li style="margin-bottom: 8px;">The original seed phrase will be recovered</li>
+                                </ol>
+                            </div>
+                            
+                            <p style="color: #64748b; text-align: center;">Our condolences. 💐</p>
+                            
+                            <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;">
+                            
+                            <!-- VIRAL LOOP: Convert beneficiary to user -->
+                            <div style="background: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 100%); border-radius: 12px; padding: 25px; text-align: center; margin-top: 20px;">
+                                <h3 style="color: #000; margin: 0 0 10px 0; font-size: 18px;">Now Protect YOUR Crypto</h3>
+                                <p style="color: #000; opacity: 0.8; margin: 0 0 15px 0; font-size: 14px;">
+                                    You just experienced how Shardium works. Don't let your crypto die with you.
+                                </p>
+                                <a href="https://shardium.maxcomperatore.com/app?ref=beneficiary&discount=50" 
+                                   style="display: inline-block; background: #000; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
+                                    Create Your Vault — 50% Off First Year
+                                </a>
+                                <p style="color: #000; opacity: 0.6; margin: 10px 0 0 0; font-size: 12px;">
+                                    Set up in 5 minutes. Protect your loved ones.
+                                </p>
+                            </div>
+                            
+                            <div style="text-align: center; margin-top: 30px; color: #64748b; font-size: 12px;">
+                                <p>Shardium — Trustless Dead Man's Switch for Crypto</p>
+                            </div>
                         </div>
-                        <h3>Next Steps:</h3>
-                        <ol>
-                            <li>Locate Shard B (the printed document you received)</li>
-                            <li>Go to <a href="https://shardium.maxcomperatore.com/recover">shardium.maxcomperatore.com/recover</a></li>
-                            <li>Enter both Shard B and Shard C</li>
-                            <li>The original seed phrase will be recovered</li>
-                        </ol>
-                        <p>Our condolences. 💐</p>
                         """
                     )
                     results["deaths_90d"].append(user.email)
