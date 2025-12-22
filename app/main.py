@@ -25,7 +25,7 @@ from x402.facilitator import FacilitatorConfig
 Base.metadata.create_all(bind=engine)
 
 # x402 Payment Configuration
-VAULT_PRICE = "1000" 
+VAULT_PRICE = "1000"  
 PAY_TO_ADDRESS = os.getenv("X402_PAY_TO_ADDRESS", "0xa7e1f6945ea4df69ca2d50d5d779939252e351b6")
 USDC_BASE_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
 
@@ -36,7 +36,11 @@ facilitator_config = FacilitatorConfig(
 # Move OpenAPI docs to /api-docs so we can use /docs for our documentation
 app = FastAPI(title="Shardium", docs_url="/api-docs", redoc_url="/api-redoc")
 
-# Add x402 payment middleware for vault creation
+# Mount static files FIRST (before any middleware that might interfere)
+app.mount("/static", StaticFiles(directory="app/static"), name="static")
+templates = Jinja2Templates(directory="app/templates")
+
+# Add x402 payment middleware for vault creation (after static files)
 app.middleware("http")(
     require_payment(
         price=TokenAmount(
@@ -54,9 +58,6 @@ app.middleware("http")(
         facilitator_config=facilitator_config,
     )
 )
-
-app.mount("/static", StaticFiles(directory="app/static"), name="static")
-templates = Jinja2Templates(directory="app/templates")
 
 # Favicon route
 @app.get("/favicon.ico", include_in_schema=False)
