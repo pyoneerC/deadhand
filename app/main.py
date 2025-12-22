@@ -16,11 +16,44 @@ from .models import User
 from .services import send_email
 from .crypto import encrypt_shard, decrypt_shard
 
+# x402 Payment Integration
+from x402.fastapi.middleware import require_payment
+from x402.types import TokenAmount, TokenAsset, EIP712Domain
+from x402.facilitator import FacilitatorConfig
+
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
+# x402 Payment Configuration
+VAULT_PRICE = "100000000"  # $100 USDC (6 decimals)
+PAY_TO_ADDRESS = os.getenv("X402_PAY_TO_ADDRESS", "0xa7e1f6945ea4df69ca2d50d5d779939252e351b6")
+USDC_BASE_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+
+facilitator_config = FacilitatorConfig(
+    url="https://facilitator.payai.network",
+)
+
 # Move OpenAPI docs to /api-docs so we can use /docs for our documentation
 app = FastAPI(title="Shardium", docs_url="/api-docs", redoc_url="/api-redoc")
+
+# Add x402 payment middleware for vault creation
+app.middleware("http")(
+    require_payment(
+        price=TokenAmount(
+            amount=VAULT_PRICE,
+            asset=TokenAsset(
+                address=USDC_BASE_ADDRESS,
+                decimals=6,
+                eip712=EIP712Domain(name="USD Coin", version="2")
+            )
+        ),
+        pay_to_address=PAY_TO_ADDRESS,
+        network="base",
+        path="/app",
+        description="Create a permanent Shardium vault",
+        facilitator_config=facilitator_config,
+    )
+)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
