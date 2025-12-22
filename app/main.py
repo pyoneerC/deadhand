@@ -25,7 +25,7 @@ from x402.facilitator import FacilitatorConfig
 Base.metadata.create_all(bind=engine)
 
 # x402 Payment Configuration
-VAULT_PRICE = "100000000"  # $100 USDC (6 decimals)
+VAULT_PRICE = "1000" 
 PAY_TO_ADDRESS = os.getenv("X402_PAY_TO_ADDRESS", "0xa7e1f6945ea4df69ca2d50d5d779939252e351b6")
 USDC_BASE_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
 
