@@ -36,28 +36,36 @@ facilitator_config = FacilitatorConfig(
 # Move OpenAPI docs to /api-docs so we can use /docs for our documentation
 app = FastAPI(title="Shardium", docs_url="/api-docs", redoc_url="/api-redoc")
 
-# Mount static files FIRST (before any middleware that might interfere)
+# Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
 
-# Add x402 payment middleware for vault creation (after static files)
-app.middleware("http")(
-    require_payment(
-        price=TokenAmount(
-            amount=VAULT_PRICE,
-            asset=TokenAsset(
-                address=USDC_BASE_ADDRESS,
-                decimals=6,
-                eip712=EIP712Domain(name="USD Coin", version="2")
-            )
-        ),
-        pay_to_address=PAY_TO_ADDRESS,
-        network="base",
-        path="/app",
-        description="Create a permanent Shardium vault",
-        facilitator_config=facilitator_config,
-    )
+# Create the x402 payment handler
+x402_payment_middleware = require_payment(
+    price=TokenAmount(
+        amount=VAULT_PRICE,
+        asset=TokenAsset(
+            address=USDC_BASE_ADDRESS,
+            decimals=6,
+            eip712=EIP712Domain(name="USD Coin", version="2")
+        )
+    ),
+    pay_to_address=PAY_TO_ADDRESS,
+    network="base",
+    path="/app",
+    description="Create a permanent Shardium vault",
+    facilitator_config=facilitator_config,
 )
+
+# Custom middleware wrapper to ONLY apply x402 to /app path
+@app.middleware("http")
+async def payment_middleware(request, call_next):
+    # Only apply x402 payment to the /app path exactly
+    if request.url.path == "/app":
+        # Use the x402 middleware
+        return await x402_payment_middleware(request, call_next)
+    # All other paths pass through normally
+    return await call_next(request)
 
 # Favicon route
 @app.get("/favicon.ico", include_in_schema=False)
