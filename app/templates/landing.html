@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shardium | Crypto Inheritance Protocol</title>
+    <title>Shardium | Never Lose Your Seed Phrase Again</title>
     <meta name="description"
-        content="Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing.">
+        content="Split your seed phrase into 3 shards. Lose one? Recover with the other two. You become your own backup. No Ledger required.">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
@@ -133,31 +133,35 @@
     <!-- Hero -->
     <section class="min-h-screen flex items-center justify-center grid-bg pt-16">
         <div class="max-w-4xl mx-auto px-6 py-24 text-center">
-            <div class="inline-block px-3 py-1 mb-8 text-xs font-mono text-zinc-500 border border-zinc-800 rounded"
-                data-i18n="hero_badge">
-                SHAMIR'S SECRET SHARING // 2-OF-3 THRESHOLD
+            <div
+                class="inline-block px-3 py-1 mb-8 text-xs font-mono text-red-500/80 border border-red-500/30 rounded bg-red-500/5">
+                🔥 THE #1 FEAR OF EVERY CRYPTO HOLDER
             </div>
 
             <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight mb-6">
-                <span data-i18n="hero_title_1">Crypto Inheritance</span><br>
-                <span class="text-gradient" data-i18n="hero_title_2">Without Trust</span>
+                <span>Lose Your Seed Phrase?</span><br>
+                <span class="text-gradient">You're Fucked.</span>
             </h1>
 
-            <p class="text-lg text-zinc-400 max-w-2xl mx-auto mb-10 leading-relaxed" data-i18n="hero_subtitle">
-                Split your seed phrase into three shards. Any two can recover it.
-                Your beneficiary gets the third shard only when you stop responding.
+            <p class="text-xl text-zinc-300 max-w-2xl mx-auto mb-4 leading-relaxed font-medium">
+                Unless you have Shardium.
+            </p>
+
+            <p class="text-lg text-zinc-500 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Split your seed into 3 shards. Lose any one? <span class="text-accent font-semibold">Recover instantly
+                    with the other two.</span>
+                House burns down? Still got access. Paper stolen? Not your problem.
+                <span class="text-white">You become your own backup.</span>
             </p>
 
             <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
                 <a href="/app"
-                    class="px-6 py-3 bg-accent text-black font-semibold rounded hover:bg-emerald-400 transition"
-                    data-i18n="hero_cta">
-                    Create Vault
+                    class="px-8 py-4 bg-accent text-black font-bold rounded hover:bg-emerald-400 transition text-lg shadow-lg shadow-accent/25">
+                    Protect My Seed Phrase →
                 </a>
                 <a href="#protocol"
-                    class="px-6 py-3 border border-zinc-700 text-zinc-300 font-medium rounded hover:border-zinc-500 hover:text-white transition"
-                    data-i18n="hero_cta_2">
-                    View Protocol
+                    class="px-6 py-4 border border-zinc-700 text-zinc-300 font-medium rounded hover:border-zinc-500 hover:text-white transition">
+                    How It Works
                 </a>
             </div>
 
@@ -187,57 +191,64 @@
     <section class="py-24 border-t border-zinc-800">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16">
-                <div class="text-xs font-mono text-red-500/80 mb-4">// THE PROBLEM</div>
-                <h2 class="text-3xl font-bold text-white mb-4">$140B in Crypto Will Die With Its Owners</h2>
-                <p class="text-zinc-400 max-w-2xl mx-auto">
-                    Self-custody solves the trust problem. But it creates a new one:
-                    when you die, your keys die with you.
+                <div class="text-xs font-mono text-red-500/80 mb-4">// THE NIGHTMARE</div>
+                <h2 class="text-3xl font-bold text-white mb-4">You Know This Fear</h2>
+                <p class="text-zinc-400 max-w-2xl mx-auto text-lg">
+                    That cold sweat moment when you realize you can't find your seed phrase.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6 mb-12">
-                <div class="border-gradient rounded-lg p-6 text-center">
-                    <div class="text-3xl font-bold text-red-500 mb-2">4M+</div>
-                    <div class="text-sm text-zinc-400">Bitcoin lost forever</div>
+            <div class="grid md:grid-cols-4 gap-4 mb-12">
+                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
+                    <div class="text-2xl mb-3">🔥</div>
+                    <div class="text-sm text-zinc-300 font-medium mb-1">House Fire</div>
+                    <div class="text-xs text-zinc-500">Paper backup? Gone.</div>
                 </div>
-                <div class="border-gradient rounded-lg p-6 text-center">
-                    <div class="text-3xl font-bold text-red-500 mb-2">23%</div>
-                    <div class="text-sm text-zinc-400">Of holders have no inheritance plan</div>
+                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
+                    <div class="text-2xl mb-3">🏠</div>
+                    <div class="text-sm text-zinc-300 font-medium mb-1">Moving</div>
+                    <div class="text-xs text-zinc-500">"I put it somewhere safe..."</div>
                 </div>
-                <div class="border-gradient rounded-lg p-6 text-center">
-                    <div class="text-3xl font-bold text-red-500 mb-2">$0</div>
-                    <div class="text-sm text-zinc-400">Value of crypto without the key</div>
+                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
+                    <div class="text-2xl mb-3">🥴</div>
+                    <div class="text-sm text-zinc-300 font-medium mb-1">Time</div>
+                    <div class="text-xs text-zinc-500">"I'll remember where it is..."</div>
                 </div>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-red-500 font-mono text-xs mb-3">OPTION 1: DO NOTHING</div>
-                    <p class="text-sm text-zinc-400">
-                        Your family gets nothing. Your crypto becomes permanently inaccessible.
-                        Wealth evaporates.
-                    </p>
-                </div>
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-red-500 font-mono text-xs mb-3">OPTION 2: SHARE YOUR SEED</div>
-                    <p class="text-sm text-zinc-400">
-                        Anyone with the seed can take everything. You're trusting them with
-                        100% of your assets, 100% of the time.
-                    </p>
-                </div>
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-red-500 font-mono text-xs mb-3">OPTION 3: USE A CUSTODIAN</div>
-                    <p class="text-sm text-zinc-400">
-                        Banks, lawyers, exchanges. They can freeze, lose, or steal your assets.
-                        You've re-introduced trusted third parties.
-                    </p>
+                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
+                    <div class="text-2xl mb-3">🦹</div>
+                    <div class="text-sm text-zinc-300 font-medium mb-1">Theft</div>
+                    <div class="text-xs text-zinc-500">Someone finds your backup.</div>
                 </div>
             </div>
 
-            <div class="text-center mt-12">
+            <div class="border-gradient rounded-xl p-8 bg-zinc-900/50 mb-8">
+                <div class="grid md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h3 class="text-xl font-bold text-white mb-4">The Brutal Truth</h3>
+                        <p class="text-zinc-400 mb-4">
+                            With traditional seed storage, you have <span class="text-red-400 font-bold">one point of
+                                failure</span>.
+                            One piece of paper. One metal plate. One moment of forgetfulness.
+                        </p>
+                        <p class="text-zinc-400">
+                            And there's no "forgot password" link. No customer support. No recovery.
+                            <span class="text-white font-semibold">Your crypto is just... gone.</span>
+                        </p>
+                    </div>
+                    <div class="border border-red-500/20 rounded-lg p-6 bg-red-500/5">
+                        <div class="text-3xl font-bold text-red-500 mb-2">$140B+</div>
+                        <div class="text-sm text-zinc-400 mb-4">Lost forever due to lost keys</div>
+                        <div class="text-xs text-zinc-500">That's more than the GDP of 100+ countries. All because
+                            people trusted a single piece of paper.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center">
                 <div class="inline-block border border-accent/30 rounded-lg px-6 py-4 bg-accent/5">
-                    <span class="text-accent font-medium">Option 4: Shardium</span>
-                    <span class="text-zinc-400 ml-2">— Trustless inheritance through cryptography</span>
+                    <span class="text-accent font-bold text-lg">Enter Shardium</span>
+                    <span class="text-zinc-400 ml-2">— You become your own backup. Lose one shard? Use the other
+                        two.</span>
                 </div>
             </div>
         </div>
@@ -247,12 +258,13 @@
     <section class="py-24 border-t border-zinc-800">
         <div class="max-w-5xl mx-auto px-6">
             <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// THE SOLUTION</div>
+                <div class="text-xs font-mono text-accent mb-4">// THE FIX</div>
                 <h2 class="text-3xl font-bold text-white mb-4">
-                    The <span class="text-gradient">Shardium</span> Solution
+                    3 Places. <span class="text-gradient">Any 2 Recover.</span>
                 </h2>
-                <p class="text-zinc-400 max-w-xl mx-auto">
-                    Split your seed phrase into 3 shards. Any 2 can recover it. No single party can steal it.
+                <p class="text-zinc-400 max-w-xl mx-auto text-lg">
+                    Lost your house? Use the shards you stored elsewhere. Forgot where you put it? No problem.
+                    <span class="text-white font-medium">Redundancy is your superpower.</span>
                 </p>
             </div>
 
@@ -327,23 +339,22 @@
     <section id="protocol" class="py-24 border-t border-zinc-800">
         <div class="max-w-6xl mx-auto px-6">
             <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// PROTOCOL</div>
-                <h2 class="text-3xl font-bold text-white mb-4">How It Works</h2>
+                <div class="text-xs font-mono text-zinc-500 mb-4">// SIMPLE WORKFLOW</div>
+                <h2 class="text-3xl font-bold text-white mb-4">5 Minutes to Peace of Mind</h2>
                 <p class="text-zinc-400 max-w-xl mx-auto">
-                    Mathematically secure. No single point of failure. No custodian risk.
+                    No complex setup. No hardware required. Just you and your browser.
                 </p>
             </div>
 
-            <div class="grid md:grid-cols-3 gap-6">
+            <div class="grid md:grid-cols-4 gap-6">
                 <!-- Step 1 -->
                 <div class="border-gradient rounded-lg p-6">
                     <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center mb-4">
                         <span class="font-mono text-accent">01</span>
                     </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Split Locally</h3>
+                    <h3 class="text-lg font-semibold text-white mb-2">Enter Seed</h3>
                     <p class="text-sm text-zinc-400 leading-relaxed">
-                        Your seed phrase is split into 3 shards using Shamir's Secret Sharing.
-                        This happens entirely in your browser. We never see the original.
+                        Type your seed phrase. Go offline first for max security. Your seed never touches our servers.
                     </p>
                 </div>
 
@@ -352,10 +363,10 @@
                     <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center mb-4">
                         <span class="font-mono text-accent">02</span>
                     </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Distribute Shards</h3>
+                    <h3 class="text-lg font-semibold text-white mb-2">Split Into 3</h3>
                     <p class="text-sm text-zinc-400 leading-relaxed">
-                        Shard A: You keep. Shard B: Give to beneficiary. Shard C: We store encrypted.
-                        Any 2 shards reconstruct the original.
+                        Shamir's Secret Sharing creates 3 shards from your seed. Any 2 can reconstruct it. Math, not
+                        trust.
                     </p>
                 </div>
 
@@ -364,12 +375,32 @@
                     <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center mb-4">
                         <span class="font-mono text-accent">03</span>
                     </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Dead Man's Switch</h3>
+                    <h3 class="text-lg font-semibold text-white mb-2">Store Separately</h3>
                     <p class="text-sm text-zinc-400 leading-relaxed">
-                        We ping you every 30 days. After 90 days of silence, Shard C is
-                        automatically sent to your beneficiary.
+                        Put shards in different places: password manager, printed PDF, safe. Lose one? Still got two.
                     </p>
                 </div>
+
+                <!-- Step 4 - BONUS -->
+                <div class="rounded-lg p-6 bg-gradient-to-br from-accent/10 to-transparent border border-accent/30">
+                    <div class="w-10 h-10 rounded bg-accent/20 flex items-center justify-center mb-4">
+                        <span class="font-mono text-accent">🎁</span>
+                    </div>
+                    <h3 class="text-lg font-semibold text-accent mb-2">BONUS: Inheritance</h3>
+                    <p class="text-sm text-zinc-400 leading-relaxed">
+                        Give Shard B to your beneficiary. We hold Shard C. If you stop responding for 90 days, they get
+                        access.
+                    </p>
+                </div>
+            </div>
+
+            <div class="text-center mt-10">
+                <p class="text-zinc-500 text-sm">
+                    <span class="text-white font-medium">Main benefit:</span> You can recover your own seed anytime with
+                    A+B.
+                    <span class="text-accent">Bonus:</span> Your family inherits automatically if something happens to
+                    you.
+                </p>
             </div>
         </div>
     </section>
@@ -414,11 +445,18 @@
                         after 90 days of your inactivity. You control the heartbeat.
                     </p>
                 </div>
-                <div class="border-gradient rounded-lg p-6 md:col-span-2">
-                    <div class="text-accent font-mono text-sm mb-3">BONUS: Lost Seed Phrase? No Problem.</div>
+                <!-- MAIN VALUE PROP - This box should stand out -->
+                <div
+                    class="rounded-lg p-6 md:col-span-2 bg-gradient-to-r from-accent/10 to-emerald-500/5 border border-accent/30">
+                    <div class="text-accent font-mono text-sm mb-3">⭐ THE MAIN EVENT: Personal Seed Recovery</div>
+                    <p class="text-zinc-300 mb-3">
+                        <span class="text-white font-bold text-lg">Lost your seed phrase? Recover it in seconds.</span>
+                    </p>
                     <p class="text-sm text-zinc-400">
-                        If you lose your original seed phrase, just combine Shard A + Shard B to recover it instantly.
-                        You're your own backup — no need to panic, no third party required.
+                        Combine Shard A + Shard B to reconstruct your original seed phrase instantly.
+                        House burned down? Doesn't matter — you have multiple shards in multiple places.
+                        <span class="text-accent font-semibold">You're your own backup. No Ledger required. No bank
+                            vault. No panic.</span>
                     </p>
                 </div>
             </div>
@@ -932,18 +970,26 @@
     <!-- CTA -->
     <section class="py-24 border-t border-zinc-800">
         <div class="max-w-2xl mx-auto px-6 text-center">
-            <h2 class="text-3xl font-bold text-white mb-4" data-i18n="cta_title">
-                Don't Let Your Crypto Die With You
+            <div class="text-6xl mb-6">🔐</div>
+            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
+                Stop <span class="text-red-400">Trusting</span> a Piece of Paper
             </h2>
-            <p class="text-zinc-400 mb-8" data-i18n="cta_subtitle">
-                Set up your vault in under 5 minutes. Your seed phrase never leaves your device.
+            <p class="text-zinc-400 mb-4 text-lg">
+                Your entire financial future shouldn't depend on one backup in one location.
+            </p>
+            <p class="text-zinc-500 mb-8">
+                Split it. Distribute it. <span class="text-accent font-semibold">Own your recovery.</span>
             </p>
             <a href="/app"
-                class="inline-block px-8 py-4 bg-accent text-black font-semibold rounded hover:bg-emerald-400 transition"
-                data-i18n="cta_button">
-                Create Your Vault
+                class="inline-block px-10 py-5 bg-accent text-black font-bold rounded-lg hover:bg-emerald-400 transition text-lg shadow-lg shadow-accent/25">
+                Protect My Seed Phrase — $100 USDC
             </a>
-            <p class="text-zinc-600 text-sm mt-4" data-i18n="cta_note">No credit card. No account required.</p>
+            <p class="text-zinc-600 text-sm mt-4">
+                5-minute setup. Client-side encryption. Your seed never leaves your device.
+            </p>
+            <p class="text-zinc-700 text-xs mt-2">
+                + Inheritance bonus: If you die, your beneficiary automatically gets access. 🎁
+            </p>
         </div>
     </section>
 
