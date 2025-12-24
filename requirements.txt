@@ -9,4 +9,4 @@ httpx
 markdown
 psycopg2-binary
 cryptography
-x402
+stripe

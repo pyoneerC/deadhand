@@ -2,36 +2,39 @@ import secrets
 import hashlib
 import re
 import os
+from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Depends, Form, HTTPException
-from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, JSONResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 import markdown
 from pathlib import Path
+import stripe
+
+# Load environment variables from .env file
+load_dotenv()
 
 from .database import SessionLocal, engine, Base
-from .models import User, PaymentToken
+from .models import User
 from .services import send_email
 from .crypto import encrypt_shard, decrypt_shard
-
-# x402 Payment Integration
-from x402.fastapi.middleware import require_payment
-from x402.types import TokenAmount, TokenAsset, EIP712Domain
-from x402.facilitator import FacilitatorConfig
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-# x402 Payment Configuration
-VAULT_PRICE = "100000000"  
-PAY_TO_ADDRESS = os.getenv("X402_PAY_TO_ADDRESS", "0xa7e1f6945ea4df69ca2d50d5d779939252e351b6")
-USDC_BASE_ADDRESS = "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+# Stripe Configuration
+stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
+STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
+STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+BASE_URL = os.getenv("BASE_URL", "https://shardium.maxcomperatore.com")
 
-facilitator_config = FacilitatorConfig(
-    url="https://facilitator.payai.network",
-)
+# Stripe Price IDs - Create these in Stripe Dashboard
+STRIPE_PRICES = {
+    "annual": os.getenv("STRIPE_PRICE_ANNUAL"),      # $49/year subscription
+    "lifetime": os.getenv("STRIPE_PRICE_LIFETIME"),  # $129 one-time
+}
 
 # Move OpenAPI docs to /api-docs so we can use /docs for our documentation
 app = FastAPI(title="Shardium", docs_url="/api-docs", redoc_url="/api-redoc")
@@ -39,33 +42,6 @@ app = FastAPI(title="Shardium", docs_url="/api-docs", redoc_url="/api-redoc")
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
-
-# Create the x402 payment handler
-x402_payment_middleware = require_payment(
-    price=TokenAmount(
-        amount=VAULT_PRICE,
-        asset=TokenAsset(
-            address=USDC_BASE_ADDRESS,
-            decimals=6,
-            eip712=EIP712Domain(name="USD Coin", version="2")
-        )
-    ),
-    pay_to_address=PAY_TO_ADDRESS,
-    network="base",
-    path="/app",
-    description="Create a permanent Shardium vault",
-    facilitator_config=facilitator_config,
-)
-
-# Custom middleware wrapper to ONLY apply x402 to /app path
-@app.middleware("http")
-async def payment_middleware(request, call_next):
-    # Only apply x402 payment to the /app path exactly
-    if request.url.path == "/app":
-        # Use the x402 middleware
-        return await x402_payment_middleware(request, call_next)
-    # All other paths pass through normally
-    return await call_next(request)
 
 # Favicon route
 @app.get("/favicon.ico", include_in_schema=False)
@@ -85,71 +61,149 @@ async def landing_page(request: Request):
     """Marketing landing page"""
     return templates.TemplateResponse("landing.html", {"request": request})
 
-@app.get("/app")
-async def app_page(request: Request, db: Session = Depends(get_db)):
-    """After payment succeeds, generate one-time token and return JSON redirect.
-    
-    Flow:
-    1. x402 middleware handles payment verification
-    2. If payment succeeds, this endpoint runs
-    3. Generate unique temp_id token
-    4. Return JSON: {"message": "congrats payment succeeded", "redirect": "/app/{temp_id}"}
+@app.get("/app", response_class=HTMLResponse)
+async def app_page(request: Request, plan: str = "lifetime"):
     """
-    # Generate a unique one-time token
-    temp_id = secrets.token_urlsafe(32)
-    expires_at = datetime.now() + timedelta(hours=1)  # Token valid for 1 hour
-    
-    # Store the token
-    payment_token = PaymentToken(
-        temp_id=temp_id,
-        is_consumed=False,
-        expires_at=expires_at
-    )
-    db.add(payment_token)
-    db.commit()
-    
-    # Return JSON with redirect URL
-    return JSONResponse({
-        "message": "Congrats! Payment succeeded. Please proceed to the link below to create your vault.",
-        "redirect": f"https://shardium.xyz/app/{temp_id}",
-        "expires_in": "1 hour"
-    })
-
-
-@app.get("/app/{temp_id}", response_class=HTMLResponse)
-async def app_page_with_token(request: Request, temp_id: str, db: Session = Depends(get_db)):
-    """Vault creation page - requires valid one-time token.
-    
-    The token is consumed when the vault is created (not on page load),
-    allowing users to refresh the page without losing access.
+    Redirect to Stripe Checkout for payment.
+    Supports: plan=annual ($49/yr) or plan=lifetime ($129 once)
     """
-    # Find the token
-    token = db.query(PaymentToken).filter(PaymentToken.temp_id == temp_id).first()
+    # Get the right price ID based on plan
+    price_id = STRIPE_PRICES.get(plan, STRIPE_PRICES.get("lifetime"))
     
-    if not token:
-        raise HTTPException(
-            status_code=404, 
-            detail="Invalid access token. This link does not exist."
+    # Debug: print what we have
+    print(f"[Stripe Debug] api_key set: {bool(stripe.api_key)}")
+    print(f"[Stripe Debug] price_id: {price_id}")
+    print(f"[Stripe Debug] plan: {plan}")
+    
+    if not stripe.api_key or not price_id:
+        # Fallback: show vault page directly if Stripe not configured (dev mode)
+        print(f"[Stripe Debug] Falling back - api_key: {bool(stripe.api_key)}, price_id: {price_id}")
+        return templates.TemplateResponse("index.html", {"request": request})
+    
+    # Determine payment mode (subscription for annual, payment for lifetime)
+    mode = "subscription" if plan == "annual" else "payment"
+    
+    try:
+        checkout_session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[{
+                'price': price_id,
+                'quantity': 1,
+            }],
+            mode=mode,
+            success_url=f"{BASE_URL}/app/success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{BASE_URL}/app/cancel",
+            metadata={
+                'product': 'shardium_vault',
+                'plan': plan
+            }
         )
+        return RedirectResponse(checkout_session.url, status_code=303)
+    except AttributeError as e:
+        # Stripe module not properly installed
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": f"Stripe not installed properly. Run: pip install stripe"
+        })
+    except Exception as e:
+        # If Stripe fails, show error
+        return templates.TemplateResponse("index.html", {
+            "request": request,
+            "error": f"Payment system error: {str(e)}"
+        })
+
+@app.get("/app/success", response_class=HTMLResponse)
+async def app_success(request: Request, session_id: str = None):
+    """
+    Success page after Stripe payment.
+    Verify the session is paid, then show vault creation page.
+    """
+    if session_id and stripe.api_key:
+        try:
+            session = stripe.checkout.Session.retrieve(session_id)
+            if session.payment_status != 'paid':
+                return templates.TemplateResponse("index.html", {
+                    "request": request,
+                    "error": "Payment not completed. Please try again."
+                })
+        except Exception as e:
+            return templates.TemplateResponse("index.html", {
+                "request": request,
+                "error": f"Could not verify payment: {str(e)}"
+            })
     
-    if token.is_consumed:
-        raise HTTPException(
-            status_code=410,  # 410 Gone - resource no longer available
-            detail="This access token has already been used. Vault already created."
+    # Payment verified (or Stripe not configured - dev mode)
+    return templates.TemplateResponse("index.html", {"request": request})
+
+@app.get("/app/cancel", response_class=HTMLResponse)
+async def app_cancel(request: Request):
+    """User cancelled payment"""
+    return RedirectResponse("/#pricing", status_code=303)
+
+@app.post("/stripe/webhook")
+async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
+    """Handle Stripe webhook events"""
+    payload = await request.body()
+    sig_header = request.headers.get('stripe-signature')
+    
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, STRIPE_WEBHOOK_SECRET
         )
+    except ValueError:
+        raise HTTPException(status_code=400, detail="Invalid payload")
+    except stripe.error.SignatureVerificationError:
+        raise HTTPException(status_code=400, detail="Invalid signature")
     
-    if token.expires_at and datetime.now() > token.expires_at.replace(tzinfo=None):
-        raise HTTPException(
-            status_code=410,
-            detail="This access token has expired. Please make a new payment."
-        )
+    # Handle successful payment
+    if event['type'] == 'checkout.session.completed':
+        session = event['data']['object']
+        customer_email = session.get('customer_email') or session.get('customer_details', {}).get('email')
+        customer_id = session.get('customer')
+        subscription_id = session.get('subscription')  # Only for annual plans
+        plan = session.get('metadata', {}).get('plan', 'lifetime')
+        
+        print(f"✅ Payment received: {customer_email} - plan: {plan}")
+        
+        # Update user with Stripe info (user created after vault creation)
+        if customer_email:
+            user = db.query(User).filter(User.email == customer_email).first()
+            if user:
+                user.stripe_customer_id = customer_id
+                user.stripe_subscription_id = subscription_id
+                user.plan_type = plan
+                user.is_active = True
+                db.commit()
+                print(f"✅ Updated user {customer_email} with Stripe info")
     
-    # Token is valid - show the vault creation page
-    # Pass the temp_id to the template so the form can include it
-    return templates.TemplateResponse("index.html", {
-        "request": request,
-        "temp_id": temp_id  # Include token in form for consumption on submit
-    })
+    # Handle subscription created (for annual plans)
+    elif event['type'] == 'customer.subscription.created':
+        subscription = event['data']['object']
+        customer_id = subscription.get('customer')
+        subscription_id = subscription.get('id')
+        print(f"📅 Subscription created: {subscription_id} for customer {customer_id}")
+    
+    # Handle subscription cancelled (user stopped paying!)
+    elif event['type'] == 'customer.subscription.deleted':
+        subscription = event['data']['object']
+        customer_id = subscription.get('customer')
+        subscription_id = subscription.get('id')
+        
+        print(f"❌ Subscription cancelled: {subscription_id}")
+        
+        # Find and deactivate the user
+        user = db.query(User).filter(User.stripe_subscription_id == subscription_id).first()
+        if user:
+            print(f"🗑️ Deactivating vault for: {user.email}")
+            user.is_active = False
+            # Optional: Actually delete the user and their data
+            # db.delete(user)
+            db.commit()
+            
+            # Send email notifying them their vault is deactivated
+            # TODO: send_email to user.email about cancellation
+    
+    return {"status": "success"}
 
 @app.get("/terms", response_class=HTMLResponse)
 async def terms_page(request: Request):
@@ -337,42 +391,14 @@ async def create_vault(
     email: str = Form(...),
     beneficiary_email: str = Form(...),
     shard_c: str = Form(...),
-    temp_id: str = Form(...),  # Required: one-time payment token
     db: Session = Depends(get_db)
 ):
-    # FIRST: Validate and consume the payment token
-    token = db.query(PaymentToken).filter(PaymentToken.temp_id == temp_id).first()
-    
-    if not token:
-        raise HTTPException(
-            status_code=403,
-            detail="Invalid payment token. Access denied."
-        )
-    
-    if token.is_consumed:
-        raise HTTPException(
-            status_code=410,
-            detail="This payment token has already been used. Cannot create another vault."
-        )
-    
-    if token.expires_at and datetime.now() > token.expires_at.replace(tzinfo=None):
-        raise HTTPException(
-            status_code=410,
-            detail="This payment token has expired. Please make a new payment."
-        )
-    
-    # Token is valid - CONSUME IT NOW (before any other operations)
-    token.is_consumed = True
-    token.consumed_at = datetime.now()
-    db.commit()  # Commit immediately to prevent race conditions
-    
     # Check if user exists
     user = db.query(User).filter(User.email == email).first()
     if user:
         return templates.TemplateResponse("index.html", {
             "request": request, 
-            "error": "User already exists with this email.",
-            "temp_id": temp_id  # Token is consumed, but show error
+            "error": "User already exists with this email."
         })
 
     heartbeat_token = secrets.token_urlsafe(32)
