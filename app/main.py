@@ -210,6 +210,97 @@ async def terms_page(request: Request):
     """Terms of Service"""
     return templates.TemplateResponse("terms.html", {"request": request})
 
+# ========== FREE TOOLS ==========
+
+@app.get("/tools/death-calculator", response_class=HTMLResponse)
+async def death_calculator_page(request: Request):
+    """SEO Tool: Actuarial Death Calculator"""
+    return templates.TemplateResponse("tools_death.html", {"request": request, "result": None})
+
+@app.post("/tools/death-calculator", response_class=HTMLResponse)
+async def death_calculator_result(request: Request, age: int = Form(...), gender: str = Form(...)):
+    """Calculate death probability"""
+    # Simple Gompertz-Makeham approximation
+    # M = a + b * c^x
+    # Parameters for US Mortality roughly:
+    if gender == 'male':
+        a, b, c = 0.0003, 0.000043, 1.103
+        life_exp = 76
+    else:
+        a, b, c = 0.0001, 0.000016, 1.112
+        life_exp = 81
+        
+    def get_prob_die_within_years(current_age, years):
+        # Probability of surviving each year product
+        prob_survive = 1.0
+        for y in range(years):
+            x = current_age + y
+            if x >= 110: 
+                q_x = 1.0 # Certain death cap
+            else:
+                q_x = a + b * (c ** x)
+            prob_survive *= (1.0 - min(q_x, 1.0))
+        return (1.0 - prob_survive) * 100
+
+    prob_1y = round(get_prob_die_within_years(age, 1), 2)
+    prob_10y = round(get_prob_die_within_years(age, 10), 1)
+    prob_30y = round(get_prob_die_within_years(age, 30), 1)
+    
+    # Cap at 99.9%
+    if prob_30y > 99.9: prob_30y = 99.9
+    
+    result = {
+        "prob_1y": prob_1y,
+        "prob_10y": prob_10y,
+        "prob_30y": prob_30y,
+        "life_expectancy": round(life_exp - age) if age < life_exp else "Bonus Round"
+    }
+
+    return templates.TemplateResponse("tools_death.html", {
+        "request": request, 
+        "result": result,
+        "age": age,
+        "gender": gender
+    })
+
+@app.get("/tools/crypto-loss-calculator", response_class=HTMLResponse)
+async def crypto_loss_page(request: Request):
+    """SEO Tool: Crypto Loss Calculator"""
+    return templates.TemplateResponse("tools_loss.html", {"request": request, "result": None})
+
+@app.post("/tools/crypto-loss-calculator", response_class=HTMLResponse)
+async def crypto_loss_result(request: Request, amount: float = Form(...), price: float = Form(...), growth_rate: float = Form(...)):
+    """Calculate future lost value"""
+    # Simply compound growth formula: Future Value = P * (1 + r)^t
+    
+    current_value = amount * price
+    
+    # Calculate for 10, 20, 30 years
+    val_10y = current_value * ((1 + (growth_rate/100)) ** 10)
+    val_20y = current_value * ((1 + (growth_rate/100)) ** 20)
+    val_30y = current_value * ((1 + (growth_rate/100)) ** 30)
+    
+    result = {
+        "current_value": f"${current_value:,.2f}",
+        "val_10y": f"${val_10y:,.2f}",
+        "val_20y": f"${val_20y:,.2f}",
+        "val_30y": f"${val_30y:,.2f}",
+        "growth_rate": growth_rate
+    }
+
+    return templates.TemplateResponse("tools_loss.html", {
+        "request": request, 
+        "result": result,
+        "amount": amount,
+        "price": price,
+        "growth_rate": growth_rate
+    })
+
+@app.get("/tools/shamir-playground", response_class=HTMLResponse)
+async def shamir_playground_page(request: Request):
+    """SEO Tool: Shamir Playground"""
+    return templates.TemplateResponse("tools_shamir.html", {"request": request})
+
 # ========== BLOG ==========
 
 def parse_blog_frontmatter(content: str) -> dict:

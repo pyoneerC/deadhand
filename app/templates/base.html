@@ -72,6 +72,33 @@
                 <span class="font-semibold text-white tracking-tight">Shardium</span>
             </a>
             <div class="flex items-center gap-6">
+                <!-- Tools Dropdown -->
+                <div class="relative group">
+                    <button class="text-sm text-zinc-400 group-hover:text-white transition flex items-center gap-1">
+                        Free Tools
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
+                            </path>
+                        </svg>
+                    </button>
+                    <div class="absolute right-0 top-full pt-2 hidden group-hover:block w-56">
+                        <div class="bg-zinc-900 border border-zinc-800 rounded-lg shadow-xl overflow-hidden p-1">
+                            <a href="/tools/death-calculator"
+                                class="block px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition">
+                                💀 Death Calculator
+                            </a>
+                            <a href="/tools/crypto-loss-calculator"
+                                class="block px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition">
+                                💸 Loss Calculator
+                            </a>
+                            <a href="/tools/shamir-playground"
+                                class="block px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition">
+                                🧩 Shamir Playground
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
                 <a href="/app" class="text-sm text-zinc-400 hover:text-white transition">Create Vault</a>
                 <a href="/recover" class="text-sm text-zinc-400 hover:text-white transition">Recover</a>
                 <a href="/docs" class="text-sm text-zinc-400 hover:text-white transition">Docs</a>
