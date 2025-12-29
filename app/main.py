@@ -266,7 +266,6 @@ async def app_page(request: Request, plan: str = "lifetime"):
                     'plan': plan
                 },
                 # Customize appearance to match Shardium's dark theme
-                ui_mode='embedded',
                 custom_text={
                     'submit': {
                         'message': 'Secure payment via Stripe. Your card info never touches our servers.'
