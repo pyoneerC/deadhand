@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dead mans switch - shardium</title>
+    <meta name="description"
+        content="split your seed phrase into 3 shards using shamirs secret sharing. any 2 shards recover your seed.">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        a {
+            color: #0066cc;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #fafafa;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .nav a {
+            text-decoration: none;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 2em 0;
+        }
+
+        .tool-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        textarea,
+        input[type="email"] {
+            width: 100%;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+
+        .btn {
+            background: #222;
+            color: #fff;
+            padding: 12px 24px;
+            border: none;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 1em;
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        .btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .btn-secondary {
+            background: #fff;
+            color: #222;
+            border: 1px solid #222;
+        }
+
+        .btn-secondary:hover {
+            background: #f5f5f5;
+        }
+
+        .shard-box {
+            background: #f9f9f9;
+            border: 1px dashed #ccc;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 12px;
+            word-break: break-all;
+        }
+
+        .shard-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-family: Georgia, serif;
+        }
+
+        .result {
+            background: #e8f5e9;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        .footer {
+            margin-top: 3em;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <nav class="nav">
+            <a href="/">home</a>
+            <a href="/app">app</a>
+            <a href="/blog">blog</a>
+            <a href="/tools/visual-crypto">visual crypto</a>
+            <a href="/tools/audio-steg">audio steg</a>
+            <a href="https://github.com/pyoneerC/shardium">github</a>
+        </nav>
+    </div>
+
+    <h1>dead mans switch</h1>
+
+    <p>split your seed phrase into 3 shards using <a
+            href="https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing">shamirs secret sharing</a>. any 2 shards can
+        recover your seed. 1 shard alone = nothing.</p>
+
+    <p>100% client-side. your seed never leaves your browser.</p>
+
+    <div class="warning">
+        <b>go offline first.</b> disconnect wifi/ethernet before entering your real seed phrase. maximum security.
+    </div>
+
+    <hr>
+
+    <!-- STEP 1: Enter Seed -->
+    <div class="step active" id="step1">
+        <h2>step 1: enter your seed phrase</h2>
+
+        <div class="tool-section">
+            <p>enter your 12 or 24 word bip-39 seed phrase:</p>
+
+            <textarea id="seedInput" rows="3"
+                placeholder="witch collapse practice feed shame open despair creek road again ice least..."></textarea>
+
+            <div class="grid">
+                <button class="btn btn-secondary" onclick="generateExample(12)">example 12 words</button>
+                <button class="btn btn-secondary" onclick="generateExample(24)">example 24 words</button>
+            </div>
+
+            <button class="btn" onclick="splitSeed()">split into 3 shards</button>
+        </div>
+    </div>
+
+    <!-- STEP 2: View Shards -->
+    <div class="step" id="step2">
+        <h2>step 2: save your shards</h2>
+
+        <div class="result">
+            <p><b>done!</b> your seed has been split into 3 shards. any 2 can recover it.</p>
+        </div>
+
+        <div class="tool-section">
+            <div class="shard-box">
+                <div class="shard-label">shard A (your backup)</div>
+                <div id="shardA"></div>
+            </div>
+            <button class="btn btn-secondary" onclick="copyToClipboard('shardA')">copy shard A</button>
+            <button class="btn btn-secondary" onclick="printShard('A')">print shard A</button>
+        </div>
+
+        <div class="tool-section">
+            <div class="shard-box">
+                <div class="shard-label">shard B (for beneficiary)</div>
+                <div id="shardB"></div>
+            </div>
+            <button class="btn btn-secondary" onclick="copyToClipboard('shardB')">copy shard B</button>
+            <button class="btn btn-secondary" onclick="printShard('B')">print shard B</button>
+        </div>
+
+        <div class="tool-section">
+            <div class="shard-box">
+                <div class="shard-label">shard C (server shard)</div>
+                <div id="shardC"></div>
+            </div>
+            <button class="btn btn-secondary" onclick="copyToClipboard('shardC')">copy shard C</button>
+        </div>
+
+        <div class="warning">
+            <b>save all 3 shards before continuing.</b> you need at least 2 to recover.
+        </div>
+
+        <button class="btn" onclick="goToStep(3)">i saved them. continue →</button>
+    </div>
+
+    <!-- STEP 3: Activate Switch -->
+    <div class="step" id="step3">
+        <h2>step 3: activate the switch</h2>
+
+        <div class="tool-section">
+            <p>enter your email and your beneficiarys email. well store shard C and release it if you stop responding to
+                check-ins.</p>
+
+            <form action="/vault/create" method="POST">
+                <label><b>your email:</b></label>
+                <input type="email" name="email" required placeholder="you@example.com">
+
+                <label><b>beneficiary email:</b></label>
+                <input type="email" name="beneficiary_email" required placeholder="heir@example.com">
+
+                <input type="hidden" name="shard_c" id="shardCInput">
+
+                <p style="font-size: 0.9em; color: #666;">
+                    by clicking activate, you agree to the <a href="/terms">terms of service</a>.
+                </p>
+
+                <button type="submit" class="btn">activate dead mans switch</button>
+            </form>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>recover from shards</h2>
+
+    <div class="tool-section">
+        <p>have 2 shards? combine them to recover your seed:</p>
+
+        <label><b>shard 1:</b></label>
+        <textarea id="recoverShard1" rows="2" placeholder="paste first shard..."></textarea>
+
+        <label><b>shard 2:</b></label>
+        <textarea id="recoverShard2" rows="2" placeholder="paste second shard..."></textarea>
+
+        <button class="btn" onclick="recoverSeed()">recover seed phrase</button>
+
+        <div class="result" id="recoverResult" style="display: none;">
+            <p><b>recovered seed phrase:</b></p>
+            <div id="recoveredSeed" style="font-family: monospace; word-break: break-all;"></div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>how it works</h2>
+
+    <ul>
+        <li>your seed is split using shamirs secret sharing (2-of-3 threshold)</li>
+        <li>any single shard reveals nothing about the original seed</li>
+        <li>any 2 shards can fully reconstruct the seed</li>
+        <li>all splitting happens in your browser - seed never hits the network</li>
+    </ul>
+
+    <div class="footer">
+        <p><a href="/">back to shardium</a></p>
+        <p>open source. <a href="https://github.com/pyoneerC/shardium">read the code</a></p>
+    </div>
+
+    <!-- secrets.js for Shamir Secret Sharing -->
+    <script src="https://cdn.jsdelivr.net/npm/secrets.js-grempe@2.0.0/secrets.min.js"></script>
+
+    <script>
+        // BIP39 word sample
+        const BIP39_SAMPLE = ["abandon", "ability", "able", "about", "above", "absent", "absorb", "abstract", "absurd", "abuse", "access", "accident", "account", "accuse", "achieve", "acid", "acoustic", "acquire", "across", "act", "action", "actor", "actress", "actual", "adapt", "add", "addict", "address", "adjust", "admit", "adult", "advance", "advice", "aerobic", "affair", "afford", "afraid", "again", "age", "agent", "agree", "ahead", "aim", "air", "airport", "aisle", "alarm", "album", "alcohol", "alert", "alien", "all", "alley", "allow", "almost", "alone", "alpha", "already", "also", "alter", "always", "amateur", "amazing", "among", "amount", "amused", "analyst", "anchor", "ancient", "anger", "angle", "angry", "animal", "ankle", "announce", "annual", "another", "answer", "antenna", "antique", "anxiety", "any", "apart", "apology", "appear", "apple", "approve", "april", "arch", "arctic", "area", "arena", "argue", "arm", "armed", "armor", "army", "around", "arrange", "arrest", "arrive", "arrow", "art", "artefact", "artist", "artwork", "ask", "aspect", "assault", "asset", "assist", "assume", "asthma", "athlete", "atom", "attack", "attend", "attitude", "attract", "auction", "audit", "august", "aunt", "author", "auto", "autumn", "average", "avocado", "avoid", "awake", "aware", "away", "awesome", "awful", "awkward", "axis", "baby", "bachelor", "bacon", "badge", "bag", "balance", "balcony", "ball", "bamboo", "banana", "banner", "bar", "barely", "bargain", "barrel", "base", "basic", "basket", "battle", "beach", "bean", "beauty", "because", "become", "beef", "before", "begin", "behave", "behind", "believe", "below", "belt", "bench", "benefit", "best", "betray", "better", "between", "beyond", "bicycle", "bid", "bike", "bind", "biology", "bird", "birth", "bitter", "black", "blade", "blame", "blanket", "blast", "bleak", "bless", "blind", "blood", "blossom", "blouse", "blue", "blur", "blush", "board", "boat", "body"];
+
+        let currentShards = [];
+
+        function generateExample(count) {
+            const words = [];
+            for (let i = 0; i < count; i++) {
+                words.push(BIP39_SAMPLE[Math.floor(Math.random() * BIP39_SAMPLE.length)]);
+            }
+            document.getElementById('seedInput').value = words.join(' ');
+        }
+
+        function goToStep(n) {
+            document.querySelectorAll('.step').forEach(s => s.classList.remove('active'));
+            document.getElementById('step' + n).classList.add('active');
+            window.scrollTo(0, 0);
+        }
+
+        function splitSeed() {
+            const seed = document.getElementById('seedInput').value.trim();
+            if (!seed || seed.split(/\s+/).length < 12) {
+                alert('enter a valid seed phrase (at least 12 words)');
+                return;
+            }
+
+            try {
+                // convert to hex
+                const seedHex = secrets.str2hex(seed);
+
+                // split into 3 shares, 2 required to recover
+                const shares = secrets.share(seedHex, 3, 2);
+
+                // verify all combinations work
+                const verifyAB = secrets.combine([shares[0], shares[1]]);
+                const verifyBC = secrets.combine([shares[1], shares[2]]);
+                const verifyAC = secrets.combine([shares[0], shares[2]]);
+
+                if (verifyAB !== seedHex || verifyBC !== seedHex || verifyAC !== seedHex) {
+                    throw new Error('verification failed');
+                }
+
+                // store and display
+                currentShards = shares;
+                document.getElementById('shardA').textContent = shares[0];
+                document.getElementById('shardB').textContent = shares[1];
+                document.getElementById('shardC').textContent = shares[2];
+                document.getElementById('shardCInput').value = shares[2];
+
+                goToStep(2);
+            } catch (e) {
+                alert('error splitting seed: ' + e.message);
+            }
+        }
+
+        function copyToClipboard(id) {
+            const text = document.getElementById(id).textContent;
+            navigator.clipboard.writeText(text).then(() => {
+                alert('copied to clipboard!');
+            });
+        }
+
+        function printShard(letter) {
+            const shard = document.getElementById('shard' + letter).textContent;
+            const title = letter === 'A' ? 'your backup' : 'for beneficiary';
+            const w = window.open('', '_blank');
+            w.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>Shardium - Shard ${letter}</title>
+            <style>
+                body { font-family: Georgia, serif; max-width: 600px; margin: 40px auto; padding: 20px; }
+                h1 { border-bottom: 2px solid #222; padding-bottom: 10px; }
+                .shard { font-family: monospace; font-size: 11px; word-break: break-all; background: #f5f5f5; padding: 20px; border: 1px dashed #999; }
+                .note { background: #fff3cd; padding: 15px; margin-top: 20px; }
+            </style>
+        </head>
+        <body>
+            <h1>shardium - shard ${letter}</h1>
+            <p><b>${title}</b></p>
+            <div class="shard">${shard}</div>
+            <div class="note">
+                <b>recovery:</b> combine any 2 shards at shardium.xyz to recover your seed phrase.
+            </div>
+            <p style="color: #666; font-size: 12px;">generated: ${new Date().toLocaleDateString()}</p>
+        </body>
+        </html>
+    `);
+            w.document.close();
+            setTimeout(() => w.print(), 200);
+        }
+
+        function recoverSeed() {
+            const shard1 = document.getElementById('recoverShard1').value.trim();
+            const shard2 = document.getElementById('recoverShard2').value.trim();
+
+            if (!shard1 || !shard2) {
+                alert('enter both shards');
+                return;
+            }
+
+            try {
+                const combined = secrets.combine([shard1, shard2]);
+                const seed = secrets.hex2str(combined);
+
+                document.getElementById('recoveredSeed').textContent = seed;
+                document.getElementById('recoverResult').style.display = 'block';
+            } catch (e) {
+                alert('error recovering: ' + e.message + '\n\nmake sure you entered valid shards.');
+            }
+        }
+    </script>
+
+</body>
+
+</html>

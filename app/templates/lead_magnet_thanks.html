@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>check your inbox - shardium</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.7;
+            background: #fafafa;
+            text-align: center;
+        }
+
+        a {
+            color: #0066cc;
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 0.5em;
+        }
+
+        .emoji {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .cta {
+            display: inline-block;
+            background: #222;
+            color: #fff;
+            padding: 14px 28px;
+            text-decoration: none;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+
+        .note {
+            background: #e8f5e9;
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 8px;
+            text-align: left;
+        }
+
+        .footer {
+            margin-top: 40px;
+            font-size: 0.85em;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    {% if error %}
+    <div class="emoji">❌</div>
+    <h1>oops</h1>
+    <p>{{ error }}. <a href="/">try again</a></p>
+    {% else %}
+    <div class="emoji">📬</div>
+    <h1>check your inbox!</h1>
+
+    <p>the <b>Ultimate Crypto Inheritance Playbook</b> is on its way to your inbox.</p>
+
+    <div class="note">
+        <b>while you wait...</b>
+        <ul>
+            <li>check your spam folder (sometimes it lands there)</li>
+            <li>add maxcomperatore@gmail.com to your contacts</li>
+            <li>the email has a link to download the PDF</li>
+        </ul>
+    </div>
+
+    <p>ready to protect your familys crypto right now?</p>
+
+    <a href="/tools/dead-switch" class="cta">try the dead mans switch</a>
+
+    <p style="color: #666; font-size: 0.9em;">its free. no signup. works in 5 minutes.</p>
+    {% endif %}
+
+    <div class="footer">
+        <p><a href="/">← back to shardium</a></p>
+    </div>
+
+</body>
+
+</html>

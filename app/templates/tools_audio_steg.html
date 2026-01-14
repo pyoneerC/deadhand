@@ -188,7 +188,7 @@
         <button class="btn" id="encodeBtn" onclick="encodeMessage()" disabled>hide message in audio</button>
 
         <div class="result" id="encodeResult" style="display: none;">
-            <p><b>done!</b> your message is hidden in this audio:</p>
+            <p><b>done!</b> your message is hidden in this audio (it sounds exactly the same):</p>
             <audio id="encodedAudio" controls></audio>
             <br><br>
             <a id="encodedDownload" download="secret_audio.wav" class="btn">download wav</a>
@@ -236,7 +236,8 @@
     </ul>
 
     <p><b>important:</b> dont convert the wav to mp3 or other compressed format. compression will destroy the hidden
-        data.</p>
+        data. store in google drive, dropbox, or usb. <b>sending via whatsapp, telegram, or email will compress and
+            destroy it.</b></p>
 
     <div class="footer">
         <p><a href="/">back to shardium</a></p>

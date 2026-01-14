@@ -507,6 +507,78 @@ async def shamir_playground_page(request: Request):
     """SEO Tool: Shamir Playground"""
     return templates.TemplateResponse("tools_shamir.html", {"request": request})
 
+@app.get("/tools/visual-crypto", response_class=HTMLResponse)
+async def visual_crypto_page(request: Request):
+    """Visual Cryptography Tool - split images into noise shares"""
+    return templates.TemplateResponse("tools_visual_steg.html", {"request": request})
+
+@app.get("/tools/audio-steg", response_class=HTMLResponse)
+async def audio_steg_page(request: Request):
+    """Audio Steganography Tool - hide text in WAV files"""
+    return templates.TemplateResponse("tools_audio_steg.html", {"request": request})
+
+@app.get("/tools/dead-switch", response_class=HTMLResponse)
+async def dead_switch_page(request: Request):
+    """Dead Mans Switch - split seed into shards"""
+    return templates.TemplateResponse("tools_dead_switch.html", {"request": request})
+
+# ========== LEAD MAGNET ==========
+
+@app.post("/api/lead-magnet", response_class=HTMLResponse)
+async def lead_magnet_signup(request: Request, email: str = Form(...)):
+    """
+    Lead magnet: Ultimate Crypto Inheritance Guide
+    Captures email, sends guide, adds to email list
+    """
+    import re
+    
+    # Validate email
+    if not email or not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
+        return templates.TemplateResponse("lead_magnet_thanks.html", {
+            "request": request,
+            "error": "invalid email"
+        })
+    
+    email = email.lower().strip()
+    
+    # Send the guide email
+    guide_html = """
+    <h2>🔐 Your Crypto Inheritance Playbook is Here!</h2>
+    <p>Thanks for downloading! Heres what youll learn:</p>
+    <ul>
+        <li>Why 99% of crypto holders have NO inheritance plan</li>
+        <li>The 3 biggest mistakes people make with seed phrases</li>
+        <li>How to use Shamirs Secret Sharing (the math behind Shardium)</li>
+        <li>Step-by-step: Setting up your dead mans switch</li>
+        <li>How to explain crypto to your non-technical family</li>
+    </ul>
+    <p><a href="https://shardium.xyz/static/crypto-inheritance-guide.pdf">📥 Download the PDF Guide</a></p>
+    <hr>
+    <p>Questions? Just reply to this email. Im a real person.</p>
+    <p>- Max</p>
+    """
+    
+    send_email(email, "📚 Your Crypto Inheritance Playbook", guide_html)
+    
+    # Send Discord notification (for tracking leads)
+    if DISCORD_WEBHOOK_URL:
+        import httpx
+        try:
+            async with httpx.AsyncClient() as client:
+                await client.post(DISCORD_WEBHOOK_URL, json={
+                    "embeds": [{
+                        "title": "📬 New Lead Magnet Signup!",
+                        "description": f"Someone downloaded the guide",
+                        "color": 3447003,
+                        "fields": [{"name": "Email", "value": email, "inline": True}],
+                        "footer": {"text": "Shardium Lead Magnet"}
+                    }]
+                })
+        except:
+            pass
+    
+    return templates.TemplateResponse("lead_magnet_thanks.html", {"request": request})
+
 # ========== BLOG ==========
 
 def parse_blog_frontmatter(content: str) -> dict:
