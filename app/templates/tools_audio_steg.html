@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>audio steganography - shardium</title>
+    <meta name="description" content="hide text messages inside wav audio files using LSB steganography.">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        a {
+            color: #0066cc;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #fafafa;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .nav a {
+            text-decoration: none;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 2em 0;
+        }
+
+        .tool-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .upload-area:hover {
+            border-color: #0066cc;
+        }
+
+        .upload-area.has-file {
+            border-style: solid;
+            border-color: green;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        textarea {
+            width: 100%;
+            padding: 10px;
+            font-family: Georgia, serif;
+            font-size: 1em;
+            border: 1px solid #ddd;
+            margin: 10px 0;
+        }
+
+        .btn {
+            background: #222;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 1em;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        .btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .result {
+            background: #e8f5e9;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .result pre {
+            background: #fff;
+            padding: 15px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+
+        audio {
+            width: 100%;
+            margin: 10px 0;
+        }
+
+        .footer {
+            margin-top: 3em;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .warning {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <nav class="nav">
+            <a href="/">home</a>
+            <a href="/app">app</a>
+            <a href="/blog">blog</a>
+            <a href="/tools/visual-crypto">visual crypto</a>
+            <a href="/tools/audio-steg">audio steg</a>
+            <a href="https://github.com/pyoneerC/shardium">github</a>
+        </nav>
+    </div>
+
+    <h1>audio steganography</h1>
+
+    <p>hide text messages inside wav audio files. the audio sounds exactly the same to human ears, but contains hidden
+        data.</p>
+
+    <p>100% client-side. your files never leave your browser.</p>
+
+    <div class="warning">
+        <b>note:</b> this tool only works with WAV files. mp3 and other compressed formats will destroy the hidden data.
+    </div>
+
+    <hr>
+
+    <h2>hide a message</h2>
+
+    <div class="tool-section">
+        <p>upload a wav file and enter the message you want to hide.</p>
+
+        <div class="upload-area" id="encodeUpload" onclick="document.getElementById('encodeFile').click()">
+            <input type="file" id="encodeFile" accept=".wav,audio/wav" onchange="handleEncodeUpload(this)">
+            <div id="encodeLabel">click to upload wav file</div>
+        </div>
+
+        <audio id="originalAudio" controls style="display: none;"></audio>
+
+        <p><b>message to hide:</b></p>
+        <textarea id="secretMessage" rows="4" placeholder="enter your secret message here..."></textarea>
+
+        <p id="encodeInfo" style="color: #666; font-size: 0.9em;"></p>
+
+        <button class="btn" id="encodeBtn" onclick="encodeMessage()" disabled>hide message in audio</button>
+
+        <div class="result" id="encodeResult" style="display: none;">
+            <p><b>done!</b> your message is hidden in this audio:</p>
+            <audio id="encodedAudio" controls></audio>
+            <br><br>
+            <a id="encodedDownload" download="secret_audio.wav" class="btn">download wav</a>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>extract a message</h2>
+
+    <div class="tool-section">
+        <p>upload a wav file that contains a hidden message.</p>
+
+        <div class="upload-area" id="decodeUpload" onclick="document.getElementById('decodeFile').click()">
+            <input type="file" id="decodeFile" accept=".wav,audio/wav" onchange="handleDecodeUpload(this)">
+            <div id="decodeLabel">click to upload wav file</div>
+        </div>
+
+        <button class="btn" id="decodeBtn" onclick="decodeMessage()" disabled>extract hidden message</button>
+
+        <div class="result" id="decodeResult" style="display: none;">
+            <p><b>extracted message:</b></p>
+            <pre id="extractedMessage"></pre>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>how it works</h2>
+
+    <p>this uses LSB (least significant bit) steganography. each audio sample is a number representing the sound wave at
+        that moment. we modify the last bit of each sample, which is imperceptible to human hearing.</p>
+
+    <p>to hide a message:</p>
+    <ul>
+        <li>convert the message to binary (1s and 0s)</li>
+        <li>for each bit, modify the last bit of an audio sample</li>
+        <li>the change is so small humans cant hear it</li>
+    </ul>
+
+    <p>to extract:</p>
+    <ul>
+        <li>read the last bit of each audio sample</li>
+        <li>convert the bits back to text</li>
+    </ul>
+
+    <p><b>important:</b> dont convert the wav to mp3 or other compressed format. compression will destroy the hidden
+        data.</p>
+
+    <div class="footer">
+        <p><a href="/">back to shardium</a></p>
+        <p>experimental tool. use at your own risk.</p>
+    </div>
+
+    <script>
+        let encodeAudioBuffer = null;
+        let encodeAudioContext = null;
+        let decodeAudioBuffer = null;
+
+        function handleEncodeUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            document.getElementById('encodeLabel').textContent = file.name;
+            document.getElementById('encodeUpload').classList.add('has-file');
+
+            // show audio player
+            const audio = document.getElementById('originalAudio');
+            audio.src = URL.createObjectURL(file);
+            audio.style.display = 'block';
+
+            // decode audio for processing
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                encodeAudioContext = new (window.AudioContext || window.webkitAudioContext)();
+                encodeAudioContext.decodeAudioData(e.target.result, function (buffer) {
+                    encodeAudioBuffer = buffer;
+                    const samples = buffer.length;
+                    const maxChars = Math.floor(samples / 8) - 1;
+                    document.getElementById('encodeInfo').textContent =
+                        `audio: ${buffer.duration.toFixed(1)}s, ${samples} samples. can hide up to ${maxChars} characters.`;
+                    document.getElementById('encodeBtn').disabled = false;
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function encodeMessage() {
+            if (!encodeAudioBuffer) return;
+
+            const message = document.getElementById('secretMessage').value;
+            if (!message) {
+                alert('enter a message first');
+                return;
+            }
+
+            // convert message to bits
+            const messageWithNull = message + '\0'; // null terminator
+            const bits = [];
+            for (let i = 0; i < messageWithNull.length; i++) {
+                const charCode = messageWithNull.charCodeAt(i);
+                for (let b = 7; b >= 0; b--) {
+                    bits.push((charCode >> b) & 1);
+                }
+            }
+
+            // check capacity
+            const channel = encodeAudioBuffer.getChannelData(0);
+            if (bits.length > channel.length) {
+                alert('audio too short for this message');
+                return;
+            }
+
+            // copy audio data
+            const newBuffer = encodeAudioContext.createBuffer(
+                encodeAudioBuffer.numberOfChannels,
+                encodeAudioBuffer.length,
+                encodeAudioBuffer.sampleRate
+            );
+
+            for (let c = 0; c < encodeAudioBuffer.numberOfChannels; c++) {
+                const srcData = encodeAudioBuffer.getChannelData(c);
+                const dstData = newBuffer.getChannelData(c);
+
+                if (c === 0) {
+                    // encode in first channel
+                    for (let i = 0; i < srcData.length; i++) {
+                        // convert float to 16-bit int
+                        let sample = Math.floor(srcData[i] * 32767);
+
+                        if (i < bits.length) {
+                            // clear LSB and set our bit
+                            sample = (sample & ~1) | bits[i];
+                        }
+
+                        // convert back to float
+                        dstData[i] = sample / 32767;
+                    }
+                } else {
+                    // copy other channels
+                    dstData.set(srcData);
+                }
+            }
+
+            // convert to wav blob
+            const wavBlob = audioBufferToWav(newBuffer);
+            const wavUrl = URL.createObjectURL(wavBlob);
+
+            document.getElementById('encodedAudio').src = wavUrl;
+            document.getElementById('encodedDownload').href = wavUrl;
+            document.getElementById('encodeResult').style.display = 'block';
+        }
+
+        function handleDecodeUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            document.getElementById('decodeLabel').textContent = file.name;
+            document.getElementById('decodeUpload').classList.add('has-file');
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                audioContext.decodeAudioData(e.target.result, function (buffer) {
+                    decodeAudioBuffer = buffer;
+                    document.getElementById('decodeBtn').disabled = false;
+                });
+            };
+            reader.readAsArrayBuffer(file);
+        }
+
+        function decodeMessage() {
+            if (!decodeAudioBuffer) return;
+
+            const channel = decodeAudioBuffer.getChannelData(0);
+            const maxChars = 10000;
+            const maxBits = maxChars * 8;
+
+            // extract LSBs
+            const bits = [];
+            for (let i = 0; i < Math.min(maxBits, channel.length); i++) {
+                const sample = Math.floor(channel[i] * 32767);
+                bits.push(sample & 1);
+            }
+
+            // convert bits to text
+            let message = '';
+            for (let i = 0; i < bits.length; i += 8) {
+                if (i + 8 > bits.length) break;
+
+                let charCode = 0;
+                for (let b = 0; b < 8; b++) {
+                    charCode = (charCode << 1) | bits[i + b];
+                }
+
+                if (charCode === 0) break; // null terminator
+                message += String.fromCharCode(charCode);
+            }
+
+            document.getElementById('extractedMessage').textContent = message || '(no message found or invalid data)';
+            document.getElementById('decodeResult').style.display = 'block';
+        }
+
+        // helper: convert AudioBuffer to WAV blob
+        function audioBufferToWav(buffer) {
+            const numChannels = buffer.numberOfChannels;
+            const sampleRate = buffer.sampleRate;
+            const format = 1; // PCM
+            const bitDepth = 16;
+
+            const bytesPerSample = bitDepth / 8;
+            const blockAlign = numChannels * bytesPerSample;
+
+            const dataLength = buffer.length * blockAlign;
+            const bufferLength = 44 + dataLength;
+
+            const arrayBuffer = new ArrayBuffer(bufferLength);
+            const view = new DataView(arrayBuffer);
+
+            // WAV header
+            writeString(view, 0, 'RIFF');
+            view.setUint32(4, 36 + dataLength, true);
+            writeString(view, 8, 'WAVE');
+            writeString(view, 12, 'fmt ');
+            view.setUint32(16, 16, true); // subchunk size
+            view.setUint16(20, format, true);
+            view.setUint16(22, numChannels, true);
+            view.setUint32(24, sampleRate, true);
+            view.setUint32(28, sampleRate * blockAlign, true);
+            view.setUint16(32, blockAlign, true);
+            view.setUint16(34, bitDepth, true);
+            writeString(view, 36, 'data');
+            view.setUint32(40, dataLength, true);
+
+            // interleave channels
+            const channels = [];
+            for (let c = 0; c < numChannels; c++) {
+                channels.push(buffer.getChannelData(c));
+            }
+
+            let offset = 44;
+            for (let i = 0; i < buffer.length; i++) {
+                for (let c = 0; c < numChannels; c++) {
+                    const sample = Math.max(-1, Math.min(1, channels[c][i]));
+                    const val = sample < 0 ? sample * 0x8000 : sample * 0x7FFF;
+                    view.setInt16(offset, val, true);
+                    offset += 2;
+                }
+            }
+
+            return new Blob([arrayBuffer], { type: 'audio/wav' });
+        }
+
+        function writeString(view, offset, string) {
+            for (let i = 0; i < string.length; i++) {
+                view.setUint8(offset + i, string.charCodeAt(i));
+            }
+        }
+    </script>
+
+</body>
+
+</html>

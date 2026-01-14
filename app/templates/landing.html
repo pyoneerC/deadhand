@@ -3,1310 +3,448 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shardium | Never Lose Your Seed Phrase Again</title>
-    <meta name="description"
-        content="Split your seed phrase into 3 shards. Lose one? Recover with the other two. You become your own backup. No Ledger required.">
-
-    <!-- Canonical URL -->
-    <link rel="canonical" href="https://shardium.xyz/" />
-
-    <!-- Open Graph / Facebook -->
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://shardium.xyz/">
-    <meta property="og:title" content="Shardium | Never Lose Your Seed Phrase Again">
-    <meta property="og:description"
-        content="Split your seed phrase into 3 shards. Lose one? Recover with the other two. Trustless crypto inheritance using Shamir's Secret Sharing.">
-    <meta property="og:image" content="https://shardium.xyz/static/og-image.png">
-
-    <!-- Twitter -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:url" content="https://shardium.xyz/">
-    <meta name="twitter:title" content="Shardium | Never Lose Your Seed Phrase Again">
-    <meta name="twitter:description"
-        content="Split your seed phrase into 3 shards. Lose one? Recover with the other two. Trustless crypto inheritance using Shamir's Secret Sharing.">
-    <meta name="twitter:image" content="https://shardium.xyz/static/og-image.png">
-    <meta name="twitter:site" content="@shardiumhq">
-
-    <!-- Schema.org JSON-LD -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Shardium",
-        "url": "https://shardium.xyz",
-        "logo": "https://shardium.xyz/static/favicon.png",
-        "description": "Trustless crypto inheritance protocol using Shamir's Secret Sharing",
-        "sameAs": [
-            "https://twitter.com/shardiumhq",
-            "https://github.com/pyoneerC/shardium",
-            "https://discord.gg/eDyCkgvBjf"
-        ]
-    }
-    </script>
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Shardium",
-        "url": "https://shardium.xyz",
-        "description": "Never lose your crypto seed phrase. Split it into 3 shards using Shamir's Secret Sharing.",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": "https://shardium.xyz/?s={search_term_string}",
-            "query-input": "required name=search_term_string"
-        }
-    }
-    </script>
-
-    <!-- FAQ Schema for Rich Snippets -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [{
-            "@type": "Question",
-            "name": "What is Shamir's Secret Sharing?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Shamir's Secret Sharing is a cryptographic algorithm that splits a secret (like your seed phrase) into multiple parts called 'shards'. You can set a threshold (e.g., 2-of-3) meaning any 2 shards can reconstruct the original secret, but 1 shard alone reveals nothing. This eliminates single points of failure."
-            }
-        },{
-            "@type": "Question",
-            "name": "What happens to my crypto when I die?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Without a plan, your crypto is lost forever. Shardium solves this with a dead man's switch: we email you every 90 days. If you don't respond, Shard C (stored encrypted on our servers) is automatically sent to your beneficiary. Combined with the shard you gave them, they can recover your seed phrase and access your assets."
-            }
-        },{
-            "@type": "Question",
-            "name": "Is my seed phrase safe with Shardium?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes. Your seed phrase is encrypted client-side in your browser before being split. We never see your original seed phrase. Shard C is stored encrypted on our servers, but it's useless alone - you need 2 of 3 shards to recover. The code is open source (MIT license) so you can verify the security yourself."
-            }
-        },{
-            "@type": "Question",
-            "name": "How do I backup my seed phrase securely?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Use Shardium to split your seed into 3 shards: keep Shard A in your password manager, give Shard B to your heir (USB drive or printed), and Shard C stays encrypted on Shardium's servers. This way, losing one shard doesn't compromise your security, and your family can still inherit your crypto if something happens to you."
-            }
-        },{
-            "@type": "Question",
-            "name": "Can I use Shardium without paying?",
-            "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Yes! Shardium is open source. You can self-host it for free on your own server. The paid hosted version ($49/year or $129 lifetime) includes the dead man's switch service, automatic email reminders, and supports continued development."
-            }
-        }]
-    }
-    </script>
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/countup.js/2.8.0/countUp.umd.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>shardium - what happens to your crypto when you die?</title>
+    <meta name="description" content="split your seed phrase into 3 shards. lose one? recover with the other two.">
+    <link rel="canonical" href="https://shardium.xyz/">
     <link rel="icon" type="image/png" href="/static/favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
+    <meta property="og:title" content="shardium">
+    <meta property="og:description" content="dead mans switch for crypto">
+    <meta property="og:image" content="https://shardium.xyz/static/og-image.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        zinc: {
-                            950: '#09090b',
-                            900: '#18181b',
-                            800: '#27272a',
-                            700: '#3f3f46',
-                            600: '#52525b',
-                            400: '#a1a1aa',
-                            300: '#d4d4d8',
-                        },
-                        accent: '#10b981',
-                    }
-                }
+        body {
+            font-family: Georgia, serif;
+            font-size: 18px;
+            line-height: 1.8;
+            background: #fafafa;
+            color: #222;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        a {
+            color: #0066cc;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+        }
+
+        h2 {
+            font-size: 1.3em;
+            margin: 2em 0 0.8em 0;
+            line-height: 1.3;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        ul,
+        ol {
+            margin: 1em 0;
+            padding-left: 1.5em;
+        }
+
+        li {
+            margin-bottom: 0.8em;
+            line-height: 1.6;
+        }
+
+        /* mobile first nav */
+        .header {
+            position: sticky;
+            top: 0;
+            background: #fafafa;
+            border-bottom: 1px solid #ddd;
+            z-index: 100;
+            padding: 12px 0;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.9em;
+            justify-content: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            padding: 8px 4px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+        }
+
+        /* touch friendly cta buttons */
+        .cta {
+            display: block;
+            width: 100%;
+            background: #222;
+            color: #fff;
+            padding: 16px 24px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1.1em;
+            margin: 1.5em 0;
+            min-height: 56px;
+            border-radius: 4px;
+        }
+
+        .cta:active {
+            background: #444;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 2.5em 0;
+        }
+
+        /* ascii art - responsive */
+        .ascii {
+            font-family: monospace;
+            font-size: 6px;
+            line-height: 1.1;
+            white-space: pre;
+            color: #333;
+            margin: 20px 0;
+            overflow-x: auto;
+            text-align: center;
+        }
+
+        /* founder section */
+        .founder {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            margin: 2em 0;
+            padding: 20px;
+            background: #f0f0f0;
+            border-radius: 8px;
+        }
+
+        .founder img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .founder-text {
+            text-align: center;
+        }
+
+        .founder-text p {
+            margin: 0;
+            font-size: 0.95em;
+            color: #444;
+        }
+
+        /* tool links - touch friendly cards */
+        .tools-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 1em 0;
+        }
+
+        .tool-card {
+            display: block;
+            padding: 16px;
+            background: #fff;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            color: #222;
+            min-height: 60px;
+            border-radius: 4px;
+        }
+
+        .tool-card:active {
+            background: #f5f5f5;
+        }
+
+        .tool-card strong {
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .tool-card span {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .footer {
+            margin-top: 3em;
+            padding-top: 2em;
+            border-top: 1px solid #ddd;
+            font-size: 0.85em;
+            color: #666;
+            text-align: center;
+        }
+
+        .footer p {
+            margin-bottom: 0.5em;
+        }
+
+        .price-box {
+            background: #fff;
+            border: 2px solid #222;
+            padding: 20px;
+            margin: 1.5em 0;
+            border-radius: 8px;
+        }
+
+        .price-box .price {
+            font-size: 2em;
+            font-weight: bold;
+        }
+
+        /* tablet+ */
+        @media (min-width: 600px) {
+            body {
+                font-size: 19px;
+            }
+
+            .ascii {
+                font-size: 9px;
+            }
+
+            .container {
+                padding: 30px;
+            }
+
+            .cta {
+                width: auto;
+                display: inline-block;
+            }
+
+            .founder {
+                flex-direction: row;
+                text-align: left;
+            }
+
+            .founder-text {
+                text-align: left;
             }
         }
-    </script>
 
-    <style>
-        body {
-            background: #09090b;
-        }
+        /* desktop */
+        @media (min-width: 900px) {
+            .ascii {
+                font-size: 11px;
+            }
 
-        .border-gradient {
-            border: 1px solid transparent;
-            background: linear-gradient(#09090b, #09090b) padding-box,
-                linear-gradient(135deg, #27272a, #18181b) border-box;
-        }
+            .tools-grid {
+                flex-direction: row;
+            }
 
-        .text-gradient {
-            background: linear-gradient(90deg, #10b981, #34d399);
-            -webkit-background-clip: text;
-            background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .grid-bg {
-            background-image:
-                linear-gradient(rgba(39, 39, 42, 0.3) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(39, 39, 42, 0.3) 1px, transparent 1px);
-            background-size: 60px 60px;
+            .tool-card {
+                flex: 1;
+            }
         }
     </style>
 </head>
 
-<body class="text-zinc-300 font-sans antialiased">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-8 h-8 rounded overflow-hidden">
-                    <img src="/static/favicon.png" alt="Shardium" class="w-full h-full object-cover">
-                </div>
-                <span class="font-semibold text-white tracking-tight">Shardium</span>
-            </div>
-            <div class="flex items-center gap-4 md:gap-6">
-                <a href="#pricing" class="hidden md:block text-sm text-zinc-500 hover:text-white transition"
-                    data-i18n="nav_pricing">Pricing</a>
-                <a href="/blog" class="hidden md:block text-sm text-zinc-500 hover:text-white transition">Blog</a>
-
-                <!-- Tools Dropdown -->
-                <div class="relative group hidden md:block">
-                    <button
-                        class="text-sm text-zinc-500 group-hover:text-white transition flex items-center gap-1 h-16">
-                        Tools
-                        <svg class="w-3 h-3 opacity-50 group-hover:rotate-180 transition" fill="none"
-                            stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7">
-                            </path>
-                        </svg>
-                    </button>
-                    <!-- Dropdown Menu -->
-                    <div class="absolute left-1/2 -translate-x-1/2 top-10 hidden group-hover:block w-56 pt-6">
-                        <div class="bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl overflow-hidden p-1">
-                            <a href="/tools/death-calculator"
-                                class="block px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition whitespace-nowrap">
-                                💀 Death Calculator
-                            </a>
-                            <a href="/tools/crypto-loss-calculator"
-                                class="block px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition whitespace-nowrap">
-                                💸 Loss Calculator
-                            </a>
-                            <a href="/tools/shamir-playground"
-                                class="block px-4 py-2 text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 rounded transition whitespace-nowrap">
-                                🧩 Shamir Playground
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <a href="https://github.com/pyoneerC/shardium" target="_blank"
-                    class="hidden md:block text-sm text-zinc-500 hover:text-white transition">GitHub</a>
-                <a href="/docs" class="hidden md:block text-sm text-zinc-500 hover:text-white transition"
-                    data-i18n="nav_docs">Docs</a>
-
-                <!-- Language Selector -->
-                <div id="lang-selector" class="relative">
-                    <button id="lang-btn" onclick="toggleLangDropdown()"
-                        class="flex items-center gap-1 text-sm text-zinc-500 hover:text-white transition px-2 py-1 rounded border border-zinc-800 hover:border-zinc-600">
-                        🇺🇸 <span class="hidden md:inline">English</span>
-                    </button>
-                    <div id="lang-dropdown"
-                        class="hidden absolute right-0 mt-2 w-40 bg-zinc-900 border border-zinc-700 rounded-lg shadow-xl overflow-hidden z-50">
-                        <button onclick="setLanguage('en')"
-                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇺🇸
-                            English</button>
-                        <button onclick="setLanguage('es')"
-                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇪🇸
-                            Español</button>
-                        <button onclick="setLanguage('pt')"
-                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇧🇷
-                            Português</button>
-                        <button onclick="setLanguage('de')"
-                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇩🇪
-                            Deutsch</button>
-                        <button onclick="setLanguage('zh')"
-                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇨🇳
-                            中文</button>
-                        <button onclick="setLanguage('ja')"
-                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇯🇵
-                            日本語</button>
-                        <button onclick="setLanguage('ko')"
-                            class="w-full px-4 py-2 text-left text-sm hover:bg-zinc-800 flex items-center gap-2">🇰🇷
-                            한국어</button>
-                    </div>
-                </div>
-
-                <a href="/app"
-                    class="text-sm px-4 py-2 bg-white text-black font-medium rounded hover:bg-zinc-200 transition"
-                    data-i18n="nav_launch">
-                    Launch App
-                </a>
-            </div>
+    <div class="header">
+        <div class="container">
+            <nav class="nav">
+                <a href="/">home</a>
+                <a href="/app">app</a>
+                <a href="/blog">blog</a>
+                <a href="/tools/visual-crypto">visual crypto</a>
+                <a href="/tools/audio-steg">audio steg</a>
+                <a href="https://github.com/pyoneerC/shardium">github</a>
+            </nav>
         </div>
-    </nav>
+    </div>
 
-    <!-- Hero -->
-    <section class="min-h-screen flex items-center justify-center grid-bg pt-16">
-        <div class="max-w-4xl mx-auto px-6 py-24 text-center">
-            <!-- Launch Offer Banner -->
-            <div
-                class="inline-block px-4 py-2 mb-8 text-sm font-medium text-emerald-400 border border-emerald-500/30 rounded-lg bg-emerald-500/10">
-                🚀 LAUNCH OFFER: First 100 users get Lifetime for <span class="line-through text-zinc-500">$129</span>
-                <span class="font-bold">$49</span>
-                <span id="spots-left" class="ml-2 text-yellow-400 font-bold">(87 spots left)</span>
-            </div>
+    <div class="container">
 
-            <h1 class="text-4xl md:text-6xl font-bold text-white leading-tight tracking-tight mb-6">
-                <span>The Last Backup</span><br>
-                <span class="text-accent">You'll Ever Need.</span>
-            </h1>
+        <pre class="ascii">
+   _____ _    _          _____  _____ _____ _    _ __  __ 
+  / ____| |  | |   /\   |  __ \|  __ \_   _| |  | |  \/  |
+ | (___ | |__| |  /  \  | |__) | |  | || | | |  | | \  / |
+  \___ \|  __  | / /\ \ |  _  /| |  | || | | |  | | |\/| |
+  ____) | |  | |/ ____ \| | \ \| |__| || |_| |__| | |  | |
+ |_____/|_|  |_/_/    \_\_|  \_\_____/_____|______|_|  |_|
+                                                          
+              your crypto shouldnt die with you
+</pre>
 
-            <p class="text-xl text-zinc-300 max-w-2xl mx-auto mb-4 leading-relaxed font-medium">
-                Even if you lose your house, your crypto is safe.
-            </p>
+        <p><b>what happens to your crypto when you die?</b></p>
 
-            <p class="text-lg text-zinc-500 max-w-2xl mx-auto mb-10 leading-relaxed">
-                Split your seed into 3 shards. Lose any one? <span class="text-accent font-semibold">Recover instantly
-                    with the other two.</span>
-                House burns down? Still got access. Paper stolen? Not your problem.
-                <span class="text-white">Sleep soundly knowing your crypto is protected.</span>
-            </p>
+        <p>you have a seed phrase somewhere. drawer, safe, whatever. you get hit by a bus tomorrow. your wife gets
+            nothing. not because someone stole it. because nobody knows how to acces it.</p>
 
-            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-16">
-                <a href="/app"
-                    class="px-8 py-4 bg-accent text-black font-bold rounded hover:bg-emerald-400 transition text-lg shadow-lg shadow-accent/25">
-                    Protect My Seed Phrase →
-                </a>
-                <a href="#protocol"
-                    class="px-6 py-4 border border-zinc-700 text-zinc-300 font-medium rounded hover:border-zinc-500 hover:text-white transition">
-                    How It Works
-                </a>
-            </div>
+        <p>seed phrases arent made for humans. theyre made for computers. 12 random words you gotta keep safe forever
+            and somehow pass to your family. its a terrible system and everyones just pretending its fine.</p>
 
-            <!-- Specs -->
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-left">
-                <div class="border-gradient rounded-lg p-4">
-                    <div class="text-xs text-zinc-500 font-mono mb-1">ENCRYPTION</div>
-                    <div class="text-sm text-white font-medium">Client-Side Only</div>
-                </div>
-                <div class="border-gradient rounded-lg p-4">
-                    <div class="text-xs text-zinc-500 font-mono mb-1">THRESHOLD</div>
-                    <div class="text-sm text-white font-medium">2-of-3 Shards</div>
-                </div>
-                <div class="border-gradient rounded-lg p-4">
-                    <div class="text-xs text-zinc-500 font-mono mb-1">TRIGGER</div>
-                    <div class="text-sm text-white font-medium">90-Day Inactivity</div>
-                </div>
-                <div class="border-gradient rounded-lg p-4">
-                    <div class="text-xs text-zinc-500 font-mono mb-1">TRUST</div>
-                    <div class="text-sm text-white font-medium">Zero Knowledge</div>
-                </div>
-            </div>
+        <p>im here to fix that.</p>
 
-            <!-- Authority Bias: As Seen On -->
-            <div class="mt-16 pt-8 border-t border-zinc-800/50">
-                <p class="text-zinc-600 text-xs mb-4 text-center">AS SEEN ON</p>
-                <div class="flex items-center justify-center gap-8 flex-wrap">
-                    <div
-                        class="flex items-center gap-2 text-zinc-500 hover:text-zinc-400 transition opacity-60 hover:opacity-100">
-                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRQTAHKei1sVS7tKoZwNJJR9oEL98o6drsGw&s"
-                            alt="Hacker News" class="w-5 h-5 grayscale">
-                        <span class="text-sm font-medium">Hacker News</span>
-                    </div>
-                    <div
-                        class="flex items-center gap-2 text-zinc-500 hover:text-zinc-400 transition opacity-60 hover:opacity-100">
-                        <img src="https://uxwing.com/wp-content/themes/uxwing/download/brands-and-social-media/product-hunt-logo-icon.png"
-                            alt="Product Hunt" class="w-5 h-5 grayscale">
-                        <span class="text-sm font-medium">Product Hunt</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        <a href="/app" class="cta">protect your family now</a>
 
-    <!-- Demo Video -->
-    <section class="py-24 border-t border-zinc-800">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="text-center mb-12">
-                <div
-                    class="inline-block px-3 py-1 mb-4 text-xs font-mono text-emerald-500/80 border border-emerald-500/30 rounded bg-emerald-500/5">
-                    ⚡ WATCH IT IN ACTION
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">See How It Works</h2>
-                <p class="text-zinc-400 max-w-2xl mx-auto">
-                    20 seconds from seed phrase to secured inheritance. No BS, just the product.
-                </p>
-            </div>
+        <hr>
 
-            <div class="aspect-video rounded-2xl overflow-hidden border border-zinc-800 shadow-2xl bg-black">
-                <video autoplay muted loop playsinline class="w-full h-full object-cover"
-                    title="Shardium demo: Split crypto seed phrase into 3 shards in 20 seconds"
-                    aria-label="Product demo showing seed phrase splitting using Shamir's Secret Sharing, recovery test with 2 shards, and dead man's switch activation"
-                    poster="/static/video-poster.jpg">
-                    <source src="/static/shardium.mp4" type="video/mp4">
-                    Your browser does not support the video tag.
-                </video>
-            </div>
-        </div>
-    </section>
+        <h2>the idea</h2>
 
-    <!-- Founder Video -->
-    <section class="border-y border-zinc-800 bg-zinc-900/50">
-        <div class="max-w-6xl mx-auto px-6 py-16">
-            <div class="grid md:grid-cols-2 gap-12 items-center">
-                <!-- Video -->
-                <div>
-                    <div class="aspect-video rounded-xl overflow-hidden border border-zinc-800 shadow-2xl">
-                        <iframe width="100%" height="100%"
-                            src="https://www.youtube.com/embed/zULAaVbjMac?autoplay=1&mute=1"
-                            title="Why I Built Shardium" frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowfullscreen class="w-full h-full">
-                        </iframe>
-                    </div>
-                </div>
+        <p>shardium splits your seed into 3 pieces using <a
+                href="https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing">shamirs secret sharing</a>.</p>
 
-                <!-- Text -->
-                <div>
-                    <div class="text-xs font-mono text-zinc-500 mb-3">// FROM THE FOUNDER</div>
-                    <h2 class="text-3xl font-bold text-white mb-4">I'm Max. I built this because I was terrified.</h2>
-                    <p class="text-zinc-400 mb-6 leading-relaxed">
-                        I had crypto. I had a seed phrase on paper. And I realized: if I die tomorrow, my family gets
-                        nothing.
-                        The "experts" told me to use a hardware wallet and "keep it safe." That's not a plan. That's
-                        hope.
-                    </p>
-                    <p class="text-zinc-400 mb-8 leading-relaxed">
-                        So I built Shardium. It's the dead man's switch I wish existed. Open source. Zero trust. Pure
-                        math.
-                        <span class="text-white font-medium">Don't trust me. Verify the code yourself.</span>
-                    </p>
-                </div>
-            </div>
-        </div>
-    </section>
+        <p>any 2 shards = full recovery. 1 shard alone = nothing. mathematicaly proven.</p>
 
-    <!-- Discord Community -->
-    <section class="py-16 border-b border-zinc-800 bg-[#5865F2]/5">
-        <div class="max-w-4xl mx-auto px-6">
-            <div class="text-center mb-8">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// COMMUNITY</div>
-                <h2 class="text-3xl font-bold text-white mb-4">Got questions? Ask me directly.</h2>
-                <p class="text-zinc-400 max-w-2xl mx-auto mb-8">
-                    I'm in the Discord every day. Come grill me about the security model, the code, whatever.
-                    No sales BS. Just real answers.
-                </p>
-            </div>
+        <ul>
+            <li>you keep shard a</li>
+            <li>give shard b to your beneficiary</li>
+            <li>shard c stays on our servers</li>
+        </ul>
 
-            <div class="flex justify-center">
-                <a href="https://discord.gg/eDyCkgvBjf" target="_blank" rel="noopener"
-                    class="inline-flex items-center gap-3 px-8 py-4 bg-[#5865F2] text-white font-semibold rounded-lg hover:bg-[#4752C4] transition shadow-lg shadow-[#5865F2]/25">
-                    <svg class="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
-                        <path
-                            d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z" />
-                    </svg>
-                    Join the Discord
-                </a>
-            </div>
-        </div>
-    </section>
+        <p><b>while youre alive:</b> recover anytime with a + b</p>
 
-    <!-- Problem Section -->
-    <section class="py-24 border-t border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-red-500/80 mb-4">// THE NIGHTMARE</div>
-                <h2 class="text-3xl font-bold text-white mb-4">You Know This Fear</h2>
-                <p class="text-zinc-400 max-w-2xl mx-auto text-lg">
-                    That cold sweat moment when you realize you can't find your seed phrase.
-                </p>
-            </div>
+        <p><b>if you die:</b> we email you every 90 days. stop responding, shard c goes to your beneficiary. they
+            combine b + c, recover your seed</p>
 
-            <div class="grid md:grid-cols-4 gap-4 mb-12">
-                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
-                    <div class="text-2xl mb-3">🔥</div>
-                    <div class="text-sm text-zinc-300 font-medium mb-1">House Fire</div>
-                    <div class="text-xs text-zinc-500">Paper backup? Gone.</div>
-                </div>
-                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
-                    <div class="text-2xl mb-3">🏠</div>
-                    <div class="text-sm text-zinc-300 font-medium mb-1">Moving</div>
-                    <div class="text-xs text-zinc-500">"I put it somewhere safe..."</div>
-                </div>
-                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
-                    <div class="text-2xl mb-3">🥴</div>
-                    <div class="text-sm text-zinc-300 font-medium mb-1">Time</div>
-                    <div class="text-xs text-zinc-500">"I'll remember where it is..."</div>
-                </div>
-                <div class="border-gradient rounded-lg p-5 text-center hover:border-red-500/30 transition">
-                    <div class="text-2xl mb-3">🦹</div>
-                    <div class="text-sm text-zinc-300 font-medium mb-1">Theft</div>
-                    <div class="text-xs text-zinc-500">Someone finds your backup.</div>
-                </div>
-            </div>
+        <p>thats it. dead mans switch for crypto.</p>
 
-            <div class="border-gradient rounded-xl p-8 bg-zinc-900/50 mb-8">
-                <div class="grid md:grid-cols-2 gap-8 items-center">
-                    <div>
-                        <h3 class="text-xl font-bold text-white mb-4">The Brutal Truth</h3>
-                        <p class="text-zinc-400 mb-4">
-                            With traditional seed storage, you have <span class="text-red-400 font-bold">one point of
-                                failure</span>.
-                            One piece of paper. One metal plate. One moment of forgetfulness.
-                        </p>
-                        <p class="text-zinc-400">
-                            And there's no "forgot password" link. No customer support. No recovery.
-                            <span class="text-white font-semibold">Your crypto is just... gone.</span>
-                        </p>
-                    </div>
-                    <div class="border border-red-500/20 rounded-lg p-6 bg-red-500/5">
-                        <div class="text-3xl font-bold text-red-500 mb-2">$140B+</div>
-                        <div class="text-sm text-zinc-400 mb-4">Lost forever due to lost keys</div>
-                        <div class="text-xs text-zinc-500">That's more than the GDP of 100+ countries. All because
-                            people trusted a single piece of paper.</div>
-                    </div>
-                </div>
-            </div>
+        <hr>
 
-            <div class="text-center">
-                <div class="inline-block border border-accent/30 rounded-lg px-6 py-4 bg-accent/5">
-                    <span class="text-accent font-bold text-lg">Enter Shardium</span>
-                    <span class="text-zinc-400 ml-2">— You become your own backup. Lose one shard? Use the other
-                        two.</span>
-                </div>
-            </div>
-        </div>
-    </section>
+        <h2>theres nothing else like this</h2>
 
-    <!-- Solution Visual -->
-    <section class="py-24 border-t border-zinc-800">
-        <div class="max-w-5xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-accent mb-4">// THE FIX</div>
-                <h2 class="text-3xl font-bold text-white mb-4">
-                    3 Places. <span class="text-gradient">Any 2 Recover.</span>
-                </h2>
-                <p class="text-zinc-400 max-w-xl mx-auto text-lg">
-                    Lost your house? Use the shards you stored elsewhere. Forgot where you put it? No problem.
-                    <span class="text-white font-medium">Redundancy is your superpower.</span>
-                </p>
-            </div>
+        <p>i researched every competitor. spent weeks. heres what exists:</p>
 
-            <!-- Shards Visual -->
-            <div class="grid md:grid-cols-3 gap-6 mb-12 items-stretch">
-                <!-- Shard A -->
-                <div class="border-gradient rounded-lg p-8 text-center relative flex flex-col">
-                    <div class="w-20 h-20 mx-auto mb-6 rounded-xl bg-zinc-800/50 flex items-center justify-center">
-                        <img src="/static/A.jpg" alt="Shard A" class="w-14 h-14 object-contain">
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Shard A</h3>
-                    <p class="text-sm text-zinc-500">You keep this. Store in a safe or password manager.</p>
-                    <div
-                        class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-zinc-900 border border-zinc-700 rounded-full flex items-center justify-center text-zinc-500 text-lg hidden md:flex z-10">
-                        +</div>
-                </div>
+        <ul>
+            <li><b>legal wills</b> - lawyers dont understand crypto. probate takes months</li>
+            <li><b>multisig wallets</b> - too complex. your family wont understand</li>
+            <li><b>daos</b> - gas fees, governance tokens, weird blockchain stuff</li>
+            <li><b>existing startups</b> - abandoned, closed source, or want your actual keys</li>
+            <li><b>chain-specific</b> - only work for one chain. you probably have btc AND eth</li>
+        </ul>
 
-                <!-- Shard B -->
-                <div class="border-gradient rounded-lg p-8 text-center relative flex flex-col">
-                    <div class="w-20 h-20 mx-auto mb-6 rounded-xl bg-zinc-800/50 flex items-center justify-center">
-                        <img src="/static/B.jpg" alt="Shard B" class="w-14 h-14 object-contain">
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Shard B</h3>
-                    <p class="text-sm text-zinc-500">Give to your beneficiary. Print it as PDF.</p>
-                    <div
-                        class="absolute right-0 top-1/2 translate-x-1/2 -translate-y-1/2 w-8 h-8 bg-zinc-900 border border-zinc-700 rounded-full flex items-center justify-center text-zinc-500 text-lg hidden md:flex z-10">
-                        +</div>
-                </div>
+        <p>nothing does what shardium does. simple, trustless, any bip-39 seed, fully open source.</p>
 
-                <!-- Shard C -->
-                <div class="border-gradient rounded-lg p-8 text-center flex flex-col">
-                    <div class="w-20 h-20 mx-auto mb-6 rounded-xl bg-zinc-800/50 flex items-center justify-center">
-                        <img src="/static/C.jpg" alt="Shard C" class="w-14 h-14 object-contain">
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Shard C</h3>
-                    <p class="text-sm text-zinc-500">Held by Shardium. Released when switch triggers.</p>
-                </div>
-            </div>
+        <hr>
 
-            <!-- Combination Logic -->
-            <div class="border-gradient rounded-lg p-8">
-                <div class="text-center mb-6">
-                    <span class="text-sm font-mono text-zinc-400">Any 2 shards = Full recovery</span>
-                </div>
-                <div class="flex flex-wrap justify-center gap-3 mb-6">
-                    <div class="px-4 py-2 rounded bg-accent/10 border border-accent/30 text-sm font-mono">
-                        <span class="text-zinc-300">A + B =</span> <span class="text-accent">✓</span>
-                    </div>
-                    <div class="px-4 py-2 rounded bg-accent/10 border border-accent/30 text-sm font-mono">
-                        <span class="text-zinc-300">A + C =</span> <span class="text-accent">✓</span>
-                    </div>
-                    <div class="px-4 py-2 rounded bg-accent/10 border border-accent/30 text-sm font-mono">
-                        <span class="text-zinc-300">B + C =</span> <span class="text-accent">✓</span>
-                    </div>
-                </div>
-                <div class="flex flex-wrap justify-center gap-3">
-                    <div class="px-4 py-2 rounded bg-red-500/10 border border-red-500/30 text-sm font-mono">
-                        <span class="text-zinc-400">A alone =</span> <span class="text-red-500">✗</span>
-                    </div>
-                    <div class="px-4 py-2 rounded bg-red-500/10 border border-red-500/30 text-sm font-mono">
-                        <span class="text-zinc-400">B alone =</span> <span class="text-red-500">✗</span>
-                    </div>
-                    <div class="px-4 py-2 rounded bg-red-500/10 border border-red-500/30 text-sm font-mono">
-                        <span class="text-zinc-400">C alone =</span> <span class="text-red-500">✗</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
+        <h2>security</h2>
 
-    <!-- Protocol Section -->
-    <section id="protocol" class="py-24 border-t border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// SIMPLE WORKFLOW</div>
-                <h2 class="text-3xl font-bold text-white mb-4">5 Minutes to Peace of Mind</h2>
-                <p class="text-zinc-400 max-w-xl mx-auto">
-                    No complex setup. No hardware required. Just you and your browser.
-                </p>
-            </div>
+        <ul>
+            <li><b>we get hacked:</b> we only have shard c. useless alone</li>
+            <li><b>we go rogue:</b> same. need 2 of 3</li>
+            <li><b>shardium shuts down:</b> you have a + b. always recover</li>
+            <li><b>man in middle:</b> splitting happens in your browser. seed never hits network</li>
+        </ul>
 
-            <div class="grid md:grid-cols-4 gap-6">
-                <!-- Step 1 -->
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center mb-4">
-                        <span class="font-mono text-accent">01</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Enter Seed</h3>
-                    <p class="text-sm text-zinc-400 leading-relaxed">
-                        Type your seed phrase. Go offline first for max security. Your seed never touches our servers.
-                    </p>
-                </div>
+        <p>code is open source. <a href="https://github.com/pyoneerC/shardium">go read it</a></p>
 
-                <!-- Step 2 -->
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center mb-4">
-                        <span class="font-mono text-accent">02</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Split Into 3</h3>
-                    <p class="text-sm text-zinc-400 leading-relaxed">
-                        Shamir's Secret Sharing creates 3 shards from your seed. Any 2 can reconstruct it. Math, not
-                        trust.
-                    </p>
-                </div>
+        <hr>
 
-                <!-- Step 3 -->
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="w-10 h-10 rounded bg-zinc-800 flex items-center justify-center mb-4">
-                        <span class="font-mono text-accent">03</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-white mb-2">Store Separately</h3>
-                    <p class="text-sm text-zinc-400 leading-relaxed">
-                        Put shards in different places: password manager, printed PDF, safe. Lose one? Still got two.
-                    </p>
-                </div>
+        <h2>experimental tools</h2>
 
-                <!-- Step 4 - BONUS -->
-                <div class="rounded-lg p-6 bg-gradient-to-br from-accent/10 to-transparent border border-accent/30">
-                    <div class="w-10 h-10 rounded bg-accent/20 flex items-center justify-center mb-4">
-                        <span class="font-mono text-accent">🎁</span>
-                    </div>
-                    <h3 class="text-lg font-semibold text-accent mb-2">BONUS: Inheritance</h3>
-                    <p class="text-sm text-zinc-400 leading-relaxed">
-                        Give Shard B to your beneficiary. We hold Shard C. If you stop responding for 90 days, they get
-                        access.
-                    </p>
-                </div>
-            </div>
-
-            <div class="text-center mt-10">
-                <p class="text-zinc-500 text-sm">
-                    <span class="text-white font-medium">Main benefit:</span> You can recover your own seed anytime with
-                    A+B.
-                    <span class="text-accent">Bonus:</span> Your family inherits automatically if something happens to
-                    you.
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Security Section -->
-    <section class="py-24 border-t border-zinc-800 bg-zinc-900/30">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// SECURITY MODEL</div>
-                <h2 class="text-3xl font-bold text-white mb-4">Zero Trust Architecture</h2>
-                <p class="text-zinc-400 max-w-xl mx-auto">
-                    Even if we're compromised, attackers get nothing useful.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-2 gap-6">
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-accent font-mono text-sm mb-3">ATTACK: Database Breach</div>
-                    <p class="text-sm text-zinc-400">
-                        We only store Shard C. Without Shard A or B, it's cryptographically useless.
-                        Information-theoretic security means it can't be brute-forced.
-                    </p>
-                </div>
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-accent font-mono text-sm mb-3">ATTACK: Rogue Employee</div>
-                    <p class="text-sm text-zinc-400">
-                        No one at Shardium can access your funds. The math prevents it.
-                        2-of-3 threshold means we'd need to collude with your beneficiary.
-                    </p>
-                </div>
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-accent font-mono text-sm mb-3">ATTACK: Man-in-the-Middle</div>
-                    <p class="text-sm text-zinc-400">
-                        Splitting happens client-side, offline-capable. Your seed phrase
-                        never travels over the network. No interception possible.
-                    </p>
-                </div>
-                <div class="border-gradient rounded-lg p-6">
-                    <div class="text-accent font-mono text-sm mb-3">ATTACK: Beneficiary Fraud</div>
-                    <p class="text-sm text-zinc-400">
-                        Shard B alone is useless. They need Shard C which only releases
-                        after 90 days of your inactivity. You control the heartbeat.
-                    </p>
-                </div>
-                <!-- MAIN VALUE PROP - This box should stand out -->
-                <div
-                    class="rounded-lg p-6 md:col-span-2 bg-gradient-to-r from-accent/10 to-emerald-500/5 border border-accent/30">
-                    <div class="text-accent font-mono text-sm mb-3">⭐ THE MAIN EVENT: Personal Seed Recovery</div>
-                    <p class="text-zinc-300 mb-3">
-                        <span class="text-white font-bold text-lg">Lost your seed phrase? Recover it in seconds.</span>
-                    </p>
-                    <p class="text-sm text-zinc-400">
-                        Combine Shard A + Shard B to reconstruct your original seed phrase instantly.
-                        House burned down? Doesn't matter — you have multiple shards in multiple places.
-                        <span class="text-accent font-semibold">You're your own backup. No Ledger required. No bank
-                            vault. No panic.</span>
-                    </p>
-                </div>
-            </div>
-    </section>
-
-    <!-- Tech Stack -->
-    <section class="py-24 border-t border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// OPEN SOURCE</div>
-                <h2 class="text-3xl font-bold text-white mb-4">Audit the Code</h2>
-                <p class="text-zinc-400 max-w-xl mx-auto">
-                    Everything is open source. Verify the cryptography yourself.
-                </p>
-            </div>
-
-            <div class="flex flex-wrap justify-center gap-4 mb-12">
-                <div class="px-4 py-2 rounded bg-zinc-800 text-sm font-mono text-zinc-300">secrets.js-grempe</div>
-                <div class="px-4 py-2 rounded bg-zinc-800 text-sm font-mono text-zinc-300">FastAPI</div>
-                <div class="px-4 py-2 rounded bg-zinc-800 text-sm font-mono text-zinc-300">PostgreSQL</div>
-                <div class="px-4 py-2 rounded bg-zinc-800 text-sm font-mono text-zinc-300">Vercel Edge</div>
-            </div>
-
-            <div class="text-center">
-                <a href="https://github.com/pyoneerC/shardium" target="_blank"
-                    class="inline-flex items-center gap-2 px-6 py-3 border border-zinc-700 rounded text-sm font-medium hover:border-zinc-500 hover:text-white transition">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path
-                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                    </svg>
-                    View on GitHub
-                </a>
-            </div>
-        </div>
-    </section>
-
-    <!-- Testimonials -->
-    <section class="py-24 border-t border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// EARLY ADOPTERS</div>
-                <h2 class="text-3xl font-bold text-white mb-4">What People Are Saying</h2>
-                <p class="text-zinc-400 max-w-xl mx-auto">
-                    Real feedback from early users and the crypto community.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6">
-                <!-- Review 1 -->
-                <div class="border-gradient rounded-xl p-6">
-                    <div class="flex items-center gap-1 mb-4">
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                    </div>
-                    <p class="text-zinc-300 mb-6 leading-relaxed">
-                        "Excellent idea! I love the 3-shard concept. Finally a way to pass on my crypto without trusting
-                        anyone."
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://i.pravatar.cc/150?img=12" alt="Brian"
-                            class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <div class="text-white font-medium">Brian</div>
-                            <div class="text-xs text-zinc-500">Crypto Holder</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Review 2 -->
-                <div class="border-gradient rounded-xl p-6">
-                    <div class="flex items-center gap-1 mb-4">
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                    </div>
-                    <p class="text-zinc-300 mb-6 leading-relaxed">
-                        "This is very interesting. Finally a solution for crypto inheritance that doesn't require
-                        trusting a third party."
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <img src="https://i.pravatar.cc/150?img=33" alt="Datrope"
-                            class="w-10 h-10 rounded-full object-cover">
-                        <div>
-                            <div class="text-white font-medium">Datrope</div>
-                            <div class="text-xs text-zinc-500">Discord Community</div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Review 3 -->
-                <div class="border-gradient rounded-xl p-6">
-                    <div class="flex items-center gap-1 mb-4">
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                        <span class="text-yellow-400">★</span>
-                    </div>
-                    <p class="text-zinc-300 mb-6 leading-relaxed text-4xl">
-                        👀
-                    </p>
-                    <div class="flex items-center gap-3">
-                        <div
-                            class="w-10 h-10 rounded-full bg-gradient-to-br from-zinc-600 to-zinc-800 flex items-center justify-center text-white font-bold">
-                            ?
-                        </div>
-                        <div>
-                            <div class="text-white font-medium">anon</div>
-                            <div class="text-xs text-zinc-500">Crypto Twitter</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center mt-10">
-                <p class="text-zinc-600 text-sm">
-                    Want to share your experience?
-                    <a href="https://x.com/shardiumhq" target="_blank" class="text-accent hover:underline">Tweet at
-                        us</a>
-                </p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Pricing -->
-    <section id="pricing" class="py-24 border-t border-zinc-800 bg-zinc-900/30">
-        <div class="max-w-6xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// PRICING</div>
-                <h2 class="text-3xl font-bold text-white mb-4">Simple, Transparent Pricing</h2>
-                <p class="text-zinc-400 max-w-xl mx-auto">
-                    Self-host for free forever, or let us handle everything.
-                </p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-6 max-w-5xl mx-auto">
-                <!-- Free / Self-Hosted -->
-                <div class="border-gradient rounded-xl p-8">
-                    <div class="text-xs font-mono text-zinc-500 mb-4">SELF-HOSTED</div>
-                    <div class="flex items-baseline gap-1 mb-2">
-                        <span class="text-4xl font-bold text-white">$0</span>
-                    </div>
-                    <p class="text-zinc-400 text-sm mb-6">Forever free. You run it.</p>
-
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Full source code
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            MIT Licensed
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Community support
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-500">
-                            <svg class="w-5 h-5 text-zinc-600 flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M6 18L18 6M6 6l12 12" />
-                            </svg>
-                            Manage your own servers
-                        </li>
-                    </ul>
-
-                    <a href="https://deepwiki.com/pyoneerC/shardium" target="_blank"
-                        class="block w-full py-3 mb-2 border border-emerald-700 text-center rounded-lg font-medium text-emerald-400 hover:border-emerald-500 hover:text-emerald-300 transition">
-                        🤖 Ask AI About Code
-                    </a>
-                    <a href="https://github.com/pyoneerC/shardium" target="_blank"
-                        class="block w-full py-3 border border-zinc-700 text-center rounded-lg font-medium text-zinc-300 hover:border-zinc-500 hover:text-white transition">
-                        Clone on GitHub
-                    </a>
-                </div>
-
-                <!-- Annual - The Anchor -->
-                <div class="border-gradient rounded-xl p-8">
-                    <div class="text-xs font-mono text-zinc-500 mb-4">ANNUAL</div>
-                    <div class="flex items-baseline gap-2 mb-2">
-                        <span class="text-2xl text-zinc-600 line-through">$99</span>
-                        <span class="text-4xl font-bold text-white">$49</span>
-                        <span class="text-zinc-400">/year</span>
-                    </div>
-                    <p class="text-zinc-400 text-sm mb-6">Billed annually. Cancel anytime.</p>
-
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Fully managed hosting
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Automatic email reminders
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Email support
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            99.9% uptime
-                        </li>
-                    </ul>
-
-                    <a href="/app?plan=annual"
-                        class="block w-full py-3 border border-zinc-700 text-center rounded-lg font-medium text-zinc-300 hover:border-accent hover:text-accent transition">
-                        Get Annual
-                    </a>
-                </div>
-
-                <!-- Lifetime - The Goal (BEST VALUE) -->
-                <div class="border-gradient rounded-xl p-8 relative ring-2 ring-accent">
-                    <div
-                        class="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-accent text-black text-xs font-bold rounded-full">
-                        BEST VALUE
-                    </div>
-                    <div class="text-xs font-mono text-accent mb-4">LIFETIME</div>
-                    <div class="flex items-baseline gap-2 mb-2">
-                        <span class="text-2xl text-zinc-600 line-through">$299</span>
-                        <span class="text-4xl font-bold text-white">$129</span>
-                        <span class="text-zinc-400">once</span>
-                    </div>
-                    <p class="text-zinc-400 text-sm mb-2">Pay once. Own forever.</p>
-                    <p class="text-accent text-xs mb-6 font-medium">= $0.35/day for life · Less than 3 years of Annual
-                    </p>
-
-                    <ul class="space-y-3 mb-8">
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            Everything in Annual
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <strong class="text-white">Priority</strong> Discord support
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <strong class="text-white">All future updates</strong> included
-                        </li>
-                        <li class="flex items-center gap-3 text-sm text-zinc-300">
-                            <svg class="w-5 h-5 text-accent flex-shrink-0" fill="none" stroke="currentColor"
-                                viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M5 13l4 4L19 7" />
-                            </svg>
-                            <strong class="text-white">Never pay again</strong>
-                        </li>
-                    </ul>
-
-                    <a href="/app?plan=lifetime"
-                        class="block w-full py-3 bg-accent text-center rounded-lg font-semibold text-black hover:bg-emerald-400 transition">
-                        Get Lifetime
-                    </a>
-                    <p class="text-center text-zinc-500 text-xs mt-3">Secure payment via Stripe</p>
-                    <div class="mt-4 space-y-2">
-                        <div class="flex items-center justify-center gap-2 text-xs text-zinc-400">
-                            <svg class="w-4 h-4 text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                            <span><strong class="text-zinc-300">Fail-Safe:</strong> If we shut down, your Shard C is
-                                emailed to you.</span>
-                        </div>
-                        <div class="flex items-center justify-center gap-2 text-xs text-accent">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                            <span><strong>10X REFUND GUARANTEE</strong> — Can't recover your seed? We refund 10x your
-                                purchase.</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Enterprise callout -->
-            <div class="mt-10 text-center">
-                <p class="text-zinc-500 text-sm">
-                    Need custom deployment or white-label solution?
-                    <a href="mailto:maxcomperatore@gmail.com?subject=Shardium Enterprise"
-                        class="text-accent hover:underline">Contact us</a>
-                </p>
-            </div>
-
-            <p class="text-center text-zinc-600 text-sm mt-8">
-                All plans include: Client-side encryption, Shamir's Secret Sharing, 2-of-3 threshold recovery
-            </p>
-        </div>
-    </section>
-
-    <!-- FAQ -->
-    <section class="py-24 border-t border-zinc-800">
-        <div class="max-w-3xl mx-auto px-6">
-            <div class="text-center mb-16">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// FAQ</div>
-                <h2 class="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
-                <p class="text-zinc-400">
-                    Everything you need to know about Shardium.
-                </p>
-            </div>
-
-            <div class="space-y-4">
-                <!-- FAQ 1 -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">Can Shardium steal my crypto?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            <strong class="text-accent">No.</strong> We only store Shard C, which is mathematically
-                            useless on its own.
-                            Shamir's Secret Sharing requires 2-of-3 shards to reconstruct the seed phrase.
-                            Even if our entire database was leaked, attackers would get nothing actionable.
-                            This is information-theoretic security — it can't be brute-forced.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ 2 -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">What if I lose my seed phrase?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            <strong class="text-accent">You can recover it.</strong> Combine Shard A + Shard B to
-                            reconstruct your original seed phrase instantly.
-                            You're your own backup — no need to panic, no third party required.
-                            This is one of the key advantages of the 2-of-3 system.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ 3 -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">What if Shardium shuts down?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            <strong class="text-accent">You still have access.</strong> With Shard A + Shard B, you can
-                            always recover your seed — Shard C isn't needed.
-                            Plus, Shardium is open source. You can self-host the entire system on your own
-                            infrastructure.
-                            Your crypto is never locked to our platform.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ 4 -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">How does the dead man's switch work?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            We send you a check-in email every <strong class="text-white">30 days</strong>.
-                            Click the link to reset the timer. If you don't respond for <strong class="text-white">90
-                                days</strong>,
-                            Shard C is automatically emailed to your designated beneficiary.
-                            They combine it with Shard B (the printed PDF you gave them) to recover the seed phrase.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ 5 -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">Can my beneficiary steal my crypto before I die?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            <strong class="text-accent">No.</strong> Your beneficiary only has Shard B, which is useless
-                            alone.
-                            They need Shard C, which is only released after 90 days of your inactivity.
-                            As long as you keep clicking the heartbeat link, they can't access anything.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ 6 -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">Is this legal for inheritance purposes?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            Shardium is a <strong class="text-white">technical tool</strong>, not legal advice.
-                            It gives your beneficiary access to your seed phrase, but doesn't replace a proper will or
-                            estate plan.
-                            We recommend consulting with an estate attorney to ensure your crypto inheritance is legally
-                            documented.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ 7 -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">Why should I pay when it's open source?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            You're paying for <strong class="text-white">managed infrastructure</strong>:
-                            reliable hosting, automatic heartbeat emails, encrypted storage, and uptime guarantees.
-                            Self-hosting is free forever, but you'd need to manage servers, databases, email sending,
-                            and cron jobs yourself.
-                            The paid plan is for people who want it to "just work."
-                        </p>
-                    </div>
-                </div>
-
-                <!-- FAQ 8 - SWITCHING COST FAQ -->
-                <div class="border-gradient rounded-lg overflow-hidden">
-                    <button onclick="toggleFaq(this)"
-                        class="w-full px-6 py-4 flex justify-between items-center text-left hover:bg-zinc-800/30 transition">
-                        <span class="font-medium text-white">What if I want to cancel or switch services?</span>
-                        <svg class="w-5 h-5 text-zinc-500 transform transition-transform duration-200 faq-icon"
-                            fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                        </svg>
-                    </button>
-                    <div class="faq-content hidden px-6 pb-4">
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-3">
-                            <strong class="text-red-400">⚠️ Security Warning:</strong> If you simply stop using Shardium
-                            without proper migration,
-                            <strong class="text-white">Shard C remains in our database</strong> tied to your current
-                            seed phrase.
-                        </p>
-                        <p class="text-zinc-400 text-sm leading-relaxed mb-3">
-                            This means if our systems are ever compromised in the future, attackers would have 1/3 of
-                            your secret
-                            configuration. While one shard alone is mathematically useless, we recommend the <strong
-                                class="text-white">safe migration path</strong>:
-                        </p>
-                        <ol class="text-zinc-400 text-sm list-decimal list-inside space-y-1 mb-3">
-                            <li>Create a <strong class="text-white">new wallet</strong> with a fresh seed phrase</li>
-                            <li>Transfer all assets to the new wallet</li>
-                            <li>Set up Shardium (or another solution) for the new seed</li>
-                            <li>Only then deactivate your old vault</li>
-                        </ol>
-                        <p class="text-zinc-400 text-sm leading-relaxed">
-                            This way, even if old Shard C data is ever exposed, it's worthless because that wallet is
-                            empty.
-                            <strong class="text-accent">Your security is our priority</strong> — we'd rather you migrate
-                            safely than leave with risk.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- CTA -->
-    <section class="py-24 border-t border-zinc-800">
-        <div class="max-w-2xl mx-auto px-6 text-center">
-            <div class="text-6xl mb-6">🔐</div>
-            <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">
-                Stop <span class="text-red-400">Trusting</span> a Piece of Paper
-            </h2>
-            <p class="text-zinc-400 mb-4 text-lg">
-                Your entire financial future shouldn't depend on one backup in one location.
-            </p>
-            <p class="text-zinc-500 mb-8">
-                Split it. Distribute it. <span class="text-accent font-semibold">Own your recovery.</span>
-            </p>
-            <a href="/app?plan=lifetime"
-                class="inline-block px-10 py-5 bg-accent text-black font-bold rounded-lg hover:bg-emerald-400 transition text-lg shadow-lg shadow-accent/25">
-                Protect My Seed Phrase ($129 Lifetime)
+        <div class="tools-grid">
+            <a href="/tools/visual-crypto" class="tool-card">
+                <strong>visual cryptography</strong>
+                <span>split images into 2 noise shares. overlay to reveal</span>
             </a>
-            <p class="text-zinc-600 text-sm mt-4">
-                5-minute setup. Client-side encryption. Your seed never leaves your device.
-            </p>
-            <p class="text-zinc-700 text-xs mt-2">
-                + Bonus: If you die, your beneficiary automatically gets access.
-            </p>
+            <a href="/tools/audio-steg" class="tool-card">
+                <strong>audio steganography</strong>
+                <span>hide text inside wav files. undetectable</span>
+            </a>
         </div>
-    </section>
 
-    <!-- Footer -->
-    <footer class="py-8 border-t border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded overflow-hidden">
-                    <img src="/static/favicon.png" alt="Shardium" class="w-full h-full object-cover">
-                </div>
-                <span class="text-sm text-zinc-500">Shardium</span>
-            </div>
-            <div class="flex gap-6 text-sm text-zinc-500">
-                <a href="/tools/death-calculator" class="hover:text-red-500 transition">💀 Calculator</a>
-                <a href="/docs" class="hover:text-white transition">Docs</a>
-                <a href="/terms" class="hover:text-white transition">Terms</a>
-                <a href="https://github.com/pyoneerC/shardium" class="hover:text-white transition">GitHub</a>
-                <a href="https://deepwiki.com/pyoneerC/shardium" target="_blank"
-                    class="hover:text-emerald-500 transition">🤖 Ask AI</a>
-                <a href="https://discord.gg/eDyCkgvBjf" class="hover:text-white transition">Discord</a>
-                <a href="https://x.com/shardiumhq" class="hover:text-white transition">Twitter</a>
-            </div>
-            <div class="text-xs text-zinc-600">
-                Open Source · MIT License
+        <hr>
+
+        <h2>how it works</h2>
+
+        <ol>
+            <li>type your seed phrase (go offline first)</li>
+            <li>browser splits into 3 shards</li>
+            <li>download shard a + b</li>
+            <li>shard c stored encrypted on our servers</li>
+            <li>every 90 days we email you</li>
+            <li>dont respond = shard c goes to beneficary</li>
+        </ol>
+
+        <p>5 minutes to setup.</p>
+
+        <a href="/app" class="cta">setup your vault</a>
+
+        <hr>
+
+        <h2>price</h2>
+
+        <p><b>self-hosted:</b> free forever. clone the <a href="https://github.com/pyoneerC/shardium">repo</a></p>
+
+        <div class="price-box">
+            <p><b>hosted:</b></p>
+            <p class="price">$349</p>
+            <p>one time. lifetime. no subscription.</p>
+            <p style="font-size: 0.85em; color: #666;">why no subscription? if your credit card fails and you dont
+                notice, your inheritance breaks. one payment, done forever.</p>
+        </div>
+
+        <a href="/app?plan=lifetime" class="cta">get lifetime access</a>
+
+        <hr>
+
+        <h2>faq</h2>
+
+        <p><b>can you steal my crypto?</b><br>no. we only have shard c. need 2 of 3</p>
+
+        <p><b>what if i lose my seed?</b><br>combine a + b. thats the whole point</p>
+
+        <p><b>what if beneficary tries to steal?</b><br>they only have shard b. useless. shard c releases after 90 days
+            of YOUR inactivity</p>
+
+        <p><b>which chains?</b><br>any bip-39 seed. btc eth sol whatever</p>
+
+        <hr>
+
+        <h2>whos behind this</h2>
+
+        <div class="founder">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqMxJLDbZIQLXKntZEo7g3360eM4pM2eVUTg&s"
+                alt="max">
+            <div class="founder-text">
+                <p><b>im max.</b></p>
+                <p>built this because i couldnt find anything else that works. real person, real emails, not some anon
+                    dev who might disappear.</p>
             </div>
         </div>
-    </footer>
 
-    <script>
-        // FAQ Accordion
-        function toggleFaq(button) {
-            const content = button.nextElementSibling;
-            const icon = button.querySelector('.faq-icon');
-            const isOpen = !content.classList.contains('hidden');
+        <p><a href="https://twitter.com/pyoneerC">twitter</a> / <a href="https://discord.gg/eDyCkgvBjf">discord</a> /
+            maxcomperatore@gmail.com</p>
 
-            // Close all other FAQs
-            document.querySelectorAll('.faq-content').forEach(c => {
-                c.classList.add('hidden');
-            });
-            document.querySelectorAll('.faq-icon').forEach(i => {
-                i.style.transform = 'rotate(0deg)';
-            });
+        <hr>
 
-            if (!isOpen) {
-                content.classList.remove('hidden');
-                icon.style.transform = 'rotate(180deg)';
-            }
-        }
-    </script>
+        <p>youre gonna die someday. when that happens, do you want your crypto to disapear? or do you want your family
+            to inherit it?</p>
 
-    <!-- Internationalization -->
-    <script src="/static/js/i18n.js"></script>
+        <a href="/app" class="cta">protect your family</a>
 
-    <!-- Shipybara Badge (hidden) -->
-    <a href="https://shipybara.com/projects/shardium" target="_blank" rel="noopener" class="hidden">
-        <img src="https://shipybara.com/images/badges/shipybara-badge-light.svg" alt="Featured on Shipybara" width="150"
-            height="54" />
-    </a>
+        <div class="footer">
+            <p><a href="/terms">terms</a> / <a href="/blog">blog</a> / <a
+                    href="https://github.com/pyoneerC/shardium">github</a></p>
+            <p>status: feature complete</p>
+            <p>open source. mit license. built in argentina.</p>
+        </div>
+
+    </div>
 
 </body>
 

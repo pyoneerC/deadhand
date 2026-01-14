@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visual Crypto - Combine Shares</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #09090b;
+            color: white;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #71717a;
+            margin-bottom: 40px;
+        }
+
+        .container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-box {
+            width: 250px;
+            height: 250px;
+            border: 2px dashed #3f3f46;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-box:hover {
+            border-color: #10b981;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .upload-box.has-image {
+            border-style: solid;
+            border-color: #10b981;
+        }
+
+        .upload-box img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .upload-box input {
+            display: none;
+        }
+
+        .upload-box .label {
+            color: #71717a;
+            font-size: 14px;
+        }
+
+        .upload-box .icon {
+            font-size: 40px;
+            margin-bottom: 10px;
+        }
+
+        .result-box {
+            width: 350px;
+            min-height: 350px;
+            border: 2px solid #10b981;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        .result-box img {
+            max-width: 100%;
+            max-height: 300px;
+            object-fit: contain;
+        }
+
+        .result-box .waiting {
+            color: #71717a;
+        }
+
+        .result-label {
+            background: #10b981;
+            color: black;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        canvas {
+            display: none;
+        }
+
+        .instructions {
+            max-width: 500px;
+            text-align: center;
+            color: #a1a1aa;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-top: 30px;
+        }
+
+        .instructions code {
+            background: #27272a;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #10b981;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>🔓 Visual Crypto Combiner</h1>
+    <p class="subtitle">Upload both shares to reveal the hidden QR code</p>
+
+    <div class="container">
+        <div class="upload-box" id="box1" onclick="document.getElementById('file1').click()">
+            <input type="file" id="file1" accept="image/*" onchange="loadImage(1, this)">
+            <div class="icon">📄</div>
+            <div class="label">Share 1</div>
+        </div>
+
+        <div style="display: flex; align-items: center; font-size: 30px; color: #3f3f46;">+</div>
+
+        <div class="upload-box" id="box2" onclick="document.getElementById('file2').click()">
+            <input type="file" id="file2" accept="image/*" onchange="loadImage(2, this)">
+            <div class="icon">📄</div>
+            <div class="label">Share 2</div>
+        </div>
+
+        <div style="display: flex; align-items: center; font-size: 30px; color: #3f3f46;">=</div>
+
+        <div class="result-box" id="resultBox">
+            <span class="result-label">RESULT</span>
+            <div class="waiting" id="waiting">Upload both shares...</div>
+            <img id="result" style="display: none;">
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <div class="instructions">
+        <p>
+            <strong>How it works:</strong><br>
+            Each share looks like random noise. But when combined digitally (or physically with transparencies),
+            the hidden QR code appears. Scan it to get your seed phrase.
+        </p>
+        <p style="margin-top: 15px;">
+            <strong>100% client-side.</strong> Your images never leave your browser.
+        </p>
+    </div>
+
+    <script>
+        let image1 = null;
+        let image2 = null;
+
+        function loadImage(num, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    if (num === 1) {
+                        image1 = img;
+                        showPreview(1, e.target.result);
+                    } else {
+                        image2 = img;
+                        showPreview(2, e.target.result);
+                    }
+
+                    if (image1 && image2) {
+                        combineShares();
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function showPreview(num, src) {
+            const box = document.getElementById('box' + num);
+            box.innerHTML = `<img src="${src}">`;
+            box.classList.add('has-image');
+        }
+
+        function combineShares() {
+            const canvas = document.getElementById('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Usar el tamaño más grande
+            const width = Math.max(image1.width, image2.width);
+            const height = Math.max(image1.height, image2.height);
+
+            canvas.width = width;
+            canvas.height = height;
+
+            // Dibujar imagen 1
+            ctx.drawImage(image1, 0, 0, width, height);
+            const data1 = ctx.getImageData(0, 0, width, height);
+
+            // Dibujar imagen 2
+            ctx.drawImage(image2, 0, 0, width, height);
+            const data2 = ctx.getImageData(0, 0, width, height);
+
+            // Combinar: AND lógico (mínimo de cada pixel)
+            const result = ctx.createImageData(width, height);
+            for (let i = 0; i < data1.data.length; i += 4) {
+                // Para cada canal RGB, tomar el mínimo (simula superposición)
+                result.data[i] = Math.min(data1.data[i], data2.data[i]);       // R
+                result.data[i + 1] = Math.min(data1.data[i + 1], data2.data[i + 1]); // G
+                result.data[i + 2] = Math.min(data1.data[i + 2], data2.data[i + 2]); // B
+                result.data[i + 3] = 255; // Alpha
+            }
+
+            ctx.putImageData(result, 0, 0);
+
+            // Mostrar resultado
+            const resultImg = document.getElementById('result');
+            resultImg.src = canvas.toDataURL();
+            resultImg.style.display = 'block';
+            document.getElementById('waiting').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

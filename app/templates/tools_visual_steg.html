@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>visual cryptography - shardium</title>
+    <meta name="description"
+        content="split an image into 2 shares that look like noise. combine them to reveal the original.">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.7;
+            background: #fafafa;
+        }
+
+        a {
+            color: #0066cc;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #fafafa;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .nav a {
+            text-decoration: none;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 2em 0;
+        }
+
+        .tool-section {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 40px 20px;
+            text-align: center;
+            cursor: pointer;
+            margin: 10px 0;
+        }
+
+        .upload-area:hover {
+            border-color: #0066cc;
+        }
+
+        .upload-area.has-file {
+            border-style: solid;
+            border-color: green;
+        }
+
+        input[type="file"] {
+            display: none;
+        }
+
+        .btn {
+            background: #222;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 1em;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        .btn:disabled {
+            background: #999;
+            cursor: not-allowed;
+        }
+
+        .preview-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .preview-box {
+            flex: 1;
+            min-width: 200px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .preview-box img {
+            max-width: 100%;
+            max-height: 300px;
+        }
+
+        .preview-box canvas {
+            max-width: 100%;
+        }
+
+        .result {
+            background: #e8f5e9;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+
+        .result img {
+            max-width: 100%;
+        }
+
+        .footer {
+            margin-top: 3em;
+            font-size: 0.85em;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <nav class="nav">
+            <a href="/">home</a>
+            <a href="/app">app</a>
+            <a href="/blog">blog</a>
+            <a href="/tools/visual-crypto">visual crypto</a>
+            <a href="/tools/audio-steg">audio steg</a>
+            <a href="https://github.com/pyoneerC/shardium">github</a>
+        </nav>
+    </div>
+
+    <h1>visual cryptography</h1>
+
+    <p>split an image into 2 shares that look like random noise. when you overlay them, the original image appears.
+        works digitally or with physical printed transparencies.</p>
+
+    <p>100% client-side. your images never leave your browser.</p>
+
+    <hr>
+
+    <h2>split an image</h2>
+
+    <div class="tool-section">
+        <p>upload a black and white image (or itll be converted). works best with high contrast images like qr codes.
+        </p>
+
+        <div class="upload-area" id="splitUpload" onclick="document.getElementById('splitFile').click()">
+            <input type="file" id="splitFile" accept="image/*" onchange="handleSplitUpload(this)">
+            <div id="splitLabel">click to upload image</div>
+        </div>
+
+        <button class="btn" id="splitBtn" onclick="splitImage()" disabled>split into 2 shares</button>
+
+        <div class="preview-container" id="splitResults" style="display: none;">
+            <div class="preview-box">
+                <p><b>share 1</b></p>
+                <canvas id="share1Canvas"></canvas>
+                <br><br>
+                <a id="share1Download" download="share1.png" class="btn">download</a>
+            </div>
+            <div class="preview-box">
+                <p><b>share 2</b></p>
+                <canvas id="share2Canvas"></canvas>
+                <br><br>
+                <a id="share2Download" download="share2.png" class="btn">download</a>
+            </div>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>combine shares</h2>
+
+    <div class="tool-section">
+        <p>upload both shares to reveal the hidden image.</p>
+
+        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+            <div style="flex: 1; min-width: 200px;">
+                <div class="upload-area" id="combine1Upload" onclick="document.getElementById('combine1File').click()">
+                    <input type="file" id="combine1File" accept="image/*" onchange="handleCombineUpload(1, this)">
+                    <div id="combine1Label">share 1</div>
+                </div>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+                <div class="upload-area" id="combine2Upload" onclick="document.getElementById('combine2File').click()">
+                    <input type="file" id="combine2File" accept="image/*" onchange="handleCombineUpload(2, this)">
+                    <div id="combine2Label">share 2</div>
+                </div>
+            </div>
+        </div>
+
+        <button class="btn" id="combineBtn" onclick="combineShares()" disabled>combine shares</button>
+
+        <div class="result" id="combineResult" style="display: none;">
+            <p><b>revealed image:</b></p>
+            <canvas id="combinedCanvas"></canvas>
+            <br><br>
+            <a id="combinedDownload" download="revealed.png" class="btn">download</a>
+        </div>
+    </div>
+
+    <hr>
+
+    <h2>how it works</h2>
+
+    <p>this uses visual cryptography. each pixel in the original image becomes a 2x2 block in each share:</p>
+
+    <ul>
+        <li>white pixels: both shares get the same random pattern</li>
+        <li>black pixels: shares get opposite patterns</li>
+    </ul>
+
+    <p>when overlaid, white stays white (patterns align) and black becomes black (patterns fill in). each share alone
+        looks like random noise.</p>
+
+    <p>you can print the shares on transparent sheets and physically overlay them. no computer needed to reveal the
+        secret.</p>
+
+    <div class="footer">
+        <p><a href="/">back to shardium</a></p>
+        <p>experimental tool. use at your own risk.</p>
+    </div>
+
+    <script>
+        let splitSourceImage = null;
+        let combineImage1 = null;
+        let combineImage2 = null;
+
+        function handleSplitUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    splitSourceImage = img;
+                    document.getElementById('splitLabel').textContent = file.name;
+                    document.getElementById('splitUpload').classList.add('has-file');
+                    document.getElementById('splitBtn').disabled = false;
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function splitImage() {
+            if (!splitSourceImage) return;
+
+            // convert to grayscale and threshold
+            const tempCanvas = document.createElement('canvas');
+            const tempCtx = tempCanvas.getContext('2d');
+            tempCanvas.width = splitSourceImage.width;
+            tempCanvas.height = splitSourceImage.height;
+            tempCtx.drawImage(splitSourceImage, 0, 0);
+
+            const imageData = tempCtx.getImageData(0, 0, tempCanvas.width, tempCanvas.height);
+            const pixels = imageData.data;
+
+            // convert to binary (black/white)
+            const binaryPixels = [];
+            for (let i = 0; i < pixels.length; i += 4) {
+                const gray = (pixels[i] + pixels[i + 1] + pixels[i + 2]) / 3;
+                binaryPixels.push(gray > 128 ? 1 : 0); // 1 = white, 0 = black
+            }
+
+            const width = tempCanvas.width;
+            const height = tempCanvas.height;
+
+            // create shares (2x scale)
+            const share1Canvas = document.getElementById('share1Canvas');
+            const share2Canvas = document.getElementById('share2Canvas');
+            const ctx1 = share1Canvas.getContext('2d');
+            const ctx2 = share2Canvas.getContext('2d');
+
+            share1Canvas.width = width * 2;
+            share1Canvas.height = height * 2;
+            share2Canvas.width = width * 2;
+            share2Canvas.height = height * 2;
+
+            const share1Data = ctx1.createImageData(width * 2, height * 2);
+            const share2Data = ctx2.createImageData(width * 2, height * 2);
+
+            // patterns for visual crypto
+            const patterns = {
+                white: [
+                    [[0, 1], [1, 0]], // diagonal
+                    [[1, 0], [0, 1]]  // other diagonal
+                ],
+                blackA: [
+                    [[0, 1], [1, 0]],
+                    [[1, 0], [0, 1]]
+                ],
+                blackB: [
+                    [[1, 0], [0, 1]],
+                    [[0, 1], [1, 0]]
+                ]
+            };
+
+            for (let y = 0; y < height; y++) {
+                for (let x = 0; x < width; x++) {
+                    const idx = y * width + x;
+                    const isWhite = binaryPixels[idx] === 1;
+                    const patternIdx = Math.random() < 0.5 ? 0 : 1;
+
+                    let pattern1, pattern2;
+                    if (isWhite) {
+                        pattern1 = patterns.white[patternIdx];
+                        pattern2 = patterns.white[patternIdx]; // same
+                    } else {
+                        pattern1 = patterns.blackA[patternIdx];
+                        pattern2 = patterns.blackB[patternIdx]; // opposite
+                    }
+
+                    // write 2x2 block for each share
+                    for (let dy = 0; dy < 2; dy++) {
+                        for (let dx = 0; dx < 2; dx++) {
+                            const sx = x * 2 + dx;
+                            const sy = y * 2 + dy;
+                            const sIdx = (sy * width * 2 + sx) * 4;
+
+                            const val1 = pattern1[dy][dx] * 255;
+                            const val2 = pattern2[dy][dx] * 255;
+
+                            share1Data.data[sIdx] = val1;
+                            share1Data.data[sIdx + 1] = val1;
+                            share1Data.data[sIdx + 2] = val1;
+                            share1Data.data[sIdx + 3] = 255;
+
+                            share2Data.data[sIdx] = val2;
+                            share2Data.data[sIdx + 1] = val2;
+                            share2Data.data[sIdx + 2] = val2;
+                            share2Data.data[sIdx + 3] = 255;
+                        }
+                    }
+                }
+            }
+
+            ctx1.putImageData(share1Data, 0, 0);
+            ctx2.putImageData(share2Data, 0, 0);
+
+            // set download links
+            document.getElementById('share1Download').href = share1Canvas.toDataURL('image/png');
+            document.getElementById('share2Download').href = share2Canvas.toDataURL('image/png');
+
+            document.getElementById('splitResults').style.display = 'flex';
+        }
+
+        function handleCombineUpload(num, input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const img = new Image();
+                img.onload = function () {
+                    if (num === 1) {
+                        combineImage1 = img;
+                        document.getElementById('combine1Label').textContent = file.name;
+                        document.getElementById('combine1Upload').classList.add('has-file');
+                    } else {
+                        combineImage2 = img;
+                        document.getElementById('combine2Label').textContent = file.name;
+                        document.getElementById('combine2Upload').classList.add('has-file');
+                    }
+
+                    if (combineImage1 && combineImage2) {
+                        document.getElementById('combineBtn').disabled = false;
+                    }
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function combineShares() {
+            if (!combineImage1 || !combineImage2) return;
+
+            const canvas = document.getElementById('combinedCanvas');
+            const ctx = canvas.getContext('2d');
+
+            const width = Math.max(combineImage1.width, combineImage2.width);
+            const height = Math.max(combineImage1.height, combineImage2.height);
+
+            canvas.width = width;
+            canvas.height = height;
+
+            // draw image 1
+            ctx.drawImage(combineImage1, 0, 0, width, height);
+            const data1 = ctx.getImageData(0, 0, width, height);
+
+            // draw image 2
+            ctx.drawImage(combineImage2, 0, 0, width, height);
+            const data2 = ctx.getImageData(0, 0, width, height);
+
+            // combine: minimum of each pixel (simulates overlay)
+            const result = ctx.createImageData(width, height);
+            for (let i = 0; i < data1.data.length; i += 4) {
+                result.data[i] = Math.min(data1.data[i], data2.data[i]);
+                result.data[i + 1] = Math.min(data1.data[i + 1], data2.data[i + 1]);
+                result.data[i + 2] = Math.min(data1.data[i + 2], data2.data[i + 2]);
+                result.data[i + 3] = 255;
+            }
+
+            ctx.putImageData(result, 0, 0);
+
+            document.getElementById('combinedDownload').href = canvas.toDataURL('image/png');
+            document.getElementById('combineResult').style.display = 'block';
+        }
+    </script>
+
+</body>
+
+</html>
