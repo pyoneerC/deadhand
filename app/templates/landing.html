@@ -123,13 +123,23 @@
         /* ascii art - responsive */
         .ascii {
             font-family: monospace;
-            font-size: 10px;
+            font-size: 8px;
+            /* smaller for mobile */
             line-height: 1.1;
             white-space: pre;
             color: #333;
             margin: 20px 0;
             overflow-x: auto;
             text-align: center;
+            scrollbar-width: none;
+            /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none;
+            /* Hide scrollbar for IE/Edge */
+        }
+
+        .ascii::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for Chrome/Safari */
         }
 
         /* founder section */
@@ -314,6 +324,7 @@
                 <a href="/tools/dead-switch">dead switch</a>
                 <a href="/tools/visual-crypto">visual crypto</a>
                 <a href="/tools/audio-steg">audio steg</a>
+                <a href="#cli">cli tools</a>
                 <a href="/blog">blog</a>
                 <a href="https://github.com/pyoneerC/shardium">github</a>
             </nav>
@@ -328,8 +339,8 @@
   \__ \/ /_/ / /| | / /_/ / / / // // / / / /|_/ /  
  ___/ / __  / ___ |/ _, _/ /_/ // // /_/ / /  / /   
 /____/_/ /_/_/  |_/_/ |_/_____/___/\____/_/  /_/    
-                                                          
-              your crypto shouldnt die with you
+
+     your crypto shouldnt die with you
 </pre>
 
         <p><b>what happens to your crypto when you die?</b></p>
@@ -455,15 +466,18 @@
         <h2 id="cli">cli utilities (raw python)</h2>
         <p>for the "trust nobody" crowd. zero dependencies. runs offline. single files.</p>
         <div class="tools-grid">
-            <a href="/static/cli/seed_split.py" class="tool-card" download>
+            <a href="https://github.com/pyoneerC/shardium/blob/main/cli/seed_split.py" class="tool-card"
+                target="_blank">
                 <strong>seed_split.py</strong>
                 <span>2-of-3 SSS for seed phrases. console-only.</span>
             </a>
-            <a href="/static/cli/audio_steg.py" class="tool-card" download>
+            <a href="https://github.com/pyoneerC/shardium/blob/main/cli/audio_steg.py" class="tool-card"
+                target="_blank">
                 <strong>audio_steg.py</strong>
                 <span>hide seeds in wavs. no internet needed.</span>
             </a>
-            <a href="/static/cli/visual_split.py" class="tool-card" download>
+            <a href="https://github.com/pyoneerC/shardium/blob/main/cli/visual_split.py" class="tool-card"
+                target="_blank">
                 <strong>visual_split.py</strong>
                 <span>2-of-2 visual crypto. needs pillow.</span>
             </a>
