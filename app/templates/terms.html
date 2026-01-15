@@ -4,354 +4,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Terms of Service | Shardium</title>
-    <meta name="description" content="Shardium Terms of Service and Legal Agreement">
-
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>terms - shardium</title>
     <link rel="icon" type="image/png" href="/static/favicon.png">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
-        rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['JetBrains Mono', 'monospace'],
-                    },
-                    colors: {
-                        zinc: {
-                            950: '#09090b',
-                            900: '#18181b',
-                            800: '#27272a',
-                            700: '#3f3f46',
-                            600: '#52525b',
-                            400: '#a1a1aa',
-                            300: '#d4d4d8',
-                        },
-                        accent: '#10b981',
-                    }
-                }
-            }
-        }
-    </script>
-
     <style>
-        body {
-            background: #09090b;
+        * {
+            box-sizing: border-box;
         }
 
-        .border-gradient {
-            border: 1px solid transparent;
-            background: linear-gradient(#09090b, #09090b) padding-box,
-                linear-gradient(135deg, #27272a, #18181b) border-box;
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.7;
+            background: #fafafa;
+            color: #222;
+            text-transform: lowercase;
+        }
+
+        header {
+            border-bottom: 2px solid #222;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .nav a {
+            margin-right: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin: 0.5em 0;
+            line-height: 1.2;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 10px;
+        }
+
+        section {
+            margin-bottom: 40px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #ddd;
+            display: inline-block;
+        }
+
+        p {
+            margin-bottom: 15px;
+        }
+
+        ul {
+            margin-bottom: 15px;
+            padding-left: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .warning-box {
+            background: #fff;
+            border: 2px dashed #ff4444;
+            padding: 20px;
+            margin-bottom: 40px;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
         }
     </style>
 </head>
 
-<body class="text-zinc-300 font-sans antialiased">
+<body>
 
-    <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-50 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6 h-16 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <a href="/" class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded overflow-hidden">
-                        <img src="/static/favicon.png" alt="Shardium" class="w-full h-full object-cover">
-                    </div>
-                    <span class="font-semibold text-white tracking-tight">Shardium</span>
-                </a>
-            </div>
-            <div class="flex items-center gap-4 md:gap-6">
-                <a href="/docs" class="text-sm text-zinc-500 hover:text-white transition">Docs</a>
-                <a href="/app"
-                    class="text-sm px-4 py-2 bg-white text-black font-medium rounded hover:bg-zinc-200 transition">
-                    Launch App
-                </a>
-            </div>
+    <div class="nav">
+        <a href="/">← home</a>
+        <a href="/blog">blog</a>
+        <a href="/tools/dead-switch">dead switch</a>
+    </div>
+
+    <header>
+        <h1>terms of service</h1>
+        <p class="subtitle">last updated: jan 14 2026 (today)</p>
+        <p>this is a legal agreement. read it. if you use shardium, you agree to this.</p>
+    </header>
+
+    <main>
+        <div class="warning-box">
+            <strong>legal disclaimer:</strong> i am a developer in argentina, not a lawyer. shardium is a tool i built
+            for myself and shared with the world. use it at your own risk. i am not responsible for your money.
         </div>
-    </nav>
 
-    <!-- Content -->
-    <main class="pt-24 pb-16">
-        <div class="max-w-4xl mx-auto px-6">
+        <section>
+            <h2>1. no liability</h2>
+            <p>this is the most important part. shardium, max (the founder), and anyone associated with this project are
+                NOT liable for any loss of funds, cryptocurrency, or digital assets. if you lose your seed phrase, if
+                the switch triggers early, if the switch doesnt trigger at all, if our servers catch fire... you accept
+                that risk.</p>
+            <p>limit of liability: $0.00. we are not an insurance company. we are a software project.</p>
+        </section>
 
-            <div class="mb-12">
-                <div class="text-xs font-mono text-zinc-500 mb-4">// LEGAL</div>
-                <h1 class="text-4xl font-bold text-white mb-4">Terms of Service</h1>
-                <p class="text-zinc-400">Last updated: December 19, 2024</p>
-            </div>
+        <section>
+            <h2>2. service description</h2>
+            <p>shardium uses shamir's secret sharing (sss) to split your seed phrase. we store one encrypted shard. any
+                2 of 3 shards can recover your seed. this is a trustless system by design, but software can have bugs.
+            </p>
+        </section>
 
-            <div class="border-gradient rounded-xl p-8 mb-8 bg-red-500/5 border-red-500/30">
-                <div class="flex items-start gap-4">
-                    <div class="text-red-500 text-2xl">⚠️</div>
-                    <div>
-                        <h2 class="text-lg font-semibold text-white mb-2">IMPORTANT LEGAL NOTICE</h2>
-                        <p class="text-sm text-zinc-400">
-                            BY USING SHARDIUM, YOU ACKNOWLEDGE THAT YOU HAVE READ, UNDERSTOOD, AND AGREE TO BE BOUND BY
-                            THESE TERMS.
-                            IF YOU DO NOT AGREE, DO NOT USE THIS SERVICE. THIS IS A BINDING LEGAL AGREEMENT.
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <section>
+            <h2>3. user responsibility</h2>
+            <ul>
+                <li>you are responsible for keeping shard a safe.</li>
+                <li>you are responsible for giving shard b to your beneficiary.</li>
+                <li>you are responsible for responding to heartbeat emails.</li>
+                <li>you are responsible for verifying that your recovery setup actually works.</li>
+            </ul>
+        </section>
 
-            <div class="space-y-10 text-sm leading-relaxed">
+        <section>
+            <h2>4. no financial advice</h2>
+            <p>i dont give financial or legal advice. talk to a professional if you're worried about inheritance laws or
+                taxes. shardium is a technical tool, not a legal entity.</p>
+        </section>
 
-                <!-- Section 1 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">1. ACCEPTANCE OF TERMS</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>1.1. These Terms of Service ("Terms") constitute a legally binding agreement between you
-                            ("User," "you," or "your") and Shardium ("Company," "we," "us," or "our").</p>
-                        <p>1.2. By accessing or using Shardium's services, website, or software (collectively, the
-                            "Service"), you agree to be bound by these Terms, our Privacy Policy, and all applicable
-                            laws and regulations.</p>
-                        <p>1.3. We reserve the right to modify these Terms at any time. Continued use of the Service
-                            after any modifications constitutes acceptance of the revised Terms.</p>
-                        <p>1.4. You represent and warrant that you are at least 18 years of age and have the legal
-                            capacity to enter into this agreement.</p>
-                    </div>
-                </section>
+        <section>
+            <h2>5. privacy</h2>
+            <p>we don't want your data. we store your email and an encrypted blob of data (shard c). that's it. we don't
+                sell data. we don't track you beyond what's needed for the switch to work.</p>
+        </section>
 
-                <!-- Section 2 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">2. SERVICE DESCRIPTION</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>2.1. Shardium provides a cryptographic secret sharing service using Shamir's Secret Sharing
-                            algorithm to split seed phrases into multiple shards.</p>
-                        <p>2.2. The Service includes a "dead man's switch" mechanism that may automatically transmit
-                            shard information to designated beneficiaries after a period of user inactivity.</p>
-                        <p>2.3. <strong class="text-white">THE SERVICE IS PROVIDED "AS IS" AND "AS AVAILABLE" WITHOUT
-                                ANY WARRANTIES OF ANY KIND, EXPRESS OR IMPLIED.</strong></p>
-                    </div>
-                </section>
+        <section>
+            <h2>6. termination</h2>
+            <p>we can stop this service at any time. if we do, we'll try to give you 30 days notice to recover your
+                shards. since we use standard bip-39 and shamir's secret sharing, you are never locked in. you can
+                recover your seed using open-source tools (like `ssss-split`) without our servers. we are just a
+                convenient interface for math.</p>
+        </section>
 
-                <!-- Section 3 - CRITICAL -->
-                <section class="border-gradient rounded-lg p-6 bg-zinc-900/50">
-                    <h2 class="text-xl font-semibold text-red-400 mb-4">3. LIMITATION OF LIABILITY — CRITICAL</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>3.1. <strong class="text-white">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, SHARDIUM,
-                                ITS OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, AND AFFILIATES SHALL NOT BE LIABLE FOR ANY
-                                INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, INCLUDING BUT NOT
-                                LIMITED TO:</strong></p>
-                        <ul class="list-disc list-inside ml-4 space-y-2">
-                            <li>Loss of cryptocurrency, digital assets, or funds of any kind</li>
-                            <li>Loss of access to wallets, accounts, or seed phrases</li>
-                            <li>Unauthorized access to your assets by third parties</li>
-                            <li>Failure of the dead man's switch to trigger or triggering prematurely</li>
-                            <li>Email delivery failures or delays</li>
-                            <li>Data breaches, hacks, or security incidents</li>
-                            <li>Service interruptions, downtime, or discontinuation</li>
-                            <li>Loss of profits, revenue, data, or business opportunities</li>
-                        </ul>
-                        <p class="mt-4">3.2. <strong class="text-white">IN NO EVENT SHALL OUR TOTAL LIABILITY TO YOU
-                                EXCEED THE AMOUNT YOU HAVE PAID TO US IN SUBSCRIPTION FEES DURING THE TWELVE (12) MONTHS
-                                IMMEDIATELY PRECEDING THE CLAIM.</strong></p>
-                        <p>3.3. If you are using the free, self-hosted version of Shardium, our maximum liability shall
-                            be ZERO ($0.00).</p>
-                        <p>3.4. <strong class="text-white">YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT SHARDIUM SHALL HAVE
-                                NO LIABILITY WHATSOEVER FOR THE LOSS OF CRYPTOCURRENCY OR DIGITAL ASSETS, REGARDLESS OF
-                                THE VALUE THEREOF.</strong></p>
-                    </div>
-                </section>
+        <section>
+            <h2>7. argentina jurisdiction</h2>
+            <p>any legal issues will be handled under the laws of argentina. but seriously, let's just be cool.</p>
+        </section>
 
-                <!-- Section 4 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">4. DISCLAIMER OF WARRANTIES</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>4.1. THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY
-                            KIND, EITHER EXPRESS OR IMPLIED.</p>
-                        <p>4.2. WE EXPRESSLY DISCLAIM ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO:</p>
-                        <ul class="list-disc list-inside ml-4 space-y-2">
-                            <li>Implied warranties of merchantability and fitness for a particular purpose</li>
-                            <li>Warranties of title and non-infringement</li>
-                            <li>Warranties that the Service will be uninterrupted, error-free, or secure</li>
-                            <li>Warranties regarding the accuracy, reliability, or completeness of information</li>
-                        </ul>
-                        <p>4.3. We do not guarantee that the cryptographic algorithms used will remain secure
-                            indefinitely.</p>
-                        <p>4.4. We make no representations regarding the tax, legal, or regulatory implications of using
-                            this Service.</p>
-                    </div>
-                </section>
+        <section>
+            <h2>8. architecture guarantee</h2>
+            <p>we built shardium using standard 2-of-3 shamir's secret sharing. mathematically, we only possess shard c.
+                we literally cannot access your funds even if we wanted to, or even if a government ordered us to. we
+                are not asking for your trust; we are relying on cryptography.</p>
+        </section>
 
-                <!-- Section 5 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">5. USER RESPONSIBILITIES AND ACKNOWLEDGMENTS</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>5.1. You acknowledge that:</p>
-                        <ul class="list-disc list-inside ml-4 space-y-2">
-                            <li>You are solely responsible for the security of your seed phrases, shards, and digital
-                                assets</li>
-                            <li>You understand the risks associated with cryptocurrency and self-custody</li>
-                            <li>You have independently verified the shard splitting and recovery process works correctly
-                            </li>
-                            <li>You are responsible for keeping your email address current and checking emails regularly
-                            </li>
-                            <li>You are responsible for maintaining access to your heartbeat confirmation links</li>
-                            <li>You accept all risks associated with designating a beneficiary</li>
-                        </ul>
-                        <p>5.2. You agree to maintain at least one alternative backup of your seed phrase independent of
-                            this Service.</p>
-                        <p>5.3. You acknowledge that failure to respond to heartbeat checks may result in irreversible
-                            transmission of your shard to your designated beneficiary.</p>
-                    </div>
-                </section>
+        <section>
+            <h2>9. indemnification</h2>
+            <p>you agree to hold max comperatore and shardium harmless from any claim or demand, including reasonable
+                attorneys' fees, made by any third party due to your use of the service, your violation of these terms,
+                or your violation of any rights of another. in plain english: if you mess up and someone sues us because
+                of it, you pay the lawyers.</p>
+        </section>
 
-                <!-- Section 6 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">6. INDEMNIFICATION</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>6.1. You agree to defend, indemnify, and hold harmless Shardium, its officers, directors,
-                            employees, agents, licensors, and suppliers from and against any claims, actions, demands,
-                            liabilities, damages, losses, costs, and expenses (including reasonable attorneys' fees)
-                            arising from:</p>
-                        <ul class="list-disc list-inside ml-4 space-y-2">
-                            <li>Your use of the Service</li>
-                            <li>Your violation of these Terms</li>
-                            <li>Your violation of any rights of any third party</li>
-                            <li>Any claim by your beneficiary or heirs related to the Service</li>
-                            <li>Any disputes regarding ownership of digital assets</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <!-- Section 7 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">7. ASSUMPTION OF RISK</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>7.1. <strong class="text-white">YOU EXPRESSLY ACKNOWLEDGE AND ASSUME ALL RISKS ASSOCIATED
-                                WITH:</strong></p>
-                        <ul class="list-disc list-inside ml-4 space-y-2">
-                            <li>The volatility and potential total loss of cryptocurrency assets</li>
-                            <li>Technological failures, including but not limited to software bugs, hardware failures,
-                                and network issues</li>
-                            <li>Regulatory actions that may affect cryptocurrency ownership or transfer</li>
-                            <li>The possibility that cryptographic methods may become compromised in the future</li>
-                            <li>Human error in the shard distribution or recovery process</li>
-                            <li>The potential insolvency or discontinuation of Shardium</li>
-                        </ul>
-                    </div>
-                </section>
-
-                <!-- Section 8 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">8. SERVICE MODIFICATIONS AND TERMINATION</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>8.1. We reserve the right to modify, suspend, or discontinue the Service at any time, with or
-                            without notice.</p>
-                        <p>8.2. We may terminate your access to the Service at our sole discretion if we believe you
-                            have violated these Terms.</p>
-                        <p>8.3. Upon termination, you remain responsible for retrieving your shard data before access is
-                            revoked.</p>
-                        <p>8.4. We will make reasonable efforts to provide 30 days notice before discontinuing the
-                            Service, but this is not guaranteed.</p>
-                    </div>
-                </section>
-
-                <!-- Section 9 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">9. INTELLECTUAL PROPERTY</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>9.1. The Shardium name, logo, and brand are proprietary to us.</p>
-                        <p>9.2. The open-source code is provided under the MIT License, but this license does not extend
-                            to our trademarks or brand assets.</p>
-                    </div>
-                </section>
-
-                <!-- Section 10 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">10. GOVERNING LAW AND DISPUTE RESOLUTION</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>10.1. These Terms shall be governed by and construed in accordance with the laws of
-                            Argentina, without regard to its conflict of laws principles.</p>
-                        <p>10.2. Any dispute arising from these Terms shall be resolved through binding arbitration.</p>
-                        <p>10.3. <strong class="text-white">YOU WAIVE YOUR RIGHT TO PARTICIPATE IN CLASS ACTION LAWSUITS
-                                OR CLASS-WIDE ARBITRATION.</strong></p>
-                        <p>10.4. The prevailing party in any dispute shall be entitled to recover reasonable attorneys'
-                            fees and costs.</p>
-                    </div>
-                </section>
-
-                <!-- Section 11 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">11. MISCELLANEOUS</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>11.1. <strong>Severability:</strong> If any provision of these Terms is found to be
-                            unenforceable, the remaining provisions shall continue in full force and effect.</p>
-                        <p>11.2. <strong>Entire Agreement:</strong> These Terms constitute the entire agreement between
-                            you and Shardium regarding the Service.</p>
-                        <p>11.3. <strong>No Waiver:</strong> Our failure to enforce any right or provision of these
-                            Terms shall not constitute a waiver of such right or provision.</p>
-                        <p>11.4. <strong>Assignment:</strong> You may not assign or transfer these Terms without our
-                            prior written consent. We may assign these Terms without restriction.</p>
-                        <p>11.5. <strong>Force Majeure:</strong> We shall not be liable for any failure or delay due to
-                            circumstances beyond our reasonable control.</p>
-                    </div>
-                </section>
-
-                <!-- Section 12 -->
-                <section>
-                    <h2 class="text-xl font-semibold text-white mb-4">12. NO FINANCIAL OR LEGAL ADVICE</h2>
-                    <div class="space-y-3 text-zinc-400">
-                        <p>12.1. Shardium does not provide financial, investment, tax, or legal advice.</p>
-                        <p>12.2. You should consult with qualified professionals before making decisions regarding
-                            cryptocurrency inheritance or estate planning.</p>
-                        <p>12.3. We make no representations regarding the legal validity of using this Service as part
-                            of an estate plan.</p>
-                    </div>
-                </section>
-
-                <!-- Contact -->
-                <section class="border-gradient rounded-lg p-6">
-                    <h2 class="text-xl font-semibold text-white mb-4">13. CONTACT INFORMATION</h2>
-                    <div class="text-zinc-400">
-                        <p>For questions about these Terms, please contact:</p>
-                        <p class="mt-2 font-mono text-accent">legal@shardium.com</p>
-                    </div>
-                </section>
-
-            </div>
-
-            <!-- Final Agreement -->
-            <div class="mt-12 border-gradient rounded-xl p-8 text-center">
-                <p class="text-zinc-400 mb-4">
-                    By creating a vault or using Shardium's services, you acknowledge that you have read, understood,
-                    and agree to be bound by these Terms of Service.
-                </p>
-                <a href="/app"
-                    class="inline-block px-6 py-3 bg-accent text-black font-semibold rounded hover:bg-emerald-400 transition">
-                    I Accept — Create Vault
-                </a>
-            </div>
-
-        </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="py-8 border-t border-zinc-800">
-        <div class="max-w-6xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
-            <div class="flex items-center gap-3">
-                <div class="w-6 h-6 rounded overflow-hidden">
-                    <img src="/static/favicon.png" alt="Shardium" class="w-full h-full object-cover">
-                </div>
-                <span class="text-sm text-zinc-500">Shardium</span>
-            </div>
-            <div class="flex gap-6 text-sm text-zinc-500">
-                <a href="/docs" class="hover:text-white transition">Docs</a>
-                <a href="/terms" class="hover:text-white transition text-white">Terms</a>
-                <a href="https://github.com/pyoneerC/shardium" class="hover:text-white transition">GitHub</a>
-            </div>
-            <div class="text-xs text-zinc-600">
-                Open Source · MIT License
-            </div>
-        </div>
-    </footer>
+    <div class="footer">
+        <p>built with care in argentina. open source. trustless by design.</p>
+        <p>&copy; 2026 shardium</p>
+    </div>
 
 </body>
 

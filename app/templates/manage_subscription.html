@@ -1,39 +1,128 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<div class="max-w-2xl mx-auto px-6 py-24">
-    <div class="text-center mb-12">
-        <h1 class="text-3xl font-bold text-white mb-4">Manage Your Subscription</h1>
-        <p class="text-zinc-400">Update payment method or cancel your subscription</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>manage subscription - shardium</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 80px 20px;
+            line-height: 1.7;
+            background: #fafafa;
+            color: #222;
+            text-transform: lowercase;
+        }
+
+        header {
+            border-bottom: 2px solid #222;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 10px;
+            font-weight: normal;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .btn {
+            display: block;
+            padding: 15px;
+            border: 1px solid #ddd;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #222;
+            transition: border-color 0.2s;
+        }
+
+        .btn:hover {
+            border-color: #222;
+            background: #fdfdfd;
+        }
+
+        .btn-danger {
+            color: #c0392b;
+            border-color: #fadbd8;
+        }
+
+        .btn-danger:hover {
+            border-color: #c0392b;
+            background: #fef5f5;
+        }
+
+        .note {
+            background: #fff;
+            border: 1px dashed #ccc;
+            padding: 20px;
+            margin-top: 30px;
+            font-size: 0.9em;
+        }
+
+        .nav {
+            margin-top: 40px;
+            font-family: monospace;
+        }
+
+        .nav a {
+            color: #888;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nav">
+        <a href="/">← home</a>
     </div>
 
-    <div class="border-gradient rounded-xl p-8 bg-zinc-900/50">
-        <h2 class="text-xl font-semibold text-white mb-6">Subscription Options</h2>
+    <header>
+        <h1>manage your subscription</h1>
+        <p>update your payment method or cancel your account.</p>
+    </header>
 
-        <div class="space-y-4">
-            <a href="mailto:max@maxcomperatore.com?subject=Cancel%20Subscription"
-                class="block w-full py-4 px-6 border border-red-700 text-center rounded-lg font-medium text-red-400 hover:border-red-500 hover:bg-red-500/10 transition">
-                Cancel Subscription
-            </a>
+    <div class="container">
+        <a href="mailto:maxcomperatore@gmail.com?subject=cancel subscription" class="btn btn-danger">cancel
+            subscription</a>
+        <a href="mailto:maxcomperatore@gmail.com?subject=update payment method" class="btn">update payment method</a>
+        <a href="mailto:maxcomperatore@gmail.com?subject=refund request" class="btn">request a refund (100% money
+            back)</a>
 
-            <a href="mailto:max@maxcomperatore.com?subject=Update%20Payment%20Method"
-                class="block w-full py-4 px-6 border border-zinc-700 text-center rounded-lg font-medium text-zinc-300 hover:border-zinc-500 hover:text-white transition">
-                Update Payment Method
-            </a>
-
-            <a href="mailto:max@maxcomperatore.com?subject=Refund%20Request"
-                class="block w-full py-4 px-6 border border-zinc-700 text-center rounded-lg font-medium text-zinc-300 hover:border-zinc-500 hover:text-white transition">
-                Request Refund (100% Money Back)
-            </a>
-        </div>
-
-        <div class="mt-8 p-4 bg-zinc-800/50 rounded-lg">
-            <p class="text-zinc-400 text-sm">
-                <strong class="text-white">Need help?</strong> Email max@maxcomperatore.com and I'll respond within 24
-                hours.
-                All refund requests are processed immediately, no questions asked.
-            </p>
+        <div class="note">
+            <strong>a note from max:</strong> if you're not happy with shardium, i don't want your money. just send me
+            an email and i'll process your refund or cancellation immediately. no questions, no hidden buttons.
         </div>
     </div>
-</div>
-{% endblock %}
+
+</body>
+
+</html>

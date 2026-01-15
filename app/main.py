@@ -748,7 +748,7 @@ async def create_vault(
             <i>(the guy who sends you crayon drawings)</i></p>
 
             <div class="footer">
-                <p>shardium — protecting your crypto legacy, one human at a time.</p>
+                <p>shardium - protecting your crypto legacy.</p>
                 <p>built with care in argentina. open source. trustless by design.</p>
             </div>
         </div>
@@ -887,7 +887,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                                 </p>
                                 <a href="https://shardium.maxcomperatore.com/app?ref=beneficiary&discount=50" 
                                    style="display: inline-block; background: #000; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
-                                    Create Your Vault — 50% Off First Year
+                                    Create Your Vault - 50% Off First Year
                                 </a>
                                 <p style="color: #000; opacity: 0.6; margin: 10px 0 0 0; font-size: 12px;">
                                     Set up in 5 minutes. Protect your loved ones.
@@ -895,7 +895,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                             </div>
                             
                             <div style="text-align: center; margin-top: 30px; color: #64748b; font-size: 12px;">
-                                <p>Shardium — Trustless Dead Man's Switch for Crypto</p>
+                                <p>Shardium - Trustless Dead Man's Switch for Crypto</p>
                             </div>
                         </div>
                         """

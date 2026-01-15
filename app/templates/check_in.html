@@ -1,23 +1,89 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<div class="max-w-2xl mx-auto px-6 py-24 text-center">
-    {% if message %}
-    <div class="w-16 h-16 bg-accent/20 text-accent rounded-lg flex items-center justify-center mx-auto mb-8">
-        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
-            </path>
-        </svg>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>heartbeat - shardium</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 100px 20px;
+            line-height: 1.7;
+            background: #fafafa;
+            color: #222;
+            text-transform: lowercase;
+            text-align: center;
+        }
+
+        .container {
+            background: #fff;
+            padding: 60px 40px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin-bottom: 20px;
+            font-weight: normal;
+            text-decoration: underline;
+        }
+
+        .icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+            color: #2ecc71;
+        }
+
+        p {
+            color: #555;
+            margin-bottom: 40px;
+        }
+
+        .nav {
+            margin-top: 40px;
+            font-family: monospace;
+        }
+
+        .nav a {
+            color: #888;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        {% if message %}
+        <div class="icon">✓</div>
+        <h1>status updated.</h1>
+        <p>{{ message | lower }}</p>
+        {% else %}
+        <h1>checking status...</h1>
+        {% endif %}
+
+        <p>we've reset your 90-day timer. thanks for checking in. your family is safe.</p>
     </div>
-    <div class="text-xs font-mono text-zinc-500 mb-4">// HEARTBEAT</div>
-    <h1 class="text-2xl font-bold mb-4 text-white">Status Updated</h1>
-    <p class="text-zinc-400 mb-8">{{ message }}</p>
-    {% else %}
-    <div class="text-xs font-mono text-zinc-500 mb-4">// PROCESSING</div>
-    <h1 class="text-2xl font-bold mb-4 text-white">Checking Status...</h1>
-    {% endif %}
 
-    <a href="/" class="text-sm text-zinc-500 hover:text-white transition">← Return to Shardium</a>
-</div>
-{% endblock %}
+    <div class="nav">
+        <a href="/">← return to shardium</a>
+    </div>
+
+</body>
+
+</html>

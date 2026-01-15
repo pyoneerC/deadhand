@@ -1,103 +1,219 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<div class="max-w-2xl mx-auto px-6 py-12">
-    <div class="text-center mb-10">
-        <div class="text-xs font-mono text-zinc-500 mb-4">// RECOVER</div>
-        <h1 class="text-3xl font-bold mb-4 text-white">Reconstruct Seed Phrase</h1>
-        <p class="text-zinc-400">
-            Enter any 2 of the 3 shards. Client-side only.
-        </p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>recover seed - shardium</title>
+    <script src="/static/js/secrets.min.js"></script>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 700px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.7;
+            background: #fafafa;
+            color: #222;
+            text-transform: lowercase;
+        }
+
+        header {
+            border-bottom: 2px solid #222;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        .nav {
+            margin-bottom: 20px;
+            font-family: monospace;
+        }
+
+        .nav a {
+            margin-right: 15px;
+            color: #666;
+            text-decoration: none;
+        }
+
+        .nav a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        .container {
+            background: #fff;
+            padding: 40px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            font-size: 2em;
+            margin: 0.5em 0;
+            line-height: 1.2;
+            font-weight: normal;
+        }
+
+        .subtitle {
+            color: #666;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+
+        label {
+            font-family: monospace;
+            font-size: 0.8em;
+            color: #888;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 14px;
+            margin-bottom: 25px;
+            background: #fff;
+        }
+
+        input:focus {
+            border-color: #222;
+            outline: none;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #222;
+            color: #fff !important;
+            text-decoration: none;
+            border-radius: 4px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            text-align: center;
+            font-family: Georgia, serif;
+            text-transform: lowercase;
+        }
+
+        .btn:hover {
+            background: #000;
+        }
+
+        .result-box {
+            margin-top: 40px;
+            padding-top: 40px;
+            border-top: 2px solid #222;
+        }
+
+        .recovered-seed {
+            background: #f9f9f9;
+            padding: 20px;
+            border: 1px dashed #ccc;
+            font-family: monospace;
+            word-break: break-all;
+            color: #c0392b;
+            font-weight: bold;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.9em;
+            color: #666;
+            text-align: center;
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="nav">
+        <a href="/">← home</a>
+        <a href="/blog">blog</a>
     </div>
 
-    <div class="border-gradient rounded-xl p-8 space-y-6">
+    <header>
+        <h1>reconstruct seed phrase</h1>
+        <p class="subtitle">combine any 2 shards to reveal the original secret. client-side only.</p>
+    </header>
 
-        <!-- Offline Mode Banner -->
-        <div id="connection-status" class="rounded-lg transition-all duration-300">
-            <!-- Filled by JavaScript -->
+    <div class="container">
+
+        <div id="connection-status" style="margin-bottom: 30px; font-size: 0.8em; font-family: monospace; color: #888;">
+            checking privacy...
         </div>
 
-        <div>
-            <label class="block text-xs font-mono text-zinc-500 mb-2">SHARD 1</label>
-            <input type="text" id="shard-1"
-                class="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 font-mono text-sm text-white focus:border-accent outline-none transition"
-                placeholder="801...">
-        </div>
+        <label>shard 1 (e.g. from your manager)</label>
+        <input type="text" id="shard-1" placeholder="801...">
 
-        <div>
-            <label class="block text-xs font-mono text-zinc-500 mb-2">SHARD 2</label>
-            <input type="text" id="shard-2"
-                class="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-3 font-mono text-sm text-white focus:border-accent outline-none transition"
-                placeholder="802...">
-        </div>
+        <label>shard 2 (e.g. from your beneficiary)</label>
+        <input type="text" id="shard-2" placeholder="802...">
 
-        <button onclick="recoverSeed()"
-            class="w-full py-3 bg-accent hover:bg-emerald-400 text-black font-semibold rounded-lg transition">
-            Reconstruct Seed Phrase
-        </button>
+        <button onclick="recoverSeed()" class="btn">reconstruct seed</button>
 
-        <div id="result-container" class="hidden mt-8 pt-8 border-t border-zinc-800">
-            <div class="flex items-center gap-2 mb-4">
-                <span class="text-xs font-mono text-accent">// RECOVERED</span>
-                <span class="text-xs px-2 py-0.5 bg-accent/20 text-accent rounded">SUCCESS</span>
-            </div>
-            <div class="bg-zinc-900 p-4 rounded-lg border border-zinc-700">
-                <p id="recovered-seed" class="font-mono text-accent break-words"></p>
-            </div>
-            <p class="text-xs text-red-500 mt-4">
-                Warning: Move your funds immediately. This seed has been exposed.
+        <div id="result-container" class="result-box hidden">
+            <label style="color: #c0392b;">// seed recovered successfully</label>
+            <div class="recovered-seed" id="recovered-seed"></div>
+            <p style="margin-top: 20px; font-size: 0.9em; color: #666; font-style: italic;">
+                warning: your seed has been exposed. move your funds to a new wallet as soon as possible.
             </p>
         </div>
+
     </div>
-</div>
 
-<script>
-    function updateConnectionStatus() {
-        const statusEl = document.getElementById('connection-status');
+    <div class="footer">
+        <p>built for privacy. shardium is open source.</p>
+    </div>
 
-        if (navigator.onLine) {
-            statusEl.innerHTML = `
-                <div class="bg-yellow-500/10 border border-yellow-500/30 rounded-lg p-4">
-                    <div class="flex items-center gap-3">
-                        <div class="text-yellow-400 font-mono text-xs">ONLINE</div>
-                        <div class="text-sm text-yellow-300/70">Disconnect internet for maximum security.</div>
-                    </div>
-                </div>
-            `;
-        } else {
-            statusEl.innerHTML = `
-                <div class="bg-accent/10 border border-accent/30 rounded-lg p-4">
-                    <div class="flex items-center gap-3">
-                        <div class="text-accent font-mono text-xs">OFFLINE</div>
-                        <div class="text-sm text-accent/70">Maximum security. Recovery is 100% local.</div>
-                    </div>
-                </div>
-            `;
+    <script>
+        function updateConnectionStatus() {
+            const el = document.getElementById('connection-status');
+            if (navigator.onLine) {
+                el.innerHTML = '// status: <span style="color: #e67e22;">online</span> (disconnect now for maximum privacy)';
+            } else {
+                el.innerHTML = '// status: <span style="color: #27ae60;">offline</span> (privacy mode active)';
+            }
         }
-    }
+        window.addEventListener('online', updateConnectionStatus);
+        window.addEventListener('offline', updateConnectionStatus);
+        updateConnectionStatus();
 
-    window.addEventListener('online', updateConnectionStatus);
-    window.addEventListener('offline', updateConnectionStatus);
-    document.addEventListener('DOMContentLoaded', updateConnectionStatus);
+        function recoverSeed() {
+            const s1 = document.getElementById('shard-1').value.trim();
+            const s2 = document.getElementById('shard-2').value.trim();
 
-    function recoverSeed() {
-        const s1 = document.getElementById('shard-1').value.trim();
-        const s2 = document.getElementById('shard-2').value.trim();
+            if (!s1 || !s2) {
+                alert("enter both shards.");
+                return;
+            }
 
-        if (!s1 || !s2) {
-            alert("Enter two shards.");
-            return;
+            try {
+                const hex = secrets.combine([s1, s2]);
+                const seed = secrets.hex2str(hex);
+                document.getElementById('recovered-seed').innerText = seed;
+                document.getElementById('result-container').classList.remove('hidden');
+                document.getElementById('result-container').scrollIntoView({ behavior: 'smooth' });
+            } catch (e) {
+                alert("reconstruction failed. invalid shards.");
+            }
         }
+    </script>
+</body>
 
-        try {
-            const hex = secrets.combine([s1, s2]);
-            const seed = secrets.hex2str(hex);
-            document.getElementById('recovered-seed').innerText = seed;
-            document.getElementById('result-container').classList.remove('hidden');
-        } catch (e) {
-            console.error(e);
-            alert("Reconstruction failed. Invalid shards.");
-        }
-    }
-</script>
-{% endblock %}
+</html>
