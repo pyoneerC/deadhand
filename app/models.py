@@ -19,6 +19,7 @@ class User(Base):
     last_heartbeat = Column(DateTime(timezone=True), server_default=func.now())
     is_dead = Column(Boolean, default=False)
     heartbeat_token = Column(String)  # Simple token for authentication via email link
+    personal_message = Column(String, nullable=True) # Optional message for the beneficiary
     
     # Stripe subscription tracking
     stripe_customer_id = Column(String, nullable=True, index=True)  # cus_xxx

@@ -282,8 +282,32 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             # db.delete(user)
             db.commit()
             
-            # Send email notifying them their vault is deactivated
-            # TODO: send_email to user.email about cancellation
+            # Send human-centered cancellation email
+            cancellation_html = f"""
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <style>
+                    body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
+                    .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
+                </style>
+            </head>
+            <body>
+                <p>hey,</p>
+                <p>i just got word that your subscription was cancelled. your vault is now deactivated.</p>
+                <p>i'm not going to send you a "please come back" survey or a discount code to win you over. i just want to say thanks for trusting shardium for a while.</p>
+                <p>if you ever want to protect your family again, you know where to find me.</p>
+                
+                <p>take care,</p>
+                <p><strong>max</strong></p>
+
+                <div class="footer">
+                    <p>sent by shardium - built with care in argentina.</p>
+                </div>
+            </body>
+            </html>
+            """
+            send_email(user.email, "your shardium vault has been deactivated", cancellation_html)
     
     return {"status": "success"}
 
@@ -417,24 +441,45 @@ async def lead_magnet_signup(request: Request, email: str = Form(...)):
     
     email = email.lower().strip()
     
-    # Send the guide email
-    guide_html = """
-    <h2>🔐 Your Crypto Inheritance Playbook is Here!</h2>
-    <p>Thanks for downloading! Heres what youll learn:</p>
-    <ul>
-        <li>Why 99% of crypto holders have NO inheritance plan</li>
-        <li>The 3 biggest mistakes people make with seed phrases</li>
-        <li>How to use Shamirs Secret Sharing (the math behind Shardium)</li>
-        <li>Step-by-step: Setting up your dead mans switch</li>
-        <li>How to explain crypto to your non-technical family</li>
-    </ul>
-    <p><a href="https://shardium.xyz/static/crypto-inheritance-guide.pdf">📥 Download the PDF Guide</a></p>
-    <hr>
-    <p>Questions? Just reply to this email. Im a real person.</p>
-    <p>- Max</p>
+    # Send the lead magnet email - chewy style
+    guide_html = f"""
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <style>
+            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
+            .cta-link {{ display: inline-block; color: #000 !important; text-decoration: underline; font-weight: bold; margin: 20px 0; }}
+            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
+        </style>
+    </head>
+    <body>
+        <p>hey,</p>
+        <p>thanks for checking out the inheritance playbook. i'm max.</p>
+        <p>i put this together because most "crypto security" guides are written by people who want to sell you a titanium plate you'll probably lose anyway. this is about the human side—how to make sure your family actually gets the keys without needing a computer science degree.</p>
+        
+        <p>you can download the playbook here:</p>
+        <a href="https://shardium.xyz/static/crypto-inheritance-guide.pdf" class="cta-link">download the crypto inheritance playbook (pdf)</a>
+
+        <p>here is what i cover in there:</p>
+        <ul>
+            <li>why 99% of plans fail (and it's not the math).</li>
+            <li>the 3 mistakes that lead to permanent loss.</li>
+            <li>how shamir's secret sharing actually works (simply).</li>
+            <li>how to talk to your non-technical family about this.</li>
+        </ul>
+
+        <p>if you have a question about your specific setup, just reply. i read all of these.</p>
+        
+        <p>talk soon,</p>
+        <p><strong>max</strong></p>
+
+        <div class="footer">
+            <p>sent by shardium - built with care in argentina.</p>
+        </div>
+    </body>
+    </html>
     """
-    
-    send_email(email, "📚 Your Crypto Inheritance Playbook", guide_html)
+    send_email(email, "your inheritance playbook is here", guide_html)
     
     # Send Discord notification (for tracking leads)
     if DISCORD_WEBHOOK_URL:
@@ -650,6 +695,7 @@ async def create_vault(
     email: str = Form(...),
     beneficiary_email: str = Form(...),
     shard_c: str = Form(...),
+    personal_message: str = Form(None),
     db: Session = Depends(get_db)
 ):
     # Check if user exists
@@ -677,7 +723,8 @@ async def create_vault(
         shard_c=encrypted_shard,  # Now actually encrypted!
         config_hash=config_hash,  # Immutable commitment
         heartbeat_token=heartbeat_token,
-        last_heartbeat=created_timestamp
+        last_heartbeat=created_timestamp,
+        personal_message=personal_message
     )
     db.add(new_user)
     db.commit()
@@ -805,32 +852,75 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                     last_hb = last_hb.replace(tzinfo=None)
                 days_since_heartbeat = (now - last_hb).days
                 
-                # 30-day reminder
+                # 30-day reminder - chewy style
                 if 29 <= days_since_heartbeat <= 31:
-                    send_email(
-                        user.email,
-                        "🔔 Shardium Check-In Required",
-                        f"""
-                        <h2>It's been 30 days!</h2>
-                        <p>Click the link below to confirm you're still with us:</p>
-                        <p><a href="https://shardium.maxcomperatore.com/heartbeat/{user.id}/{user.heartbeat_token}">✅ I'm Still Here</a></p>
-                        <p>If we don't hear from you in 60 more days, Shard C will be sent to your beneficiary.</p>
-                        """
-                    )
+                    reminder_html = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
+                            .heartbeat-link {{ display: inline-block; color: #000 !important; text-decoration: underline; font-weight: bold; margin: 20px 0; }}
+                            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
+                        </style>
+                    </head>
+                    <body>
+                        <p>hey,</p>
+                        <p>it's been 30 days since we last heard from you. i'm just checking in to make sure everything is okay.</p>
+                        <p>could you click the link below? it just tells our system you're still with us and resets your timer for another 90 days. it takes two seconds.</p>
+                        
+                        <a href="https://shardium.xyz/heartbeat/{user.id}/{user.heartbeat_token}" class="heartbeat-link">i'm still here</a>
+
+                        <p>if you don't click it, no big deal for now. i'll check in again in another 30 days. but after 90 days of silence, we'll have to send shard c to your beneficiary.</p>
+                        
+                        <p>stay safe out there,</p>
+                        <p><strong>max</strong></p>
+
+                        <div class="footer">
+                            <p>sent by shardium - built with care in argentina.</p>
+                        </div>
+                    </body>
+                    </html>
+                    """
+                    send_email(user.email, "quick check-in from shardium", reminder_html)
                     results["reminders_30d"].append(user.email)
                 
-                # 60-day warning
+                # 60-day warning - urgent but human
                 elif 59 <= days_since_heartbeat <= 61:
-                    send_email(
-                        user.email,
-                        "⚠️ URGENT: Shardium - 30 Days Left",
-                        f"""
-                        <h2>Final Warning!</h2>
-                        <p>We haven't heard from you in 60 days.</p>
-                        <p><strong>In 30 days, Shard C will be sent to your beneficiary.</strong></p>
-                        <p><a href="https://shardium.maxcomperatore.com/heartbeat/{user.id}/{user.heartbeat_token}">✅ Click Here to Confirm You're OK</a></p>
-                        """
-                    )
+                    warning_html = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
+                            .heartbeat-link {{ display: inline-block; color: #000 !important; text-decoration: underline; font-weight: bold; margin: 20px 0; }}
+                            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
+                            .warning-box {{ border: 1px dashed #ff4444; padding: 20px; margin: 20px 0; }}
+                        </style>
+                    </head>
+                    <body>
+                        <p>hey,</p>
+                        <p>i'm getting a little worried. we haven't heard from you in 60 days.</p>
+                        
+                        <div class="warning-box">
+                            <p><strong>just 30 days left.</strong></p>
+                            <p>if you don't click the link below within the next month, our system will assume the worst and automatically send shard c to your beneficiary.</p>
+                        </div>
+
+                        <p>if you're just busy, i totally get it. but please, click this now so we don't worry your family unnecessarily:</p>
+                        
+                        <a href="https://shardium.xyz/heartbeat/{user.id}/{user.heartbeat_token}" class="heartbeat-link">i'm here, reset the timer</a>
+
+                        <p>talk soon,</p>
+                        <p><strong>max</strong></p>
+
+                        <div class="footer">
+                            <p>sent by shardium - protecting your crypto legacy.</p>
+                        </div>
+                    </body>
+                    </html>
+                    """
+                    send_email(user.email, "urgent: we haven't heard from you in 60 days", warning_html)
                     results["warnings_60d"].append(user.email)
                 
                 # 90-day death trigger
@@ -848,58 +938,76 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                             continue
                     
                     user.is_dead = True
-                    send_email(
-                        user.beneficiary_email,
-                        "🔐 Shardium Activation - Recovery Key Inside",
-                        f"""
-                        <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 600px; margin: 0 auto; background: #0a0a0a; color: #e2e8f0; padding: 40px; border-radius: 16px;">
-                            <div style="text-align: center; margin-bottom: 30px;">
-                                <div style="font-size: 28px; font-weight: bold; color: #14b8a6;">🔐 Shardium</div>
-                            </div>
-                            
-                            <h2 style="color: #fff; margin-bottom: 10px;">Important: Crypto Recovery Key</h2>
-                            <p style="color: #94a3b8;">We have not heard from <strong style="color: #fff;">{user.email}</strong> for 90 days.</p>
-                            <p style="color: #94a3b8;">As instructed, here is <strong style="color: #14b8a6;">Shard C</strong>:</p>
-                            
-                            <div style="background: #18181b; border: 2px dashed #3f3f46; padding: 20px; font-family: monospace; word-break: break-all; border-radius: 8px; color: #10b981; margin: 20px 0;">
-                                {decrypt_shard(user.shard_c, user.heartbeat_token)}
-                            </div>
-                            
-                            <div style="background: #1a1a1a; border-radius: 12px; padding: 20px; margin: 20px 0; border: 1px solid #333;">
-                                <h3 style="color: #14b8a6; margin-top: 0;">📋 Recovery Steps</h3>
-                                <ol style="color: #cbd5e1; padding-left: 20px;">
-                                    <li style="margin-bottom: 8px;">Locate <strong>Shard B</strong> (the printed document you received)</li>
-                                    <li style="margin-bottom: 8px;">Go to <a href="https://shardium.maxcomperatore.com/recover" style="color: #14b8a6;">shardium.maxcomperatore.com/recover</a></li>
-                                    <li style="margin-bottom: 8px;">Enter both Shard B and Shard C</li>
-                                    <li style="margin-bottom: 8px;">The original seed phrase will be recovered</li>
-                                </ol>
-                            </div>
-                            
-                            <p style="color: #64748b; text-align: center;">Our condolences. 💐</p>
-                            
-                            <hr style="border: none; border-top: 1px solid #333; margin: 30px 0;">
-                            
-                            <!-- VIRAL LOOP: Convert beneficiary to user -->
-                            <div style="background: linear-gradient(135deg, #14b8a6 0%, #0ea5e9 100%); border-radius: 12px; padding: 25px; text-align: center; margin-top: 20px;">
-                                <h3 style="color: #000; margin: 0 0 10px 0; font-size: 18px;">Now Protect YOUR Crypto</h3>
-                                <p style="color: #000; opacity: 0.8; margin: 0 0 15px 0; font-size: 14px;">
-                                    You just experienced how Shardium works. Don't let your crypto die with you.
-                                </p>
-                                <a href="https://shardium.maxcomperatore.com/app?ref=beneficiary&discount=50" 
-                                   style="display: inline-block; background: #000; color: #fff; padding: 12px 24px; border-radius: 8px; text-decoration: none; font-weight: bold;">
-                                    Create Your Vault - 50% Off First Year
-                                </a>
-                                <p style="color: #000; opacity: 0.6; margin: 10px 0 0 0; font-size: 12px;">
-                                    Set up in 5 minutes. Protect your loved ones.
-                                </p>
-                            </div>
-                            
-                            <div style="text-align: center; margin-top: 30px; color: #64748b; font-size: 12px;">
-                                <p>Shardium - Trustless Dead Man's Switch for Crypto</p>
-                            </div>
+                    personal_msg_html = ""
+                    if user.personal_message:
+                        personal_msg_html = f"""
+                        <div style="background: #fffdf0; border: 1px solid #f0e68c; padding: 20px; border-radius: 4px; margin: 30px 0; font-style: italic; color: #555;">
+                            <p style="margin-top: 0; font-weight: bold; color: #000; font-style: normal; font-size: 14px;">a personal note for you:</p>
+                            "{user.personal_message}"
                         </div>
                         """
-                    )
+
+                    death_html = f"""
+                    <!DOCTYPE html>
+                    <html>
+                    <head>
+                        <style>
+                            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
+                            h1 {{ font-size: 22px; color: #000; font-weight: normal; margin-top: 0; text-decoration: underline; }}
+                            .shard-box {{ background: #fefefe; border: 1px dashed #ccc; padding: 25px; margin: 30px 0; font-family: monospace; font-size: 13px; word-break: break-all; color: #222; }}
+                            .instructions {{ background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 4px; margin: 30px 0; }}
+                            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
+                            .cta-box {{ background: #fafafa; border: 1px solid #ddd; padding: 25px; margin-top: 40px; text-align: center; }}
+                            .cta-link {{ display: inline-block; background: #222; color: #fff !important; text-decoration: none; padding: 12px 20px; border-radius: 4px; font-weight: bold; margin-top: 15px; }}
+                        </style>
+                    </head>
+                    <body>
+                        <h1>a message from shardium.</h1>
+                        
+                        <p>hello,</p>
+                        <p>i'm max, the founder of shardium. i'm writing to you because 90 days ago, <strong>{user.email}</strong> entrusted our system to reach out to you if we stopped hearing from them.</p>
+                        
+                        <p>we haven't received a heartbeat check-in from them in three months. as per their explicit instructions, i am now releasing the final piece of their digital legacy to you.</p>
+
+                        {personal_msg_html}
+
+                        <p>this is <strong>shard c</strong>. it's one of three pieces needed to access their crypto assets. if they followed our setup guide, you should already have <strong>shard b</strong> (likely a printed document or a digital file they gave you).</p>
+
+                        <div class="shard-box">
+                            <strong>shard c value:</strong><br>
+                            {decrypt_shard(user.shard_c, user.heartbeat_token)}
+                        </div>
+
+                        <div class="instructions">
+                            <p><strong>how to use this:</strong></p>
+                            <ol>
+                                <li>locate <strong>shard b</strong> (the one they gave you).</li>
+                                <li>go to <a href="https://shardium.xyz/recover">shardium.xyz/recover</a>.</li>
+                                <li>enter both shard b and shard c into the tool.</li>
+                                <li>the tool will reconstruct their original seed phrase for you.</li>
+                            </ol>
+                        </div>
+
+                        <p>my deepest condolences for whatever situation has led to this email. i built shardium specifically so that people wouldn't have to worry about their loved ones being locked out of their hard-earned assets during difficult times.</p>
+                        
+                        <p>i hope this tool helps you in some small way.</p>
+
+                        <p>with respect,</p>
+                        <p><strong>max</strong></p>
+
+                        <div class="cta-box">
+                            <p style="font-size: 14px;"><strong>protect your own legacy</strong></p>
+                            <p style="font-size: 13px; color: #666;">you've just seen how shardium works. if you have crypto, don't leave your family in the dark. set up your own trustless switch in 5 minutes.</p>
+                            <a href="https://shardium.xyz/app?ref=beneficiary" class="cta-link">create your vault</a>
+                        </div>
+
+                        <div class="footer">
+                            <p>sent by shardium - built with care in argentina.</p>
+                        </div>
+                    </body>
+                    </html>
+                    """
+                    send_email(user.beneficiary_email, "important: digital recovery key for " + user.email, death_html)
                     results["deaths_90d"].append(user.email)
                     
             except Exception as e:
