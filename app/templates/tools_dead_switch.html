@@ -339,6 +339,9 @@
             }
 
             try {
+                // Track seed split event
+                fetch('/api/track/seed_split', { method: 'POST' });
+
                 // convert to hex
                 const seedHex = secrets.str2hex(seed);
 

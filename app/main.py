@@ -455,6 +455,20 @@ async def lead_magnet_signup(request: Request, email: str = Form(...)):
     
     return templates.TemplateResponse("lead_magnet_thanks.html", {"request": request})
 
+# ========== EXPERIMENT TRACKING ==========
+
+@app.post("/api/track/{event}")
+async def track_event(event: str):
+    """
+    Simple counter for experiment success/failure criteria.
+    Events: 'landing_hit', 'seed_split', 'vault_activated'
+    """
+    log_file = "experiment_logs.txt"
+    with open(log_file, "a") as f:
+        from datetime import datetime
+        f.write(f"{datetime.now().isoformat()} - {event}\n")
+    return {"status": "ok"}
+
 # ========== BLOG ==========
 
 def parse_blog_frontmatter(content: str) -> dict:
@@ -668,6 +682,9 @@ async def create_vault(
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
+
+    # Track experiment metric
+    await track_event("vault_activated")
 
     # Send beautiful welcome email
     welcome_html = f"""

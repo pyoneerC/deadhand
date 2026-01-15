@@ -428,6 +428,10 @@
 
         <p>code is open source. <a href="https://github.com/pyoneerC/shardium">go read it</a></p>
 
+        <p><b>no lock-in:</b> we use standard BIP-39 and Shamir Secret Sharing. if shardium disappears tomorrow, you can
+            recover your keys using <code>ssss-split</code> on linux or any other standard offline tool. the emergency
+            exit is always open.</p>
+
         <hr>
 
         <h2>experimental tools</h2>
@@ -490,6 +494,9 @@
 
         <p><b>which chains?</b><br>any bip-39 seed. btc eth sol whatever</p>
 
+        <p><b>what if you disappear?</b><br>we use standard BIP-39 and Shamir Secret Sharing. you can use standard tools
+            like <code>ssss-split</code> on linux to recover your keys without us. no lock-in.</p>
+
         <hr>
 
         <h2>whos behind this</h2>
@@ -526,6 +533,10 @@
 
     </div>
 
+    <script>
+        // Track landing page hit
+        fetch('/api/track/landing_hit', { method: 'POST' });
+    </script>
 </body>
 
 </html>
