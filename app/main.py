@@ -686,106 +686,79 @@ async def create_vault(
     # Track experiment metric
     await track_event("vault_activated")
 
-    # Send beautiful welcome email
+    # Send human-centered "Chewy-style" welcome email
     welcome_html = f"""
     <!DOCTYPE html>
     <html>
     <head>
         <style>
-            body {{ font-family: 'Segoe UI', Arial, sans-serif; background: #0a0a0a; color: #e2e8f0; padding: 40px; }}
-            .container {{ max-width: 600px; margin: 0 auto; background: #111; border-radius: 16px; padding: 40px; border: 1px solid #333; }}
-            .logo {{ font-size: 28px; font-weight: bold; color: #14b8a6; margin-bottom: 20px; }}
-            h1 {{ color: #fff; margin-bottom: 10px; }}
-            .subtitle {{ color: #94a3b8; font-size: 16px; margin-bottom: 30px; }}
-            .section {{ background: #1a1a1a; border-radius: 12px; padding: 20px; margin: 20px 0; border: 1px solid #333; }}
-            .section h3 {{ color: #14b8a6; margin-top: 0; }}
-            .btn {{ display: inline-block; background: linear-gradient(to right, #14b8a6, #0ea5e9); color: #000; font-weight: bold; padding: 14px 28px; border-radius: 8px; text-decoration: none; margin: 20px 0; }}
-            .timeline {{ border-left: 3px solid #14b8a6; padding-left: 20px; margin: 20px 0; }}
-            .timeline-item {{ margin-bottom: 15px; color: #cbd5e1; }}
-            .timeline-day {{ color: #14b8a6; font-weight: bold; }}
-            .warning {{ background: #422006; border: 1px solid #f59e0b; border-radius: 8px; padding: 15px; margin: 20px 0; }}
-            .warning-title {{ color: #fbbf24; font-weight: bold; margin-bottom: 5px; }}
-            .footer {{ text-align: center; color: #64748b; font-size: 12px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #333; }}
-            ul {{ color: #cbd5e1; }}
-            li {{ margin-bottom: 8px; }}
+            body {{ font-family: Georgia, serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; padding: 20px; background: #fafafa; }}
+            .content {{ background: white; padding: 40px; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }}
+            h1 {{ font-size: 24px; color: #000; font-weight: normal; margin-top: 0; }}
+            .image-container {{ text-align: center; margin: 30px 0; }}
+            .image-container img {{ max-width: 100%; border-radius: 4px; border: 1px solid #eee; }}
+            .instructions {{ background: #f9f9f9; padding: 20px; border-left: 3px solid #222; margin: 30px 0; font-family: monospace; font-size: 14px; rotate: -0.5deg; }}
+            .heartbeat-link {{ display: block; background: #222; color: #fff !important; text-decoration: none; padding: 15px 25px; text-align: center; border-radius: 4px; margin: 30px 0; font-weight: bold; }}
+            .footer {{ font-size: 12px; color: #777; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px; font-style: italic; }}
         </style>
     </head>
     <body>
-        <div class="container">
-            <div class="logo">🔐 Shardium</div>
-            <h1>Your Vault is Active!</h1>
-            <p class="subtitle">Welcome to the trustless dead man's switch. Your crypto is now protected.</p>
+        <div class="content">
+            <h1>It's not just a welcome email.</h1>
             
-            <div class="section">
-                <h3>📋 What We've Set Up</h3>
-                <ul>
-                    <li><strong>Your Email:</strong> {email}</li>
-                    <li><strong>Beneficiary:</strong> {beneficiary_email}</li>
-                    <li><strong>Shard C:</strong> Securely stored (only released if you stop responding)</li>
-                    <li><strong>Check-in Period:</strong> Every 30 days</li>
-                </ul>
+            <p>Hey there,</p>
+            
+            <p>I'm Max, the founder of Shardium.</p>
+            
+            <p>I could have sent you a shiny, corporate HTML template with "Action Required" in the subject. But Shardium isn't a typical app, and you aren't a typical user.</p>
+            
+            <p>You just made a hard choice. Thinking about what happens "after" isn't exactly fun. But the fact that you're here means you deeply care about someone and you want to protect them no matter what. That’s a powerful thing, and it deserves more than a form letter.</p>
+            
+            <p>In a digital world that's getting colder by the second, I wanted to give you something "handmade." Since my actual drawing skills stopped improving in kindergarten, I used a specialized AI to help me create a "photo" of a crayon drawing I made while thinking about this project. It’s imperfect, it's a bit silly, but it’s real to me.</p>
+
+            <div class="image-container">
+                <!-- Replace with your hosted image of the crayon Polaroid -->
+                <img src="https://shardium.xyz/static/shardium_welcome_crayon_polaroid_en.png" alt="A drawing of a family for you">
             </div>
-            
-            <div class="section">
-                <h3>🗓️ How the Dead Man's Switch Works</h3>
-                <div class="timeline">
-                    <div class="timeline-item">
-                        <span class="timeline-day">Day 0 (Today)</span><br>
-                        Vault activated. Timer starts.
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-day">Day 30</span><br>
-                        We'll email you: "Are you still with us?" Click to confirm.
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-day">Day 60</span><br>
-                        Final warning if you haven't responded.
-                    </div>
-                    <div class="timeline-item">
-                        <span class="timeline-day">Day 90</span><br>
-                        If no response, Shard C is sent to your beneficiary.
-                    </div>
-                </div>
+
+            <p>I want you to know that on the other side of this complex math is a real person who understands the weight of what you're setting up. I don't take that trust lightly.</p>
+
+            <div class="instructions">
+                <strong>Vault Active for: {email}</strong><br>
+                Beneficiary: {beneficiary_email}<br>
+                System: 2-of-3 Shamir's Secret Sharing<br>
+                Status: SECURED
             </div>
-            
-            <div class="warning">
-                <div class="warning-title">⚠️ Important Reminders</div>
-                <ul>
-                    <li>Make sure your beneficiary has <strong>Shard B</strong> (the printed PDF)</li>
-                    <li>Keep your <strong>Shard A</strong> in a safe place (password manager, safe, etc.)</li>
-                    <li>Check your email regularly to avoid false alarms</li>
-                    <li>You can reset the timer anytime by clicking the heartbeat link</li>
-                </ul>
+
+            <p>Take a breath. Your family is safe now. There’s no rush to do anything else right now. Just keep your Shard A safe, and make sure your beneficiary has Shard B.</p>
+
+            <p><strong>One critical thing:</strong> To make sure you're still with us, we need a "heartbeat." Click the link below once just to verify you can access it. It resets your 90-day timer.</p>
+
+            <a href="https://shardium.xyz/heartbeat/{new_user.id}/{heartbeat_token}" class="heartbeat-link">Verify My Heartbeat & Reset Timer</a>
+
+            <div class="image-container">
+                <!-- Replace with your hosted image of the napkin note -->
+                <img src="https://shardium.xyz/static/shardium_napkin_note.png" alt="Handwritten note on a napkin: Your family is safe now">
             </div>
+
+            <p><strong>This is my personal email.</strong> If you have a question, a fear, or just want to tell me how your setup went, just reply. I read them. I answer them.</p>
+
+            <p>Deeply grateful you're here,</p>
             
-            <div style="text-align: center;">
-                <a href="https://shardium.maxcomperatore.com/heartbeat/{new_user.id}/{heartbeat_token}" class="btn">
-                    ✅ Test Your Heartbeat Link
-                </a>
-                <p style="color: #64748b; font-size: 12px;">Click to verify everything is working (resets your 30-day timer)</p>
-            </div>
-            
-            <div class="section">
-                <h3>🔒 Security Reminders</h3>
-                <ul>
-                    <li>We <strong>never</strong> have access to your full seed phrase</li>
-                    <li>We only store Shard C (useless on its own)</li>
-                    <li>Your beneficiary needs Shard B + Shard C to recover</li>
-                    <li>You can recover with Shard A + Shard B anytime</li>
-                </ul>
-            </div>
-            
+            <p><strong>Max</strong><br>
+            Founder of Shardium<br>
+            <i>(The guy who sends you crayon drawings)</i></p>
+
             <div class="footer">
-                <p>Shardium — Trustless Dead Man's Switch for Crypto</p>
-                <p>Questions? Reply to this email.</p>
+                <p>Shardium — Protecting your crypto legacy, one human at a time.</p>
+                <p>Built with care in Argentina. Open source. Trustless by design.</p>
             </div>
         </div>
     </body>
     </html>
     """
     
-    send_email(email, "🔐 Welcome to Shardium - Your Vault is Active", welcome_html)
-    
+    send_email(email, "Not just a welcome email (and a drawing for you)", welcome_html)
     return templates.TemplateResponse("success.html", {"request": request})
 
 @app.get("/heartbeat/{user_id}/{token}", response_class=HTMLResponse)
