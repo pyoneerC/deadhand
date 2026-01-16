@@ -196,10 +196,21 @@
         <button class="btn" id="encodeBtn" onclick="encodeMessage()" disabled>hide message in audio</button>
 
         <div class="result" id="encodeResult" style="display: none;">
-            <p><b>done!</b> your message is hidden in this audio (it sounds exactly the same):</p>
-            <audio id="encodedAudio" controls></audio>
-            <br><br>
-            <a id="encodedDownload" download="secret_audio.wav" class="btn">download wav</a>
+            <p><b>done!</b> compare them below. they sound exactly the same, but one contains your secret.</p>
+
+            <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                <div style="flex: 1; min-width: 250px;">
+                    <p style="font-size: 0.8em; margin-bottom: 5px;">original audio:</p>
+                    <audio id="resultOriginalAudio" controls style="width: 100%;"></audio>
+                </div>
+                <div style="flex: 1; min-width: 250px;">
+                    <p style="font-size: 0.8em; margin-bottom: 5px;">audio with secret:</p>
+                    <audio id="encodedAudio" controls style="width: 100%;"></audio>
+                </div>
+            </div>
+
+            <br>
+            <a id="encodedDownload" download="secret_audio.wav" class="btn">download secret wav</a>
         </div>
     </div>
 
@@ -267,6 +278,11 @@
                 document.getElementById('encodeLabel').textContent = "song.wav";
                 document.getElementById('encodeUpload').classList.add('has-file');
                 document.getElementById('secretMessage').value = "shardium demo: apple banana cherry dog elephant fox";
+
+                // show preview
+                const audio = document.getElementById('originalAudio');
+                audio.src = '/static/song.wav';
+                audio.style.display = 'block';
 
                 // parse enough to show info
                 const view = new DataView(arrayBuffer);
@@ -370,6 +386,7 @@
             const wavUrl = URL.createObjectURL(wavBlob);
 
             document.getElementById('encodedAudio').src = wavUrl;
+            document.getElementById('resultOriginalAudio').src = document.getElementById('originalAudio').src;
             document.getElementById('encodedDownload').href = wavUrl;
             document.getElementById('encodeResult').style.display = 'block';
 
