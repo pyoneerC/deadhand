@@ -515,15 +515,19 @@ async def api_roast(request: Request):
     Proxy request to OpenRouter to avoid exposing API key on frontend.
     """
     import httpx
-    data = await request.json()
+    try:
+        data = await request.json()
+    except:
+        raise HTTPException(status_code=400, detail="Invalid JSON in request")
+        
     user_input = data.get("input")
-    
     if not user_input:
-        raise HTTPException(status_code=400, detail="Input is required")
+        raise HTTPException(status_code=400, detail="Input text is required for the roast")
         
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
-        raise HTTPException(status_code=500, detail="OpenRouter API key not configured")
+        print("INTERNAL ERROR: OPENROUTER_API_KEY is missing in .env")
+        raise HTTPException(status_code=500, detail="Server Configuration Error: API key missing")
         
     prompt = f"act as a paranoid programmer who is tired of people losing their crypto. a user tells you their seed phrase storage method. roast them brutally. show them how they get rekt. be raw, messy, and all lowercase. no intro, no 'here is your roast', just the cold truth. setup: {user_input}"
     
@@ -532,11 +536,13 @@ async def api_roast(request: Request):
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 headers={
-                    "Authorization": f"Bearer {api_key}",
-                    "Content-Type": "application/json"
+                    "Authorization": f"Bearer {api_key.strip()}",
+                    "Content-Type": "application/json",
+                    "HTTP-Referer": "https://deadhand.xyz", # Required by some models on OpenRouter
+                    "X-Title": "Deadhand Crypto Inheritance"
                 },
                 json={
-                    "model": "z-ai/glm-4.5-air:free",
+                    "model": "nvidia/nemotron-nano-9b-v2:free",
                     "messages": [
                         { "role": "user", "content": prompt }
                     ]
@@ -545,15 +551,22 @@ async def api_roast(request: Request):
             )
             
             if response.status_code != 200:
-                print(f"OpenRouter Error: {response.text}")
-                raise HTTPException(status_code=500, detail="Error from OpenRouter")
+                print(f"OpenRouter Error {response.status_code}: {response.text}")
+                error_detail = response.json().get('error', {}).get('message', 'Unknown OpenRouter Error')
+                raise HTTPException(status_code=500, detail=f"OpenRouter says: {error_detail}")
                 
             result = response.json()
+            if "choices" not in result or not result["choices"]:
+                raise HTTPException(status_code=500, detail="OpenRouter returned no choices")
+                
             text = result["choices"][0]["message"]["content"]
             return {"roast": text.lower().strip()}
+    except httpx.HTTPError as e:
+        print(f"HTTPX Error: {e}")
+        raise HTTPException(status_code=500, detail="Connection to AI service failed")
     except Exception as e:
-        print(f"Internal Error: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"Internal Developer Error: {e}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
 
 # ========== BLOG ==========
 

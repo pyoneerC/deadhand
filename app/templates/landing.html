@@ -685,10 +685,12 @@
                     body: JSON.stringify({ input: input })
                 });
                 const data = await response.json();
-                if (data.roast) {
+
+                if (response.ok) {
                     resultEl.innerText = "> " + data.roast;
                 } else {
-                    throw new Error("no roast returned");
+                    // Show the specific error from the server (e.g., "API key missing")
+                    resultEl.innerText = "// error: " + (data.detail || "something went wrong");
                 }
             } catch (e) {
                 resultEl.innerText = "// even the bot is speechless at how bad this is. try again.";
