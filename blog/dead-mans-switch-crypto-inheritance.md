@@ -1,29 +1,29 @@
 ---
 title: "Dead Man's Switch: How to Automate Crypto Inheritance"
-slug: dead-mans-switch-crypto-inheritance
-description: A dead man's switch automatically triggers an action when you stop responding. Learn how this mechanism enables trustless cryptocurrency inheritance.
-author: Max Comperatore
-date: 2025-12-15
-tags: dead mans switch, automation, inheritance, trustless
-image: /static/blog/dead-mans-switch.jpg
+slug: "dead-mans-switch-crypto-inheritance"
+description: "A dead man's switch automatically triggers an action when you stop responding. Learn how this mechanism enables trustless cryptocurrency inheritance."
+author: "Max Comperatore"
+date: "2025-12-15"
+tags: "dead mans switch, automation, inheritance, trustless"
+image: "/static/blog/dead-mans-switch.jpg"
 ---
 
 # Dead Man's Switch: How to Automate Crypto Inheritance
 
-**TL;DR:** A dead man's switch is a mechanism that triggers automatically when you stop responding. Combined with Shamir's Secret Sharing, it enables trustless crypto inheritance without giving anyone premature access.
+**TL;DR**: A dead man's switch is a mechanism that triggers automatically when you stop responding. Combined with Shamir's Secret Sharing, it enables trustless crypto inheritance without giving anyone premature access.
 
 ## What Is a Dead Man's Switch?
 
-The term comes from trains. Early locomotives had a pedal the driver had to keep pressed. If the driver had a heart attack, the pedal would release and automatically stop the train.
+The term comes from early train locomotives. Drivers had to keep a pedal pressed. If the driver fell asleep or died, the pedal would release and automatically stop the train.
 
-In the digital world, a dead man's switch is any system that requires periodic confirmation you're alive. If you stop confirming, it assumes something happened and takes action.
+In the digital world, a dead man's switch is any system that requires periodic confirmation that you are still active. If you stop confirming, it assumes something happened and takes action.
 
 ## Why Crypto Needs This
 
-The challenge with crypto inheritance is **timing**:
-- Too early: Someone could steal your funds while you're alive
-- Too late: Your heirs can't find the keys
-- Just right: Access transfers exactly when needed
+The challenge with crypto inheritance is timing:
+- **Too early**: Someone could steal your funds while you are alive.
+- **Too late**: Your heirs can't find or access the keys.
+- **Just right**: Access transfers exactly when needed.
 
 A dead man's switch solves the timing problem automatically.
 
@@ -31,121 +31,108 @@ A dead man's switch solves the timing problem automatically.
 
 ### The Timeline
 
-| Day | What Happens |
-|-----|--------------|
-| 0 | You create a vault and activate the switch |
-| 1-29 | Nothing (you're presumably alive) |
-| 30 | We send you an email: "Are you still there?" |
-| 30-59 | If you click the link, timer resets to Day 0 |
-| 60 | Final warning email |
-| 90 | If no response, Shard C is sent to your beneficiary |
+- **Day 0**: You create a vault and activate the switch.
+- **Day 1 to 29**: Nothing happens (you are presumably active).
+- **Day 30**: We send you an email: "Are you still there?"
+- **Day 30 to 59**: If you click the link, your timer resets to Day 0.
+- **Day 60**: Final warning email.
+- **Day 90**: If no response, Shard C is sent to your beneficiary.
 
 ### Why 90 Days?
 
 We chose 90 days as the default because:
-- **Long enough** to handle vacations, hospital stays, or forgetting
-- **Short enough** that heirs don't wait forever
-- **Multiple reminders** prevent accidental triggers
+- It is long enough to handle vacations or hospital stays.
+- It is short enough that heirs do not have to wait years.
+- Multiple reminders prevent accidental triggers.
 
-Some users want shorter windows (30 days) or longer (180 days). We're working on customizable timers for pro users.
+Note: We are working on customizable timers (30 days to 1 year) for pro users.
 
 ## The Trust Model
 
-Here's what makes this trustless:
+Shardium is designed to be trustless.
 
 ### What Shardium Has
-- Your email address
-- Your beneficiary's email
-- Shard C (encrypted, useless alone)
+- Your email address.
+- Your beneficiary's email address.
+- Shard C (encrypted and useless alone).
 
-### What Shardium Doesn't Have
-- Your seed phrase
-- Shard A (you keep it)
-- Shard B (beneficiary keeps it)
-- Any ability to access your funds
+### What Shardium Does Not Have
+- Your seed phrase.
+- Shard A (you keep this).
+- Shard B (your beneficiary keeps this).
+- Any ability to access your funds.
 
-Even if we wanted to steal your crypto (we don't), we mathematically can't. Shard C alone reveals nothing.
+Even if Shardium were compromised, Shard C alone reveals zero information about your seed phrase.
 
 ## Security Considerations
 
-### What if someone hacks Shardium?
+### What if Shardium is hacked?
 
-They get a database of encrypted Shard C values. Without the corresponding Shard A or B, these are worthless. It's like having one piece of a two-piece puzzle—no picture emerges.
+Hackers would get a database of encrypted Shard C values. Without the matching Shard A or Shard B, these are worthless. It is like having one piece of a complex puzzle: no picture emerges.
 
-### What if the heartbeat email goes to spam?
+### What if the email goes to spam?
 
-We send from a verified domain with proper SPF/DKIM. We also send multiple reminders over 60 days. But we recommend:
-1. Adding our email to your contacts
-2. Checking your spam folder occasionally
-3. Setting a calendar reminder to check in
+We send from a verified domain with proper SPF/DKIM records. We also send multiple reminders over a 60-day period. We recommend:
+1. Adding our email to your contacts.
+2. Checking your spam folder once a month.
+3. Setting a personal calendar reminder.
 
-### What if someone intercepts my heartbeat link?
+### What if the switch triggers prematurely?
 
-The link contains a secure, random token. Even if intercepted, clicking it only resets YOUR timer. It doesn't give access to anything.
-
-### What if I die and someone else clicks the link?
-
-This is a risk. If a family member has access to your email and keeps clicking, the switch won't trigger. Solutions:
-1. Don't share your email password, or...
-2. Create a dedicated email just for Shardium
-3. Inform your beneficiary about the 90-day window
+If you forget to check in and Shard C is sent to your beneficiary, they still cannot access your funds unless they have Shard B. If they have Shard B, you should only give it to someone you trust.
 
 ## Alternative Approaches
 
 ### Google Inactive Account Manager
-Google offers a similar feature for your Google account. After N months of inactivity, it can share your data with designated contacts. But it only works for Google services.
+Google offers a similar feature for Google accounts. After several months of inactivity, it can share data with contacts. But it only works for data within Google's ecosystem.
 
 ### Lawyers and Wills
-Traditional estate planning can include crypto instructions. But lawyers can be expensive, slow, and don't understand crypto well.
+Traditional estate planning can include crypto instructions. But lawyers are often slow, expensive, and may not understand how to protect a seed phrase securely.
 
 ### Metal Plates in a Safe
-Some people stamp their seed phrase on metal and put it in a safe deposit box with instructions. Works, but requires your heirs to find and access the box.
-
-### Multisig with Time Locks
-Advanced users can set up Bitcoin transactions with time locks that activate after a certain block height. Very technical and error-prone.
+Some people stamp their seed phrase on metal and put it in a safe deposit box. This works, but it requires your heirs to find the box and have the legal right to access it.
 
 ## The Shardium Advantage
 
-We combine the best of all approaches:
+We combine the best parts of these approaches:
 
-✅ **Automated**: No manual action needed when you die
-✅ **Trustless**: We can't access your funds
-✅ **Simple**: No technical knowledge required
-✅ **Secure**: Shamir's math protects against theft
-✅ **Reversible**: You can recover with A+B anytime
+- **Automated**: No manual action needed when you disappear.
+- **Trustless**: We cannot access your funds.
+- **Simple**: No technical knowledge required.
+- **Secure**: Shamir's math protects against theft.
+- **Reversible**: You can recover with Shard A and B at any time.
 
 ## Real-World Scenarios
 
-### Scenario 1: You Die
-- Day 0-30: Your family is grieving
-- Day 30: Email sent (ignored)
-- Day 60: Final warning (ignored)
-- Day 90: Shard C sent to beneficiary
-- Day 91: Beneficiary combines B+C, recovers seed, accesses funds
+### Scenario 1: You Pass Away
+- Day 30: Email sent (no response).
+- Day 60: Final warning (no response).
+- Day 90: Shard C sent to beneficiary.
+- Day 91: Beneficiary combines B+C, recovers seed, accesses funds.
 
-### Scenario 2: You're Hospitalized
-- Day 30: Email sent to your hospital bed
-- Day 45: You recover, click the link
-- Timer resets, no drama
+### Scenario 2: You are Hospitalized
+- Day 30: Email sent to your inbox.
+- Day 45: You recover and click the link.
+- Timer resets. No shards are sent.
 
 ### Scenario 3: You Forget
-- Day 30: Email sent (in spam)
-- Day 60: Final warning (you notice!)
-- Day 61: You click the link
-- Timer resets, crisis averted
+- Day 30: Email sent (you miss it).
+- Day 60: Final warning (you notice).
+- Day 61: You click the link.
+- Timer resets. Crisis averted.
 
 ## Getting Started
 
 Setting up your dead man's switch takes 5 minutes:
 
 1. Go to [shardium.xyz](https://shardium.xyz)
-2. Enter your seed phrase (client-side only)
-3. Download/print Shard A and B
-4. Enter your email and beneficiary's email
-5. Activate the switch
+2. Enter your seed phrase (client-side only).
+3. Download or print Shard A and B.
+4. Enter your email and beneficiary's email.
+5. Activate the switch.
 
-**Cost**: $0 for the first 50 early bird users. We're in public beta and building trust, not just subscriptions.
+**Cost**: $0 for the first 50 early bird users. We are in public beta and building trust.
 
 ---
 
-*Questions? Check our [FAQ](/docs/faq) or [contact us](mailto:max.comperatore@gmail.com).*
+*Questions? Check our [FAQ](/docs/faq) or [contact us](mailto:maxcomperatore@gmail.com).*

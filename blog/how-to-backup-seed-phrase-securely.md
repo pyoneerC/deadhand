@@ -9,191 +9,106 @@ image: "/static/blog/seed-backup.jpg"
 
 # How to Backup Your Seed Phrase Securely (Without a Ledger)
 
-**The Problem**: Your seed phrase is a single point of failure. Lose it = lose everything. But storing it in one place is risky.
-
-**The Solution**: Split it into 3 parts. Lose one? No problem. You can still recover.
+**TL;DR**: Your seed phrase is a single point of failure. If you lose it, you lose everything. Storing it in one place is risky. Splitting it into three parts ensures that if you lose one, you can still recover your funds.
 
 ## Why Paper Backups Are Terrible
 
-Most crypto holders write their seed phrase on a piece of paper and put it in a safe.
-
-**This is a terrible idea. Here's why:**
+Most crypto holders write their seed phrase on a piece of paper and put it in a safe. This is a fragile strategy for several reasons:
 
 ### 1. Paper Degrades
-
-Ink fades. Paper tears. Water damage. Fire. Mold.
-
-Your seed phrase written in 2020 might be unreadable in 2030.
+Ink fades. Paper tears. Water damage, fire, and mold can destroy your only backup in seconds. Your seed phrase written in 2020 might be unreadable by 2030.
 
 ### 2. Safes Get Stolen
-
-Home invasions happen. Burglaries happen. Safes get cracked.
-
-If someone steals your safe, they have your seed phrase. Game over.
+Home invasions and burglaries happen. Safes can be cracked or physically removed. If someone steals your safe, they have your seed phrase. Game over.
 
 ### 3. You Forget Where You Put It
+People move houses, reorganize, and forget which safe or drawer they used. A common story in crypto is: "I know I wrote it down, I just cannot find it."
 
-You move houses. You reorganize. You forget which safe. Which drawer. Which box.
+### 4. Your Family Does Not Know
+If you pass away, your family may know you have crypto, but they often do not know where the paper is or how to access the safe. Your crypto could be lost forever.
 
-I've heard this story a dozen times: "I know I wrote it down. I just can't find it."
+## Why Ledger Isn't the Complete Answer
 
-### 4. Your Family Doesn't Know
-
-You die. Your family knows you have crypto. They don't know where the paper is. They don't know the safe combination.
-
-Your crypto is lost forever.
-
-## Why Ledger Isn't the Answer
-
-"Just buy a Ledger!" people say.
-
-**Ledger is great for security. But it doesn't solve the backup problem.**
+Ledger is excellent for security, but it does not solve the backup problem.
 
 ### Ledger Still Requires a Seed Phrase Backup
-
-When you set up a Ledger, it generates a seed phrase. You write it down.
-
-**You're back to the paper backup problem.**
-
-Ledger protects you from hackers. It doesn't protect you from:
-- Losing the paper
-- House fires
-- Forgetting where you put it
-- Dying without telling anyone
+When you set up a Ledger, it generates a seed phrase. You write it down on paper. You have just returned to the paper backup problem. Ledger protects you from hackers, but it does not protect you from fires, floods, or forgetting where you hid the paper.
 
 ### What If Ledger Goes Out of Business?
-
-Ledger could disappear tomorrow. Your device could break.
-
-**You need the seed phrase to recover.** And if that seed phrase is on a single piece of paper... you're back to square one.
+If Ledger disappears or your device breaks, you need that seed phrase to recover your funds. If that seed phrase exists on only one piece of paper, you are back to square one.
 
 ## The Right Way to Backup Your Seed Phrase
 
 ### Step 1: Use Shamir's Secret Sharing
-
-Instead of storing your seed phrase in one place, **split it into 3 shards**.
+Instead of storing your seed phrase in one place, split it into 3 shards.
 
 **How it works:**
-- Shard A + Shard B = Full seed phrase ✓
-- Shard A + Shard C = Full seed phrase ✓
-- Shard B + Shard C = Full seed phrase ✓
-- Shard A alone = Useless ✗
-- Shard B alone = Useless ✗
-- Shard C alone = Useless ✗
+- Shard A + Shard B = Full seed phrase (Success)
+- Shard A + Shard C = Full seed phrase (Success)
+- Shard B + Shard C = Full seed phrase (Success)
+- Shard A alone = Useless
+- Shard B alone = Useless
+- Shard C alone = Useless
 
-**Any 2 shards can recover your seed. But 1 shard reveals nothing.**
+Any two shards can recover your seed. One shard alone reveals zero information.
 
 ### Step 2: Distribute the Shards
-
-**Shard A**: Store in your password manager (1Password, Bitwarden, etc.)
-- Encrypted
-- Backed up to cloud
-- Accessible from anywhere
-
-**Shard B**: Give to your heir
-- USB drive (encrypted)
-- Or print it and put it in their safe
-- They can't access your crypto with just this shard
-
-**Shard C**: Store encrypted on Shardium's servers
-- Released to your beneficiary if you die (dead man's switch)
-- Useless alone
-- Open source, client-side encryption
+- **Shard A**: Store in your password manager (e.g., 1Password, Bitwarden). This keeps it encrypted and accessible from anywhere.
+- **Shard B**: Give to your heir. You can give them a USB drive or a printed copy. They cannot access your crypto with just this shard.
+- **Shard C**: Store encrypted on Shardium's servers. This is released to your beneficiary only if you stop responding to check-ins.
 
 ### Step 3: Test Recovery
-
-Don't just set it up and forget it.
-
-**Test it once a year:**
-1. Get Shard A from your password manager
-2. Get Shard B from your heir
-3. Recover your seed phrase
-4. Verify it matches
-
-If it works, you're good. If it doesn't, fix it now (not when you need it).
+Do not set it up and forget it. Test your recovery once a year:
+1. Retrieve Shard A from your password manager.
+2. Retrieve Shard B from your heir.
+3. Use the tool to recover your seed phrase.
+4. Verify that it matches your original.
 
 ## Real-World Scenarios
 
 ### Scenario 1: You Lose Your Password Manager
+If you lose access to your password manager, you still have Shard B (with your heir) and Shard C (on Shardium). You can recover your seed phrase using those two.
 
-Your 1Password account gets hacked. You lose access.
+### Scenario 2: Your House is Destroyed
+If your home is lost to fire or flood, you still have Shard A (in the cloud) and Shard C (on Shardium). You can still recover your funds.
 
-**No problem.** You still have Shard B (with your heir) and Shard C (on Shardium). Recover your seed phrase with those two.
+### Scenario 3: You Pass Away
+Shardium's dead man's switch triggers after 90 days of silence. Shard C is sent to your beneficiary. They combine it with Shard B (which you gave them earlier) and recover your inheritance.
 
-### Scenario 2: Your House Burns Down
+### Scenario 4: A Hacker Steals One Shard
+If a hacker gains access to Shard A, it is useless to them. They need the threshold (two shards) to do anything. Your crypto remains safe.
 
-Your safe is destroyed. Everything in it is gone.
-
-**No problem.** You still have Shard A (password manager) and Shard C (Shardium servers). Recover your seed phrase.
-
-### Scenario 3: You Die
-
-You get hit by a bus tomorrow.
-
-**No problem.** Shardium's dead man's switch activates after 90 days. Shard C is emailed to your beneficiary. They combine it with Shard B (which you already gave them). They recover your seed phrase and inherit your crypto.
-
-### Scenario 4: Someone Steals One Shard
-
-A hacker gets into your password manager and steals Shard A.
-
-**No problem.** One shard is useless. They can't do anything with it. Your crypto is safe.
-
-## How to Set This Up (Step-by-Step)
+## How to Set This Up
 
 ### Option 1: Use Shardium (Easiest)
+1. Visit [shardium.xyz](https://shardium.xyz).
+2. Enter your seed phrase (encrypted client-side).
+3. The tool splits it into 3 shards automatically.
+4. Save Shard A in your password manager and give Shard B to your heir.
+5. Shard C stays encrypted on our servers.
+6. Activate the dead man's switch.
 
-1. Go to [shardium.xyz](https://shardium.xyz)
-2. Enter your seed phrase (encrypted client-side)
-3. It splits into 3 shards automatically
-4. Save Shard A in your password manager
-5. Give Shard B to your heir (USB or print)
-6. Shard C stays encrypted on Shardium's servers
-7. Enter your email + beneficiary email
-8. Done (5 minutes)
-
-**Cost**: $0 for the first 50 early bird users. Then rising to $99, and finally $399 lifetime.
-
-### Option 2: Self-Host (Free, More Technical)
-
-1. Clone the Shardium repo: `github.com/pyoneerc/shardium`
-2. Run it on your own server
-3. Same process, but you control everything
-4. Open source, MIT license
+### Option 2: Self-Host (Free)
+1. Clone the repository from GitHub.
+2. Run it on your own server.
+3. You have full control over the entire process.
 
 ## Common Mistakes to Avoid
 
-### ❌ Storing All 3 Shards in the Same Place
-
-Defeats the purpose. If your house burns down and all 3 shards are in it, you're screwed.
-
-### ❌ Not Telling Your Heir About Shard B
-
-If they don't know they have it, they can't use it.
-
-**Tell them**: "I gave you a USB drive with part of my crypto backup. If I die, you'll get an email with the other part. Combine them to access my crypto."
-
-### ❌ Using a Weak Password Manager
-
-If your password manager is "password123", you're not secure.
-
-Use a strong master password. Enable 2FA. Use a reputable service (1Password, Bitwarden, etc.).
-
-### ❌ Never Testing Recovery
-
-Set a calendar reminder. Test recovery once a year. Make sure it works.
+- **Storing All 3 Shards in One Place**: This defeats the purpose. If all shards are in the same house and the house burns down, you lose everything.
+- **Not Telling Your Heir About Shard B**: They need to know they have a piece of the puzzle. Tell them: "I gave you a backup. If I disappear, you will get an email with the second piece."
+- **Using a Weak Password Manager**: Use a reputable service with a strong master password and 2FA.
 
 ## The Bottom Line
 
-**Paper backups are risky. Ledger doesn't solve the backup problem. Single points of failure are dangerous.**
-
-**Shamir's Secret Sharing eliminates single points of failure.**
+Paper backups are risky and single points of failure are dangerous. Shamir's Secret Sharing eliminates these risks.
 
 - Lose one shard? Recover with the other two.
-- Die? Your family inherits automatically.
-- Get hacked? One shard is useless.
+- Pass away? Your family inherits automatically.
+- Get hacked? One shard is useless to an attacker.
 
-**[Secure your seed phrase backup →](https://shardium.xyz)**
+**[Secure your seed phrase backup now](https://shardium.xyz)**
 
 ---
 
-*Max Comperatore is the founder of Shardium. He's been paranoid about seed phrase backups since 2017.*
+*Max Comperatore is the founder of Shardium. He has been focused on seed phrase security since 2017.*
