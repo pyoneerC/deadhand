@@ -12,6 +12,7 @@ from datetime import datetime, timedelta
 import markdown
 from pathlib import Path
 import stripe
+from urllib.parse import quote_plus
 
 # Load environment variables from .env file
 load_dotenv()
@@ -785,6 +786,14 @@ async def create_vault(
     # Track experiment metric
     await track_event("vault_activated")
 
+    # Calendar reminder (29 days from now)
+    reminder_dt = datetime.now() + timedelta(days=29)
+    cal_date = reminder_dt.strftime('%Y%m%d')
+    cal_end = (reminder_dt + timedelta(days=1)).strftime('%Y%m%d')
+    cal_title = quote_plus("Deadhand Heartbeat - Reset Your 30-Day Timer")
+    cal_details = quote_plus(f"Time to visit deadhandprotocol.com/heartbeat/{new_user.id}/{heartbeat_token} to reset your watchdog timer.")
+    welcome_cal_url = f"https://www.google.com/calendar/render?action=TEMPLATE&text={cal_title}&dates={cal_date}/{cal_end}&details={cal_details}&sf=true&output=xml"
+
     # Send human-centered "Chewy-style" welcome email
     welcome_html = f"""
     <!DOCTYPE html>
@@ -834,6 +843,8 @@ async def create_vault(
 
             <a href="https://deadhandprotocol.com/heartbeat/{new_user.id}/{heartbeat_token}" class="heartbeat-link">verify my heartbeat & reset timer</a>
 
+            <p><strong>pro tip:</strong> set a reminder so you don't forget. <a href="{welcome_cal_url}" target="_blank">add a reminder to my google calendar</a> (for 30 days from now).</p>
+
             <div class="image-container">
                 <img src="https://deadhandprotocol.com/static/Deadhand_napkin_note.png" alt="handwritten note on a napkin: your family is safe now">
             </div>
@@ -869,11 +880,24 @@ async def heartbeat(request: Request, user_id: int, token: str, db: Session = De
     user.is_dead = False # Resurrect if previously marked
     db.commit()
     
-    next_check_in = (datetime.now() + timedelta(days=30)).strftime('%B %d, %Y').lower()
+    # Calculate next dates
+    now = datetime.now()
+    next_check_in_dt = now + timedelta(days=30)
+    reminder_dt = now + timedelta(days=29)
+    
+    next_check_in_str = next_check_in_dt.strftime('%B %d, %Y').lower()
+    
+    # Create Google Calendar link (all-day event)
+    cal_date = reminder_dt.strftime('%Y%m%d')
+    cal_end = (reminder_dt + timedelta(days=1)).strftime('%Y%m%d')
+    title = quote_plus("Deadhand Heartbeat - Reset Your 30-Day Timer")
+    details = quote_plus(f"Time to visit deadhandprotocol.com/heartbeat/{user_id}/{token} to reset your watchdog timer. If you miss this, your beneficiary will eventually receive shard C.")
+    cal_url = f"https://www.google.com/calendar/render?action=TEMPLATE&text={title}&dates={cal_date}/{cal_end}&details={details}&sf=true&output=xml"
     
     return templates.TemplateResponse("check_in.html", {
         "request": request, 
-        "next_date": next_check_in
+        "next_date": next_check_in_str,
+        "calendar_url": cal_url
     })
 
 @app.get("/recover", response_class=HTMLResponse)
@@ -927,6 +951,9 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         <p>could you click the link below? it just tells our system you're still with us and resets your timer. it takes two seconds.</p>
                         
                         <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{user.heartbeat_token}" class="heartbeat-link">i'm still here</a>
+
+                        <p><strong>pro tip:</strong> if you're busy now, add a reminder to your calendar for tomorrow so you don't forget.<br>
+                        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={quote_plus('Deadhand Heartbeat Reminder')}&dates={(datetime.now()+timedelta(days=1)).strftime('%Y%m%d')}/{(datetime.now()+timedelta(days=2)).strftime('%Y%m%d')}&details={quote_plus('Visit deadhandprotocol.com/heartbeat/'+str(user.id)+'/'+str(user.heartbeat_token))}&sf=true&output=xml" target="_blank">add reminder for tomorrow</a></p>
 
                         <p>if you don't click it, no big deal for now. i'll check in again in another 30 days. but after 90 days of silence, we'll have to send shard c to your beneficiary.</p>
                         
