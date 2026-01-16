@@ -9,7 +9,18 @@
     <script src="https://unpkg.com/htmx.org@1.9.10"></script>
     <script src="/static/js/secrets.min.js"></script>
     <link rel="icon" type="image/png" href="/static/favicon.png">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+
+    <!-- Non-blocking Font Awesome loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link

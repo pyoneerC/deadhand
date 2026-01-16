@@ -10,7 +10,17 @@
 
     <!-- SEO Meta Tags -->
     <link rel="canonical" href="https://deadhandprotocol.com/blog/{{ slug }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+
+    <!-- Non-blocking Font Awesome loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
     <meta name="author" content="{{ author | lower }}">
 
     <!-- Open Graph / Facebook -->
