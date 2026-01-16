@@ -9,6 +9,8 @@
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/badge/Crypto-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
+  <br><br>
+  [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/pyoneerC/shardium)
 </p>
 
 ### Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing
