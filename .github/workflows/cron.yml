@@ -1,0 +1,14 @@
+name: daily-heartbeat-check
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  
+  workflow_dispatch:
+
+jobs:
+  ping-cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: trigger deadhand cron
+        run: |
+          curl -X POST https://deadhandprotocol.com/api/cron/check-heartbeats
