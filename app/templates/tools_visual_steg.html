@@ -14,7 +14,7 @@
         }
 
         body {
-            font-family: 'Courier New', monospace;
+            font-family: Georgia, serif;
             max-width: 800px;
             margin: 0 auto;
             padding: 20px;
@@ -185,6 +185,10 @@
             <div id="splitLabel">click to upload image</div>
         </div>
 
+        <div style="margin-bottom: 20px;">
+            <button class="btn btn-secondary" onclick="loadDemoQR()">try with a demo qr</button>
+        </div>
+
         <button class="btn" id="splitBtn" onclick="splitImage()" disabled>split into 2 shares</button>
 
         <div class="preview-container" id="splitResults" style="display: none;">
@@ -278,6 +282,23 @@
                 img.src = e.target.result;
             };
             reader.readAsDataURL(file);
+        }
+
+        let isDemoRun = false;
+
+        function loadDemoQR() {
+            isDemoRun = true;
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function () {
+                splitSourceImage = img;
+                document.getElementById('splitLabel').textContent = "demo_qr.png";
+                document.getElementById('splitUpload').classList.add('has-file');
+                document.getElementById('splitBtn').disabled = false;
+                // auto-split
+                splitImage();
+            };
+            img.src = "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=shardium-test-seed&format=png";
         }
 
         function splitImage() {
@@ -380,6 +401,19 @@
             document.getElementById('share2Download').href = share2Canvas.toDataURL('image/png');
 
             document.getElementById('splitResults').style.display = 'flex';
+
+            if (isDemoRun) {
+                // lazy auto-combine
+                combineImage1 = share1Canvas;
+                combineImage2 = share2Canvas;
+                document.getElementById('combine1Label').textContent = "demo_share_1.png";
+                document.getElementById('combine1Upload').classList.add('has-file');
+                document.getElementById('combine2Label').textContent = "demo_share_2.png";
+                document.getElementById('combine2Upload').classList.add('has-file');
+                document.getElementById('combineBtn').disabled = false;
+                combineShares();
+                isDemoRun = false; // reset
+            }
         }
 
         function handleCombineUpload(num, input) {
