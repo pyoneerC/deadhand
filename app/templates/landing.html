@@ -670,31 +670,26 @@
             const input = document.getElementById('roast-input').value;
             const resultEl = document.getElementById('roast-result');
             if (!input) {
-                resultEl.innerText = "// u gotta type something first.";
+                resultEl.innerText = "// you've gotta type something first.";
                 return;
             }
 
-            resultEl.innerText = "// calculating how fast u lose ur coins...";
-
-            const prompt = `act as a paranoid programmer who is tired of people losing their crypto. a user tells you their seed phrase storage method. roast them brutally. show them how they get rekt. be raw, messy, and all lowercase. no intro, no "here is your roast", just the cold truth. setup: ${input}`;
+            resultEl.innerText = "// calculating how fast you'll lose your coins...";
 
             try {
-                const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                const response = await fetch("/api/roast", {
                     method: "POST",
                     headers: {
-                        "Authorization": "Bearer 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",
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({
-                        "model": "z-ai/glm-4.5-air:free",
-                        "messages": [
-                            { "role": "user", "content": prompt }
-                        ]
-                    })
+                    body: JSON.stringify({ input: input })
                 });
                 const data = await response.json();
-                const text = data.choices[0].message.content;
-                resultEl.innerText = "> " + text.toLowerCase().trim();
+                if (data.roast) {
+                    resultEl.innerText = "> " + data.roast;
+                } else {
+                    throw new Error("no roast returned");
+                }
             } catch (e) {
                 resultEl.innerText = "// even the bot is speechless at how bad this is. try again.";
             }

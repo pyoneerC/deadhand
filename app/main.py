@@ -509,6 +509,52 @@ async def track_event(event: str):
     """
     return {"status": "ok"}
 
+@app.post("/api/roast")
+async def api_roast(request: Request):
+    """
+    Proxy request to OpenRouter to avoid exposing API key on frontend.
+    """
+    import httpx
+    data = await request.json()
+    user_input = data.get("input")
+    
+    if not user_input:
+        raise HTTPException(status_code=400, detail="Input is required")
+        
+    api_key = os.getenv("OPENROUTER_API_KEY")
+    if not api_key:
+        raise HTTPException(status_code=500, detail="OpenRouter API key not configured")
+        
+    prompt = f"act as a paranoid programmer who is tired of people losing their crypto. a user tells you their seed phrase storage method. roast them brutally. show them how they get rekt. be raw, messy, and all lowercase. no intro, no 'here is your roast', just the cold truth. setup: {user_input}"
+    
+    try:
+        async with httpx.AsyncClient() as client:
+            response = await client.post(
+                "https://openrouter.ai/api/v1/chat/completions",
+                headers={
+                    "Authorization": f"Bearer {api_key}",
+                    "Content-Type": "application/json"
+                },
+                json={
+                    "model": "z-ai/glm-4.5-air:free",
+                    "messages": [
+                        { "role": "user", "content": prompt }
+                    ]
+                },
+                timeout=30.0
+            )
+            
+            if response.status_code != 200:
+                print(f"OpenRouter Error: {response.text}")
+                raise HTTPException(status_code=500, detail="Error from OpenRouter")
+                
+            result = response.json()
+            text = result["choices"][0]["message"]["content"]
+            return {"roast": text.lower().strip()}
+    except Exception as e:
+        print(f"Internal Error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
 # ========== BLOG ==========
 
 def parse_blog_frontmatter(content: str) -> dict:
