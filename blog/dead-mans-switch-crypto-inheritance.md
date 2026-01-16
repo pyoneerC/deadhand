@@ -135,4 +135,4 @@ Setting up your dead man's switch takes 5 minutes:
 
 ---
 
-*Questions? Check our [FAQ](/docs/faq) or [contact us](mailto:maxcomperatore@gmail.com).*
+*Questions? Check our [FAQ](/docs/faq) or [contact us](mailto:max@deadhandprotocol.com).*
