@@ -11,7 +11,7 @@ logger = logging.getLogger("legacy_vault")
 
 # Resend API
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
-FROM_EMAIL = os.getenv("FROM_EMAIL", "Deadhand <noreply@deadhandprotocol.com>")
+FROM_EMAIL = os.getenv("FROM_EMAIL", "Max from Deadhand <max@deadhandprotocol.com>")
 
 # Email configuration - supports Gmail SMTP (free) as fallback
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")

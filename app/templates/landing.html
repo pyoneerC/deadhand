@@ -4,12 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-    <title>deadhand - what happens to your crypto when you die?</title>
+    <title>deadhand | your crypto shouldn't die with you</title>
     <meta name="description" content="split your seed phrase into 3 shards. lose one? recover with the other two.">
     <link rel="canonical" href="https://deadhandprotocol.com/">
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <meta property="og:title" content="deadhand">
-    <meta property="og:description" content="what happens to your crypto when you die? the humanDead Man's Switch.">
+    <meta property="og:description" content="what happens to your crypto when you die? the human dead man's switch.">
+    <meta property="og:url" content="https://deadhandprotocol.com/">
+    <meta property="og:site_name" content="deadhand">
     <meta property="og:image" content="https://deadhandprotocol.com/static/og_card.png">
     <meta property="og:type" content="website">
     <meta name="twitter:card" content="summary_large_image">
@@ -391,10 +393,14 @@
 </head>
 
 <body>
+    <a href="#main-content"
+        style="position: absolute; left: -10000px; top: auto; width: 1px; height: 1px; overflow: hidden;"
+        onfocus="this.style.left='0'; this.style.top='0'; this.style.width='auto'; this.style.height='auto'; this.style.backgroundColor='#fff'; this.style.padding='10px'; this.style.zIndex='1000';">skip
+        to content</a>
 
-    <div class="header">
+    <header class="header">
         <div class="container">
-            <nav class="nav">
+            <nav class="nav" aria-label="Main Navigation">
                 <a href="/tools/dead-switch">dead switch</a>
                 <a href="/tools/visual-crypto">visual crypto</a>
                 <a href="/tools/audio-steg">audio steg</a>
@@ -403,9 +409,9 @@
                 <a href="https://github.com/pyoneerC/deadhand">github</a>
             </nav>
         </div>
-    </div>
+    </header>
 
-    <div class="container">
+    <main class="container" id="main-content">
 
         <pre class="ascii">
     ____  _________    ____  __  ______    _   ______ 
@@ -620,7 +626,7 @@
 
         <h2>faq</h2>
 
-        <p><b>can you steal my crypto?</b><br>no. we only have shard c. need 2 of 3</p>
+        <p><b>can you steal my crypto?</b><br>no. we only have shard c. useless alone</p>
 
         <p><b>what if i lose my seed?</b><br>combine a + b. that's the whole point</p>
 
@@ -669,24 +675,25 @@
             to inherit it?</p>
 
         <a href="/tools/dead-switch" class="cta">protect your family</a>
+    </main>
 
-        <div class="footer">
-            <p>
-                <a href="https://discord.gg/eDyCkgvBjf" target="_blank"><i class="fa-brands fa-discord"></i></a> /
-                <a href="https://x.com/maxcompx" target="_blank"><i class="fa-brands fa-x-twitter"></i></a> /
-                <a href="https://github.com/pyoneerC/deadhand" target="_blank"><i class="fa-brands fa-github"></i></a> /
-                <a href="mailto:max@deadhandprotocol.com"><i class="fa-solid fa-envelope"></i></a>
-            </p>
-            <p>status: feature complete</p>
-            <p>open source. mit license. built in argentina.</p>
-        </div>
+    <footer class="footer">
+        <p>
+            <a href="https://discord.gg/eDyCkgvBjf" target="_blank" aria-label="Join our Discord"><i
+                    class="fa-brands fa-discord"></i></a> /
+            <a href="https://x.com/maxcompx" target="_blank" aria-label="Follow us on X (Twitter)"><i
+                    class="fa-brands fa-x-twitter"></i></a> /
+            <a href="https://github.com/pyoneerC/deadhand" target="_blank" aria-label="View source on GitHub"><i
+                    class="fa-brands fa-github"></i></a> /
+            <a href="mailto:max@deadhandprotocol.com" aria-label="Email us"><i class="fa-solid fa-envelope"></i></a>
+        </p>
+        <p>status: feature complete</p>
+        <p>open source. mit license. built in argentina.</p>
+    </footer>
 
-    </div>
+
 
     <script>
-        // Track landing page hit
-        fetch('/api/track/landing_hit', { method: 'POST' });
-
         async function roastMe() {
             const input = document.getElementById('roast-input').value;
             const resultEl = document.getElementById('roast-result');

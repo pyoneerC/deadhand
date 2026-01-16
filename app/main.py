@@ -28,7 +28,7 @@ Base.metadata.create_all(bind=engine)
 stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
 STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
 STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
-BASE_URL = os.getenv("BASE_URL", "https://deadhand.maxcomperatore.com")
+BASE_URL = os.getenv("BASE_URL", "https://deadhandprotocol.com")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")  # For purchase notifications
 
 # Stripe Price IDs - Create these in Stripe Dashboard
