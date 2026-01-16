@@ -815,7 +815,7 @@ async def heartbeat(request: Request, user_id: int, token: str, db: Session = De
     user.is_dead = False # Resurrect if previously marked
     db.commit()
     
-    next_check_in = (datetime.now() + timedelta(days=90)).strftime('%B %d, %Y').lower()
+    next_check_in = (datetime.now() + timedelta(days=30)).strftime('%B %d, %Y').lower()
     
     return templates.TemplateResponse("check_in.html", {
         "request": request, 
@@ -870,7 +870,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                     <body>
                         <p>hey,</p>
                         <p>it's been 30 days since we last heard from you. i'm just checking in to make sure everything is okay.</p>
-                        <p>could you click the link below? it just tells our system you're still with us and resets your timer for another 90 days. it takes two seconds.</p>
+                        <p>could you click the link below? it just tells our system you're still with us and resets your timer. it takes two seconds.</p>
                         
                         <a href="https://shardium.xyz/heartbeat/{user.id}/{user.heartbeat_token}" class="heartbeat-link">i'm still here</a>
 
