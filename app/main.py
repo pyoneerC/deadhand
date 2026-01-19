@@ -219,9 +219,14 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
     return {"status": "success"}
 
 @app.get("/", response_class=HTMLResponse)
-async def landing_page(request: Request):
-    """Marketing landing page"""
-    return templates.TemplateResponse("landing.html", {"request": request})
+async def landing_page(request: Request, db: Session = Depends(get_db)):
+    """Marketing landing page with real-time early bird counter"""
+    user_count = db.query(User).count()
+    spots_left = max(0, 50 - user_count)
+    return templates.TemplateResponse("landing.html", {
+        "request": request, 
+        "spots_left": spots_left
+    })
 
 @app.post("/stripe/webhook")
 async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
