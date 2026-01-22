@@ -130,23 +130,59 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="border-t border-zinc-800 py-6 mt-12">
-        <div class="max-w-6xl mx-auto px-6 flex justify-between items-center text-sm text-zinc-600">
-            <div class="flex flex-col md:flex-row md:gap-4">
-                <span>© 2025 Deadhand</span>
-                <span class="hidden md:inline text-zinc-700">|</span>
-                <span class="text-zinc-500 italic">friends don't let friends' crypto die with them. share
-                    deadhand.</span>
+    <footer class="border-t border-zinc-800 bg-zinc-950/50 py-12 mt-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
+                <div class="col-span-1 md:col-span-2">
+                    <div class="flex items-center gap-3 mb-4">
+                        <div class="w-7 h-7 rounded overflow-hidden">
+                            <img src="/static/favicon.png" alt="Deadhand" class="w-full h-full object-cover">
+                        </div>
+                        <span class="font-semibold text-white tracking-tight">Deadhand Protocol</span>
+                    </div>
+                    <p class="text-sm text-zinc-500 max-w-sm mb-6">
+                        Protecting the world's digital legacy since inception. The global standard for decentralized
+                        inheritance protocols. Developed by the Deadhand Foundation.
+                    </p>
+                    <div class="flex gap-4 items-center">
+                        <a href="https://x.com/maxcompx" target="_blank"
+                            class="text-zinc-500 hover:text-zinc-300 transition"
+                            aria-label="Follow us on X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://github.com/pyoneerC/deadhand" target="_blank"
+                            class="text-zinc-500 hover:text-zinc-300 transition" aria-label="View source on GitHub"><i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="https://t.me/maxcomperatore" target="_blank"
+                            class="text-zinc-500 hover:text-zinc-300 transition" aria-label="Message us on Telegram"><i
+                                class="fa-brands fa-telegram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-4 text-sm">Organization</h4>
+                    <ul class="space-y-2 text-sm text-zinc-500">
+                        <li><a href="mailto:support@deadhandprotocol.com" class="hover:text-accent transition">Customer
+                                Success</a></li>
+                        <li><a href="mailto:legal@deadhandprotocol.com" class="hover:text-accent transition">Legal &
+                                Compliance</a></li>
+                        <li><a href="mailto:security@deadhandprotocol.com" class="hover:text-accent transition">Security
+                                & Protocols</a></li>
+                        <li><a href="mailto:press@deadhandprotocol.com" class="hover:text-accent transition">Global
+                                Media</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-medium mb-4 text-sm">Governance</h4>
+                    <ul class="space-y-2 text-sm text-zinc-500">
+                        <li><a href="/terms" class="hover:text-accent transition">Legal Terms</a></li>
+                        <li><a href="/docs" class="hover:text-accent transition">Technical Docs</a></li>
+                        <li><a href="/blog" class="hover:text-accent transition">Public Blog</a></li>
+                        <li><a href="/recover" class="hover:text-accent transition">Emergency Tools</a></li>
+                    </ul>
+                </div>
             </div>
-            <div class="flex gap-4 items-center">
-                <a href="https://x.com/maxcompx" target="_blank" class="hover:text-zinc-400"
-                    aria-label="Follow us on X (Twitter)"><i class="fa-brands fa-x-twitter"></i></a> /
-                <a href="https://github.com/pyoneerC/deadhand" target="_blank" class="hover:text-zinc-400"
-                    aria-label="View source on GitHub"><i class="fa-brands fa-github"></i></a> /
-                <a href="https://t.me/maxcomperatore" target="_blank" class="hover:text-zinc-400"
-                    aria-label="Message us on Telegram"><i class="fa-brands fa-telegram"></i></a> /
-                <a href="mailto:max@deadhandprotocol.com" class="hover:text-zinc-400" aria-label="Email us"><i
-                        class="fa-solid fa-envelope"></i></a>
+            <div
+                class="pt-8 border-t border-zinc-800 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-zinc-600">
+                <p>© 2026 Deadhand Protocol. Developed with excellence in Argentina & Switzerland.</p>
+                <p class="italic">Friends don't let friends' crypto die with them.</p>
             </div>
         </div>
     </footer>

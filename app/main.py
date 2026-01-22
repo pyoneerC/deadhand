@@ -77,8 +77,8 @@ async def sitemap():
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://deadhandprotocol.com/app</loc>
-        <changefreq>monthly</changefreq>
+        <loc>https://deadhandprotocol.com/tools/dead-switch</loc>
+        <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
@@ -86,26 +86,15 @@ async def sitemap():
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
-    <url>
-        <loc>https://deadhandprotocol.com/blog</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
-    </url>
-    <url>
-        <loc>https://deadhandprotocol.com/tools/death-calculator</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://deadhandprotocol.com/tools/crypto-loss-calculator</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
-    <url>
-        <loc>https://deadhandprotocol.com/tools/shamir-playground</loc>
-        <changefreq>monthly</changefreq>
-        <priority>0.7</priority>
-    </url>
+    <!-- Programmatic SEO URLs -->
+    <url><loc>https://deadhandprotocol.com/p/bitcoin-inheritance</loc><priority>0.7</priority></url>
+    <url><loc>https://deadhandprotocol.com/p/ethereum-inheritance</loc><priority>0.7</priority></url>
+    <url><loc>https://deadhandprotocol.com/p/solana-inheritance</loc><priority>0.7</priority></url>
+    <url><loc>https://deadhandprotocol.com/p/ledger-inheritance</loc><priority>0.7</priority></url>
+    <url><loc>https://deadhandprotocol.com/p/trezor-inheritance</loc><priority>0.7</priority></url>
+    <url><loc>https://deadhandprotocol.com/p/argentina-crypto-laws</loc><priority>0.7</priority></url>
+    <url><loc>https://deadhandprotocol.com/p/us-crypto-laws</loc><priority>0.7</priority></url>
+    <url><loc>https://deadhandprotocol.com/p/uk-crypto-laws</loc><priority>0.7</priority></url>
     {"".join([f'''
     <url>
         <loc>{post}</loc>
@@ -684,6 +673,49 @@ async def render_docs(request: Request, doc_name: str):
         "request": request,
         "content": html_content,
         "current_doc": "index" if doc_name == "README" else doc_name
+    })
+
+@app.get("/p/{topic}", response_class=HTMLResponse)
+async def programmatic_seo_landing(request: Request, topic: str):
+    """Dynamic landing pages for programmatic SEO"""
+    topics = {
+        "bitcoin-inheritance": ("Bitcoin Inheritance Protocol", "How to secure your Bitcoin legacy using Shamir Secret Sharing and Deadhand."),
+        "ethereum-inheritance": ("Ethereum Smart Vault", "Secure your ETH and ERC-20 tokens for the next generation."),
+        "solana-inheritance": ("Solana Death Switch", "The fastest way to ensure your Solana assets aren't lost forever."),
+        "ledger-inheritance": ("Ledger Backup Recovery", "How to split your Ledger seed phrase safely without trusting a third party."),
+        "trezor-inheritance": ("Trezor Seed Splitting", "Advanced security for Trezor users using the Deadhand SSS protocol."),
+        "argentina-crypto-laws": ("Crypto Inheritance in Argentina", "Legal and technical guide to digital asset succession in Argentina."),
+        "us-crypto-laws": ("U.S. Crypto Probate Guide", "Navigating the legal intersection of U.S. probate law and private keys."),
+        "uk-crypto-laws": ("UK Digital Asset Law", "Protecting your UK-based crypto legacy with decentralized tools.")
+    }
+    
+    if topic not in topics:
+        raise HTTPException(status_code=404)
+        
+    title, desc = topics[topic]
+    
+    # Simple dynamic content template
+    content = f"""
+    <div class='pseo-content'>
+        <h1>{title}</h1>
+        <p class='lead'>{desc}</p>
+        <p>In the world of digital assets, <strong>permanent loss</strong> is the default. If you don't have a plan, your {title.split()[0]} will eventually be lost to a "dead" wallet.</p>
+        <h2>The Technical Solution</h2>
+        <p>Deadhand Protocol uses industry-standard 2-of-3 Shamir's Secret Sharing to ensure your assets are protected while you are alive, and accessible only when you are gone.</p>
+        <div class='cta-box' style='background: #f9f9f9; padding: 30px; border-radius: 8px; margin: 40px 0;'>
+            <h3>Start Your {title.split()[0]} Protection Plan</h3>
+            <p>Deploy your own vault in 5 minutes. No KYC. No credit card required to start.</p>
+            <a href='/tools/dead-switch' class='cta' style='display: inline-block; background: #222; color: #fff; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: bold;'>Protect My Assets</a>
+        </div>
+    </div>
+    """
+    
+    return templates.TemplateResponse("docs.html", {
+        "request": request,
+        "content": content,
+        "title": title,
+        "description": desc,
+        "current_doc": "pseo"
     })
 
 @app.post("/vault/create", response_class=HTMLResponse)
