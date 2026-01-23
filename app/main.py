@@ -891,7 +891,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
     2. Sends 60-day warning emails
     3. Triggers death at 90 days (sends Shard C to beneficiary)
     """
-saa    try:
+    try:
         now = datetime.now()
         results = {"reminders_30d": 0, "warnings_60d": 0, "deaths_90d": 0, "errors": 0}
         
