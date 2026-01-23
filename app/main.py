@@ -642,10 +642,20 @@ async def programmatic_seo_landing(request: Request, slug: str):
         # Find parts of the title in the text (e.g., "MetaMask" or "Bitcoin")
         anchor_text = other_topic['title'].split(' ')[0]
         if len(anchor_text) > 3: # Avoid linking short words
-             # Use regex for word boundaries to avoid messy overlapping links
-             pattern = re.compile(rf'\b({re.escape(anchor_text)})\b', re.IGNORECASE)
-             # Only link the first occurrence to avoid over-linking
-             body = pattern.sub(f'<a href="/p/{other_slug}" class="underline">\\1</a>', body, count=1)
+             # Use a safer regex that ignores words inside HTML tags or existing links
+             pattern = re.compile(rf'(<a[^>]*>.*?</a>|<[^>]+>)|(\b{re.escape(anchor_text)}\b)', re.IGNORECASE | re.DOTALL)
+             
+             found = False
+             def link_fixer(m):
+                 nonlocal found
+                 if m.group(1): # If it's an existing tag or <a> link, leave it alone
+                     return m.group(1)
+                 if not found: # If it's the anchor and we haven't linked it in this post yet
+                     found = True
+                     return f'<a href="/p/{other_slug}" class="underline">{m.group(2)}</a>'
+                 return m.group(2)
+             
+             body = pattern.sub(link_fixer, body)
 
     # 3. Get Related Topics
     all_slugs = list(PSEO_TOPICS.keys())
