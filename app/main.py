@@ -299,29 +299,55 @@ async def landing_page(request: Request):
     })
 
 @app.get("/buy")
-async def buy_deadhand(request: Request):
-    """Create a Stripe Checkout Session for annual subscription"""
+async def buy_chooser(request: Request):
+    """Render the pricing selection page"""
+    return templates.TemplateResponse("pricing_select.html", {"request": request})
+
+@app.get("/buy/annual")
+async def buy_annual(request: Request):
+    """Legacy Stripe Checkout for Annual Plan"""
     try:
         price_id = os.getenv("STRIPE_PRICE_ANNUAL")
         if not price_id:
-            raise HTTPException(status_code=500, detail="Pricing not configured")
+             # Fallback if config is missing dev mode
+             return RedirectResponse(url="/buy")
              
         checkout_session = stripe.checkout.Session.create(
-            line_items=[
-                {
-                    'price': price_id,
-                    'quantity': 1,
-                },
-            ],
+            line_items=[{'price': price_id, 'quantity': 1}],
             mode='subscription',
             success_url=f"{BASE_URL.rstrip('/')}/payment-success?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{BASE_URL.rstrip('/')}/",
+            cancel_url=f"{BASE_URL.rstrip('/')}/buy",
             metadata={"plan": "annual"}
         )
         return RedirectResponse(url=checkout_session.url, status_code=303)
     except Exception as e:
         print(f"Stripe Error: {e}")
-        return RedirectResponse(url="/")
+        return RedirectResponse(url="/buy")
+
+@app.get("/buy/lifetime")
+async def buy_lifetime(request: Request):
+    """Stripe Checkout for Lifetime Plan ($400 one-time)"""
+    try:
+        # Use simple ad-hoc price if env var not set, or create dynamic price
+        price_id = os.getenv("STRIPE_PRICE_LIFETIME") 
+        
+        # If no price ID configured in env, we can't process
+        if not price_id:
+             # Fallback to annual if config missing or show error
+             return RedirectResponse(url="/buy")
+
+        checkout_session = stripe.checkout.Session.create(
+            line_items=[{'price': price_id, 'quantity': 1}],
+            mode='payment', # One-time payment, not subscription
+            success_url=f"{BASE_URL.rstrip('/')}/payment-success?session_id={{CHECKOUT_SESSION_ID}}",
+            cancel_url=f"{BASE_URL.rstrip('/')}/buy",
+            metadata={"plan": "lifetime"}
+        )
+        return RedirectResponse(url=checkout_session.url, status_code=303)
+    except Exception as e:
+        print(f"Stripe Error: {e}")
+        return RedirectResponse(url="/buy")
+
 
 @app.get("/payment-success")
 async def payment_success(session_id: str, response: Response):

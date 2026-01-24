@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-4xl mx-auto px-6 py-20 text-center">
+
+    <h1 class="text-4xl font-bold text-white mb-6">Choose Your Protection Level</h1>
+    <p class="text-zinc-400 mb-12 max-w-2xl mx-auto">
+        Both plans include full access to the Deadhand Protocol. The only difference is how you pay.
+    </p>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+
+        <!-- Lifetime Plan (Hero) -->
+        <div
+            class="border border-emerald-500/30 bg-emerald-500/5 rounded-xl p-8 relative overflow-hidden flex flex-col">
+            <div class="absolute top-0 right-0 bg-emerald-500 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
+                BEST VALUE
+            </div>
+
+            <h3 class="text-xl font-semibold text-white mb-2">Sovereign</h3>
+            <div class="text-3xl font-mono text-white mb-4">
+                <span class="text-zinc-500 line-through text-lg mr-2">$500</span>$400 <span
+                    class="text-sm text-zinc-500">/ once</span>
+            </div>
+            <p class="text-sm text-zinc-500 mb-6">Own it forever. No subscriptions.</p>
+
+            <ul class="text-left space-y-3 text-sm text-zinc-400 mb-8 flex-grow">
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> <b>No Recurring Fees</b></li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> <b>Infinite Vaults</b></li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> <b>Exclusive Discord Role</b></li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Sovereign Ownership</li>
+            </ul>
+
+            <a href="/buy/lifetime"
+                class="block w-full py-3 bg-white text-black font-bold rounded-lg hover:bg-zinc-200 transition">
+                Get Lifetime Access
+            </a>
+            <p class="text-xs text-zinc-600 mt-4">Credit Card via Stripe</p>
+            <p class="text-xs text-emerald-500 mt-2"><b>100% Refundable</b></p>
+        </div>
+
+        <!-- Annual Plan -->
+        <div
+            class="border border-zinc-800 bg-zinc-900/50 rounded-xl p-8 hover:border-zinc-700 transition relative flex flex-col">
+            <h3 class="text-xl font-semibold text-white mb-2">Standard</h3>
+            <div class="text-3xl font-mono text-white mb-4">
+                <span class="text-zinc-500 line-through text-lg mr-2">$120</span>$100 <span
+                    class="text-sm text-zinc-500">/ year</span>
+            </div>
+            <p class="text-sm text-zinc-500 mb-6">Pay as you go. Cancel anytime.</p>
+
+            <ul class="text-left space-y-3 text-sm text-zinc-400 mb-8 flex-grow">
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Full Vault Access</li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 3-Shard Splitting</li>
+                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Automated Check-ins</li>
+            </ul>
+
+            <a href="/buy/annual"
+                class="block w-full py-3 border border-zinc-700 text-white rounded-lg hover:bg-zinc-800 transition">
+                Subscribe Yearly
+            </a>
+            <p class="text-xs text-zinc-600 mt-4">Credit Card via Stripe</p>
+        </div>
+    </div>
+
+    <div class="mt-16 text-sm text-zinc-500">
+        <p class="mb-2"><b>100% Refund Guarantee</b></p>
+        <p>If you aren't satisfied with either plan, email <a href="mailto:max@deadhandprotocol.com"
+                class="text-zinc-400 underline">max@deadhandprotocol.com</a> for an immediate refund.</p>
+    </div>
+
+</div>
+{% endblock %}
