@@ -39,6 +39,15 @@
         }
     </script>
 
+    <!-- Microsoft Clarity -->
+    <script type="text/javascript">
+        (function (c, l, a, r, i, t, y) {
+            c[a] = c[a] || function () { (c[a].q = c[a].q || []).push(arguments) };
+            t = l.createElement(r); t.async = 1; t.src = "https://www.clarity.ms/tag/" + i;
+            y = l.getElementsByTagName(r)[0]; y.parentNode.insertBefore(t, y);
+        })(window, document, "clarity", "script", "v65cfvv0wd");
+    </script>
+
     <!-- JSON-LD Schema for Google -->
     <script type="application/ld+json">
     {
@@ -1042,6 +1051,83 @@
             }
         }
     </script>
+
+    <!-- Exit Intent / Inactivity Overlay -->
+    <div id="exit-overlay"
+        style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.85); z-index: 9999; justify-content: center; align-items: center;">
+        <div
+            style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 40px; max-width: 450px; text-align: center; position: relative; margin: 20px;">
+            <button onclick="closeExitOverlay()"
+                style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #666; font-size: 1.5em; cursor: pointer;">×</button>
+
+            <h2 style="color: #fff; font-size: 1.5em; margin-bottom: 10px;">wait—before you go</h2>
+            <p style="color: #888; font-size: 0.95em; margin-bottom: 25px;">learn how to protect your crypto from the #1
+                inheritance mistake (most people get this wrong)</p>
+
+            <input type="email" id="exit-email" placeholder="your email (optional)"
+                style="width: 100%; padding: 14px; border: 1px solid #333; border-radius: 6px; background: #1a1a1a; color: #fff; font-size: 1em; margin-bottom: 15px; outline: none;">
+
+            <button onclick="exitToGuide()"
+                style="width: 100%; padding: 14px 24px; background: #10b981; color: #000; font-weight: bold; border: none; border-radius: 6px; font-size: 1em; cursor: pointer;">
+                read the free guide →
+            </button>
+
+            <p style="color: #555; font-size: 0.75em; margin-top: 15px;">no spam. unsubscribe anytime.</p>
+        </div>
+    </div>
+
+    <script>
+        // Exit intent / inactivity detection
+        let exitShown = false;
+        let inactivityTimer;
+
+        function showExitOverlay() {
+            if (exitShown) return;
+            if (localStorage.getItem('exitShown')) return;
+            exitShown = true;
+            localStorage.setItem('exitShown', 'true');
+            document.getElementById('exit-overlay').style.display = 'flex';
+        }
+
+        function closeExitOverlay() {
+            document.getElementById('exit-overlay').style.display = 'none';
+        }
+
+        function exitToGuide() {
+            const email = document.getElementById('exit-email').value;
+            if (email && email.includes('@')) {
+                // Send to Discord webhook
+                fetch('https://discord.com/api/webhooks/1465452567973597391/cvwlKi5g0ta4gz3gIln07nHIQOnwqsA1g-qfllEjzTf92rrazcNJ-mXmZC2_txkWZS4I', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        content: `📧 **New Lead** (Exit Intent)\nEmail: ${email}\nTime: ${new Date().toISOString()}`
+                    })
+                }).catch(() => { });
+            }
+            // Redirect to blog post
+            window.location.href = 'https://www.deadhandprotocol.com/blog/how-to-backup-seed-phrase-securely';
+        }
+
+        // Trigger on mouse leaving viewport (exit intent)
+        document.addEventListener('mouseout', function (e) {
+            if (e.clientY < 10) {
+                showExitOverlay();
+            }
+        });
+
+        // Trigger on 45 seconds of inactivity
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            inactivityTimer = setTimeout(showExitOverlay, 45000);
+        }
+
+        document.addEventListener('mousemove', resetInactivityTimer);
+        document.addEventListener('keydown', resetInactivityTimer);
+        document.addEventListener('scroll', resetInactivityTimer);
+        resetInactivityTimer();
+    </script>
+
     <script defer src="/_vercel/insights/script.js"></script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
 </body>
