@@ -1,6 +1,6 @@
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=iqqpPJqMano">
-    <img src="https://img.youtube.com/vi/iqqpPJqMano/maxresdefault.jpg" alt="Watch: What happens to your crypto when you die?" width="100%">
+  <a href="https://www.youtube.com/watch?v=Q4e-JX1sfjo">
+    <img src="https://img.youtube.com/vi/Q4e-JX1sfjo/maxresdefault.jpg" alt="Watch: What happens to your crypto when you die?" width="100%">
   </a>
   <br>
   <em>▶️ Watch: What happens to your crypto when you die?</em>
