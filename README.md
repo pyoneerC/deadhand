@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/License-Source--Available-yellow?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/License-BSL_1.1-yellow?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/badge/Crypto-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
   <br><br>
   [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/pyoneerC/Deadhand)
@@ -186,30 +186,33 @@ Contributions are welcome! Here's how you can help:
 
 ## License
 
-This project uses a **dual-license, source-available** model:
+This project is licensed under the **Business Source License 1.1 (BSL 1.1)**.
 
-### For Inspection & Personal Use
+### What This Means
 
-The source code is publicly available under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. You may:
-- Read and audit the entire codebase
-- Run your own instance for **personal, non-commercial use**
-- Fork and modify for educational purposes
+| Use Case | Allowed? |
+|----------|----------|
+| Personal use | ✅ Free |
+| Security auditing | ✅ Free |
+| Educational/research | ✅ Free |
+| Non-commercial self-hosting | ✅ Free |
+| Commercial/production use | ❌ Requires Commercial License |
 
-### For Commercial Use
+### Change Date
 
-Running a hosted service, using Deadhand in a business context, or any commercial deployment requires a **valid paid subscription**. This includes:
-- Operating the dead man's switch service for paying customers
-- Integrating Deadhand into commercial products
-- White-labeling or reselling
+On **January 28, 2030**, this code automatically converts to **AGPL v3.0** (fully open source).
 
-**Why this model?**
+### Why BSL?
 
-We believe in transparency. You should be able to verify that your seed phrase is safe by reading the code yourself. But building and maintaining security infrastructure is expensive. The dual-license model ensures:
+We believe security software should be transparent. You should be able to verify that your seed phrase is safe by reading the code yourself. But building and maintaining security infrastructure is expensive. BSL ensures:
+
 1. **Trust**: Anyone can audit the code
 2. **Sustainability**: The project can be maintained long-term
-3. **Copyleft Protection**: Forks must also be source-available under AGPL
+3. **Eventual Freedom**: Code becomes open source after 4 years
 
-For commercial licensing inquiries, contact: **max@deadhandprotocol.com**
+For commercial licensing: **max@deadhandprotocol.com**
+
+See [LICENSE](./LICENSE) for full terms.
 
 ---
 

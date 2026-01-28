@@ -74,7 +74,7 @@ const translations = {
         cta_note: "No credit card. No account required.",
 
         // Footer
-        footer_opensource: "Source-Available · AGPL v3"
+        footer_opensource: "Source-Available · BSL 1.1"
     },
 
     es: {
@@ -132,7 +132,7 @@ const translations = {
         cta_subtitle: "Configura tu bóveda en menos de 5 minutos. Tu frase semilla nunca sale de tu dispositivo.",
         cta_button: "Crear Tu Bóveda",
         cta_note: "Sin tarjeta de crédito. Sin cuenta requerida.",
-        footer_opensource: "Código Disponible · AGPL v3"
+        footer_opensource: "Código Disponible · BSL 1.1"
     },
 
     zh: {
@@ -190,7 +190,7 @@ const translations = {
         cta_subtitle: "在5分钟内设置您的保险库。您的助记词永不离开您的设备。",
         cta_button: "创建您的保险库",
         cta_note: "无需信用卡。无需账户。",
-        footer_opensource: "源码可查 · AGPL v3"
+        footer_opensource: "源码可查 · BSL 1.1"
     },
 
     ko: {
@@ -221,7 +221,7 @@ const translations = {
         cta_subtitle: "5분 안에 금고를 설정하세요. 시드 문구는 절대 기기를 떠나지 않습니다.",
         cta_button: "금고 만들기",
         cta_note: "신용카드 불필요. 계정 불필요.",
-        footer_opensource: "소스 공개 · AGPL v3"
+        footer_opensource: "소스 공개 · BSL 1.1"
     },
 
     de: {
@@ -252,7 +252,7 @@ const translations = {
         cta_subtitle: "Richten Sie Ihren Tresor in unter 5 Minuten ein. Ihre Seed-Phrase verlässt nie Ihr Gerät.",
         cta_button: "Tresor Erstellen",
         cta_note: "Keine Kreditkarte. Kein Konto erforderlich.",
-        footer_opensource: "Quellcode Verfügbar · AGPL v3"
+        footer_opensource: "Quellcode Verfügbar · BSL 1.1"
     },
 
     ja: {
@@ -283,7 +283,7 @@ const translations = {
         cta_subtitle: "5分以内に金庫を設定。シードフレーズはデバイスから離れません。",
         cta_button: "金庫を作成",
         cta_note: "クレジットカード不要。アカウント不要。",
-        footer_opensource: "ソース公開 · AGPL v3"
+        footer_opensource: "ソース公開 · BSL 1.1"
     },
 
     pt: {
@@ -314,7 +314,7 @@ const translations = {
         cta_subtitle: "Configure seu cofre em menos de 5 minutos. Sua frase semente nunca sai do seu dispositivo.",
         cta_button: "Criar Seu Cofre",
         cta_note: "Sem cartão de crédito. Sem conta necessária.",
-        footer_opensource: "Código Disponível · AGPL v3"
+        footer_opensource: "Código Disponível · BSL 1.1"
     }
 };
 
