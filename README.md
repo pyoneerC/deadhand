@@ -7,7 +7,7 @@
 <p align="center">
   <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/License-MIT-green?style=for-the-badge" alt="License">
+  <img src="https://img.shields.io/badge/License-Source--Available-yellow?style=for-the-badge" alt="License">
   <img src="https://img.shields.io/badge/Crypto-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
   <br><br>
   [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/pyoneerC/Deadhand)
@@ -37,7 +37,7 @@ Deadhand uses **Shamir's Secret Sharing** to split your seed phrase into 3 shard
 - **PDF Export** - Print shards for physical backup
 - **Beneficiary System** - Seamless crypto inheritance
 - **Zero Trust Architecture** - Even we can't access your keys
-- **Fully Open Source** - Audit the code yourself
+- **Source-Available** - Inspect the full code, but commercial use requires a subscription
 
 
 ## How It Works
@@ -186,31 +186,30 @@ Contributions are welcome! Here's how you can help:
 
 ## License
 
-This project is licensed under the **MIT License** - see below for details:
+This project uses a **dual-license, source-available** model:
 
-```
-MIT License
+### For Inspection & Personal Use
 
-Copyright (c) 2025 Deadhand
+The source code is publicly available under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. You may:
+- Read and audit the entire codebase
+- Run your own instance for **personal, non-commercial use**
+- Fork and modify for educational purposes
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+### For Commercial Use
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Running a hosted service, using Deadhand in a business context, or any commercial deployment requires a **valid paid subscription**. This includes:
+- Operating the dead man's switch service for paying customers
+- Integrating Deadhand into commercial products
+- White-labeling or reselling
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-```
+**Why this model?**
+
+We believe in transparency. You should be able to verify that your seed phrase is safe by reading the code yourself. But building and maintaining security infrastructure is expensive. The dual-license model ensures:
+1. **Trust**: Anyone can audit the code
+2. **Sustainability**: The project can be maintained long-term
+3. **Copyleft Protection**: Forks must also be source-available under AGPL
+
+For commercial licensing inquiries, contact: **max@deadhandprotocol.com**
 
 ---
 

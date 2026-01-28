@@ -1,21 +1,60 @@
-MIT License
+DEADHAND SOURCE-AVAILABLE LICENSE
 
 Copyright (c) 2026 Max Comperatore
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+================================================================================
+DUAL LICENSE NOTICE
+================================================================================
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+This software is available under a dual-licensing model:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+1. GNU AFFERO GENERAL PUBLIC LICENSE v3.0 (AGPL-3.0)
+   For personal, non-commercial use, inspection, and educational purposes.
+
+2. COMMERCIAL LICENSE
+   For commercial use, hosting as a service, or integration into commercial
+   products. Contact: max@deadhandprotocol.com
+
+================================================================================
+AGPL-3.0 TERMS (Non-Commercial Use)
+================================================================================
+
+This program is free software: you can redistribute it and/or modify it under
+the terms of the GNU Affero General Public License as published by the Free
+Software Foundation, either version 3 of the License, or (at your option) any
+later version.
+
+This program is distributed in the hope that it will be useful, but WITHOUT ANY
+WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE. See the GNU Affero General Public License for more details.
+
+You should have received a copy of the GNU Affero General Public License along
+with this program. If not, see <https://www.gnu.org/licenses/>.
+
+================================================================================
+COMMERCIAL USE RESTRICTION
+================================================================================
+
+The following activities require a separate Commercial License:
+
+- Operating Deadhand (or any derivative) as a hosted service for paying customers
+- Integrating Deadhand into commercial products or services
+- White-labeling, reselling, or sublicensing Deadhand functionality
+- Any use in a for-profit business context
+
+To obtain a Commercial License, contact: max@deadhandprotocol.com
+
+================================================================================
+WHY THIS MODEL?
+================================================================================
+
+We believe security software should be transparent. You should be able to verify
+that your seed phrase is safe by reading the code yourself. However, building
+and maintaining security infrastructure is expensive. This dual-license model
+ensures:
+
+1. TRUST: Anyone can audit the code
+2. SUSTAINABILITY: The project can be maintained long-term
+3. COPYLEFT: Forks must also be source-available under AGPL
+
+================================================================================
