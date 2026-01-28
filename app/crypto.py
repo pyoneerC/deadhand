@@ -1,3 +1,5 @@
+# SPDX-License-Identifier: BUSL-1.1
+# Copyright (c) 2026 Max Comperatore. All rights reserved.
 """
 Simple AES-GCM encryption for shard_c storage.
 Key is derived from each user's unique heartbeat_token.

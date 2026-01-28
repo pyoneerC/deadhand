@@ -1,3 +1,6 @@
+# SPDX-License-Identifier: BUSL-1.1
+# Copyright (c) 2026 Max Comperatore. All rights reserved.
+
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
