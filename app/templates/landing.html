@@ -264,34 +264,6 @@
             /* Hide scrollbar for Chrome/Safari */
         }
 
-        /* founder section */
-        .founder {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 15px;
-            margin: 2em 0;
-            padding: 20px;
-            background: #f0f0f0;
-            border-radius: 8px;
-        }
-
-        .founder img {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .founder-text {
-            text-align: center;
-        }
-
-        .founder-text p {
-            margin: 0;
-            font-size: 0.95em;
-            color: #444;
-        }
 
         /* tool links - touch friendly cards */
         .tools-grid {
@@ -587,6 +559,87 @@
             text-underline-offset: 4px;
             font-weight: bold !important;
         }
+
+        /* Collapsible sections */
+        .collapsible-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapsible-content.expanded {
+            max-height: 2000px;
+        }
+
+        .read-more-btn {
+            background: none;
+            border: 1px dashed #999;
+            color: #666;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 0.9em;
+            margin: 10px 0;
+        }
+
+        .read-more-btn:hover {
+            border-color: #333;
+            color: #333;
+        }
+
+        /* FAQ Accordion */
+        .faq-container {
+            margin: 2em 0;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 5px;
+        }
+
+        .faq-question {
+            width: 100%;
+            text-align: left;
+            background: none;
+            border: none;
+            padding: 15px 0;
+            font-size: 1em;
+            font-family: Georgia, serif;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #222;
+            transition: color 0.2s;
+        }
+
+        .faq-question:hover {
+            color: #0066cc;
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 300px;
+            padding-bottom: 20px;
+            opacity: 1;
+        }
+
+        .faq-question i {
+            transition: transform 0.3s ease;
+            font-size: 0.8em;
+            color: #999;
+        }
+
+        .faq-item.active .faq-question i {
+            transform: rotate(180deg);
+        }
     </style>
 </head>
 
@@ -596,10 +649,10 @@
     <header class="header">
         <div class="container">
             <nav class="nav" aria-label="Main Navigation">
-                <a href="/tools/dead-switch" class="nav-primary">dead switch</a>
+                <a href="/tools/dead-switch">pricing</a>
                 <a href="/tools/visual-crypto">visual crypto</a>
                 <a href="/tools/audio-steg">audio steg</a>
-                <a href="#cli">cli tools</a>
+                <a href="https://github.com/pyoneerC/deadhand/tree/main/cli">cli tools</a>
                 <a href="/blog">blog</a>
                 <a href="https://github.com/pyoneerC/deadhand">github</a>
             </nav>
@@ -620,91 +673,36 @@
 
         <p><b>what happens to your crypto when you die?</b></p>
 
-        <p>you have a seed phrase somewhere. drawer, safe, whatever. you get hit by a bus tomorrow. your wife gets
-            nothing. not because someone stole it. because nobody knows how to access it.</p>
-
-        <p>seed phrases aren't made for humans. they're made for computers. 12 random words you've gotta keep safe
-            forever
-            and somehow pass to your family. it's a terrible system and everyone's just pretending it's fine.</p>
-
-        <p>i built this because it was a personal problem. then i asked around and realized <a
-                href="https://x.com/PixOnChain/status/2000589935980458262" target="_blank"
-                style="color: inherit; text-decoration: underline;">everyone</a> has this
-            problem. nobody has a real solution.</p>
+        <p>you die → your family gets nothing. not because it was stolen. because nobody knows how to access it.</p>
 
         <hr>
 
         <h2>how people actually store seeds</h2>
 
-        <p>i asked people how they store their seed phrases. the answers were terrifying:</p>
+        <p>spoiler: terrifyingly bad.</p>
 
-        <blockquote
-            style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-            > plain text note in google drive
-        </blockquote>
+        <button class="read-more-btn" onclick="toggleSection('seedquotes')">see the quotes ▼</button>
 
-        <blockquote
-            style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-            > get 12 to 24 of your closest friends and family members, give them each a word to hold onto and remember
-            in which order you gave out the words
-        </blockquote>
-
-        <blockquote
-            style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-            > screenshot on my phone. it syncs to icloud but whatever
-        </blockquote>
-
-        <blockquote
-            style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-            > metal seed plates... somewhere. i don't remember where i put it lol
-        </blockquote>
-
-        <blockquote
-            style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-            > i wrote it backwards for security<br>
-            > lmao
-        </blockquote>
-
-        <div class="roast-box">
-            <p style="margin-bottom: 15px;"><b>roast my security (ai)</b></p>
-            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">tell the bot how you're currently storing
-                your
-                seed. be honest. it won't blink.</p>
-            <input type="text" id="roast-input" placeholder="e.g. i have it in a hidden folder on my laptop">
-            <input type="email" id="roast-email" placeholder="email (optional - get security tips)"
-                style="margin-top: 8px;">
-            <button class="roast-btn" onclick="roastMe()">roast me</button>
-            <div id="roast-result" class="roast-result">
-                // standing by. tell me your "strategy".
-            </div>
-        </div>
-
-        <p>this is how billions of dollars get lost. not hacks. not scams. just people being human.</p>
-
-        <p>i'm here to fix that.</p>
-
-        <div style="margin: 40px 0; display: flex; flex-direction: column; align-items: center;">
-            <p style="font-style: italic; color: #555; text-align: center; max-width: 450px; margin-bottom: 5px;">"As CZ
-                highlights, crypto is the ultimate tool for generational wealth. But generational wealth requires
-                generational access. Deadhand is the missing bridge between your retirement and your family's future."
-            </p>
-            <blockquote class="twitter-tweet" data-theme="light">
-                <p lang="en" dir="ltr">AI will make you jobless. <br>Crypto will make you not need a job. <br><br>Buy
-                    and hold now, retire in a few years. 🙋‍♂️if crypto allowed you to retire already. <br><br>(Not
-                    financial advice)</p>&mdash; CZ 🔶 BNB (@cz_binance) <a
-                    href="https://twitter.com/cz_binance/status/2014399321815580964?ref_src=twsrc%5Etfw">January 22,
-                    2026</a>
+        <div id="seedquotes" class="collapsible-content">
+            <blockquote
+                style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
+                > plain text note in google drive
+            </blockquote>
+            <blockquote
+                style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
+                > screenshot on my phone. it syncs to icloud but whatever
+            </blockquote>
+            <blockquote
+                style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
+                > i wrote it backwards for security<br>> lmao
             </blockquote>
         </div>
-
-        <a href="/tools/dead-switch" class="cta">protect your family</a>
-
         <hr>
 
-        <h2>the idea</h2>
+        <h2>the architecture</h2>
 
         <p>deadhand splits your seed into 3 pieces using <a
-                href="https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing">shamirs secret sharing</a>.</p>
+                href="https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing">Shamir's Secret Sharing</a>.</p>
 
         <p>any 2 shards = full recovery. 1 shard alone = nothing. mathematically proven.</p>
 
@@ -717,149 +715,102 @@
         <p><b>while you're alive:</b> recover anytime with shard a + b.</p>
 
         <p><b>if you go silent:</b> we email you every 30 days to check in. if you don't respond for 90 days, shard c is
-            automatically released to your beneficiary. they combine b + c and recover your seed phrase
-            permissionlessly.</p>
+            released. they combine b + c and recover your seed phrase.</p>
 
         <p>that's it. dead man's switch for crypto.</p>
+
+        <p style="margin-top: 20px;"><a href="/tools/dead-switch"
+                style="display: inline-block; background: #222; color: #fff; padding: 12px 24px; text-decoration: none;">try
+                it now →</a></p>
 
         <hr>
 
         <h2>not just crypto</h2>
 
-        <p>deadhand works with <b>any secret that uses a seed phrase or recovery key</b>:</p>
+        <p>deadhand works with <b>any secret</b>: GPG keys, SSH keys, password managers, hardware security keys.</p>
 
-        <ul>
-            <li><b>GPG keys:</b> protect your signing identity forever</li>
-            <li><b>FIDO2 / WebAuthn:</b> back up your hardware security keys</li>
-            <li><b>SSH keys:</b> ensure server access doesn't die with you</li>
-            <li><b>password manager master keys:</b> your 1Password/Bitwarden vault isn't lost</li>
-        </ul>
+        <button class="read-more-btn" onclick="toggleSection('notcrypto')">see full list ▼</button>
 
-        <p>if it's a secret string that unlocks something important, deadhand can protect it.</p>
+        <div id="notcrypto" class="collapsible-content">
+            <ul>
+                <li><b>GPG keys:</b> protect your signing identity forever</li>
+                <li><b>FIDO2 / WebAuthn:</b> back up your hardware security keys</li>
+                <li><b>SSH keys:</b> ensure server access doesn't die with you</li>
+                <li><b>password manager master keys:</b> your 1Password/Bitwarden vault isn't lost</li>
+            </ul>
+            <p>if it's a secret string that unlocks something important, deadhand can protect it.</p>
+        </div>
 
         <hr>
 
         <h2>there's nothing else like this</h2>
 
-        <p>i spent weeks looking for a solution. here is the garbage i found:</p>
+        <p>i spent weeks looking. exchanges, lawyers, multisig, custodial apps, tokenized DAOs, metal plates... all
+            garbage.</p>
 
-        <ul>
-            <li><b>exchanges:</b> kyc hell. they'll freeze your family's money for "verification" while the market
-                crashes. if they go bust, you lose it all.</li>
-            <li><b>lawyers:</b> they understand houses, not private keys. do you really want your seed sitting in some
-                dusty filing cabinet? too slow and way too expensive.</li>
-            <li><b>multisig:</b> good luck explaining "cosigning" to your mom. it's too technical for real life.</li>
-            <li><b>private wealth firms:</b> <span
-                    style="background: #ffebeb; color: #d32f2f; padding: 2px 5px;">$6,000/yr</span> for 'white glove'
-                service. great for institutions, overkill for individuals who just want a dead man's switch.</li>
-            <li><b>custodial apps:</b> they hold your keys. If they go bankrupt (remember FTX?), your family becomes a
-                creditor, not an heir. I don't pay rent to hold my own money.</li>
-            <li><b>tokenized daos:</b> they add "staking" and "governance" to a simple math problem just to pump their
-                bags. if the token crashes, the nodes quit, and your sarcophagus stays buried forever.</li>
-            <li><b>metal plates:</b> great against fire, terrible against a $5 wrench. If a burglar finds the plate,
-                your money is gone. Deadhand is un-stealable.</li>
-        </ul>
+        <button class="read-more-btn" onclick="toggleSection('competitors')">why they all suck ▼</button>
 
-        <p>deadhand is different. <b>no token. no dao. no staking.</b> just pure math. open source and trustless. the
-            emergency exit is always open.</p>
+        <div id="competitors" class="collapsible-content">
+            <ul>
+                <li><b>exchanges:</b> kyc hell. they'll freeze your family's money for "verification" while the market
+                    crashes.</li>
+                <li><b>lawyers:</b> they understand houses, not private keys. too slow and too expensive.</li>
+                <li><b>multisig:</b> good luck explaining "cosigning" to your mom.</li>
+                <li><b>private wealth firms:</b> <span
+                        style="background: #ffebeb; color: #d32f2f; padding: 2px 5px;">$6,000/yr</span> for 'white
+                    glove' service.</li>
+                <li><b>custodial apps:</b> they hold your keys. If they go bankrupt (FTX?), you're a creditor, not an
+                    heir.</li>
+                <li><b>tokenized daos:</b> if the token crashes, the nodes quit, your sarcophagus stays buried.</li>
+                <li><b>metal plates:</b> great against fire, terrible against a $5 wrench.</li>
+            </ul>
+        </div>
+
+        <p>deadhand is different. <b>no token. no dao. no staking.</b> just pure math.</p>
 
         <hr>
 
         <h2>security</h2>
 
-        <ul>
-            <li><b>we get hacked:</b> we only have shard c. useless alone</li>
-            <li><b>we go rogue:</b> same. need 2 of 3</li>
-            <li><b>deadhand shuts down:</b> you have a + b. always recover</li>
-            <li><b>man in middle:</b> splitting happens in your browser. seed never hits network</li>
-        </ul>
+        <button class="read-more-btn" onclick="toggleSection('security-details')">see security model ▼</button>
 
-        <p>code is open source. <a href="https://deepwiki.com/pyoneerC/deadhand" target="_blank">go read it and ask
-                ai.</a></p>
+        <div id="security-details" class="collapsible-content">
+            <ul>
+                <li><b>we get hacked:</b> we only have shard c. useless alone</li>
+                <li><b>we go rogue:</b> same. need 2 of 3</li>
+                <li><b>deadhand shuts down:</b> you have a + b. always recover</li>
+                <li><b>man in middle:</b> splitting happens in your browser. seed never hits network</li>
+            </ul>
 
-        <p><b>no lock-in:</b> we use standard BIP-39 and Shamir Secret Sharing. if deadhand disappears tomorrow, you can
-            recover your keys using <code>ssss-split</code> on linux or any other standard offline tool. the emergency
-            exit is always open.</p>
+            <p>code is open source. <a href="https://deepwiki.com/pyoneerC/deadhand" target="_blank">go read it and ask
+                    ai.</a></p>
 
-        <hr>
-
-        <h2>security tools</h2>
-
-        <div class="tools-grid">
-            <a href="/tools/visual-crypto" class="tool-card">
-                <strong>visual cryptography</strong>
-                <span>split images into 2 noise shares. overlay to reveal</span>
-            </a>
-            <a href="/tools/audio-steg" class="tool-card">
-                <strong>audio steganography</strong>
-                <span>hide text inside wav files. undetectable</span>
-            </a>
-        </div>
-
-        <h2 id="cli">cli utilities (raw python)</h2>
-        <p>for the "trust nobody" crowd. zero dependencies. runs offline. single files.</p>
-
-        <div
-            style="background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 8px; padding: 16px; margin: 16px 0;">
-            <strong style="color: #10b981;">How to use:</strong>
-            <ol style="margin: 8px 0 0 20px; color: #a1a1aa;">
-                <li>Click any tool below to view on GitHub</li>
-                <li>Click "Raw" button on GitHub to get the file</li>
-                <li>Save as <code style="background: #27272a; padding: 2px 6px; border-radius: 4px;">.py</code> file
-                </li>
-                <li>Run with: <code
-                        style="background: #27272a; padding: 2px 6px; border-radius: 4px;">python seed_split.py</code>
-                </li>
-            </ol>
-        </div>
-
-        <div class="tools-grid">
-            <a href="https://github.com/pyoneerC/deadhand/blob/main/cli/seed_split.py" class="tool-card" target="_blank"
-                rel="noopener">
-                <strong>seed_split.py</strong>
-                <span>2-of-3 SSS for seed phrases. console-only.</span>
-            </a>
-            <a href="https://github.com/pyoneerC/deadhand/blob/main/cli/audio_steg.py" class="tool-card" target="_blank"
-                rel="noopener">
-                <strong>audio_steg.py</strong>
-                <span>hide seeds in wavs. no internet needed.</span>
-            </a>
-            <a href="https://github.com/pyoneerC/deadhand/blob/main/cli/visual_split.py" class="tool-card"
-                target="_blank" rel="noopener">
-                <strong>visual_split.py</strong>
-                <span>2-of-2 visual crypto. needs pillow.</span>
-            </a>
+            <p><b>no lock-in:</b> we use standard BIP-39 and Shamir's Secret Sharing. if deadhand disappears tomorrow,
+                you can
+                recover your keys using <code>ssss-split</code> on linux or any other standard offline tool. the
+                emergency
+                exit is always open.</p>
         </div>
 
         <hr>
 
-        <h2>how it works</h2>
 
-        <ol>
-            <li>type your seed phrase (go offline first)</li>
-            <li>browser splits into 3 shards</li>
-            <li>download shard a + b</li>
-            <li>shard c stored encrypted on our servers</li>
-            <li>every 30 days we email you to check in</li>
-            <li>no response for 90 days? shard c is released</li>
-            <li>beneficiary recovers with two shards permissionlessly (b + c)</li>
-        </ol>
 
-        <p>5 minutes to setup.</p>
+        <div class="roast-box">
+            <p style="margin-bottom: 15px;"><b>roast my security (ai)</b></p>
+            <p style="font-size: 0.8em; color: #666; margin-bottom: 10px;">tell the bot how you're currently storing
+                your seed. be honest.</p>
+            <input type="text" id="roast-input" placeholder="e.g. i have it in a hidden folder on my laptop">
+            <input type="email" id="roast-email" placeholder="email (optional - get security tips)"
+                style="margin-top: 8px;">
+            <button class="roast-btn" onclick="roastMe()">roast me</button>
+            <div id="roast-result" class="roast-result">
+                // standing by. tell me your "strategy".
+            </div>
+        </div>
 
-        <a href="/tools/dead-switch" class="cta">setup your vault</a>
 
         <hr>
-
-        <div
-            style="background: #eef2ff; border: 1px solid; padding: 20px; border-radius: 8px; margin: 40px 0; font-family: monospace; font-size: 0.9em;">
-            <p>If you read this far, you're smarter than 99% of "crypto investors".</p>
-            <p>Most people close the tab because they think "it won't happen to me". You stayed because you understand
-                probability.</p>
-            <p><strong>The probability of you dying is 1. The probability of you predicting when is 0.</strong></p>
-            <p style="margin-bottom: 0;">You are betting your entire legacy on a timeline you cannot see. Don't be a
-                statistic. Finish the job.</p>
-        </div>
 
         <h2>price</h2>
 
@@ -900,33 +851,29 @@
         <p><b>self-host:</b> always free. clone the <a href="https://github.com/pyoneerC/deadhand">repo</a> and run your
             own instance.</p>
 
-        <a href="/tools/dead-switch" class="cta">get started now</a>
-
         <hr>
 
         <h2>social proof</h2>
-        <div class="testimonials">
-            <div class="testimonial-card">
-                <p class="testimonial-content">"Right now this looks like a top-tier solution for people who don’t want
-                    to pay a lot and want something simple, universal, and practical. With good onboarding and clear
-                    explanations on top, this could be a very strong mass-market product I think"</p>
-                <p class="testimonial-author">Aleksey (<a href="https://t.me/alexchaison"
-                        target="_blank">@alexchaison</a>)</p>
-            </div>
+        <button class="read-more-btn" onclick="toggleSection('social-proof-content')">see what people say ▼</button>
+        <div id="social-proof-content" class="collapsible-content">
+            <div class="testimonials">
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"Right now this looks like a top-tier solution for people who don’t
+                        want
+                        to pay a lot and want something simple, universal, and practical."</p>
+                    <p class="testimonial-author">Aleksey (@alexchaison)</p>
+                </div>
 
-            <div class="testimonial-card">
-                <p class="testimonial-content">"This could become a reference standard for non-custodial crypto
-                    succession planning."</p>
-                <p class="testimonial-author">Dr Joshua (<a href="https://t.me/Hello_DrJoshua"
-                        target="_blank">@Hello_DrJoshua</a>)</p>
-            </div>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"This could become a reference standard for non-custodial crypto
+                        succession planning."</p>
+                    <p class="testimonial-author">Dr Joshua (@Hello_DrJoshua)</p>
+                </div>
 
-            <div class="testimonial-card">
-                <p class="testimonial-content">"This is a super needed idea. Love the concept. Especially key if it gets
-                    integrated into wallets so things can be done automatically or with a slick UI, and potentially also
-                    a hardware version on steel plates."</p>
-                <p class="testimonial-author">Jeremy (<a href="https://t.me/BitcoinCashPodcast"
-                        target="_blank">@BitcoinCashPodcast</a>)</p>
+                <div class="testimonial-card">
+                    <p class="testimonial-content">"This is a super needed idea. Love the concept."</p>
+                    <p class="testimonial-author">Jeremy (@BitcoinCashPodcast)</p>
+                </div>
             </div>
         </div>
 
@@ -934,51 +881,95 @@
 
         <h2>faq</h2>
 
-        <p><b>can you steal my crypto?</b><br>no. we only have shard c. useless alone</p>
+        <div class="faq-container">
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Can you steal my crypto?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Absolutely not. Deadhand is architected as a non-custodial protocol. We only hold Shard C, which
+                        is mathematically insufficient to reconstruct your private key. The recovery process requires
+                        two out of three shards; since only you and your beneficiary hold the remaining pieces, we have
+                        zero access to your assets.</p>
+                </div>
+            </div>
 
-        <p><b>what if i lose my seed?</b><br>combine a + b. that's the whole point</p>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What happens if I lose my original seed phrase?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>This is precisely why the protocol exists. You can combine Shard A (which you keep) with Shard B
+                        (held by your beneficiary) at any time to instantly reconstruct your original 12 or 24-word seed
+                        phrase without any assistance from our servers.</p>
+                </div>
+            </div>
 
-        <p><b>what if beneficiary tries to steal?</b><br>they only have shard b. useless. shard c releases after 90 days
-            of YOUR inactivity (we check in every 30 days)</p>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Can my beneficiary access my funds prematurely?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>No. Your beneficiary only holds Shard B. To recover the seed, they need a second shard. Shard C
+                        is held in our secure vault and is only released after our autonomous monitoring confirms 90
+                        days of total inactivity, following multiple failed check-in attempts via your primary contact
+                        method.</p>
+                </div>
+            </div>
 
-        <p><b>which chains?</b><br>any bip-39 seed. btc eth sol whatever</p>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Which blockchains and wallets are supported?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Deadhand supports any secret that can be represented as a string, including all BIP-39 compliant
+                        seed phrases. This makes it universally compatible with Bitcoin, Ethereum, Solana, and thousands
+                        of other assets across all major hardware and software wallets.</p>
+                </div>
+            </div>
 
-        <p><b>what if you disappear?</b><br>we use standard BIP-39 and Shamir Secret Sharing. you can use standard tools
-            like <code>ssss-split</code> on linux to recover your keys without us. no lock-in.</p>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What if Deadhand Protocol shuts down?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>The protocol is built on open standards. Because we use standard Shamir's Secret Sharing (SSS)
+                        and BIP-39 mnemonic logic, you are never locked into our service. If our servers ever went
+                        offline, you could use any standard offline SSS utility (like <code>ssss-split</code> on Linux)
+                        to combine your shards and recover your assets. Your legacy is protected by math, not a company.
+                    </p>
+                </div>
+            </div>
 
-        <p><b>can the team "break" my switch if i lose shard a?</b><br>never. the switch is autonomous. we have
-            zero manual overrides. if you lose a shard, you must wait for the 90-day trigger. no exceptions. this
-            ensures nobody can social-engineer your vault.</p>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Can the team override the 90-day waiting period?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Never. The Deadhand switch is governed by strict, autonomous logic with no manual override
+                        capability. This "Hard Logic" ensures that no amount of social engineering can force a premature
+                        release of Shard C. The safety of your vault is absolute.</p>
+                </div>
+            </div>
 
-        <p><b>success tax? hidden fees?</b><br>No. Whether you've got $10 or $10b in your wallet, the protocol cost is
-            the same. One simple annual fee for global custody protection. No percentage-based fees, ever.</p>
-
-        <hr>
-
-        <h2>the global organization</h2>
-
-        <div class="founder">
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTqMxJLDbZIQLXKntZEo7g3360eM4pM2eVUTg&s"
-                alt="max" style="filter: grayscale(1);">
-            <div class="founder-text">
-                <p><b>Max Comperatore</b><br><span style="font-size: 0.8em; color: #666;">Founder & Protocol
-                        Director</span></p>
-                <p>Deadhand Protocol was established to bridge the gap between complex cryptography and human legacy.
-                    Our team operates globally to ensure that your digital assets remain accessible to your heirs,
-                    regardless of institutional failures.</p>
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Are there any hidden fees or success taxes?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>No. We believe in transparent, flat-rate pricing. Whether you are protecting $1,000 or
+                        $100,000,000, the protocol cost remains the same. We do not charge percentage-based "success
+                        fees" or performance taxes on your inheritance.</p>
+                </div>
             </div>
         </div>
-
-        <p><b>the chewy approach:</b> i send handwritten thank-you cards to early users. you get holiday cards. if you
-            need help, you get a real human on a call, not a chatbot. this is a relationship, not a transaction.</p>
-
-        <p style="margin-top: 20px;">
-            <a href="https://docs.google.com/presentation/d/10vtfCIap9lYwWosaVElGgqySlmbrwwoRfumdJ4e1gyA/edit?usp=sharing"
-                class="cta" style="background: #fff; color: #222; border: 1px solid #222;" target="_blank">see the pitch
-                deck</a>
-        </p>
-
-        <a href="/tools/dead-switch" class="cta">protect your family</a>
 
         <!-- The Cult Gate -->
         <div class="cult-gate">
@@ -999,8 +990,8 @@
             </div>
 
             <div id="discord-reveal">
-                <ctrl94> access granted. welcome to the 1%. <br>
-                    <a href="https://discord.gg/eDyCkgvBjf" target="_blank">>> join the private discord server</a>
+                <code>access granted. welcome to the 1%.</code> <br>
+                <a href="https://discord.gg/eDyCkgvBjf" target="_blank">>> join the private discord server</a>
             </div>
             <div id="gate-error"
                 style="color: #ff4444; font-size: 0.8em; margin-top: 10px; display: none; font-family: monospace;">
@@ -1046,7 +1037,7 @@
             </div>
         </div>
         <p style="font-size: 0.8em; color: #999;">
-            © 2026 deadhand protocol. all rights reserved. developed with technical excellence in argentina.<br>
+            © 2026 deadhand protocol. all rights reserved. developed with technical excellence in Argentina.<br>
             friends don't let friends' crypto die with them.
         </p>
     </footer>
@@ -1100,6 +1091,33 @@
                 }
             } catch (e) {
                 resultEl.innerText = "// even the bot is speechless at how bad this is. try again.";
+            }
+        }
+
+        function toggleSection(id) {
+            const el = document.getElementById(id);
+            const btn = el.previousElementSibling;
+            if (el.classList.contains('expanded')) {
+                el.classList.remove('expanded');
+                btn.innerHTML = btn.innerHTML.replace('▲', '▼');
+            } else {
+                el.classList.add('expanded');
+                btn.innerHTML = btn.innerHTML.replace('▼', '▲');
+            }
+        }
+
+        function toggleFAQ(button) {
+            const item = button.parentElement;
+            const isActive = item.classList.contains('active');
+
+            // Close all other FAQ items
+            document.querySelectorAll('.faq-item').forEach(el => {
+                el.classList.remove('active');
+            });
+
+            // Toggle current item
+            if (!isActive) {
+                item.classList.add('active');
             }
         }
     </script>
