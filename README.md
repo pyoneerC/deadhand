@@ -151,26 +151,6 @@ flowchart TB
 
 ---
 
-### Security Note
-
-<p align="center">
-  <img src="app/static/notrust.jpg" alt="No Trust Required" width="500">
-</p>
-
-This is an MVP/Proof of Concept. In a real production environment:
-*   Use HTTPS.
-*   Audit the `secrets.js` library.
-*   Ensure the database is secure.
-*   Use a real email provider (SendGrid/AWS SES) instead of the mock logger.
-
----
-
-<p align="center">
-  <b>Built by the Deadhand Team</b>
-</p>
-
----
-
 ## Contributing
 
 Contributions are welcome! Here's how you can help:
