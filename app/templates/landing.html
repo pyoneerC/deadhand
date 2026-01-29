@@ -671,6 +671,8 @@
                 your
                 seed. be honest. it won't blink.</p>
             <input type="text" id="roast-input" placeholder="e.g. i have it in a hidden folder on my laptop">
+            <input type="email" id="roast-email" placeholder="email (optional - get security tips)"
+                style="margin-top: 8px;">
             <button class="roast-btn" onclick="roastMe()">roast me</button>
             <div id="roast-result" class="roast-result">
                 // standing by. tell me your "strategy".
@@ -1071,6 +1073,7 @@
 
         async function roastMe() {
             const input = document.getElementById('roast-input').value;
+            const email = document.getElementById('roast-email').value;
             const resultEl = document.getElementById('roast-result');
             if (!input) {
                 resultEl.innerText = "// you've gotta type something first.";
@@ -1085,7 +1088,7 @@
                     headers: {
                         "Content-Type": "application/json"
                     },
-                    body: JSON.stringify({ input: input })
+                    body: JSON.stringify({ input: input, email: email || null })
                 });
                 const data = await response.json();
 

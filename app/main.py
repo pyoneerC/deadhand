@@ -427,6 +427,7 @@ async def dead_switch_page(request: Request, db: Session = Depends(get_db)):
 async def api_roast(request: Request):
     """
     Proxy request to OpenRouter to avoid exposing API key on frontend.
+    Also captures optional email for lead generation.
     """
     import httpx
     try:
@@ -435,8 +436,15 @@ async def api_roast(request: Request):
         raise HTTPException(status_code=400, detail="Invalid JSON in request")
         
     user_input = data.get("input")
+    user_email = data.get("email")  # Optional
+    
     if not user_input:
         raise HTTPException(status_code=400, detail="Input text is required for the roast")
+    
+    # Log email for lead capture (if provided)
+    if user_email:
+        print(f"[LEAD] Roast email captured: {user_email} | Setup: {user_input[:100]}")
+        # TODO: Store in database or send to CRM
         
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
