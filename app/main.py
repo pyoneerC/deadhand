@@ -1094,10 +1094,12 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                     
             except Exception as e:
                 results["errors"] += 1
+                results["last_error"] = str(e)
                 continue
         
         db.commit()
-        return {"status": "ok"}
+        results["users_checked"] = len(active_users)
+        return {"status": "ok", "results": results}
     
     except Exception as e:
         return {"status": "error", "message": str(e)}
