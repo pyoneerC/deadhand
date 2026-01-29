@@ -51,9 +51,8 @@ Deadhand uses **Shamir's Secret Sharing** to split your seed phrase into 3 shard
 
 Imagine your seed phrase is a **secret line** on a piece of paper.
 
-Now imagine that line exists on a 2D plane:
-- **1 point** on the plane tells you **nothing** about the line
-- **2 points** on the plane **reveal the entire line**
+- **1 point** on the paper tells you **nothing** about the line
+- **2 points** on the paper **reveal the entire line**
 
 That's Shamir's Secret Sharing. Your seed phrase is the line. We create 3 points:
 
@@ -63,7 +62,7 @@ That's Shamir's Secret Sharing. Your seed phrase is the line. We create 3 points
 | **B** | Your heir | Nothing |
 | **C** | Deadhand server (encrypted) | Nothing |
 
-Any **2 shards** → full seed phrase recovered ✅  
+Any **2 shards** → full seed phrase recovered (you don't need all 3) ✅  
 Any **1 shard** → completely useless ❌
 
 ### The Dead Man's Switch
