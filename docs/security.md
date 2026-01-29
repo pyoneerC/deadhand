@@ -149,4 +149,6 @@ We commit to:
 - Providing updates on fixes
 - Crediting researchers (if desired)
 
+<p align="center">
 <u>deadhand will NEVER ask for your shards, or any other information that could be used to access your crypto.</u>
+</p>
