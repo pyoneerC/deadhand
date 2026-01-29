@@ -763,8 +763,9 @@ async def create_vault(
     # Check if user exists (might have been created by Stripe webhook)
     user = db.query(User).filter(User.email == email).first()
     
-    # If user exists and already has a shard, don't allow overwrite
-    if user and user.shard_c:
+    # If user exists and already has an ACTIVE vault, don't allow overwrite
+    # But if vault was triggered (is_dead = True), allow creating new vault
+    if user and user.shard_c and not user.is_dead:
         return templates.TemplateResponse("index.html", {
             "request": request, 
             "error": "A vault already exists for this email. If you need to reset it, please contact support."
