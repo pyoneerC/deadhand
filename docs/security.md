@@ -133,7 +133,7 @@ Shamir's Secret Sharing provides **perfect secrecy**:
 
 ## Audit Status
 
-⚠️ **This software has not been professionally audited.**
+⚠️ **This software has not been professionally audited, yet.**
 
 Before using in production:
 1. Conduct a third-party security audit
@@ -142,7 +142,7 @@ Before using in production:
 
 ## Responsible Disclosure
 
-Found a vulnerability? Please email security@deadhand.io (or open a private GitHub issue).
+Found a vulnerability? Please email security@deadhandprotocol.com (or open a GitHub issue).
 
 We commit to:
 - Acknowledging reports within 48 hours
