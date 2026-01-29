@@ -38,7 +38,7 @@ Shamir's Secret Sharing provides **perfect secrecy**:
 
 **Scenario**: Attacker gains full access to deadhand database.
 
-**Impact**: They obtain all Shard C values.
+**Impact**: They obtain all encrypted Shard C values.
 
 **Mitigation**: Shard C alone is useless. They cannot recover any seed phrase without Shard B (held by beneficiaries physically).
 
@@ -62,7 +62,7 @@ Shamir's Secret Sharing provides **perfect secrecy**:
 
 **Scenario**: Insider tries to steal user funds.
 
-**Impact**: They have access to Shard C.
+**Impact**: They have access to encrypted Shard C.
 
 **Mitigation**: Same as server compromise—Shard C alone is useless.
 
@@ -148,3 +148,5 @@ We commit to:
 - Acknowledging reports within 48 hours
 - Providing updates on fixes
 - Crediting researchers (if desired)
+
+deadhand will NEVER ask for your shards, or any other information that could be used to access your crypto.
