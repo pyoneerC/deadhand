@@ -201,10 +201,11 @@
     <div class="header">
         <nav class="nav">
             <a href="/">home</a>
+            <a href="/buy">pricing</a>
             <a href="/tools/dead-switch">dead switch</a>
-            <a href="/blog">blog</a>
             <a href="/tools/visual-crypto">visual crypto</a>
             <a href="/tools/audio-steg">audio steg</a>
+            <a href="/blog">blog</a>
             <a href="https://github.com/pyoneerC/deadhand">github</a>
         </nav>
     </div>
@@ -217,9 +218,6 @@
 
     <p>100% client-side. your seed never leaves your browser.</p>
 
-    <div class="warning">
-        <b>go offline first.</b> disconnect wifi/ethernet before entering your real seed phrase. maximum security.
-    </div>
 
     <hr>
 
@@ -297,13 +295,9 @@
         <h2>step 3: activate the switch</h2>
 
         <div class="tool-section">
-            <p>enter your email and your beneficiarys email. well store shard C and release it if you stop responding to
-                check-ins.</p>
-
+            {% if email %}
             <form action="/vault/create" method="POST">
-                <label><b>your email:</b></label>
-                <input type="email" name="email" required value="{{ email }}" readonly
-                    style="background: #f0f0f0; cursor: not-allowed;" title="Email tied to your active subscription">
+                <input type="hidden" name="email" value="{{ email }}">
 
                 <label><b>beneficiary email:</b></label>
                 <input type="email" name="beneficiary_email" required placeholder="heir@example.com">
@@ -316,6 +310,17 @@
 
                 <button type="submit" class="btn">activate dead mans switch</button>
             </form>
+            {% else %}
+            <div style="text-align: center; padding: 20px;">
+                <i class="fa-solid fa-lock" style="font-size: 3em; color: #ddd; margin-bottom: 20px;"></i>
+                <h3>activation required</h3>
+                <p>the seed-splitting tool is free for everyone, but to store Shard C in our secure vault and activate
+                    the dead man's switch, you need an active membership.</p>
+
+                <a href="/buy" class="btn" style="text-decoration: none; display: inline-block;">view pricing &
+                    plans</a>
+            </div>
+            {% endif %}
         </div>
     </div>
 
@@ -384,11 +389,11 @@
             }
             const input = document.getElementById('seedInput');
             input.value = words.join(' ');
-            // Unmask so the user can see the example
-            input.classList.remove('masked');
+            // Keep masked by default as requested
+            input.classList.add('masked');
             const icon = input.nextElementSibling;
-            icon.classList.remove('fa-eye-slash');
-            icon.classList.add('fa-eye');
+            icon.classList.remove('fa-eye');
+            icon.classList.add('fa-eye-slash');
         }
 
         function toggleMask(id, icon) {
@@ -441,7 +446,16 @@
                 document.getElementById('shardA').textContent = shares[0];
                 document.getElementById('shardB').textContent = shares[1];
                 document.getElementById('shardC').textContent = shares[2];
-                document.getElementById('shardCInput').value = shares[2];
+
+                const shardCInput = document.getElementById('shardCInput');
+                if (shardCInput) {
+                    shardCInput.value = shares[2];
+                }
+
+                // Auto-fill recovery section for immediate visual proof
+                document.getElementById('recoverShard1').value = shares[0];
+                document.getElementById('recoverShard2').value = shares[1];
+                recoverSeed();
 
                 goToStep(2);
             } catch (e) {

@@ -352,6 +352,7 @@ async def buy_lifetime(request: Request):
         return RedirectResponse(url="/buy")
 
 
+
 @app.get("/payment-success")
 async def payment_success(session_id: str, response: Response):
     """Set the access cookie and redirect to the tool"""
@@ -395,27 +396,25 @@ async def audio_steg_page(request: Request):
 
 @app.get("/tools/dead-switch", response_class=HTMLResponse)
 async def dead_switch_page(request: Request, db: Session = Depends(get_db)):
-    """Dead Mans Switch - protected by payment gate"""
+    """Dead Mans Switch - tool is public, activation is gated"""
     dead_auth = request.cookies.get("dead_auth")
-    if not dead_auth:
-        return RedirectResponse(url="/buy")
-        
-    try:
-        email, signature = dead_auth.split(":")
-        expected_signature = hashlib.sha256(f"{email}{os.getenv('SECRET_KEY')}".encode()).hexdigest()
-        if signature != expected_signature:
-            return RedirectResponse(url="/buy")
+    email = None
+    
+    if dead_auth:
+        try:
+            email, signature = dead_auth.split(":")
+            expected_signature = hashlib.sha256(f"{email}{os.getenv('SECRET_KEY')}".encode()).hexdigest()
+            if signature == expected_signature:
+                # Check if user exists and is active
+                user = db.query(User).filter(User.email == email).first()
+                if user and not user.is_active:
+                     email = None # Subscription expired/cancelled
+            else:
+                email = None
+        except:
+            email = None
             
-        # Check if user exists and is active
-        user = db.query(User).filter(User.email == email).first()
-        if user and not user.is_active:
-             # Sub cancelled
-             return RedirectResponse(url="/buy")
-             
-        # If user doesn't exist yet, it's okay (they just paid, haven't created vault)
-        return templates.TemplateResponse("tools_dead_switch.html", {"request": request, "email": email})
-    except:
-        return RedirectResponse(url="/buy")
+    return templates.TemplateResponse("tools_dead_switch.html", {"request": request, "email": email})
 
 # Lead magnet and tracking disabled
 
