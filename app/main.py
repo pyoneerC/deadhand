@@ -1030,6 +1030,13 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                             results["errors"] += 1
                             continue
                     
+                    # Try to decrypt shard_c, fallback to raw for pre-encryption users
+                    try:
+                        shard_c_value = decrypt_shard(user.shard_c, user.heartbeat_token)
+                    except Exception:
+                        # Old user with unencrypted shard - use raw value
+                        shard_c_value = user.shard_c
+                    
                     user.is_dead = True
                     death_html = f"""
                     <!DOCTYPE html>
@@ -1057,7 +1064,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
 
                         <div class="shard-box">
                             <strong>shard c value:</strong><br>
-                            {decrypt_shard(user.shard_c, user.heartbeat_token)}
+                            {shard_c_value}
                         </div>
 
                         <div class="instructions">
