@@ -45,6 +45,43 @@ Deadhand uses **Shamir's Secret Sharing** to split your seed phrase into 3 shard
 - **Zero Trust Architecture** - Even we can't access your keys
 - **Source-Available** - Inspect the full code, but commercial use requires a subscription
 
+---
+
+## Explain Like I'm 5 🧒
+
+Imagine your seed phrase is a **secret line** on a piece of paper.
+
+Now imagine that line exists on a 2D plane:
+- **1 point** on the plane tells you **nothing** about the line
+- **2 points** on the plane **reveal the entire line**
+
+That's Shamir's Secret Sharing. Your seed phrase is the line. We create 3 points:
+
+| Shard | Who Has It | What They Can Do Alone |
+|-------|------------|----------------------|
+| **A** | You | Nothing |
+| **B** | Your heir | Nothing |
+| **C** | Deadhand server (encrypted) | Nothing |
+
+Any **2 shards** → full seed phrase recovered ✅  
+Any **1 shard** → completely useless ❌
+
+### The Dead Man's Switch
+
+Every 30 days, we send you an email: *"Hey, you alive?"*
+
+- **You click the link** → Timer resets. All good.
+- **You don't respond for 90 days** → We assume the worst.
+
+When 90 days pass with no sign of you:
+1. **Shard C** is automatically released to your beneficiary
+2. They combine **B + C** → 2 points → the line is revealed
+3. They now have your full seed phrase
+
+**Result:** Your family inherits your crypto. No lawyers, no courts, no guessing passwords.
+
+---
+
 
 ## How It Works
 
