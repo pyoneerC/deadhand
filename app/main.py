@@ -885,8 +885,16 @@ async def heartbeat(request: Request, user_id: int, token: str, db: Session = De
     if not user:
         return HTMLResponse("Invalid link", status_code=404)
     
+    # CRITICAL: If user was marked dead, shard C was already released
+    # They CANNOT resurrect - must create new vault with new seed
+    if user.is_dead:
+        return templates.TemplateResponse("vault_triggered.html", {
+            "request": request,
+            "email": user.email,
+            "beneficiary_email": user.beneficiary_email
+        })
+    
     user.last_heartbeat = datetime.now()
-    user.is_dead = False # Resurrect if previously marked
     db.commit()
     
     # Calculate next dates

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vault Triggered | Deadhand</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            background: #fafafa;
+            color: #222;
+            line-height: 1.8;
+            padding: 60px 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            font-size: 1.5em;
+            margin-bottom: 1em;
+            color: #c00;
+        }
+
+        .alert-box {
+            background: #fff3f3;
+            border: 2px solid #c00;
+            padding: 25px;
+            border-radius: 8px;
+            margin: 30px 0;
+        }
+
+        .info-box {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        a {
+            color: #0066cc;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #222;
+            color: #fff;
+            padding: 12px 24px;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>⚠️ Your Vault Was Triggered</h1>
+
+    <div class="alert-box">
+        <p><strong>Shard C has already been released to your beneficiary.</strong></p>
+        <p style="margin-top: 10px;">This happened because we didn't receive a heartbeat check-in from you for 90 days.
+        </p>
+    </div>
+
+    <p>The vault associated with <strong>{{ email }}</strong> is now compromised. Your beneficiary (<strong>{{
+            beneficiary_email }}</strong>) now has Shard C.</p>
+
+    <p>If they also have Shard B, they can reconstruct your seed phrase.</p>
+
+    <div class="info-box">
+        <p><strong>What you should do now:</strong></p>
+        <ol style="margin-left: 20px; margin-top: 10px;">
+            <li>Generate a <strong>new seed phrase</strong> in your wallet</li>
+            <li>Move your crypto assets to the new wallet</li>
+            <li>Set up a <strong>new vault</strong> with the new seed phrase</li>
+        </ol>
+    </div>
+
+    <p>The old vault cannot be reactivated. This is by design — once Shard C is released, we can't "un-release" it.</p>
+
+    <a href="https://deadhandprotocol.com" class="btn">Set Up New Vault →</a>
+
+    <p style="margin-top: 40px; font-size: 14px; color: #666;">
+        Questions? Contact <a href="mailto:max@deadhandprotocol.com">max@deadhandprotocol.com</a>
+    </p>
+</body>
+
+</html>
