@@ -122,10 +122,6 @@ flowchart TB
 | You lose Shard A | Combine B + C → **Still recoverable** |
 | You die | Server sends C to beneficiary → **B + C = Recovery** |
 
-<p align="center">
-  <img src="app/static/guardian.jpg" alt="Guardian" width="600">
-</p>
-
 ---
 
 ### Tech Stack
@@ -201,6 +197,10 @@ For commercial licensing: **max@deadhandprotocol.com**
 See [LICENSE](./LICENSE) for full terms.
 
 ---
+
+<p align="center">
+  <img src="app/static/guardian.jpg" alt="Guardian" width="600">
+</p>
 
 <p align="center">
   <b>Star this repo if you find it useful!</b>
