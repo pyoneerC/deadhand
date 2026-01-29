@@ -79,6 +79,16 @@ When 90 days pass with no sign of you:
 
 **Result:** Your family inherits your crypto. No lawyers, no courts, no guessing passwords.
 
+### Can't Be Social Engineered 🛡️
+
+Deadhand is a **protocol**, not a person.
+
+- "Please release my shard early, it's urgent!" → **No.**
+- "I'm the beneficiary, can you help me?" → **No.**
+- "I forgot to check in, can you reset my timer?" → **No.**
+
+The system runs on code, not feelings. We don't respond to emails asking to bypass the rules. The only way to stop the countdown is to click your heartbeat link. That's it.
+
 ---
 
 
