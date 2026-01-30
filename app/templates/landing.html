@@ -486,72 +486,6 @@
             text-decoration: none;
         }
 
-        /* cult gate styling */
-        .cult-gate {
-            background: #111;
-            color: #eee;
-            padding: 40px;
-            margin: 4em 0;
-            border: 1px solid #333;
-            text-align: left;
-        }
-
-        .cult-gate h2 {
-            color: #fff;
-            text-decoration: underline;
-            margin-top: 0;
-        }
-
-        .cult-gate p {
-            font-size: 0.9em;
-            color: #aaa;
-        }
-
-        .gate-challenge {
-            background: #000;
-            padding: 20px;
-            margin-top: 20px;
-            border: 1px dashed #444;
-            font-family: monospace;
-        }
-
-        .gate-input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid #444;
-            color: #00ff00;
-            width: 100%;
-            padding: 5px;
-            margin-top: 10px;
-            outline: none;
-            font-family: monospace;
-        }
-
-        .gate-btn {
-            background: #fff;
-            color: #000;
-            border: none;
-            padding: 8px 15px;
-            margin-top: 15px;
-            cursor: pointer;
-            font-size: 0.8em;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        #discord-reveal {
-            display: none;
-            margin-top: 20px;
-            padding: 15px;
-            border: 1px solid #00ff00;
-            color: #00ff00;
-            text-align: center;
-        }
-
-        #discord-reveal a {
-            color: #00ff00;
-            font-weight: bold;
-        }
 
         /* Primary nav link */
         .nav-primary {
@@ -673,30 +607,8 @@
 
         <p><b>what happens to your crypto when you die?</b></p>
 
-        <p>you die → your family gets nothing. not because it was stolen. because nobody knows how to access it.</p>
+        <p>your family gets nothing. not because it was stolen. because nobody knows how to access it.</p>
 
-        <hr>
-
-        <h2>how people actually store seeds</h2>
-
-        <p>spoiler: terrifyingly bad.</p>
-
-        <button class="read-more-btn" onclick="toggleSection('seedquotes')">see the quotes ▼</button>
-
-        <div id="seedquotes" class="collapsible-content">
-            <blockquote
-                style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-                > plain text note in google drive
-            </blockquote>
-            <blockquote
-                style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-                > screenshot on my phone. it syncs to icloud but whatever
-            </blockquote>
-            <blockquote
-                style="background: #f5f5f5; padding: 15px; margin: 15px 0; border-left: 3px solid #ddd; font-family: monospace;">
-                > i wrote it backwards for security<br>> lmao
-            </blockquote>
-        </div>
         <hr>
 
         <h2>the architecture</h2>
@@ -972,33 +884,6 @@
             </div>
         </div>
 
-        <!-- The Cult Gate -->
-        <div class="cult-gate">
-            <h2>restricted access: the deadhand cult</h2>
-            <p>i don't want everyone in my discord. i don't want tourists asking "how do i buy crypto" or "where is my
-                password." i want the paranoid, the technocrats, the ones who get it.</p>
-            <p>if you want in, prove you're not a tourist. sacrifice 30 seconds to solve this.</p>
-
-            <div class="gate-challenge">
-                identify the TRUTHS (type the letters in order, no spaces):<br>
-                A) seed phrases are mathematically just large integers.<br>
-                B) deadhand stores my original seed phrase in an encrypted database.<br>
-                C) shamir's secret sharing requires a blockchain to function.<br>
-                D) one shard alone contains zero information about the original secret.<br>
-                E) i keep shard a, my beneficiary holds shard b, and deadhand guards shard c.<br>
-                <input type="text" id="gate-answer" class="gate-input" placeholder="e.g. AB">
-                <button class="gate-btn" onclick="verifyGate()">test intelligence</button>
-            </div>
-
-            <div id="discord-reveal">
-                <code>access granted. welcome to the 1%.</code> <br>
-                <a href="https://discord.gg/eDyCkgvBjf" target="_blank">>> join the private discord server</a>
-            </div>
-            <div id="gate-error"
-                style="color: #ff4444; font-size: 0.8em; margin-top: 10px; display: none; font-family: monospace;">
-                !! access denied. go back to coinbase, tourist.
-            </div>
-        </div>
     </main>
 
     <footer class="footer" style="padding: 60px 20px; text-align: left;">
@@ -1013,6 +898,7 @@
                     <a href="https://github.com/pyoneerC/deadhand" target="_blank"><i
                             class="fa-brands fa-github"></i></a>
                     <a href="https://t.me/maxcomperatore" target="_blank"><i class="fa-brands fa-telegram"></i></a>
+                    <a href="https://discord.gg/eDyCkgvBjf" target="_blank"><i class="fa-brands fa-discord"></i></a>
                 </div>
             </div>
             <div>
@@ -1046,22 +932,6 @@
 
 
     <script>
-        function verifyGate() {
-            const answer = document.getElementById('gate-answer').value.toUpperCase().trim();
-            const reveal = document.getElementById('discord-reveal');
-            const error = document.getElementById('gate-error');
-
-            // Correct answer is ADE
-            if (answer === 'ADE') {
-                reveal.style.display = 'block';
-                error.style.display = 'none';
-                document.querySelector('.gate-challenge').style.opacity = '0.5';
-                document.querySelector('.gate-btn').disabled = true;
-            } else {
-                error.style.display = 'block';
-                reveal.style.display = 'none';
-            }
-        }
 
         async function roastMe() {
             const input = document.getElementById('roast-input').value;
