@@ -86,11 +86,32 @@ STRIPE_PRICES = {
 # PostHog Configuration
 posthog = Posthog(
     project_api_key='phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ',
-    host='https://us.i.posthog.com'
+    host='https://us.i.posthog.com',
+    enable_exception_autocapture=True
 )
 
 # Disable OpenAPI docs and schemas for minimal footprint
 app = FastAPI(openapi_url=None, docs_url=None, redoc_url=None)
+
+# Global Exception Handler for PostHog
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    # Capture exception in PostHog
+    posthog.capture_exception(exc)
+    
+    # Return a generic error response
+    return HTMLResponse(
+        content="""
+        <div style="background: #09090b; color: #fff; height: 100vh; display: flex; align-items: center; justify-content: center; font-family: sans-serif;">
+            <div style="text-align: center;">
+                <h1 style="font-size: 3rem; margin-bottom: 0.5rem;">500</h1>
+                <p style="color: #a1a1aa;">something went wrong on our end. we've been notified.</p>
+                <a href="/" style="color: #10b981; text-decoration: none; margin-top: 1rem; display: inline-block;">go back home</a>
+            </div>
+        </div>
+        """,
+        status_code=500
+    )
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
@@ -201,6 +222,7 @@ async def send_discord_notification(plan: str, amount: float, customer_email: st
         async with httpx.AsyncClient() as client:
             await client.post(DISCORD_WEBHOOK_URL, json=payload)
     except Exception as e:
+        posthog.capture_exception(e)
         print(f"Discord webhook error: {e}")
 
 # Stripe Webhook Handler
@@ -343,6 +365,7 @@ async def buy_annual(request: Request):
         )
         return RedirectResponse(url=checkout_session.url, status_code=303)
     except Exception as e:
+        posthog.capture_exception(e)
         print(f"Stripe Error: {e}")
         return RedirectResponse(url="/buy")
 
@@ -367,6 +390,7 @@ async def buy_lifetime(request: Request):
         )
         return RedirectResponse(url=checkout_session.url, status_code=303)
     except Exception as e:
+        posthog.capture_exception(e)
         print(f"Stripe Error: {e}")
         return RedirectResponse(url="/buy")
 
@@ -518,6 +542,7 @@ async def api_roast(request: Request):
             else:
                 raise HTTPException(status_code=500, detail="AI service error")
     except Exception as e:
+        posthog.capture_exception(e, distinct_id=user_email or "anonymous")
         print(f"AI Roast Error: {e}")
         raise HTTPException(status_code=500, detail=f"AI Roast failed: {str(e)}")
 
