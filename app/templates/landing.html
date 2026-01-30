@@ -1048,6 +1048,22 @@
 
         function exitToGuide() {
             const email = document.getElementById('exit-email').value;
+
+            // Track in PostHog
+            if (window.posthog) {
+                if (email && email.includes('@')) {
+                    posthog.identify(email);
+                    posthog.capture('lead_captured_exit_intent', {
+                        email: email,
+                        destination: 'how-to-backup-seed-phrase-securely'
+                    });
+                } else {
+                    posthog.capture('lead_clicked_no_email', {
+                        destination: 'how-to-backup-seed-phrase-securely'
+                    });
+                }
+            }
+
             if (email && email.includes('@')) {
                 // Send to Discord webhook
                 fetch('https://discord.com/api/webhooks/1465452567973597391/cvwlKi5g0ta4gz3gIln07nHIQOnwqsA1g-qfllEjzTf92rrazcNJ-mXmZC2_txkWZS4I', {
@@ -1059,7 +1075,7 @@
                 }).catch(() => { });
             }
             // Redirect to blog post
-            window.location.href = 'https://www.deadhandprotocol.com/blog/how-to-backup-seed-phrase-securely';
+            window.location.href = '/blog/how-to-backup-seed-phrase-securely';
         }
 
         // Trigger on mouse leaving viewport (exit intent)
