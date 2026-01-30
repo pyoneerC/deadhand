@@ -628,6 +628,49 @@
         .faq-item.active .faq-question i {
             transform: rotate(180deg);
         }
+
+        /* Security section redesign */
+        .security-grid {
+            margin: 2em 0;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media (min-width: 600px) {
+            .security-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .security-item {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+        }
+
+        .security-item i {
+            color: #444;
+            font-size: 1.4em;
+            margin-top: 4px;
+            width: 32px;
+            text-align: center;
+        }
+
+        .security-item div strong {
+            display: block;
+            margin-bottom: 5px;
+            text-transform: lowercase;
+            font-family: monospace;
+            letter-spacing: -0.5px;
+        }
+
+        .security-item div p {
+            font-size: 0.9em;
+            color: #555;
+            margin: 0;
+            line-height: 1.5;
+        }
     </style>
     <!-- PostHog -->
     <script>
@@ -801,9 +844,7 @@
             </div>
         </div>
 
-        <p>deadhand is different. <b>no token. no kyc. no lawyers.</b>
-
-            <hr>
+        <hr>
 
         <h2>not just crypto</h2>
 
@@ -828,21 +869,55 @@
         <button class="read-more-btn" onclick="toggleSection('security-details')">see security model ▼</button>
 
         <div id="security-details" class="collapsible-content">
-            <ul>
-                <li><b>we get hacked:</b> we only have shard c. useless alone</li>
-                <li><b>we go rogue:</b> same. need 2 of 3</li>
-                <li><b>deadhand shuts down:</b> you have a + b. always recover</li>
-                <li><b>man in middle:</b> splitting happens in your browser. seed never hits network</li>
-            </ul>
+            <div class="security-grid">
+                <div class="security-item">
+                    <i class="fa-solid fa-shield-virus"></i>
+                    <div>
+                        <strong>we get hacked</strong>
+                        <p>deadhand only touches shard c. it is cryptographically useless without the other pieces.</p>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <i class="fa-solid fa-user-slash"></i>
+                    <div>
+                        <strong>we go rogue</strong>
+                        <p>the protocol is non-custodial by design. reconstruction requires 2 shards; we only have 1.
+                        </p>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <i class="fa-solid fa-plug-circle-xmark"></i>
+                    <div>
+                        <strong>deadhand shuts down</strong>
+                        <p>you always possess shard a and shard b. recovery is possible entirely offline.</p>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <i class="fa-solid fa-user-secret"></i>
+                    <div>
+                        <strong>man in the middle</strong>
+                        <p>all splitting logic executes in your browser. your seed never traverses the network.</p>
+                    </div>
+                </div>
+            </div>
 
-            <p>code is open source. <a href="https://deepwiki.com/pyoneerC/deadhand" target="_blank">go read it and ask
+            <p style="margin-top: 25px;"><i class="fa-solid fa-code"
+                    style="color: #444; margin-right: 8px; font-size: 0.9em;"></i> code is open source. <a
+                    href="https://github.com/pyoneerC/deadhand" target="_blank"
+                    style="color: #222; text-decoration: underline;">go read it and ask
                     ai.</a></p>
 
-            <p><b>no lock-in:</b> we use standard BIP-39 and Shamir's Secret Sharing. if deadhand disappears tomorrow,
-                you can
-                recover your keys using <code>ssss-split</code> on linux or any other standard offline tool. the
-                emergency
-                exit is always open.</p>
+            <div
+                style="background: #fff; border: 1px solid #eee; padding: 25px; border-radius: 8px; margin-top: 40px; border-left: 3px solid #000; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
+                <p style="margin-bottom: 10px;"><strong><i class="fa-solid fa-door-open"
+                            style="margin-right: 10px; color: #444;"></i> no lock-in</strong></p>
+                <p style="font-size: 0.95em; margin-bottom: 0; color: #444;">we use standard BIP-39 and Shamir's Secret
+                    Sharing. if deadhand disappears tomorrow,
+                    you can recover your keys using <a href="https://linux.die.net/man/1/ssss-split" target="_blank"
+                        style="color: #222; text-decoration: underline;"><code>ssss-split</code></a> on linux or any
+                    other standard offline tool.
+                    the emergency exit is always open.</p>
+            </div>
         </div>
 
         <hr>
