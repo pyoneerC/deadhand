@@ -237,10 +237,14 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         await send_discord_notification(plan, amount, customer_email)
         
         # Track in PostHog
-        posthog.capture(customer_email or "anonymous", "payment_received", {
-            "plan": plan,
-            "amount": amount
-        })
+        posthog.capture(
+            distinct_id=customer_email or "anonymous",
+            event="payment_received",
+            properties={
+                "plan": plan,
+                "amount": amount
+            }
+        )
         
         # Update or Create user in database
         if customer_email:
@@ -456,10 +460,14 @@ async def api_roast(request: Request):
     # Log email for lead capture (if provided)
     if user_email:
         # Track in PostHog
-        posthog.capture(user_email or "anonymous", "ai_roast_requested", {
-            "has_email": bool(user_email),
-            "input_length": len(user_input)
-        })
+        posthog.capture(
+            distinct_id=user_email or "anonymous",
+            event="ai_roast_requested",
+            properties={
+                "has_email": bool(user_email),
+                "input_length": len(user_input)
+            }
+        )
         
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
@@ -818,9 +826,13 @@ async def create_vault(
     db.refresh(user)
 
     # Track in PostHog
-    posthog.capture(email, "vault_created", {
-        "beneficiary_email": beneficiary_email
-    })
+    posthog.capture(
+        distinct_id=email,
+        event="vault_created",
+        properties={
+            "beneficiary_email": beneficiary_email
+        }
+    )
 
     # Calendar reminder (29 days from now)
     reminder_dt = datetime.now() + timedelta(days=29)
