@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>terms - deadhand</title>
+    <title>terms of service - deadhand protocol</title>
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <style>
         * {
@@ -13,10 +13,10 @@
 
         body {
             font-family: Georgia, serif;
-            max-width: 800px;
+            max-width: 850px;
             margin: 0 auto;
-            padding: 40px 20px;
-            line-height: 1.7;
+            padding: 60px 40px;
+            line-height: 1.8;
             background: #fafafa;
             color: #222;
             text-transform: lowercase;
@@ -24,19 +24,20 @@
 
         header {
             border-bottom: 2px solid #222;
-            padding-bottom: 20px;
-            margin-bottom: 40px;
+            padding-bottom: 30px;
+            margin-bottom: 50px;
         }
 
         .nav {
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             font-family: monospace;
         }
 
         .nav a {
-            margin-right: 15px;
+            margin-right: 20px;
             color: #666;
             text-decoration: none;
+            transition: color 0.2s;
         }
 
         .nav a:hover {
@@ -45,65 +46,104 @@
         }
 
         h1 {
-            font-size: 2.5em;
-            margin: 0.5em 0;
-            line-height: 1.2;
+            color: #000;
+            font-size: 3em;
+            margin: 0.2em 0;
+            line-height: 1.1;
             font-weight: normal;
+            letter-spacing: -1px;
         }
 
         .subtitle {
             color: #666;
+            font-family: monospace;
+            margin-bottom: 15px;
+        }
+
+        .intro-text {
+            border-left: 2px solid #10b981;
+            padding-left: 20px;
             font-style: italic;
-            margin-bottom: 10px;
+            color: #555;
         }
 
         section {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
 
         h2 {
-            font-size: 1.5em;
-            margin-bottom: 15px;
-            border-bottom: 1px solid #ddd;
-            display: inline-block;
+            color: #000;
+            font-size: 1.4em;
+            margin-bottom: 20px;
+            font-family: monospace;
+            display: flex;
+            align-items: center;
+        }
+
+        h2::before {
+            content: "§";
+            color: #10b981;
+            margin-right: 10px;
         }
 
         p {
-            margin-bottom: 15px;
+            margin-bottom: 20px;
         }
 
         ul {
-            margin-bottom: 15px;
-            padding-left: 20px;
+            margin-bottom: 25px;
+            padding-left: 25px;
+            list-style-type: square;
         }
 
         li {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
-        .warning-box {
+        .hard-logic-box {
             background: #fff;
-            border: 2px dashed #ff4444;
-            padding: 20px;
-            margin-bottom: 40px;
+            border: 1px solid #ddd;
+            padding: 30px;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .hard-logic-box b {
+            color: #000;
+            display: block;
+            margin-bottom: 10px;
+            text-decoration: underline;
         }
 
         .footer {
-            margin-top: 60px;
-            padding-top: 20px;
+            margin-top: 80px;
+            padding-top: 30px;
             border-top: 1px solid #eee;
-            font-size: 0.9em;
-            color: #666;
-            text-align: center;
+            font-size: 0.85em;
+            color: #888;
+            text-align: left;
+            font-family: monospace;
+        }
+
+        em {
+            color: #000;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        code {
+            background: #eee;
+            padding: 2px 6px;
+            border-radius: 3px;
         }
 
         @media (max-width: 600px) {
             body {
-                padding: 20px;
+                padding: 30px 20px;
             }
 
             h1 {
-                font-size: 2em;
+                font-size: 2.2em;
             }
         }
     </style>
@@ -112,94 +152,92 @@
 <body>
 
     <div class="nav">
-        <a href="/">← home</a>
-        <a href="/blog">blog</a>
-        <a href="/tools/dead-switch">dead switch</a>
+        <a href="/">← protocol home</a>
+        <a href="/docs">docs</a>
+        <a href="/tools/dead-switch">vault</a>
     </div>
 
     <header>
-        <h1>terms of service</h1>
-        <p class="subtitle">last updated: jan 14, 2026</p>
-        <p>this is a legal agreement. read it. if you use deadhand, you agree to this.</p>
+        <h1>protocol terms of use</h1>
+        <p class="subtitle">revision: 2026.01.30 // argentina jurisdiction</p>
+        <p class="intro-text">this is not "marketing copy." this is a cold, technical contract. by accessing the
+            deadhand protocol, you acknowledge the absolute finality of our logic and the total transfer of risk to
+            yourself.</p>
     </header>
 
     <main>
-        <div class="warning-box">
-            <strong>legal disclaimer:</strong> i am a developer in argentina, not a lawyer. deadhand is a tool i built
-            for myself and shared with the world. use it at your own risk. i am not responsible for your money.
+        <div class="hard-logic-box">
+            <b>zero-knowledge architecture</b>
+            you are interacting with an autonomous watchdog system. we do not hold your funds. we do not hold your seed
+            phrase. we hold a single shard of mathematical noise. if you fail the process, your assets will be lost. we
+            cannot "help" you. there is no reset button for death.
         </div>
 
         <section>
-            <h2>1. no liability</h2>
-            <p>this is the most important part. deadhand, max (the founder), and anyone associated with this project are
-                NOT liable for any loss of funds, cryptocurrency, or digital assets. if you lose your seed phrase, if
-                the switch triggers early, if the switch doesnt trigger at all, if our servers catch fire... you accept
-                that risk.</p>
-            <p>limit of liability: $0.00. we are not an insurance company. we are a software project.</p>
-        </section>
-
-        <section>
-            <h2>2. service description</h2>
-            <p>deadhand uses shamir's secret sharing (sss) to split your seed phrase. we store one encrypted shard. any
-                2 of 3 shards can recover your seed. this is a trustless system by design, but software can have bugs.
-            </p>
-        </section>
-
-        <section>
-            <h2>3. user responsibility</h2>
+            <h2>01. total waiver of liability</h2>
+            <p>the protocol is provided "as is"—without warranty, insurance, or mercy. <em>0.00 usd</em>. that is the
+                maximum amount for which deadhand, max comperatore, or any contributor shall be liable in the event of
+                failure.</p>
+            <p>you explicitly waive any right to claim damages for:</p>
             <ul>
-                <li>you are responsible for keeping shard a safe.</li>
-                <li>you are responsible for giving shard b to your beneficiary.</li>
-                <li>you are responsible for responding to heartbeat emails.</li>
-                <li>you are responsible for verifying that your recovery setup actually works.</li>
+                <li>loss of funds due to seed phrase mismanagement.</li>
+                <li>premature shard release caused by user inactivity.</li>
+                <li>delayed shard release due to network failures or server outages.</li>
+                <li>any bug, known or unknown, in the shamir secret sharing (sss) implementation.</li>
             </ul>
         </section>
 
         <section>
-            <h2>4. no financial advice</h2>
-            <p>i dont give financial or legal advice. talk to a professional if you're worried about inheritance laws or
-                taxes. deadhand is a technical tool, not a legal entity.</p>
+            <h2>02. the burden of survival</h2>
+            <p>this system is autonomous. the responsibility for maintaining the "heartbeat" rests entirely on your
+                shoulders. if you ignore 30-day reminders, 60-day warnings, and 90-day final triggers, <em>the protocol
+                    will fire.</em></p>
+            <p>we do not verify "death" manually. we verify "silence." if you go on a silent retreat and forget to reset
+                your timer, your beneficiary gets shard c. that is a user error, not a system failure.</p>
         </section>
 
         <section>
-            <h2>5. privacy</h2>
-            <p>we don't want your data. we store your email and an encrypted blob of data (shard c). that's it. we don't
-                sell data. we don't track you beyond what's needed for the switch to work.</p>
+            <h2>03. no financial mediation</h2>
+            <p>deadhand is a technical utility, not a bank. we are not fiduciaries. we do not give financial advice. we
+                do not give legal advice. inheritance is a complex legal field; if you want a lawyer, hire one. we
+                provide <em>math</em>, not counsel.</p>
         </section>
 
         <section>
-            <h2>6. termination</h2>
-            <p>we can stop this service at any time. if we do, we'll try to give you 30 days notice to recover your
-                shards. since we use standard bip-39 and shamir's secret sharing, you are never locked in. you can
-                recover your seed using open-source tools (like `ssss-split`) without our servers. we are just a
-                convenient interface for math.</p>
+            <h2>04. protocol privacy</h2>
+            <p>we do not want your profile. we store your email address and one encrypted shard. we do not sell your
+                data. we do not track your location. the only data we have is the data required to reach you and your
+                beneficiary. anything else is irrelevant to our function.</p>
         </section>
 
         <section>
-            <h2>7. argentina jurisdiction</h2>
-            <p>any legal issues will be handled under the laws of argentina. but seriously, let's just be cool.</p>
+            <h2>05. platform finality</h2>
+            <p>we reserve the right to decommission this protocol at any time. in such an unlikely event, we will
+                attempt to provide 90-day notice via the fallback email. because we use open standards (bip-39 and
+                ssss), you can recover your seed using standard linux utilities like <code>ssss-split</code> without our
+                involvement. you are never a hostage; you are an independent operator.</p>
         </section>
 
         <section>
-            <h2>8. architecture guarantee</h2>
-            <p>we built deadhand using standard 2-of-3 shamir's secret sharing. mathematically, we only possess shard c.
-                we literally cannot access your funds even if we wanted to, or even if a government ordered us to. we
-                are not asking for your trust; we are relying on cryptography.</p>
+            <h2>06. jurisdictional reality</h2>
+            <p>any dispute arising from or relating to the protocol shall be settled exclusively under the laws of
+                argentina. by using this tool, you submit to this jurisdiction and waive any right to alternate legal
+                venues.</p>
         </section>
 
         <section>
-            <h2>9. indemnification</h2>
-            <p>you agree to hold max comperatore and deadhand harmless from any claim or demand, including reasonable
-                attorneys' fees, made by any third party due to your use of the service, your violation of these terms,
-                or your violation of any rights of another. in plain english: if you mess up and someone sues us because
-                of it, you pay the lawyers.</p>
+            <h2>07. indemnity clause</h2>
+            <p>if you violate these terms or your actions lead to legal action against the protocol or its founder, you
+                agree to indemnify and hold us harmless from any and all costs, including legal fees. in plain english:
+                you pay for your mistakes and ours if you're the one that brought the heat.</p>
         </section>
 
     </main>
 
     <div class="footer">
-        <p>built with care in argentina. open source. trustless by design.</p>
-        <p>&copy; 2026 deadhand</p>
+        <p>// deadhand protocol: autonomous legacy protection.</p>
+        <p>// checksum: 2026_01_30_V1</p>
+        <p>&copy; 2026 deadhand foundation</p>
     </div>
 
 </body>
