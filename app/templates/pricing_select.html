@@ -1,72 +1,261 @@
-{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
 
-{% block content %}
-<div class="max-w-4xl mx-auto px-6 py-20 text-center">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pricing - deadhand protocol</title>
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
 
-    <h1 class="text-4xl font-bold text-white mb-6">Choose Your Protection Level</h1>
-    <p class="text-zinc-400 mb-12 max-w-2xl mx-auto">
-        Both plans include full access to the Deadhand Protocol. The only difference is how you pay.
-    </p>
+        body {
+            font-family: Georgia, serif;
+            font-size: 18px;
+            line-height: 1.8;
+            background: #fafafa;
+            color: #222;
+            text-transform: lowercase;
+            padding: 0;
+        }
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
 
-        <!-- Lifetime Plan (Hero) -->
-        <div
-            class="border border-emerald-500/30 bg-emerald-500/5 rounded-xl p-8 relative overflow-hidden flex flex-col">
-            <div class="absolute top-0 right-0 bg-emerald-500 text-black text-xs font-bold px-3 py-1 rounded-bl-lg">
-                BEST VALUE
+        .header {
+            position: sticky;
+            top: 0;
+            background: #fafafa;
+            border-bottom: 1px solid #ddd;
+            z-index: 100;
+            padding: 12px 0;
+            text-align: center;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            font-size: 0.9em;
+            justify-content: center;
+        }
+
+        .nav a {
+            text-decoration: none;
+            padding: 8px 4px;
+            color: #0066cc;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 0.5em;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        h2 {
+            font-size: 1.4em;
+            margin: 1.5em 0 0.5em 0;
+            border-bottom: 1px solid #222;
+            padding-bottom: 5px;
+        }
+
+        p {
+            margin-bottom: 1em;
+        }
+
+        .price-box {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 30px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+
+        .price {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style: none;
+            margin: 1.5em 0;
+        }
+
+        li {
+            margin-bottom: 0.8em;
+            display: flex;
+            align-items: center;
+        }
+
+        li i {
+            color: #10b981;
+            margin-right: 12px;
+            font-size: 0.9em;
+        }
+
+        .cta {
+            display: block;
+            width: 100%;
+            background: #222;
+            color: #fff;
+            padding: 16px 24px;
+            text-decoration: none;
+            text-align: center;
+            font-size: 1.1em;
+            margin: 1em 0;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .cta:hover {
+            background: #444;
+        }
+
+        .footer {
+            margin-top: 60px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            font-size: 0.8em;
+            color: #999;
+            text-align: center;
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #ddd;
+            margin: 2em 0;
+        }
+
+        .badge {
+            background: #10b981;
+            color: #000;
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 0.7em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* ascii art - responsive */
+        .ascii {
+            font-family: monospace;
+            font-size: 8px;
+            /* smaller for mobile */
+            line-height: 1.1;
+            white-space: pre;
+            color: #333;
+            margin: 20px 0;
+            overflow-x: auto;
+            text-align: center;
+            scrollbar-width: none;
+            /* Hide scrollbar for Firefox */
+            -ms-overflow-style: none;
+            /* Hide scrollbar for IE/Edge */
+        }
+
+        .ascii::-webkit-scrollbar {
+            display: none;
+            /* Hide scrollbar for Chrome/Safari */
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <nav class="nav">
+            <a href="/">home</a>
+            <a href="/buy">pricing</a>
+            <a href="/tools/dead-switch">dead switch</a>
+            <a href="/tools/visual-crypto">visual crypto</a>
+            <a href="/tools/audio-steg">audio steg</a>
+            <a href="/blog">blog</a>
+            <a href="https://github.com/pyoneerC/deadhand">github</a>
+        </nav>
+    </header>
+
+    <div class="container">
+        <pre class="ascii">
+    ____  _________    ____  __  ______    _   ______ 
+   / __ \/ ____/   |  / __ \/ / / /   |  / | / / __ \
+  / / / / __/ / /| | / / / / /_/ / /| | /  |/ / / / /
+ / /_/ / /___/ ___ |/ /_/ / __  / ___ |/ /|  / /_/ / 
+/_____/_____/_/  |_/_____/_/ /_/_/  |_/_/ |_/_____/  
+
+      your crypto shouldn't die with you
+</pre>
+
+        <h1>choose your protection level</h1>
+        <p style="text-align: center; color: #666;">both plans include full protocol access. the difference is only in
+            how you pay.</p>
+
+        <hr>
+
+        <div class="price-box" style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.02);">
+            <div class="badge">best value</div>
+            <h2>sovereign</h2>
+            <div class="price">
+                <span
+                    style="text-decoration: line-through; color: #999; font-size: 0.7em; margin-right: 10px;">$500</span>$400
+                <span style="font-size: 0.5em; color: #666; font-weight: normal;">/ once</span>
             </div>
+            <p>own your legacy protocol forever. no subscriptions. no recurring fees.</p>
 
-            <h3 class="text-xl font-semibold text-white mb-2">Sovereign</h3>
-            <div class="text-3xl font-mono text-white mb-4">
-                <span class="text-zinc-500 line-through text-lg mr-2">$500</span>$400 <span
-                    class="text-sm text-zinc-500">/ once</span>
-            </div>
-            <p class="text-sm text-zinc-500 mb-6">Own it forever. No subscriptions.</p>
-
-            <ul class="text-left space-y-3 text-sm text-zinc-400 mb-8 flex-grow">
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> <b>No Recurring Fees</b></li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> <b>Priority Setup Support</b></li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> <b>Exclusive Discord Role</b></li>
+            <ul>
+                <li><i class="fa-solid fa-check"></i> <b>lifetime access</b></li>
+                <li><i class="fa-solid fa-check"></i> <b>priority setup support</b></li>
+                <li><i class="fa-solid fa-check"></i> exclusive discord role</li>
             </ul>
 
-            <a href="/buy/lifetime"
-                class="block w-full py-3 bg-white text-black font-bold rounded-lg hover:bg-zinc-200 transition">
-                Get Lifetime Access
-            </a>
-            <p class="text-xs text-zinc-600 mt-4">Credit Card via Stripe</p>
-            <p class="text-xs text-emerald-500 mt-2"><b>100% Refundable</b></p>
+            <a href="/buy/lifetime" class="cta">get lifetime access</a>
+            <p style="font-size: 0.7em; color: #999; text-align: center;">one-time payment via credit card (stripe)</p>
         </div>
 
-        <!-- Annual Plan -->
-        <div
-            class="border border-zinc-800 bg-zinc-900/50 rounded-xl p-8 hover:border-zinc-700 transition relative flex flex-col">
-            <h3 class="text-xl font-semibold text-white mb-2">Standard</h3>
-            <div class="text-3xl font-mono text-white mb-4">
-                <span class="text-zinc-500 line-through text-lg mr-2">$120</span>$100 <span
-                    class="text-sm text-zinc-500">/ year</span>
+        <div class="price-box">
+            <h2>standard</h2>
+            <div class="price">
+                <span
+                    style="text-decoration: line-through; color: #999; font-size: 0.7em; margin-right: 10px;">$120</span>$100
+                <span style="font-size: 0.5em; color: #666; font-weight: normal;">/ year</span>
             </div>
-            <p class="text-sm text-zinc-500 mb-6">Pay as you go. Cancel anytime.</p>
+            <p>pay as you go. cancel anytime if your setup changes.</p>
 
-            <ul class="text-left space-y-3 text-sm text-zinc-400 mb-8 flex-grow">
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Full Vault Access</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> 3-Shard Splitting</li>
-                <li><i class="fa-solid fa-check text-emerald-500 mr-2"></i> Automated Check-ins</li>
+            <ul>
+                <li><i class="fa-solid fa-check"></i> full vault access</li>
+                <li><i class="fa-solid fa-check"></i> 3-shard splitting</li>
+                <li><i class="fa-solid fa-check"></i> automated check-ins</li>
             </ul>
 
-            <a href="/buy/annual"
-                class="block w-full py-3 border border-zinc-700 text-white rounded-lg hover:bg-zinc-800 transition">
-                Subscribe Yearly
-            </a>
-            <p class="text-xs text-zinc-600 mt-4">Credit Card via Stripe</p>
+            <a href="/buy/annual" class="cta" style="background: #fff; border: 1px solid #222; color: #222;">subscribe
+                yearly</a>
+            <p style="font-size: 0.7em; color: #999; text-align: center;">billed annually. cancel anytime.</p>
         </div>
+
+        <hr>
+
+        <p style="text-align: center; font-size: 0.9em;">
+            <b>100% refund guarantee</b><br>
+            if you aren't satisfied with either plan, email <a
+                href="mailto:max@deadhandprotocol.com">max@deadhandprotocol.com</a> for an immediate refund. no
+            questions asked.
+        </p>
+
+        <footer class="footer">
+            <p>&copy; 2026 deadhand protocol.</p>
+        </footer>
     </div>
 
-    <div class="mt-16 text-sm text-zinc-500">
-        <p class="mb-2"><b>100% Refund Guarantee</b></p>
-        <p class="mb-6">If you aren't satisfied with either plan, email <a href="mailto:max@deadhandprotocol.com"
-                class="text-zinc-400 underline">max@deadhandprotocol.com</a> for an immediate refund.</p>
-    </div>
+</body>
 
-</div>
-{% endblock %}
+</html>
