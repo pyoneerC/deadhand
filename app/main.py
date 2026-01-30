@@ -21,6 +21,8 @@ import io
 from PIL import Image, ImageDraw, ImageFont
 import random
 from posthog import Posthog
+import httpx
+import os
 
 # Load environment variables from .env file
 load_dotenv()
@@ -437,15 +439,12 @@ async def dead_switch_page(request: Request, db: Session = Depends(get_db)):
 
 # ========== EXPERIMENT TRACKING ==========
 
-# Track event endpoint removed
-
 @app.post("/api/roast")
 async def api_roast(request: Request):
     """
     Proxy request to OpenRouter to avoid exposing API key on frontend.
     Also captures optional email for lead generation.
     """
-    import httpx
     try:
         data = await request.json()
     except:
@@ -468,50 +467,59 @@ async def api_roast(request: Request):
                 "input_length": len(user_input)
             }
         )
-        
+
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
-        print("INTERNAL ERROR: OPENROUTER_API_KEY is missing in .env")
         raise HTTPException(status_code=500, detail="Server Configuration Error: API key missing")
-        
+
     prompt = f"act as a paranoid programmer who is tired of people losing their crypto. a user tells you their seed phrase storage method. roast them brutally. show them how they get rekt. be raw, messy, and all lowercase. no intro, no 'here is your roast', just the cold truth. setup: {user_input}"
     
     try:
+        start_time = datetime.now()
         async with httpx.AsyncClient() as client:
             response = await client.post(
                 "https://openrouter.ai/api/v1/chat/completions",
                 headers={
                     "Authorization": f"Bearer {api_key.strip()}",
                     "Content-Type": "application/json",
-                    "HTTP-Referer": "https://deadhandprotocol.com", # Required by some models on OpenRouter
+                    "HTTP-Referer": "https://deadhandprotocol.com",
                     "X-Title": "Deadhand Crypto Inheritance"
                 },
                 json={
                     "model": "nvidia/nemotron-nano-9b-v2:free",
-                    "messages": [
-                        { "role": "user", "content": prompt }
-                    ]
+                    "messages": [{"role": "user", "content": prompt}]
                 },
                 timeout=30.0
             )
             
-            if response.status_code != 200:
-                print(f"OpenRouter Error {response.status_code}: {response.text}")
-                error_detail = response.json().get('error', {}).get('message', 'Unknown OpenRouter Error')
-                raise HTTPException(status_code=500, detail=f"OpenRouter says: {error_detail}")
-                
             result = response.json()
-            if "choices" not in result or not result["choices"]:
-                raise HTTPException(status_code=500, detail="OpenRouter returned no choices")
+            latency = (datetime.now() - start_time).total_seconds()
+            
+            if response.status_code == 200:
+                text = result["choices"][0]["message"]["content"]
                 
-            text = result["choices"][0]["message"]["content"]
-            return {"roast": text.lower().strip()}
-    except httpx.HTTPError as e:
-        print(f"HTTPX Error: {e}")
-        raise HTTPException(status_code=500, detail="Connection to AI service failed")
+                # Manual PostHog AI Generation Capture
+                # This ensures you see the data in your LLM Analytics tab
+                posthog.capture(
+                    distinct_id=user_email or "anonymous",
+                    event="$ai_generation",
+                    properties={
+                        "$ai_model": "nvidia/nemotron-nano-9b-v2:free",
+                        "$ai_latency": latency,
+                        "$ai_input": [{"role": "user", "content": prompt}],
+                        "$ai_output_choices": [text],
+                        "$ai_input_tokens": result.get("usage", {}).get("prompt_tokens"),
+                        "$ai_output_tokens": result.get("usage", {}).get("completion_tokens"),
+                        "feature": "ai_roast"
+                    }
+                )
+                
+                return {"roast": text.lower().strip()}
+            else:
+                raise HTTPException(status_code=500, detail="AI service error")
     except Exception as e:
-        print(f"Internal Developer Error: {e}")
-        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+        print(f"AI Roast Error: {e}")
+        raise HTTPException(status_code=500, detail=f"AI Roast failed: {str(e)}")
 
 # ========== BLOG ==========
 

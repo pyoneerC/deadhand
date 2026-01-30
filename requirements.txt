@@ -13,3 +13,4 @@ stripe
 resend
 Pillow
 posthog
+openai
