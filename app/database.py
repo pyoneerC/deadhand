@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BUSL-1.1
-# Copyright (c) 2026 Max Comperatore. All rights reserved.
+# Copyright (c) 2026 pyoneerC. All rights reserved.
 
 import os
 from sqlalchemy import create_engine

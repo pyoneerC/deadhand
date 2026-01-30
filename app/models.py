@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BUSL-1.1
-# Copyright (c) 2026 Max Comperatore. All rights reserved.
+# Copyright (c) 2026 pyoneerC. All rights reserved.
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean
 from sqlalchemy.sql import func

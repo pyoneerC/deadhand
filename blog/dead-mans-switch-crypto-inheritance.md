@@ -2,7 +2,7 @@
 title: "Dead Man's Switch: How to Automate Crypto Inheritance"
 slug: "dead-mans-switch-crypto-inheritance"
 description: "A dead man's switch automatically triggers an action when you stop responding. Learn how this mechanism enables trustless cryptocurrency inheritance."
-author: "Max Comperatore"
+author: "pyoneerC"
 date: "2025-12-15"
 tags: "dead mans switch, automation, inheritance, trustless"
 image: "/static/blog/dead-mans-switch.jpg"
@@ -135,4 +135,4 @@ Setting up your dead man's switch takes 5 minutes:
 
 ---
 
-*Questions? Check our [FAQ](/docs/faq) or [contact us](mailto:max@deadhandprotocol.com).*
+*Questions? Check our [FAQ](/docs/faq) or [contact us](mailto:hello@deadhandprotocol.com).*

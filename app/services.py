@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BUSL-1.1
-# Copyright (c) 2026 Max Comperatore. All rights reserved.
+# Copyright (c) 2026 pyoneerC. All rights reserved.
 
 import logging
 import os
@@ -14,7 +14,7 @@ logger = logging.getLogger("legacy_vault")
 
 # Resend API
 RESEND_API_KEY = os.getenv("RESEND_API_KEY")
-FROM_EMAIL = os.getenv("FROM_EMAIL", "Max from Deadhand <max@deadhandprotocol.com>")
+FROM_EMAIL = os.getenv("FROM_EMAIL", "Deadhand Protocol <hello@deadhandprotocol.com>")
 
 # Email configuration - supports Gmail SMTP (free) as fallback
 SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
@@ -39,7 +39,7 @@ def send_email(to_email: str, subject: str, content: str):
             params = {
                 "from": FROM_EMAIL,
                 "to": [to_email],
-                "reply_to": "max@deadhandprotocol.com",
+                "reply_to": "hello@deadhandprotocol.com",
                 "subject": subject,
                 "html": content,
             }

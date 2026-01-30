@@ -2,7 +2,7 @@
 title: "Shamir's Secret Sharing Explained (For Normal People)"
 slug: "shamirs-secret-sharing-explained"
 date: "2026-01-05"
-author: "Max Comperatore"
+author: "pyoneerC"
 description: "Shamir's Secret Sharing sounds complicated. It's not. Here's how it works and why it's the best way to backup your crypto seed phrase."
 image: "/static/blog/shamir-explained.jpg"
 ---
@@ -282,4 +282,4 @@ The math is complex. One mistake = permanent loss.
 
 ---
 
-*Max Comperatore is the founder of deadhand. He's been obsessed with cryptographic security since 2017.*
+*pyoneerC is the founder of deadhand. He's been obsessed with cryptographic security since 2017.*

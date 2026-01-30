@@ -2,7 +2,7 @@
 title: "How to Backup Your Seed Phrase Securely (Without a Ledger)"
 slug: "how-to-backup-seed-phrase-securely"
 date: "2025-12-28"
-author: "Max Comperatore"
+author: "pyoneerC"
 description: "Paper backups fail. Single copies are risky. Here's how to backup your crypto seed phrase properly using Shamir's Secret Sharing."
 image: "/static/blog/seed-backup.jpg"
 ---
@@ -111,4 +111,4 @@ Paper backups are risky and single points of failure are dangerous. Shamir's Sec
 
 ---
 
-*Max Comperatore is the founder of deadhand. He has been focused on seed phrase security since 2017.*
+*pyoneerC is the founder of deadhand. He has been focused on seed phrase security since 2017.*

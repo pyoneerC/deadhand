@@ -2,7 +2,7 @@
 title: "What Happens to Your Crypto When You Die?"
 slug: "what-happens-to-crypto-when-you-die"
 date: "2026-01-14"
-author: "Max Comperatore"
+author: "pyoneerC"
 description: "Without a plan, your Bitcoin, Ethereum, and other crypto assets are lost forever when you die. Here's what happens and how to prevent it."
 image: "/static/blog/crypto-death.jpg"
 ---
@@ -99,4 +99,4 @@ Your crypto does not have to die with you. You have three choices:
 
 ---
 
-*Max Comperatore is the founder of deadhand. He has been in crypto since 2017 and has seen too many people lose fortunes because they did not have a plan.*
+*pyoneerC is the founder of deadhand. He has been in crypto since 2017 and has seen too many people lose fortunes because they did not have a plan.*

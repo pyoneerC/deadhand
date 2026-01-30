@@ -248,7 +248,7 @@ We believe security software should be transparent. You should be able to verify
 2. **Sustainability**: The project can be maintained long-term
 3. **Eventual Freedom**: Code becomes open source after 4 years
 
-For commercial licensing: **max@deadhandprotocol.com**
+For commercial licensing: **hello@deadhandprotocol.com**
 
 See [LICENSE](./LICENSE) for full terms.
 

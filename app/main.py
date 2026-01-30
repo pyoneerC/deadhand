@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: BUSL-1.1
-# Copyright (c) 2026 Max Comperatore. All rights reserved.
+# Copyright (c) 2026 pyoneerC. All rights reserved.
 
 import secrets
 import hashlib
@@ -282,7 +282,7 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
                 <p>if you ever want to protect your family again, you know where to find me.</p>
                 
                 <p>take care,</p>
-                <p><strong>max</strong></p>
+                <p><strong>deadhand protocol</strong></p>
 
                 <div class="footer">
                     <p>sent by deadhand - built with care in argentina.</p>
@@ -983,7 +983,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         <p>if you don't click it, no big deal for now. i'll check in again in another 30 days. but after 90 days of silence, we'll have to send shard c to your beneficiary.</p>
                         
                         <p>stay safe out there,</p>
-                        <p><strong>max</strong></p>
+                        <p><strong>deadhand protocol</strong></p>
 
                         <div class="footer">
                             <p>sent by Deadhand - built with care in argentina.</p>
@@ -1021,7 +1021,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{user.heartbeat_token}" class="heartbeat-link">i'm here, reset the timer</a>
 
                         <p>talk soon,</p>
-                        <p><strong>max</strong></p>
+                        <p><strong>deadhand protocol</strong></p>
 
                         <div class="footer">
                             <p>sent by Deadhand - protecting your crypto legacy.</p>
@@ -1072,7 +1072,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         <h1>a message from Deadhand.</h1>
                         
                         <p>hello,</p>
-                        <p>i'm max, the founder of Deadhand. i'm writing to you because 90 days ago, <strong>{user.email}</strong> entrusted our system to reach out to you if we stopped hearing from them.</p>
+                        <p>i'm writing to you because 90 days ago, <strong>{user.email}</strong> entrusted our system to reach out to you if we stopped hearing from them.</p>
                         
                         <p>we haven't received a heartbeat check-in from them in three months. as per their explicit instructions, i am now releasing the final piece of their digital legacy to you.</p>
 
@@ -1098,7 +1098,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         <p>i hope this tool helps you in some small way.</p>
 
                         <p>with respect,</p>
-                        <p><strong>max</strong></p>
+                        <p><strong>deadhand protocol</strong></p>
 
                         <div class="cta-box">
                             <p style="font-size: 14px;"><strong>protect your own legacy</strong></p>
