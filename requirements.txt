@@ -12,3 +12,4 @@ cryptography
 stripe
 resend
 Pillow
+posthog

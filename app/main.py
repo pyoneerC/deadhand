@@ -20,6 +20,7 @@ import csv
 import io
 from PIL import Image, ImageDraw, ImageFont
 import random
+from posthog import Posthog
 
 # Load environment variables from .env file
 load_dotenv()
@@ -79,6 +80,12 @@ STRIPE_PRICES = {
     "annual": os.getenv("STRIPE_PRICE_ANNUAL"),      # $49/year subscription
     "lifetime": os.getenv("STRIPE_PRICE_LIFETIME"),  # $129 one-time
 }
+
+# PostHog Configuration
+posthog = Posthog(
+    project_api_key='phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ',
+    host='https://us.i.posthog.com'
+)
 
 # Disable OpenAPI docs and schemas for minimal footprint
 app = FastAPI(openapi_url=None, docs_url=None, redoc_url=None)
@@ -228,6 +235,12 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         
         # Send Discord notification
         await send_discord_notification(plan, amount, customer_email)
+        
+        # Track in PostHog
+        posthog.capture(customer_email or "anonymous", "payment_received", {
+            "plan": plan,
+            "amount": amount
+        })
         
         # Update or Create user in database
         if customer_email:
@@ -442,8 +455,11 @@ async def api_roast(request: Request):
     
     # Log email for lead capture (if provided)
     if user_email:
-        print(f"[LEAD] Roast email captured: {user_email} | Setup: {user_input[:100]}")
-        # TODO: Store in database or send to CRM
+        # Track in PostHog
+        posthog.capture(user_email or "anonymous", "ai_roast_requested", {
+            "has_email": bool(user_email),
+            "input_length": len(user_input)
+        })
         
     api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
@@ -801,7 +817,10 @@ async def create_vault(
     db.commit()
     db.refresh(user)
 
-    # Track logic removed
+    # Track in PostHog
+    posthog.capture(email, "vault_created", {
+        "beneficiary_email": beneficiary_email
+    })
 
     # Calendar reminder (29 days from now)
     reminder_dt = datetime.now() + timedelta(days=29)
