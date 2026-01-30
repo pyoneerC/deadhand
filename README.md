@@ -177,7 +177,7 @@ flowchart TB
 *   **Cryptography**: `secrets.js` (Shamir's Secret Sharing) running in browser
 *   **Hosting**: Vercel
 
-### How to Run
+#### How to Run
 
 1.  Install dependencies:
     ```bash
@@ -190,6 +190,16 @@ flowchart TB
     ```
 
 3.  Visit `http://localhost:8000`
+
+---
+
+## Development Philosophy
+
+I am a pragmatic developer. I only use the most reliable and proven tools for the job. This project is built using the simplest Python and HTML possible—no flashy new frameworks or "hyped" stacks that will be obsolete in six months. 
+
+By choosing minimal dependencies and low complexity, we ensure that the codebase can stand the test of time and remain auditable by anyone, forever.
+
+---
 
 ---
 

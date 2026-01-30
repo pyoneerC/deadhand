@@ -613,21 +613,27 @@
 
         <h2>the architecture</h2>
 
-        <p>deadhand splits your seed into 3 pieces using <a
+        <p>deadhand splits your secret into 3 cryptographic shards using <a
                 href="https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing">Shamir's Secret Sharing</a>.</p>
 
-        <p>any 2 shards = full recovery. 1 shard alone = nothing. mathematically proven.</p>
+        <p><b>2 shards = full recovery. 1 shard = zero information.</b></p>
+        <p style="font-size: 0.85em; color: #777; font-style: italic;">it’s like points on a paper: one point tells you
+            nothing about the line. with two, the path is absolute.</p>
 
-        <ul>
-            <li>you keep shard a</li>
-            <li>give shard b to your beneficiary</li>
-            <li>shard c stays on our servers</li>
-        </ul>
+        <div
+            style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 25px 0; text-align: center; font-size: 0.85em;">
+            <div style="border: 1px solid #eee; padding: 15px;"><b>shard a</b><br><span style="color: #888;">you
+                    keep</span></div>
+            <div style="border: 1px solid #eee; padding: 15px;"><b>shard b</b><br><span style="color: #888;">your heir
+                    holds</span></div>
+            <div style="border: 1px solid #eee; padding: 15px;"><b>shard c</b><br><span style="color: #888;">deadhand
+                    guards</span></div>
+        </div>
 
-        <p><b>while you're alive:</b> recover anytime with shard a + b.</p>
+        <p><b>alive:</b> you remain in total control. recover anytime by combining <b>a + b</b>. offline.</p>
 
-        <p><b>if you go silent:</b> we email you every 30 days to check in. if you don't respond for 90 days, shard c is
-            released. they combine b + c and recover your seed phrase.</p>
+        <p><b>silent:</b> you check in every 30 days. after 90 days of absolute silence, we release <b>shard c</b>. your
+            heir combines <b>b + c</b> to recover your legacy.</p>
 
         <p>that's it. dead man's switch for crypto.</p>
 
