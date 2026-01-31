@@ -34,6 +34,12 @@
     <noscript>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     </noscript>
+
+    <!-- KaTeX for high-end math rendering -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
+        onload="renderMathInElement(document.body);"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
     <!-- Vercel Feature Flags -->
     <script id="vercel-feature-flags" type="application/json">
@@ -671,6 +677,23 @@
             margin: 0;
             line-height: 1.5;
         }
+
+        /* Responsive Math block */
+        .math-block {
+            text-align: center;
+            margin: 1.5em 0;
+            font-size: 0.75em;
+            overflow-x: auto;
+            white-space: nowrap;
+        }
+
+        @media (min-width: 900px) {
+            .math-block {
+                font-size: 1.1em;
+                white-space: normal;
+                overflow-x: visible;
+            }
+        }
     </style>
     <!-- PostHog -->
     <script>
@@ -763,6 +786,10 @@
 
         <p><b>2. we guard the safety net:</b> we guard the third piece. if you ever stop checking in, we release it to
             your family so they can unlock the legacy you worked to build.</p>
+
+        <div class="math-block">
+            \[ f(x) = S + a_1x + a_2x^2 + \dots + a_{k-1}x^{k-1} \]
+        </div>
 
         <p><b>no lawyers. no probate. no "trusting" a bank. just automated safety.</b></p>
 
