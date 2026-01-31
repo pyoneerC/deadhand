@@ -427,14 +427,14 @@ async def docs_page(request: Request):
 
 # ========== FREE TOOLS ==========
 
-@app.get("/tools/visual-crypto", response_class=HTMLResponse)
-async def visual_crypto_page(request: Request):
-    """Visual Cryptography Tool - split images into noise shares"""
+@app.get("/tools/optical-splitting", response_class=HTMLResponse)
+async def optical_splitting_page(request: Request):
+    """Optical Splitting Tool - split images into noise shares"""
     return templates.TemplateResponse("tools_visual_steg.html", {"request": request})
 
-@app.get("/tools/audio-steg", response_class=HTMLResponse)
-async def audio_steg_page(request: Request):
-    """Audio Steganography Tool - hide text in WAV files"""
+@app.get("/tools/acoustic-masking", response_class=HTMLResponse)
+async def acoustic_masking_page(request: Request):
+    """Acoustic Masking Tool - hide text in WAV files"""
     return templates.TemplateResponse("tools_audio_steg.html", {"request": request})
 
 @app.get("/tools/dead-switch", response_class=HTMLResponse)

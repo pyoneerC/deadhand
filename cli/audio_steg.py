@@ -43,7 +43,7 @@ def extract_text(audio_path):
     return bytes(bytes_list).decode('utf-8')
 
 def main():
-    parser = argparse.ArgumentParser(description="deadhand Audio Steganography CLI")
+    parser = argparse.ArgumentParser(description="deadhand Acoustic Masking CLI")
     subparsers = parser.add_subparsers(dest="command")
 
     # Hide

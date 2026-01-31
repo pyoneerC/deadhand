@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>visual cryptography - deadhand</title>
+    <title>optical splitting - deadhand</title>
     <meta name="description"
         content="split an image into 2 shares that look like noise. combine them to reveal the original.">
     <link rel="icon" type="image/png" href="/static/favicon.png">
@@ -164,23 +164,23 @@
     <div class="header">
         <nav class="nav">
             <a href="/">home</a>
-            <a href="/buy">pricing</a>
             <a href="/tools/dead-switch">dead switch</a>
-            <a href="/tools/visual-crypto">visual crypto</a>
-            <a href="/tools/audio-steg">audio steg</a>
+            <a href="/tools/optical-splitting">optical splitting</a>
+            <a href="/tools/acoustic-masking">acoustic masking</a>
+            <a href="/buy">pricing</a>
             <a href="/blog">blog</a>
             <a href="https://github.com/pyoneerC/deadhand">github</a>
         </nav>
     </div>
 
-    <h1>visual cryptography</h1>
+    <h1>optical splitting</h1>
 
     <p>split an image into 2 shares that look like random noise. when you overlay them, the original image appears.
         works digitally or with physical printed transparencies.</p>
 
     <div style="margin: 2em 0; text-align: center;">
         <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Visual_crypto_animation_demo.gif"
-            alt="visual crypto demo" style="max-width: 100%; border: 1px solid #ddd;">
+            alt="optical splitting demo" style="max-width: 100%; border: 1px solid #ddd;">
         <p style="font-size: 0.8em; color: #666; margin-top: 5px;">demo: share 1 + share 2 = secret</p>
     </div>
 
@@ -257,7 +257,7 @@
 
     <h2>how it works</h2>
 
-    <p>this uses visual cryptography. each pixel in the original image becomes a 2x2 block in each share:</p>
+    <p>this uses optical splitting. each pixel in the original image becomes a 2x2 block in each share:</p>
 
     <ul>
         <li>white pixels: both shares get the same random pattern</li>
@@ -352,7 +352,7 @@
             const share1Data = ctx1.createImageData(width * 2, height * 2);
             const share2Data = ctx2.createImageData(width * 2, height * 2);
 
-            // patterns for visual crypto
+            // patterns for optical splitting
             const patterns = {
                 white: [
                     [[0, 1], [1, 0]], // diagonal
