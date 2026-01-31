@@ -620,7 +620,7 @@
         }
 
         .faq-item.active .faq-answer {
-            max-height: 300px;
+            max-height: 2000px;
             padding-bottom: 20px;
             opacity: 1;
         }
@@ -1008,14 +1008,27 @@
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Can my beneficiary access my funds prematurely?</span>
+                    <span>What if Deadhand Protocol shuts down?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="faq-answer">
-                    <p>No. Your beneficiary only holds Shard B. To recover the seed, they need a second shard. Shard C
-                        is held in our secure vault and is only released after our autonomous monitoring confirms 90
-                        days of total inactivity, following multiple failed check-in attempts via your primary contact
-                        method.</p>
+                    <p>The protocol is built on open standards. Because we use standard Shamir's Secret Sharing (SSS)
+                        and BIP-39 mnemonic logic, you are never locked into our service. If our servers ever went
+                        offline, you could use any standard offline SSS utility (like <code>ssss-split</code> on Linux)
+                        to combine your shards and recover your assets. Your legacy is protected by math, not a company.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Are there any hidden fees or success taxes?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>No. We believe in transparent, flat-rate pricing. Whether you are protecting $1,000 or
+                        $100,000,000, the protocol cost remains the same. We do not charge percentage-based "success
+                        fees" or performance taxes on your inheritance.</p>
                 </div>
             </div>
 
@@ -1033,20 +1046,6 @@
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>What if Deadhand Protocol shuts down?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>The protocol is built on open standards. Because we use standard Shamir's Secret Sharing (SSS)
-                        and BIP-39 mnemonic logic, you are never locked into our service. If our servers ever went
-                        offline, you could use any standard offline SSS utility (like <code>ssss-split</code> on Linux)
-                        to combine your shards and recover your assets. Your legacy is protected by math, not a company.
-                    </p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
                     <span>Can the team override the 90-day waiting period?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
@@ -1059,13 +1058,44 @@
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Are there any hidden fees or success taxes?</span>
+                    <span>Can my beneficiary access my funds prematurely?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="faq-answer">
-                    <p>No. We believe in transparent, flat-rate pricing. Whether you are protecting $1,000 or
-                        $100,000,000, the protocol cost remains the same. We do not charge percentage-based "success
-                        fees" or performance taxes on your inheritance.</p>
+                    <p>No. Your beneficiary only holds Shard B. To recover the seed, they need a second shard. Shard C
+                        is held in our secure vault and is only released after our autonomous monitoring confirms 90
+                        days of total inactivity, following multiple failed check-in attempts via your primary contact
+                        method.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What is the Expected Value (EV) of the protocol for High-Net-Worth individuals?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>Institutional actors understand that the primary risk in digital asset management is the
+                        <b>Probabilistic Finality of Loss</b>. If you manage $10M+ in digital assets (\( A \)), with a
+                        conservative 1% annual risk of accidental technical entropy (\( P_{entropy} \), e.g., lost
+                        seeds, sudden incapacitation), your expected annual loss is \( A \times P_{entropy} = \$100,000
+                        \).
+                    </p>
+                    <p>The Deadhand Protocol re-engineers this equation. By distributing recovery risk across a 2-of-3
+                        non-custodial threshold, the Expected Value (\( EV \)) of protecting your legacy is calculated
+                        as:</p>
+                    <div style="text-align: center; padding: 20px 0; overflow-x: auto; max-width: 100%;">
+                        \[ EV = \left[ A \cdot (1 - P_{failure\_red}) \right] - C_{lic} \]
+                    </div>
+                    <p>Where \( C_{lic} \) is the nominal protocol license. For HNW users, this results in an asymmetric
+                        ROI that scales exponentially with the size of your vault. It is not an expense; it is a vital
+                        hedge against catastrophic technical finality.</p>
+                    <p><b>Comparative Efficiency:</b> For a $1,000,000 portfolio, the probabilistic cost of technical
+                        neglect is approximately $10,000 per annum. At a $100 entrance fee, the protocol provides a
+                        <b>100:1 risk-mitigation ratio</b>. For a $10,000,000 vault, the ratio scales to 1,000:1. The
+                        cost is
+                        mathematically negligible; the protection is absolute.
+                    </p>
                 </div>
             </div>
         </div>
