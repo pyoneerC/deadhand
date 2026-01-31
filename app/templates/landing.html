@@ -650,6 +650,12 @@
             }
         }
 
+        @media (min-width: 1000px) {
+            .security-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
         .security-item {
             display: flex;
             gap: 20px;
@@ -899,14 +905,14 @@
         <div id="security-details" class="collapsible-content">
             <div class="security-grid">
                 <div class="security-item">
-                    <i class="fa-solid fa-shield-virus"></i>
+                    <i class="fa-solid fa-user-lock"></i>
                     <div>
                         <strong>we get hacked</strong>
                         <p>deadhand only touches shard c. it is cryptographically useless without the other pieces.</p>
                     </div>
                 </div>
                 <div class="security-item">
-                    <i class="fa-solid fa-user-slash"></i>
+                    <i class="fa-solid fa-handshake-slash"></i>
                     <div>
                         <strong>we go rogue</strong>
                         <p>the protocol is non-custodial by design. reconstruction requires 2 shards; we only have 1.
@@ -927,11 +933,26 @@
                         <p>all splitting logic executes in your browser. your seed never traverses the network.</p>
                     </div>
                 </div>
+                <div class="security-item">
+                    <i class="fa-solid fa-clipboard-check"></i>
+                    <div>
+                        <strong>community audited</strong>
+                        <p>our cryptographic core is battle-tested and constantly reviewed by the security community.
+                        </p>
+                    </div>
+                </div>
+                <div class="security-item">
+                    <i class="fa-solid fa-user-ninja"></i>
+                    <div>
+                        <strong>absolute privacy</strong>
+                        <p>no kyc, no tracking. your legacy is your business, not a public record.</p>
+                    </div>
+                </div>
             </div>
 
             <p style="margin-top: 25px;"><i class="fa-solid fa-code"
                     style="color: #444; margin-right: 8px; font-size: 0.9em;"></i> code is open source. <a
-                    href="https://github.com/pyoneerC/deadhand" target="_blank"
+                    href="https://deepwiki.com/pyoneerC/shardium" target="_blank"
                     style="color: #222; text-decoration: underline;">go read it and ask
                     ai.</a></p>
 
@@ -943,8 +964,10 @@
                     Sharing. if deadhand disappears tomorrow,
                     you can recover your keys using <a href="https://linux.die.net/man/1/ssss-split" target="_blank"
                         style="color: #222; text-decoration: underline;"><code>ssss-split</code></a> on linux or any
-                    other standard offline tool.
-                    the emergency exit is always open.</p>
+                    <a href="https://iancoleman.io/shamir/" target="_blank"
+                        style="color: #222; text-decoration: underline;">other</a> standard offline tool.
+                    the emergency exit is always open.
+                </p>
             </div>
         </div>
 
