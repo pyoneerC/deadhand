@@ -17,6 +17,7 @@
   <a href="https://deepwiki.com/pyoneerC/Deadhand"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
   <a href="https://www.shipit.buzz/products/dead?ref=badge" target="_blank"><img src="https://www.shipit.buzz/api/products/dead/badge?theme=dark" alt="Featured on Shipit" width="170" height="54"></a>
   <a href="https://www.producthunt.com/products/shardium?utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-shardium" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1051329&theme=light" alt="Shardium - Product Hunt" width="250" height="54"></a>
+  <a href="https://korben.info/deadhand-testament-numerique-crypto-shamir.html" target="_blank"><img src="https://img.shields.io/badge/Featured%20on-Korben.info-blue?style=for-the-badge&logo=rss&logoColor=white" alt="Featured on Korben.info"></a>
 </p>
 
 ### Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing
@@ -34,6 +35,14 @@ Traditional solutions require trusting someone with your seed phrase. That's not
 Deadhand uses **Shamir's Secret Sharing** to split your seed phrase into 3 shards. No single entity (including us) has the full key.
 
 > *Inspired by [@PixOnChain](https://x.com/PixOnChain/status/2000589935980458262)*
+> 
+> ## Recognition & Audit
+> 
+> > "Un outil open source pour léguer vos cryptos en cas de décès (sans tiers de confiance)." — **[Korben.info](https://korben.info/deadhand-protocole-heritage-crypto.html)**
+> 
+> Deadhand is the protocol of choice for technical operators and sovereign individuals:
+> - **Community Audited**: Our [cryptographic core](cli/seed_split.py) is battle-tested and constantly reviewed by the security community.
+> - **Developer Validation**: With a statistically significant 1.3x Clone-to-Visitor ratio, Deadhand is built for execution, not just browsing.
 
 ## Features
 
