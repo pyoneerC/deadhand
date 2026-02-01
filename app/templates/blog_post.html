@@ -180,6 +180,29 @@
             margin-bottom: 0.5em;
         }
 
+        article table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2em 0;
+            font-size: 0.9em;
+        }
+
+        article th,
+        article td {
+            border: 1px solid #eee;
+            padding: 12px;
+            text-align: left;
+        }
+
+        article th {
+            background: #f9f9f9;
+            font-weight: bold;
+        }
+
+        article tr:nth-child(even) {
+            background: #fbfbfb;
+        }
+
         .cta-box {
             background: #222;
             color: #fff;
@@ -274,6 +297,7 @@
     </div>
 
     <header>
+        <h1>{{ title | lower }}</h1>
         <div class="post-meta">{{ date_formatted | lower }} // {{ reading_time }} min read // by {{ author | lower }}
         </div>
     </header>

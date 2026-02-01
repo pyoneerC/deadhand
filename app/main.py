@@ -113,6 +113,25 @@ async def global_exception_handler(request: Request, exc: Exception):
         status_code=500
     )
 
+# Canonical Domain Redirection Middleware
+@app.middleware("http")
+async def enforce_canonical_domain(request: Request, call_next):
+    # Get host from header
+    host = request.headers.get("host", "")
+    canonical_host = BASE_URL.replace("https://", "").replace("http://", "").rstrip("/")
+    
+    # 302 Redirect (Temporary) if host is not canonical
+    # Using 302 instead of 301 to prevent browser caching localhost redirects
+    is_local = any(h in host for h in ["localhost", "127.0.0.1", ":8000", ":5000"])
+    
+    if host and host != canonical_host and not is_local:
+        target_url = str(request.url).replace(host, canonical_host)
+        if BASE_URL.startswith("https://"):
+            target_url = target_url.replace("http://", "https://")
+        return RedirectResponse(url=target_url, status_code=302)
+        
+    return await call_next(request)
+
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
@@ -138,30 +157,30 @@ async def sitemap():
     if blog_dir.exists():
         for file in blog_dir.glob("*.md"):
             slug = file.stem
-            blog_posts.append(f"https://deadhandprotocol.com/blog/{slug}")
+            blog_posts.append(f"{BASE_URL.rstrip('/')}/blog/{slug}")
     
     sitemap_xml = f"""<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://deadhandprotocol.com/</loc>
+        <loc>{BASE_URL.rstrip('/')}/</loc>
         <lastmod>{datetime.now().strftime('%Y-%m-%d')}</lastmod>
         <changefreq>weekly</changefreq>
         <priority>1.0</priority>
     </url>
     <url>
-        <loc>https://deadhandprotocol.com/tools/dead-switch</loc>
+        <loc>{BASE_URL.rstrip('/')}/tools/dead-switch</loc>
         <changefreq>weekly</changefreq>
         <priority>0.9</priority>
     </url>
     <url>
-        <loc>https://deadhandprotocol.com/docs</loc>
+        <loc>{BASE_URL.rstrip('/')}/docs</loc>
         <changefreq>monthly</changefreq>
         <priority>0.8</priority>
     </url>
     <!-- Programmatic SEO URLs -->
     {"".join([f'''
     <url>
-        <loc>https://deadhandprotocol.com/p/{slug}</loc>
+        <loc>{BASE_URL.rstrip('/')}/p/{slug}</loc>
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>''' for slug in PSEO_TOPICS.keys()])}

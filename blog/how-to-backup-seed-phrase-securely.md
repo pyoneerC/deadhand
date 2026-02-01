@@ -7,7 +7,6 @@ description: "Paper backups fail. Single copies are risky. Here's how to backup 
 image: "/static/blog/seed-backup.jpg"
 ---
 
-# How to Backup Your Seed Phrase Securely (Without a Ledger)
 
 **TL;DR**: Your seed phrase is a single point of failure. If you lose it, you lose everything. Storing it in one place is risky. Splitting it into three parts ensures that if you lose one, you can still recover your funds.
 

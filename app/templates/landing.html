@@ -133,6 +133,18 @@
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
         }
 
+        .visually-hidden {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
         body {
             font-family: Georgia, serif;
             font-size: 18px;
@@ -745,6 +757,7 @@
 
       your crypto shouldn't be lost forever
             </pre>
+            <h1 class="visually-hidden">Deadhand Protocol: Trustless Crypto Inheritance & Dead Man's Switch</h1>
 
             <div class="hero-content">
                 <p style="font-size: 1.25em;"><b>you spent years building your crypto legacy. don't let it be lost to
@@ -875,6 +888,16 @@
                     <li><b>tokenized daos:</b> if the token crashes, the nodes quit, your sarcophagus stays buried.</li>
                     <li><b>metal plates:</b> great against fire, terrible against a $5 wrench.</li>
                 </ul>
+            </div>
+            <div style="text-align: center; margin-top: 25px;">
+                <p style="font-size: 0.9em; color: #444;">
+                    <i class="fa-solid fa-scale-balanced" style="margin-right: 8px;"></i>
+                    want a deep technical audit? read our
+                    <a href="/blog/crypto-inheritance-comparison-guide"
+                        style="color: #222; font-weight: bold; text-decoration: underline;">
+                        2026 crypto inheritance guide: deadhand vs casa vs unchained vs sarcophagus
+                    </a>
+                </p>
             </div>
         </div>
 
@@ -1300,8 +1323,8 @@
                     })
                 }).catch(() => { });
             }
-            // Redirect to blog post
-            window.location.href = '/blog/how-to-backup-seed-phrase-securely';
+            // Redirect to comparison guide link magnet
+            window.location.href = '/blog/crypto-inheritance-comparison-guide';
         }
 
         // Trigger on mouse leaving viewport (exit intent)

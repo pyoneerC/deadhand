@@ -7,7 +7,6 @@ description: "Shamir's Secret Sharing sounds complicated. It's not. Here's how i
 image: "/static/blog/shamir-explained.jpg"
 ---
 
-# Shamir's Secret Sharing Explained (For Normal People)
 
 **TL;DR**: Shamir's Secret Sharing splits your seed phrase into multiple parts. You need a minimum number of parts to recover the original. One part alone reveals nothing.
 
