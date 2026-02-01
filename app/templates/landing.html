@@ -1327,9 +1327,11 @@
             window.location.href = '/blog/crypto-inheritance-comparison-guide';
         }
 
-        // Trigger on mouse leaving viewport (exit intent)
+        // Trigger on mouse leaving viewport (exit intent) - smarter check
         document.addEventListener('mouseout', function (e) {
-            if (e.clientY < 10) {
+            // e.relatedTarget === null means the mouse left the window
+            // e.clientY < 10 ensures they are leaving through the top (tabs/close)
+            if (e.relatedTarget === null && e.clientY < 10) {
                 showExitOverlay();
             }
         });
