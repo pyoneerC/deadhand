@@ -718,7 +718,8 @@ async def render_docs(request: Request, doc_name: str):
     return templates.TemplateResponse("docs.html", {
         "request": request,
         "content": html_content,
-        "current_doc": "index" if doc_name == "README" else doc_name
+        "current_doc": "index" if doc_name == "README" else doc_name,
+        "slug": doc_name
     })
 
 @app.get("/p/{slug}", response_class=HTMLResponse)

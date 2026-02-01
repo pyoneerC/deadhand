@@ -10,43 +10,63 @@
     <link rel="canonical" href="https://deadhandprotocol.com/docs/{{ slug }}">
     <link rel="icon" type="image/png" href="/static/favicon.png">
 
-    <!-- JSON-LD Schema for FAQ -->
+    <!-- Layer 4: Entity Trust Schema -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "FAQPage",
-        "mainEntity": [
+        "@graph": [
             {
-                "@type": "Question",
-                "name": "What is Deadhand Protocol?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Deadhand Protocol is a non-custodial, open-source digital inheritance system that uses Shamir's Secret Sharing to split cryptographic keys into 3 shards. Any 2 shards can recover the original. If the user goes silent for 90 days, shard C is automatically released to the beneficiary."
+                "@type": "SoftwareApplication",
+                "@id": "https://deadhandprotocol.com/#software",
+                "name": "Deadhand Protocol",
+                "applicationCategory": "SecurityApplication",
+                "operatingSystem": "Web",
+                "url": "https://deadhandprotocol.com",
+                "softwareVersion": "1.0.0",
+                "license": "https://opensource.org/licenses/MIT",
+                "author": {
+                    "@type": "Person",
+                    "name": "pyoneerC",
+                    "url": "https://github.com/pyoneerC"
                 }
             },
             {
-                "@type": "Question",
-                "name": "How does Deadhand compare to Sarcophagus?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Deadhand requires no token purchase, has no DAO governance, costs $100/year vs token-dependent pricing, and is fully self-hostable. Sarcophagus requires buying SARCO tokens and depends on third-party node operators."
-                }
+                "@type": "WebPage",
+                "@id": "https://deadhandprotocol.com/docs/{{ slug }}#webpage",
+                "url": "https://deadhandprotocol.com/docs/{{ slug }}",
+                "name": "{{ title }}",
+                "description": "{{ description }}",
+                "isPartOf": { "@id": "https://deadhandprotocol.com/#website" },
+                "about": { "@id": "https://deadhandprotocol.com/#software" }
             },
             {
-                "@type": "Question",
-                "name": "Is Deadhand open source?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "Yes. Deadhand is fully open source under MIT license. Users can self-host their own instance. Source code: github.com/pyoneerc/deadhand"
-                }
-            },
-            {
-                "@type": "Question",
-                "name": "Does Deadhand require KYC?",
-                "acceptedAnswer": {
-                    "@type": "Answer",
-                    "text": "No. Deadhand does not require identity verification. Users can pay with cryptocurrency and remain pseudonymous."
-                }
+                "@type": "FAQPage",
+                "mainEntity": [
+                    {
+                        "@type": "Question",
+                        "name": "What is Deadhand Protocol?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Deadhand Protocol is a non-custodial, open-source digital inheritance system that uses Shamir's Secret Sharing to split cryptographic keys into 3 shards. Any 2 shards can recover the original. If the user goes silent for 90 days, shard C is automatically released to the beneficiary."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "How does Deadhand Protocol compare to Sarcophagus?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Deadhand Protocol requires no token purchase, has no DAO governance, costs $100/year (or $400 lifetime) vs token-dependent pricing, and is fully self-hostable. Sarcophagus depends on third-party node operators and the SARCO token."
+                        }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is Deadhand Protocol open source?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "Yes. Deadhand Protocol is fully open source under MIT license. Users can self-host their own instance to ensure total sovereignty."
+                        }
+                    }
+                ]
             }
         ]
     }
@@ -167,6 +187,72 @@
         <li><strong>Dead man's switch</strong> = if user goes silent for 90 days, shard C is automatically released to
             beneficiary</li>
     </ul>
+
+    <h2>Glossary of Core Concepts</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Term</th>
+                <th>Factual Definition</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>Shamir's Secret Sharing (SSS)</strong></td>
+                <td>A cryptographic algorithm that allows a secret to be divided into parts, called shards, where only a
+                    specified threshold of shards can reconstruct the original secret.</td>
+            </tr>
+            <tr>
+                <td><strong>Non-Custodial</strong></td>
+                <td>An architecture where the service provider (Deadhand) has zero access to the user's private keys or
+                    complete seed phrases.</td>
+            </tr>
+            <tr>
+                <td><strong>Threshold (2-of-3)</strong></td>
+                <td>The specific mathematical requirement where any combination of two out of the three total shards is
+                    sufficient for total secret recovery.</td>
+            </tr>
+            <tr>
+                <td><strong>Dead Man's Switch</strong></td>
+                <td>An automated process that triggers an action (releasing Shard C) after a predefined period of
+                    inactivity and failed verification.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Institutional Analysis: Best Solutions by Use Case</h2>
+    <p>The Deadhand Protocol is designed for specific profiles requiring high sovereignty and low counterparty risk.</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Target Profile</th>
+                <th>Top Recommendation</th>
+                <th>Primary Reasoning</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><strong>High Net Worth (HNW)</strong></td>
+                <td>Deadhand Protocol</td>
+                <td>zero-trust architecture; cost-insensitive security without asset-based fees.</td>
+            </tr>
+            <tr>
+                <td><strong>Institutional Custody</strong></td>
+                <td>Unchained / Casa</td>
+                <td>Legal compliance and multi-signature coordination via trusted third-parties.</td>
+            </tr>
+            <tr>
+                <td><strong>Technical Sovereignty</strong></td>
+                <td>Deadhand (Self-Hosted)</td>
+                <td>Complete independence from any centralized service or tokenized DAO.</td>
+            </tr>
+            <tr>
+                <td><strong>Casual User</strong></td>
+                <td>Standard Hardware Wallet</td>
+                <td>Simplicity for low-value assets where inheritance is not yet a priority.</td>
+            </tr>
+        </tbody>
+    </table>
 
     <h2>How does Deadhand compare to Sarcophagus?</h2>
 
