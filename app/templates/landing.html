@@ -382,6 +382,17 @@
             padding: 20px;
             margin: 1.5em 0;
             border-radius: 8px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .price-box:hover {
+            transform: scale(1.015);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 150, 104, 0.2);
+            border-color: #0d9668;
         }
 
         .price-box .price {
@@ -826,7 +837,8 @@
         <h2>pricing</h2>
 
         <div class="pricing-grid">
-            <div class="price-box" style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.05);">
+            <a href="/buy/lifetime" class="price-box"
+                style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.05);">
                 <div>
                     <div
                         style="background: #0d9668; color: #fff; display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.7em; font-weight: bold; margin-bottom: 10px;">
@@ -846,9 +858,9 @@
                             discord role</li>
                     </ul>
                 </div>
-            </div>
+            </a>
 
-            <div class="price-box">
+            <a href="/buy/annual" class="price-box">
                 <div>
                     <p class="price"><span
                             style="text-decoration: line-through; color: #555; margin-right: 10px; font-size: 0.8em;">$120</span>$100
@@ -856,7 +868,7 @@
                     </p>
                     <p>protect your legacy for less than $9 a month. billed annually. cancel anytime.</p>
                 </div>
-            </div>
+            </a>
         </div>
 
         <p style="font-size: 0.8em; color: #0d9668; margin-top: 10px;"><b>100% refundable.</b> if you aren't
@@ -1155,14 +1167,14 @@
 
     </main>
 
-    <footer class="footer" style="padding: 60px 20px; text-align: left;">
+    <footer class="footer" style="padding: 60px 20px; text-align: center;">
         <div
             style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; border-bottom: 1px solid #eee; padding-bottom: 40px; margin-bottom: 30px;">
             <div>
                 <p><b>deadhand protocol</b></p>
                 <p style="font-size: 0.85em; color: #666; font-style: italic;">non-custodial, open-source, and
                     cryptographically secure.</p>
-                <div class="social-links" style="margin: 10px 0;">
+                <div class="social-links" style="margin: 10px 0; display: flex; justify-content: center; gap: 15px;">
                     <a href="https://x.com/maxcompx" target="_blank" aria-label="Follow us on X (Twitter)"><i
                             class="fa-brands fa-x-twitter"></i></a>
                     <a href="https://github.com/pyoneerC/deadhand" target="_blank"
@@ -1175,7 +1187,8 @@
             </div>
             <div>
                 <p><b>departments</b></p>
-                <p style="font-size: 0.85em; margin-bottom: 5px; display: flex; flex-direction: column; gap: 8px;">
+                <p
+                    style="font-size: 0.85em; margin-bottom: 5px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
                     <a href="mailto:support@deadhandprotocol.com"
                         style="color: #444; text-decoration: none; padding: 4px 0;">customer
                         success</a>
@@ -1192,7 +1205,7 @@
             </div>
             <div>
                 <p><b>governance</b></p>
-                <p style="font-size: 0.85em; display: flex; flex-direction: column; gap: 8px;">
+                <p style="font-size: 0.85em; display: flex; flex-direction: column; gap: 8px; align-items: center;">
                     <a href="/terms" style="color: #444; text-decoration: none; padding: 4px 0;">terms of use</a>
                     <a href="/docs" style="color: #444; text-decoration: none; padding: 4px 0;">technical docs</a>
                     <a href="/blog" style="color: #444; text-decoration: none; padding: 4px 0;">announcements</a>

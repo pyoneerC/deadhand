@@ -82,6 +82,17 @@
             padding: 30px;
             margin-bottom: 20px;
             border-radius: 4px;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .price-box:hover {
+            transform: scale(1.015);
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 150, 104, 0.2);
+            border-color: #0d9668;
         }
 
         .price {
@@ -206,7 +217,8 @@
 
         <hr>
 
-        <div class="price-box" style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.02);">
+        <a href="/buy/lifetime" class="price-box"
+            style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.02);">
             <div class="badge">best value</div>
             <h2>sovereign</h2>
             <div class="price">
@@ -222,11 +234,11 @@
                 <li><i class="fa-solid fa-check"></i> exclusive discord role</li>
             </ul>
 
-            <a href="/buy/lifetime" class="cta">get lifetime access</a>
+            <div class="cta">get lifetime access</div>
             <p style="font-size: 0.7em; color: #666; text-align: center;">one-time payment via credit card (stripe)</p>
-        </div>
+        </a>
 
-        <div class="price-box">
+        <a href="/buy/annual" class="price-box">
             <h2>standard</h2>
             <div class="price">
                 <span
@@ -241,23 +253,24 @@
                 <li><i class="fa-solid fa-check"></i> automated check-ins</li>
             </ul>
 
-            <a href="/buy/annual" class="cta" style="background: #fff; border: 1px solid #222; color: #222;">subscribe
-                yearly</a>
+            <div class="cta" style="background: #fff; border: 1px solid #222; color: #222;">subscribe
+                yearly</div>
             <p style="font-size: 0.7em; color: #666; text-align: center;">billed annually. cancel anytime.</p>
-        </div>
+        </a>
+    </div>
 
-        <hr>
+    <hr>
 
-        <p style="text-align: center; font-size: 0.9em;">
-            <b>100% refund guarantee</b><br>
-            if you aren't satisfied with either plan, email <a
-                href="mailto:hello@deadhandprotocol.com">hello@deadhandprotocol.com</a> for an immediate refund. no
-            questions asked.
-        </p>
+    <p style="text-align: center; font-size: 0.9em;">
+        <b>100% refund guarantee</b><br>
+        if you aren't satisfied with either plan, email <a
+            href="mailto:hello@deadhandprotocol.com">hello@deadhandprotocol.com</a> for an immediate refund. no
+        questions asked.
+    </p>
 
-        <footer class="footer">
-            <p>&copy; 2026 deadhand protocol.</p>
-        </footer>
+    <footer class="footer">
+        <p>&copy; 2026 deadhand protocol.</p>
+    </footer>
     </div>
 
 </body>
