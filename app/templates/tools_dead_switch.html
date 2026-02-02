@@ -9,7 +9,19 @@
         content="split your seed phrase into 3 shards using shamirs secret sharing. any 2 shards recover your seed.">
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <link rel="canonical" href="https://deadhandprotocol.com/tools/dead-switch">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net/">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/">
+
+    <!-- Non-blocking Font Awesome loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
     <style>
         * {
             box-sizing: border-box;
@@ -47,6 +59,10 @@
 
         .nav a {
             text-decoration: none;
+            padding: 8px 12px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
         }
 
         hr {
@@ -143,7 +159,7 @@
         .footer {
             margin-top: 3em;
             font-size: 0.85em;
-            color: #666;
+            color: #444;
         }
 
         .grid {
@@ -318,7 +334,7 @@
 
                 <input type="hidden" name="shard_c" id="shardCInput">
 
-                <p style="font-size: 0.9em; color: #666;">
+                <p style="font-size: 0.9em; color: #444;">
                     by clicking activate, you agree to the <a href="/terms">terms of service</a>.
                 </p>
 
@@ -384,15 +400,15 @@
 
     <div class="footer">
         <p><a href="/">back to deadhand</a></p>
-        <div class="social-links" style="margin: 15px 0;">
-            <a href="https://x.com/maxcompx" target="_blank" style="margin-right: 15px; color: #666;"><i
-                    class="fa-brands fa-x-twitter"></i></a>
-            <a href="https://github.com/pyoneerC/deadhand" target="_blank" style="margin-right: 15px; color: #666;"><i
-                    class="fa-brands fa-github"></i></a>
-            <a href="https://t.me/maxcomperatore" target="_blank" style="margin-right: 15px; color: #666;"><i
-                    class="fa-brands fa-telegram"></i></a>
-            <a href="https://discord.gg/eDyCkgvBjf" target="_blank" style="color: #666;"><i
-                    class="fa-brands fa-discord"></i></a>
+        <div class="social-links" style="margin: 15px 0; display: flex; gap: 10px;">
+            <a href="https://x.com/maxcompx" target="_blank" aria-label="Follow us on X (Twitter)"
+                style="color: #444; padding: 10px;"><i class="fa-brands fa-x-twitter"></i></a>
+            <a href="https://github.com/pyoneerC/deadhand" target="_blank" aria-label="View source code on GitHub"
+                style="color: #444; padding: 10px;"><i class="fa-brands fa-github"></i></a>
+            <a href="https://t.me/maxcomperatore" target="_blank" aria-label="Join our Telegram group"
+                style="color: #444; padding: 10px;"><i class="fa-brands fa-telegram"></i></a>
+            <a href="https://discord.gg/eDyCkgvBjf" target="_blank" aria-label="Join our Discord server"
+                style="color: #444; padding: 10px;"><i class="fa-brands fa-discord"></i></a>
         </div>
         <p>open source. <a href="https://github.com/pyoneerC/deadhand">read the code</a></p>
     </div>

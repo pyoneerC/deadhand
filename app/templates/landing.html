@@ -26,7 +26,11 @@
 
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net/">
+    <link rel="preconnect" href="https://platform.twitter.com/">
     <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+    <link rel="dns-prefetch" href="https://cdn.jsdelivr.net/">
+    <link rel="dns-prefetch" href="https://platform.twitter.com/">
 
     <!-- Non-blocking Font Awesome loading -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
@@ -36,7 +40,11 @@
     </noscript>
 
     <!-- KaTeX for high-end math rendering -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css" media="print"
+        onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    </noscript>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
         onload="renderMathInElement(document.body);"></script>
@@ -786,7 +794,7 @@
                     access" into three unique pieces. We handle the heavy cryptography; you just keep the keys.</p>
 
                 <p><b>2 shards = full recovery. 1 shard = zero information.</b></p>
-                <p style="font-size: 0.85em; color: #777; font-style: italic;">it’s like points on a paper: one point
+                <p style="font-size: 0.85em; color: #555; font-style: italic;">it’s like points on a paper: one point
                     tells you
                     nothing about the line. with two, the path is absolute.</p>
             </div>
@@ -794,10 +802,10 @@
             <div
                 style="display: flex; flex-direction: column; gap: 10px; text-align: center; font-size: 0.85em; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 8px;">
                 <div style="border-bottom: 1px solid #f5f5f5; padding: 10px;"><b>shard a</b><br><span
-                        style="color: #888;">you keep</span></div>
+                        style="color: #555;">you keep</span></div>
                 <div style="border-bottom: 1px solid #f5f5f5; padding: 10px;"><b>shard b</b><br><span
-                        style="color: #888;">your family holds</span></div>
-                <div style="padding: 10px;"><b>shard c</b><br><span style="color: #888;">deadhand guards</span></div>
+                        style="color: #555;">your family holds</span></div>
+                <div style="padding: 10px;"><b>shard c</b><br><span style="color: #555;">deadhand guards</span></div>
             </div>
         </div>
 
@@ -821,7 +829,7 @@
             <div class="price-box" style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.05);">
                 <div>
                     <div
-                        style="background: #10b981; color: #000; display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.7em; font-weight: bold; margin-bottom: 10px;">
+                        style="background: #0d9668; color: #fff; display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.7em; font-weight: bold; margin-bottom: 10px;">
                         BEST VALUE</div>
                     <p class="price"><span
                             style="text-decoration: line-through; color: #555; margin-right: 10px; font-size: 0.8em;">$500</span>$400
@@ -829,12 +837,12 @@
                     </p>
                     <p>never pay a subscription again. protect your legacy forever with a single payment.</p>
                     <ul
-                        style="text-align: left; list-style: none; padding: 0; font-size: 0.9em; margin: 15px 0; color: #777;">
-                        <li><i class="fa-solid fa-check" style="color: #10b981; margin-right: 8px;"></i> <b>no recurring
+                        style="text-align: left; list-style: none; padding: 0; font-size: 0.9em; margin: 15px 0; color: #555;">
+                        <li><i class="fa-solid fa-check" style="color: #0d9668; margin-right: 8px;"></i> <b>no recurring
                                 fees (save $1000s)</b></li>
-                        <li><i class="fa-solid fa-check" style="color: #10b981; margin-right: 8px;"></i> <b>priority
+                        <li><i class="fa-solid fa-check" style="color: #0d9668; margin-right: 8px;"></i> <b>priority
                                 setup support</b></li>
-                        <li><i class="fa-solid fa-check" style="color: #10b981; margin-right: 8px;"></i> exclusive
+                        <li><i class="fa-solid fa-check" style="color: #0d9668; margin-right: 8px;"></i> exclusive
                             discord role</li>
                     </ul>
                 </div>
@@ -851,7 +859,7 @@
             </div>
         </div>
 
-        <p style="font-size: 0.8em; color: #10b981; margin-top: 10px;"><b>100% refundable.</b> if you aren't
+        <p style="font-size: 0.8em; color: #0d9668; margin-top: 10px;"><b>100% refundable.</b> if you aren't
             satisfied with either plan, just send a quick email to <a
                 href="mailto:hello@deadhandprotocol.com">hello@deadhandprotocol.com</a>
             and i'll refund you immediately.
@@ -1155,36 +1163,43 @@
                 <p style="font-size: 0.85em; color: #666; font-style: italic;">non-custodial, open-source, and
                     cryptographically secure.</p>
                 <div class="social-links" style="margin: 10px 0;">
-                    <a href="https://x.com/maxcompx" target="_blank"><i class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://github.com/pyoneerC/deadhand" target="_blank"><i
-                            class="fa-brands fa-github"></i></a>
-                    <a href="https://t.me/maxcomperatore" target="_blank"><i class="fa-brands fa-telegram"></i></a>
-                    <a href="https://discord.gg/eDyCkgvBjf" target="_blank"><i class="fa-brands fa-discord"></i></a>
+                    <a href="https://x.com/maxcompx" target="_blank" aria-label="Follow us on X (Twitter)"><i
+                            class="fa-brands fa-x-twitter"></i></a>
+                    <a href="https://github.com/pyoneerC/deadhand" target="_blank"
+                        aria-label="View our source code on GitHub"><i class="fa-brands fa-github"></i></a>
+                    <a href="https://t.me/maxcomperatore" target="_blank" aria-label="Join our Telegram group"><i
+                            class="fa-brands fa-telegram"></i></a>
+                    <a href="https://discord.gg/eDyCkgvBjf" target="_blank" aria-label="Join our Discord server"><i
+                            class="fa-brands fa-discord"></i></a>
                 </div>
             </div>
             <div>
                 <p><b>departments</b></p>
-                <p style="font-size: 0.85em; margin-bottom: 5px;">
-                    <a href="mailto:support@deadhandprotocol.com" style="color: #666; text-decoration: none;">customer
-                        success</a><br>
-                    <a href="mailto:legal@deadhandprotocol.com" style="color: #666; text-decoration: none;">legal &
-                        compliance</a><br>
-                    <a href="mailto:security@deadhandprotocol.com" style="color: #666; text-decoration: none;">security
-                        & protocols</a><br>
-                    <a href="mailto:press@deadhandprotocol.com" style="color: #666; text-decoration: none;">global
+                <p style="font-size: 0.85em; margin-bottom: 5px; display: flex; flex-direction: column; gap: 8px;">
+                    <a href="mailto:support@deadhandprotocol.com"
+                        style="color: #444; text-decoration: none; padding: 4px 0;">customer
+                        success</a>
+                    <a href="mailto:legal@deadhandprotocol.com"
+                        style="color: #444; text-decoration: none; padding: 4px 0;">legal &
+                        compliance</a>
+                    <a href="mailto:security@deadhandprotocol.com"
+                        style="color: #444; text-decoration: none; padding: 4px 0;">security
+                        & protocols</a>
+                    <a href="mailto:press@deadhandprotocol.com"
+                        style="color: #444; text-decoration: none; padding: 4px 0;">global
                         media</a>
                 </p>
             </div>
             <div>
                 <p><b>governance</b></p>
-                <p style="font-size: 0.85em;">
-                    <a href="/terms" style="color: #666; text-decoration: none;">terms of use</a><br>
-                    <a href="/docs" style="color: #666; text-decoration: none;">technical docs</a><br>
-                    <a href="/blog" style="color: #666; text-decoration: none;">announcements</a>
+                <p style="font-size: 0.85em; display: flex; flex-direction: column; gap: 8px;">
+                    <a href="/terms" style="color: #444; text-decoration: none; padding: 4px 0;">terms of use</a>
+                    <a href="/docs" style="color: #444; text-decoration: none; padding: 4px 0;">technical docs</a>
+                    <a href="/blog" style="color: #444; text-decoration: none; padding: 4px 0;">announcements</a>
                 </p>
             </div>
         </div>
-        <p style="font-size: 0.8em; color: #999;">
+        <p style="font-size: 0.8em; color: #666;">
             © 2026 deadhand protocol. all rights reserved. developed with technical excellence in Argentina.<br>
             friends don't let friends' crypto get lost with them.
         </p>

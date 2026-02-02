@@ -22,7 +22,6 @@ from PIL import Image, ImageDraw, ImageFont
 import random
 from posthog import Posthog
 import httpx
-import os
 
 # Load environment variables from .env file
 load_dotenv()
@@ -131,6 +130,15 @@ async def enforce_canonical_domain(request: Request, call_next):
         return RedirectResponse(url=target_url, status_code=302)
         
     return await call_next(request)
+
+# Static Asset Caching Middleware
+@app.middleware("http")
+async def add_cache_control_header(request: Request, call_next):
+    response = await call_next(request)
+    if request.url.path.startswith("/static") or request.url.path == "/favicon.ico":
+        # Cache for 1 year (31536000 seconds)
+        response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    return response
 
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
