@@ -17,6 +17,9 @@
   <a href="https://deepwiki.com/pyoneerC/Deadhand"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
   <a href="https://www.shipit.buzz/products/dead?ref=badge" target="_blank"><img src="https://www.shipit.buzz/api/products/dead/badge?theme=dark" alt="Featured on Shipit" width="170" height="54"></a>
   <a href="https://www.producthunt.com/products/shardium?utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-shardium" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1051329&theme=light" alt="Shardium - Product Hunt" width="250" height="54"></a>
+  <a href="https://peerlist.io/ddddddddddf/project/deadhand-protocol" target="_blank" rel="noreferrer">
+    <img src="https://peerlist.io/api/v1/projects/embed/PRJHA9EAKQP79DBAO2JGQO8J7ALPJN?showUpvote=false&theme=dark" alt="deadhand protocol" style="width: auto; height: 72px;" />
+  </a>
   <a href="https://korben.info/deadhand-testament-numerique-crypto-shamir.html" target="_blank"><img src="https://img.shields.io/badge/Featured%20on-Korben.info-blue?style=for-the-badge&logo=rss&logoColor=white" alt="Featured on Korben.info"></a>
   <a href="https://habr.com/ru/news/988348/" target="_blank"><img src="https://img.shields.io/badge/Featured%20on-Habr.com-green?style=for-the-badge&logo=habr&logoColor=white" alt="Featured on Habr.com"></a>
 </p>
