@@ -49,6 +49,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"
         onload="renderMathInElement(document.body);"></script>
     <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <link href="https://vjs.zencdn.net/8.10.0/video-js.css" rel="stylesheet" />
     <!-- Vercel Feature Flags -->
     <script id="vercel-feature-flags" type="application/json">
         {
@@ -732,6 +733,35 @@
                 overflow-x: visible;
             }
         }
+
+        /* Premium Video.js Customization */
+        .video-js {
+            width: 100%;
+            height: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-js .vjs-big-play-button {
+            background-color: rgba(68, 68, 68, 0.8);
+            border: none;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            margin-top: -40px;
+            margin-left: -40px;
+        }
+
+        .video-js:hover .vjs-big-play-button {
+            background-color: #333;
+        }
+
+        .vjs-control-bar {
+            background: rgba(0, 0, 0, 0.7) !important;
+            backdrop-filter: blur(5px);
+        }
     </style>
     <!-- PostHog -->
     <script>
@@ -791,11 +821,17 @@
 
         <hr>
 
-        <div style="text-align: center; margin: 4em 0;">
-            <h2 style="font-size: 1.6em; margin-bottom: 0.5em;">peace of mind for you. a legacy for them.</h2>
-            <p style="max-width: 700px; margin: 0 auto; color: #555;">Deadhand is the safety net for your crypto. We
-                don't hold your funds, we don't know your password, and we can't touch your keys. We just provide the
-                bridge that makes sure your family isn't left empty-handed.</p>
+        <div
+            style="max-width: 800px; margin: 60px auto; position: relative; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); border: 1px solid #eee; aspect-ratio: 16 / 9;">
+            <video id="deadhand-video" class="video-js vjs-big-play-centered vjs-theme-city" controls preload="auto"
+                data-setup='{"fluid": true, "autoplay": false, "loop": true, "muted": false}'>
+                <source src="/static/deadhand.mp4" type="video/mp4" />
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a
+                    web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
         </div>
 
         <div class="grid-2-col">
@@ -830,11 +866,15 @@
             \[ f(x) = S + a_1x + a_2x^2 + \dots + a_{k-1}x^{k-1} \]
         </div>
 
-        <p><b>no lawyers. no probate. no "trusting" a bank. just automated safety.</b></p>
 
-        <hr>
+        <p style="max-width: 900px; margin: 40px auto; color: #444; line-height: 1.6;">
+            <b>no custodians. no passwords. no middlemen. just a bridge to your family.</b> we don't hold your funds,
+            keys, or passwords. deadhand is the safety net that ensures your family isn't left empty-handed.
+        </p>
 
-        <h2>pricing</h2>
+        <hr style="margin-top: 50px;">
+
+        <h2>choose your protection level</h2>
 
         <div class="pricing-grid">
             <a href="/buy/lifetime" class="price-box"
@@ -1378,6 +1418,7 @@
 
     <script defer src="/_vercel/insights/script.js"></script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
+    <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
 </body>
 
 </html>
