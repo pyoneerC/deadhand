@@ -618,6 +618,10 @@ def get_all_blog_posts() -> list:
             except:
                 date_formatted = date_str
             
+            # Calculate reading time
+            words = len(content.split())
+            reading_time = max(1, round(words / 200))
+
             posts.append({
                 'title': meta.get('title', ''),
                 'slug': meta.get('slug', file.stem),
@@ -627,7 +631,8 @@ def get_all_blog_posts() -> list:
                 'date_formatted': date_formatted,
                 'tags': tags,
                 'tags_list': tags_list,
-                'image': meta.get('image', '/static/favicon.png')
+                'image': meta.get('image', '/static/favicon.png'),
+                'reading_time': reading_time
             })
     
     # Sort by date descending
