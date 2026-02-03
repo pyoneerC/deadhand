@@ -808,18 +808,23 @@
         <div id="video-container"
             style="max-width: 800px; margin: 60px auto; position: relative; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); border: 1px solid #eee; aspect-ratio: 16 / 9; background: #000; overflow: hidden; cursor: pointer;">
 
-            <!-- Play Button Overlay -->
+            <!-- Play/Replay Button Overlay -->
             <div id="video-play-overlay"
                 style="position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); transition: opacity 0.4s ease;">
-                <div
+                <div id="play-btn-inner"
                     style="width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.3); transition: transform 0.2s ease;">
-                    <svg width="36" height="36" viewBox="0 0 24 24" fill="#111" style="margin-left: 4px;">
+                    <svg id="play-icon" width="36" height="36" viewBox="0 0 24 24" fill="#111"
+                        style="margin-left: 4px;">
                         <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                    <svg id="replay-icon" width="36" height="36" viewBox="0 0 24 24" fill="#111" style="display: none;">
+                        <path
+                            d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
                     </svg>
                 </div>
             </div>
 
-            <video id="deadhand-video" playsinline loop muted autoplay
+            <video id="deadhand-video" playsinline muted autoplay loop
                 style="width: 100%; height: 100%; object-fit: cover; filter: blur(8px) brightness(0.7); transform: scale(1.1); transition: filter 0.5s ease, transform 0.5s ease;"
                 aria-label="Deadhand Protocol Commercial">
                 <source src="/static/deadhand.mp4" type="video/mp4" />
@@ -832,32 +837,65 @@
                 const container = document.getElementById('video-container');
                 const video = document.getElementById('deadhand-video');
                 const overlay = document.getElementById('video-play-overlay');
+                const playIcon = document.getElementById('play-icon');
+                const replayIcon = document.getElementById('replay-icon');
                 let isActive = false;
 
-                container.addEventListener('click', function () {
-                    if (isActive) return;
+                function activateVideo() {
                     isActive = true;
 
-                    // Unblur and unmute
-                    video.style.filter = 'blur(0) brightness(1)';
-                    video.style.transform = 'scale(1)';
+                    // Stop looping, show controls
+                    video.loop = false;
+                    video.controls = true;
                     video.muted = false;
                     video.currentTime = 0;
+
+                    // Unblur
+                    video.style.filter = 'blur(0) brightness(1)';
+                    video.style.transform = 'scale(1)';
+
                     video.play();
 
                     // Hide overlay
                     overlay.style.opacity = '0';
                     overlay.style.pointerEvents = 'none';
+                }
+
+                function showReplay() {
+                    // Show overlay with replay icon
+                    playIcon.style.display = 'none';
+                    replayIcon.style.display = 'block';
+                    overlay.style.opacity = '1';
+                    overlay.style.pointerEvents = 'auto';
+                    overlay.style.background = 'rgba(0,0,0,0.6)';
+                }
+
+                container.addEventListener('click', function (e) {
+                    // Don't hijack clicks on video controls
+                    if (e.target === video && isActive) return;
+
+                    if (!isActive) {
+                        activateVideo();
+                    } else if (video.ended) {
+                        // Replay
+                        video.currentTime = 0;
+                        video.play();
+                        overlay.style.opacity = '0';
+                        overlay.style.pointerEvents = 'none';
+                    }
                 });
+
+                // When video ends, show replay button
+                video.addEventListener('ended', showReplay);
 
                 // Hover effect on play button
                 container.addEventListener('mouseenter', function () {
-                    if (!isActive) {
-                        overlay.querySelector('div').style.transform = 'scale(1.1)';
+                    if (!isActive || video.ended) {
+                        document.getElementById('play-btn-inner').style.transform = 'scale(1.1)';
                     }
                 });
                 container.addEventListener('mouseleave', function () {
-                    overlay.querySelector('div').style.transform = 'scale(1)';
+                    document.getElementById('play-btn-inner').style.transform = 'scale(1)';
                 });
             })();
         </script>
