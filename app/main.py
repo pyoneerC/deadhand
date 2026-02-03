@@ -770,9 +770,15 @@ async def programmatic_seo_landing(request: Request, slug: str):
     body = topic.get('body', '')
     body = body.replace("{{ BTC_PRICE }}", f"${btc_price:,}")
     
-    # 2. Transform Body: Inline Internal Linking (God Level SEO)
-    for other_slug, other_topic in PSEO_TOPICS.items():
+    # 2. Transform Body: Inline Internal Linking (Optimized for 50k+ pages)
+    # Instead of checking all 50k topics (O(N)), we pick a random sample to check for linking
+    # This keeps response times fast while still building a dense internal graph
+    sample_size = min(200, len(PSEO_TOPICS))
+    sampled_slugs = random.sample(list(PSEO_TOPICS.keys()), sample_size)
+    
+    for other_slug in sampled_slugs:
         if other_slug == slug: continue
+        other_topic = PSEO_TOPICS[other_slug]
         # Find parts of the title in the text (e.g., "MetaMask" or "Bitcoin")
         anchor_text = other_topic['title'].split(' ')[0]
         if len(anchor_text) > 3: # Avoid linking short words
