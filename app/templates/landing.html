@@ -1088,58 +1088,60 @@
         <div class="faq-container">
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Can you steal my crypto?</span>
+                    <span>Is it trustless?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="faq-answer">
-                    <p>Absolutely not. Deadhand is architected as a non-custodial protocol. We only hold Shard C, which
-                        is mathematically insufficient to reconstruct your private key. The recovery process requires
-                        two out of three shards; since only you and your beneficiary hold the remaining pieces, we have
-                        zero access to your assets.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>What happens if I'm no longer around?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>This is precisely why the protocol exists. You can combine Shard A (which you keep) with Shard B
-                        (held by your family) at any time to instantly reconstruct your original 12 or 24-word seed
-                        phrase without any assistance from our servers.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>What if Deadhand Protocol shuts down?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>The protocol is built on open standards. Because we use standard Shamir's Secret Sharing (SSS)
-                        and BIP-39 mnemonic logic, you are never locked into our service. If our servers ever went
-                        offline, you could use any standard offline SSS utility (like <code>ssss-split</code> on Linux)
-                        to combine your shards and recover your assets. Your legacy is protected by math, not a company.
+                    <p>The core cryptography is 100% trustless. The only service component is email delivery. We use
+                        <strong>Resend</strong> with a <strong>Gmail fallback</strong> to ensure 100% delivery of
+                        activation emails. Our database is immutable. Even as administrators, we cannot access or modify
+                        beneficiary shards.
                     </p>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Are there any hidden fees or success taxes?</span>
+                    <span>Can you steal my funds?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="faq-answer">
-                    <p>No. We believe in transparent, flat-rate pricing. Whether you are protecting $1,000 or
-                        $100,000,000, the protocol cost remains the same. We do not charge percentage-based "success
-                        fees" or performance taxes on your inheritance.</p>
+                    <p>Absolutely not. Deadhand is architected as a non-custodial protocol. We only hold Shard C, which
+                        is mathematically insufficient to reconstruct your private key. The recovery process requires
+                        two out of three shards. Since only you and your beneficiary hold the remaining pieces, we have
+                        zero access to your assets.</p>
                 </div>
             </div>
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Which blockchains and wallets are supported?</span>
+                    <span>Any hidden fees or taxes?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>No. We believe in transparent, flat-rate pricing. Whether you are protecting $1,000 or
+                        $100,000,000, the protocol cost remains the same. We do not charge percentage-based success fees
+                        or performance taxes on your inheritance.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What if the service closes?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>The protocol is built on open standards. Because we use standard Shamir's Secret Sharing (SSS)
+                        and BIP-39 mnemonic logic, you are never locked into our service. If our servers ever went
+                        offline, you could use any standard offline SSS utility like <code>ssss-split</code> on Linux to
+                        combine your shards and recover your assets. Your legacy is protected by math, not a company.
+                    </p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>What wallets are supported?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="faq-answer">
@@ -1151,12 +1153,24 @@
 
             <div class="faq-item">
                 <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Can the team override the 90-day waiting period?</span>
+                    <span>What happens when I'm gone?</span>
+                    <i class="fa-solid fa-chevron-down"></i>
+                </button>
+                <div class="faq-answer">
+                    <p>This is precisely why the protocol exists. You can combine Shard A (which you keep) with Shard B
+                        (held by your family) at any time to instantly reconstruct your original 12 or 24-word seed
+                        phrase without any assistance from our servers.</p>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question" onclick="toggleFAQ(this)">
+                    <span>Can you override the waiting period?</span>
                     <i class="fa-solid fa-chevron-down"></i>
                 </button>
                 <div class="faq-answer">
                     <p>Never. The Deadhand switch is governed by strict, autonomous logic with no manual override
-                        capability. This "Hard Logic" ensures that no amount of social engineering can force a premature
+                        capability. This Hard Logic ensures that no amount of social engineering can force a premature
                         release of Shard C. The safety of your vault is absolute.</p>
                 </div>
             </div>

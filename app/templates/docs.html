@@ -65,6 +65,14 @@
                             "@type": "Answer",
                             "text": "Yes. Deadhand Protocol is fully open source under MIT license. Users can self-host their own instance to ensure total sovereignty."
                         }
+                    },
+                    {
+                        "@type": "Question",
+                        "name": "Is Deadhand completely trustless?",
+                        "acceptedAnswer": {
+                            "@type": "Answer",
+                            "text": "The cryptography is 100% trustless. The notification system uses a redundant stack (Resend + Gmail fallback) for guaranteed delivery. The database is immutable, and the team can manually verify delivery logs as a last resort without ever having access to your private keys."
+                        }
                     }
                 ]
             }
@@ -468,6 +476,20 @@
         standard Shamir Secret Sharing tool (e.g., <code>ssss-split</code> on Linux).</p>
 
     <p><strong>The emergency exit is always open.</strong></p>
+
+    <h2>Is it trustless?</h2>
+
+    <p>The core cryptography is <strong>100% trustless</strong>. The protocol uses industry-standard math to ensure that
+        you and your family are the only ones who can ever reconstruct your secret.</p>
+
+    <ul>
+        <li><strong>Redundant Email Stack:</strong> To ensure the service portion of the protocol never fails, we use
+            <strong>Resend</strong> with a <strong>Gmail fallback</strong> engine. This ensures 100% reliable heartbeat
+            monitoring.
+        </li>
+        <li><strong>Immutable Database:</strong> Our database architecture is immutable. Even as administrators, we
+            cannot modify or prematurely release shards.</li>
+    </ul>
 
     <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #ddd; text-align: center;">
         <a href="/tools/dead-switch"

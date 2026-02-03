@@ -96,7 +96,15 @@ When 90 days pass with no sign of you:
 
 ### Can't Be Social Engineered 🛡️
 
-Deadhand is a **protocol**, not a person.
+Deadhand is a **protocol**, not a person. 
+
+We can't be tricked into releasing a shard early because the 90-day waiting period is enforced by math and immutable code.
+
+### Trust Model & Reliability 🛡️
+
+The cryptography is completely trustless, but heartbeat monitoring relies on guaranteed delivery:
+- **Redundant Email Stack**: We use **Resend** as our primary provider with a fixed **Gmail fallback** engine. If the primary API fails, the fallback triggers automatically to ensure 100% heartbeat delivery.
+- **Immutable Database**: Database records for beneficiary shards are immutable. We have zero administrative ability to view, modify, or delete shards.
 
 - "Please release my shard early, it's urgent!" → **No.**
 - "I'm the beneficiary, can you help me?" → **No.**
