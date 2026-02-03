@@ -135,7 +135,10 @@ async def enforce_canonical_domain(request: Request, call_next):
 @app.middleware("http")
 async def add_cache_control_header(request: Request, call_next):
     response = await call_next(request)
-    if request.url.path.startswith("/static") or request.url.path == "/favicon.ico":
+    path = request.url.path
+    if (path.startswith("/static") or 
+        path == "/favicon.ico" or 
+        path.endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".mp4", ".css", ".js", ".vtt"))):
         # Cache for 1 year (31536000 seconds)
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
     return response

@@ -361,7 +361,7 @@
 
         .tool-card span {
             font-size: 0.9em;
-            color: #666;
+            color: #4b5563;
         }
 
         .footer {
@@ -369,7 +369,7 @@
             padding-top: 2em;
             border-top: 1px solid #ddd;
             font-size: 0.85em;
-            color: #666;
+            color: #4b5563;
             text-align: center;
         }
 
@@ -393,7 +393,7 @@
         .price-box:hover {
             transform: scale(1.015);
             box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 150, 104, 0.2);
-            border-color: #0d9668;
+            border-color: #064e3b;
         }
 
         .price-box .price {
@@ -601,7 +601,7 @@
         .read-more-btn {
             background: none;
             border: 1px dashed #999;
-            color: #666;
+            color: #4b5563;
             padding: 8px 16px;
             cursor: pointer;
             font-family: Georgia, serif;
@@ -712,7 +712,7 @@
 
         .security-item div p {
             font-size: 0.9em;
-            color: #555;
+            color: #444;
             margin: 0;
             line-height: 1.5;
         }
@@ -822,10 +822,12 @@
         <hr>
 
         <div
-            style="max-width: 800px; margin: 60px auto; position: relative; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); border: 1px solid #eee; aspect-ratio: 16 / 9;">
-            <video id="deadhand-video" class="video-js vjs-big-play-centered vjs-theme-city" controls preload="auto"
+            style="max-width: 800px; margin: 60px auto; position: relative; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); border: 1px solid #eee; aspect-ratio: 16 / 9; background: #000;">
+            <video id="deadhand-video" class="video-js vjs-big-play-centered vjs-theme-city" controls preload="none"
+                aria-label="Deadhand Protocol Commercial" playsinline
                 data-setup='{"fluid": true, "autoplay": false, "loop": true, "muted": false}'>
                 <source src="/static/deadhand.mp4" type="video/mp4" />
+                <track kind="captions" src="/static/captions.vtt" srclang="en" label="English" />
                 <p class="vjs-no-js">
                     To view this video please enable JavaScript, and consider upgrading to a
                     web browser that
@@ -841,7 +843,7 @@
                     access" into three unique pieces. We handle the heavy cryptography; you just keep the keys.</p>
 
                 <p><b>2 shards = full recovery. 1 shard = zero information.</b></p>
-                <p style="font-size: 0.85em; color: #555; font-style: italic;">it’s like points on a paper: one point
+                <p style="font-size: 0.85em; color: #444; font-style: italic;">it’s like points on a paper: one point
                     tells you
                     nothing about the line. with two, the path is absolute.</p>
             </div>
@@ -849,10 +851,10 @@
             <div
                 style="display: flex; flex-direction: column; gap: 10px; text-align: center; font-size: 0.85em; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 8px;">
                 <div style="border-bottom: 1px solid #f5f5f5; padding: 10px;"><b>shard a</b><br><span
-                        style="color: #555;">you keep</span></div>
+                        style="color: #444;">you keep</span></div>
                 <div style="border-bottom: 1px solid #f5f5f5; padding: 10px;"><b>shard b</b><br><span
-                        style="color: #555;">your family holds</span></div>
-                <div style="padding: 10px;"><b>shard c</b><br><span style="color: #555;">deadhand guards</span></div>
+                        style="color: #444;">your family holds</span></div>
+                <div style="padding: 10px;"><b>shard c</b><br><span style="color: #444;">deadhand guards</span></div>
             </div>
         </div>
 
@@ -881,20 +883,20 @@
                 style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.05);">
                 <div>
                     <div
-                        style="background: #0d9668; color: #fff; display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.7em; font-weight: bold; margin-bottom: 10px;">
+                        style="background: #064e3b; color: #fff; display: inline-block; padding: 4px 10px; border-radius: 4px; font-size: 0.7em; font-weight: bold; margin-bottom: 10px;">
                         BEST VALUE</div>
                     <p class="price"><span
-                            style="text-decoration: line-through; color: #555; margin-right: 10px; font-size: 0.8em;">$500</span>$400
-                        <span style="font-size: 0.5em; vertical-align: middle; color: #666;">/ lifetime</span>
+                            style="text-decoration: line-through; color: #444; margin-right: 10px; font-size: 0.8em;">$500</span>$400
+                        <span style="font-size: 0.5em; vertical-align: middle; color: #4b5563;">/ lifetime</span>
                     </p>
                     <p>never pay a subscription again. protect your legacy forever with a single payment.</p>
                     <ul
-                        style="text-align: left; list-style: none; padding: 0; font-size: 0.9em; margin: 15px 0; color: #555;">
-                        <li><i class="fa-solid fa-check" style="color: #0d9668; margin-right: 8px;"></i> <b>no recurring
+                        style="text-align: left; list-style: none; padding: 0; font-size: 0.9em; margin: 15px 0; color: #444;">
+                        <li><i class="fa-solid fa-check" style="color: #064e3b; margin-right: 8px;"></i> <b>no recurring
                                 fees (save $1000s)</b></li>
-                        <li><i class="fa-solid fa-check" style="color: #0d9668; margin-right: 8px;"></i> <b>priority
+                        <li><i class="fa-solid fa-check" style="color: #064e3b; margin-right: 8px;"></i> <b>priority
                                 setup support</b></li>
-                        <li><i class="fa-solid fa-check" style="color: #0d9668; margin-right: 8px;"></i> exclusive
+                        <li><i class="fa-solid fa-check" style="color: #064e3b; margin-right: 8px;"></i> exclusive
                             discord role</li>
                     </ul>
                 </div>
@@ -903,15 +905,15 @@
             <a href="/buy/annual" class="price-box">
                 <div>
                     <p class="price"><span
-                            style="text-decoration: line-through; color: #555; margin-right: 10px; font-size: 0.8em;">$120</span>$100
-                        <span style="font-size: 0.5em; vertical-align: middle; color: #666;">/ year</span>
+                            style="text-decoration: line-through; color: #444; margin-right: 10px; font-size: 0.8em;">$120</span>$100
+                        <span style="font-size: 0.5em; vertical-align: middle; color: #4b5563;">/ year</span>
                     </p>
                     <p>protect your legacy for less than $9 a month. billed annually. cancel anytime.</p>
                 </div>
             </a>
         </div>
 
-        <p style="font-size: 0.8em; color: #0d9668; margin-top: 10px;"><b>100% refundable.</b> if you aren't
+        <p style="font-size: 0.85em; color: #064e3b; margin-top: 10px;"><b>100% refundable.</b> if you aren't
             satisfied with either plan, just send a quick email to <a
                 href="mailto:hello@deadhandprotocol.com">hello@deadhandprotocol.com</a>
             and i'll refund you immediately.
@@ -1223,10 +1225,10 @@
 
     <footer class="footer" style="padding: 60px 20px; text-align: center;">
         <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; border-bottom: 1px solid #eee; padding-bottom: 40px; margin-bottom: 30px;">
+            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; border-bottom: 1px solid #ddd; padding-bottom: 40px; margin-bottom: 30px;">
             <div>
                 <p><b>deadhand protocol</b></p>
-                <p style="font-size: 0.85em; color: #666; font-style: italic;">non-custodial, open-source, and
+                <p style="font-size: 0.85em; color: #444; font-style: italic;">non-custodial, open-source, and
                     cryptographically secure.</p>
                 <div class="social-links" style="margin: 10px 0; display: flex; justify-content: center; gap: 15px;">
                     <a href="https://x.com/maxcompx" target="_blank" aria-label="Follow us on X (Twitter)"><i
@@ -1266,7 +1268,7 @@
                 </p>
             </div>
         </div>
-        <p style="font-size: 0.8em; color: #666;">
+        <p style="font-size: 0.8em; color: #4b5563;">
             © 2026 deadhand protocol. all rights reserved. developed with technical excellence in Argentina.<br>
             friends don't let friends' crypto get lost with them.
         </p>
@@ -1342,7 +1344,7 @@
         <div
             style="background: #111; border: 1px solid #333; border-radius: 12px; padding: 40px; max-width: 450px; text-align: center; position: relative; margin: 20px;">
             <button onclick="closeExitOverlay()"
-                style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #666; font-size: 1.5em; cursor: pointer;">×</button>
+                style="position: absolute; top: 15px; right: 15px; background: none; border: none; color: #4b5563; font-size: 1.5em; cursor: pointer;">×</button>
 
             <h2 style="color: #fff; font-size: 1.5em; margin-bottom: 10px;">wait, before you go</h2>
             <p style="color: #888; font-size: 0.95em; margin-bottom: 25px;">learn how to protect your crypto from the #1
@@ -1356,7 +1358,7 @@
                 read the free guide →
             </button>
 
-            <p style="color: #555; font-size: 0.75em; margin-top: 15px;">no spam. unsubscribe anytime.</p>
+            <p style="color: #444; font-size: 0.75em; margin-top: 15px;">no spam. unsubscribe anytime.</p>
         </div>
     </div>
 
@@ -1433,6 +1435,10 @@
     <script defer src="/_vercel/insights/script.js"></script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
     <script src="https://vjs.zencdn.net/8.10.0/video.min.js"></script>
+    <script>
+        // Performance: Add font-display swap to KaTeX fonts
+        document.querySelectorAll('.katex').forEach(el => el.style.fontDisplay = 'swap');
+    </script>
 </body>
 
 </html>
