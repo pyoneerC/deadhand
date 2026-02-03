@@ -77,6 +77,8 @@ Making Deadhand the default for every crypto holder on earth.
 | **Mobile app (iOS + Android)** | 📋 Planned |
 | **Browser extension for 1-click heartbeat** | 📋 Planned |
 
+**Target Markets:** 🇺🇸 🇨🇳 🇩🇪 🇯🇵 🇬🇧 🇫🇷 🇨🇭 🇸🇬 🇦🇪
+
 ---
 
 ## 🔮 Future Vision (2027+)
