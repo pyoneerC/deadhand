@@ -730,6 +730,8 @@ async def render_docs(request: Request, doc_name: str):
         "security": "security.md",
         "faq": "faq.md",
         "icp": "icp.md",
+        "api-reference": "api-reference.md",
+        "self-hosting": "self-hosting.md",
     }
     
     filename = doc_files.get(doc_name, f"{doc_name}.md")

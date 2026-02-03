@@ -23,7 +23,20 @@ Shamir's Secret Sharing provides **perfect secrecy**:
 - This is mathematically proven, not just "hard to break"
 - No future computing advances (quantum, etc.) can change this
 
-### 3. Minimal Trust Requirements
+### 3. Encrypted-at-Rest (AES-GCM)
+
+Even the shard stored on our server (Shard C) is not stored in plaintext. It is encrypted using **AES-256-GCM** with a key derived from your unique `heartbeat_token`.
+
+*   **Derivation**: `K = SHA256(heartbeat_token)`
+*   **Storage**: `Base64(Nonce || AES-GCM(K, Shard_C))`
+
+This provides an additional layer of defense: an attacker would need both the database dump **and** the specific heartbeat token for your vault.
+
+### 4. Protocol Immutability (Config Hashing)
+
+Upon creation, Deadhand generates a cryptographic hash of your protocol configuration (beneficiary email, shards, timestamps). This hash is stored permanently. Any attempt to modify the beneficiary or the release logic would invalidate the hash, providing a tamper-evident audit trail.
+
+### 5. Minimal Trust Requirements
 
 | Component | Trust Level | Why |
 |-----------|-------------|-----|

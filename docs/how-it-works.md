@@ -67,13 +67,12 @@ This isn't just "hard to crack"—it's **information-theoretically secure**:
 
 ### What Triggers Release?
 
-```
-Day 0    → Vault activated
-Day 30   → Email #1 sent
-Day 60   → Email #2 sent (if #1 missed)
-Day 90   → Email #3 sent (if #2 missed)
-Day 91+  → Shard C emailed to beneficiary
-```
+The Deadhand watchdog monitor performs a sequence of checks. If no "heartbeat" (reset) is received, the escalation begins:
+
+1.  **T+30 Days**: First "Soft Warning" email sent to Owner.
+2.  **T+60 Days**: Second "Critical Warning" email sent to Owner.
+3.  **T+90 Days**: Final trigger. **Shard C** is decrypted and autonomously dispatched to the Beneficiary's email.
+4.  **T+91+ Days**: The vault is marked as `triggered`. No further heartbeats are accepted for this specific configuration.
 
 ### Why 90 Days?
 
