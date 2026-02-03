@@ -805,20 +805,62 @@
 
         <hr>
 
-        <div
-            style="max-width: 800px; margin: 60px auto; position: relative; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); border: 1px solid #eee; aspect-ratio: 16 / 9; background: #000;">
-            <video id="deadhand-video" class="video-js vjs-big-play-centered vjs-theme-city" controls preload="none"
-                aria-label="Deadhand Protocol Commercial" playsinline
-                data-setup='{"fluid": true, "autoplay": false, "loop": true, "muted": false}'>
+        <div id="video-container"
+            style="max-width: 800px; margin: 60px auto; position: relative; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); border: 1px solid #eee; aspect-ratio: 16 / 9; background: #000; overflow: hidden; cursor: pointer;">
+
+            <!-- Play Button Overlay -->
+            <div id="video-play-overlay"
+                style="position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); transition: opacity 0.4s ease;">
+                <div
+                    style="width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.3); transition: transform 0.2s ease;">
+                    <svg width="36" height="36" viewBox="0 0 24 24" fill="#111" style="margin-left: 4px;">
+                        <polygon points="5,3 19,12 5,21" />
+                    </svg>
+                </div>
+            </div>
+
+            <video id="deadhand-video" playsinline loop muted autoplay
+                style="width: 100%; height: 100%; object-fit: cover; filter: blur(8px) brightness(0.7); transform: scale(1.1); transition: filter 0.5s ease, transform 0.5s ease;"
+                aria-label="Deadhand Protocol Commercial">
                 <source src="/static/deadhand.mp4" type="video/mp4" />
                 <track kind="captions" src="/static/captions.vtt" srclang="en" label="English" />
-                <p class="vjs-no-js">
-                    To view this video please enable JavaScript, and consider upgrading to a
-                    web browser that
-                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
-                </p>
             </video>
         </div>
+
+        <script>
+            (function () {
+                const container = document.getElementById('video-container');
+                const video = document.getElementById('deadhand-video');
+                const overlay = document.getElementById('video-play-overlay');
+                let isActive = false;
+
+                container.addEventListener('click', function () {
+                    if (isActive) return;
+                    isActive = true;
+
+                    // Unblur and unmute
+                    video.style.filter = 'blur(0) brightness(1)';
+                    video.style.transform = 'scale(1)';
+                    video.muted = false;
+                    video.currentTime = 0;
+                    video.play();
+
+                    // Hide overlay
+                    overlay.style.opacity = '0';
+                    overlay.style.pointerEvents = 'none';
+                });
+
+                // Hover effect on play button
+                container.addEventListener('mouseenter', function () {
+                    if (!isActive) {
+                        overlay.querySelector('div').style.transform = 'scale(1.1)';
+                    }
+                });
+                container.addEventListener('mouseleave', function () {
+                    overlay.querySelector('div').style.transform = 'scale(1)';
+                });
+            })();
+        </script>
 
         <div class="grid-2-col">
             <div>
