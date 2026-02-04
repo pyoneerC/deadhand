@@ -23,6 +23,8 @@
     <meta name="twitter:description"
         content="How to pass Bitcoin to family automatically if you're unavailable. Trustless emergency backup using Shamir's Secret Sharing. Your family inherits, not the void.">
     <meta name="twitter:image" content="https://deadhandprotocol.com/static/og_card.png">
+    <meta property="article:modified_time" content="2026-02-04T12:00:00Z">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
@@ -101,7 +103,91 @@
             "@type": "AggregateRating",
             "ratingValue": "5",
             "ratingCount": "12"
+    }
+    </script>
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Deadhand Protocol",
+        "url": "https://deadhandprotocol.com",
+        "logo": "https://deadhandprotocol.com/static/favicon.png",
+        "description": "The global standard for trustless digital inheritance.",
+        "foundingDate": "2025",
+        "founder": {
+            "@type": "Person",
+            "name": "Max Comperatore"
+        },
+        "sameAs": [
+            "https://github.com/pyoneerC/deadhand",
+            "https://x.com/maxcompx",
+            "https://discord.gg/eDyCkgvBjf"
+        ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "email": "support@deadhandprotocol.com",
+            "contactType": "customer support"
         }
+    }
+    </script>
+
+    <!-- FAQ Schema for Rich Snippets -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+            {
+                "@type": "Question",
+                "name": "What happens to my crypto if I die?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Without a plan, your crypto is lost forever. Deadhand uses Shamir's Secret Sharing to split your seed phrase into 3 shards. If you stop checking in, your beneficiary receives the missing piece to recover your assets."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "Is Deadhand safe?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Yes. Deadhand uses information-theoretically secure cryptography. We never see your full seed phrase. Each shard alone reveals zero information about your secret."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "What if Deadhand gets hacked?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Attackers would only get one shard, which is mathematically useless. They cannot recover any seed phrase without the other shards held by you and your beneficiary."
+                }
+            },
+            {
+                "@type": "Question",
+                "name": "How much does Deadhand cost?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Deadhand costs $100/year or $400 for lifetime access. There's also a Self-Hosted Pro option for $299 one-time."
+                }
+            }
+        ]
+    }
+    </script>
+
+    <!-- Breadcrumbs Schema -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://deadhandprotocol.com/"
+            }
+        ]
     }
     </script>
 
