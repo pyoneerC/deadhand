@@ -157,6 +157,24 @@ async def favicon():
 async def robots():
     return FileResponse("robots.txt", media_type="text/plain")
 
+# IndexNow Key (for Bing/Yandex instant indexing)
+INDEXNOW_KEY = "d3adh4ndpr0t0c0l2026x"
+
+@app.get(f"/{INDEXNOW_KEY}.txt", include_in_schema=False)
+async def indexnow_key():
+    return Response(content=INDEXNOW_KEY, media_type="text/plain")
+
+async def ping_indexnow(url: str):
+    """Ping IndexNow API to request immediate crawling (Bing, Yandex, DuckDuckGo)"""
+    try:
+        async with httpx.AsyncClient() as client:
+            await client.get(
+                f"https://api.indexnow.org/indexnow?url={url}&key={INDEXNOW_KEY}",
+                timeout=5
+            )
+    except:
+        pass  # Non-critical, fail silently
+
 # Sitemap.xml
 @app.get("/sitemap.xml", include_in_schema=False)
 async def sitemap():
