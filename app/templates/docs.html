@@ -4,77 +4,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>What is Deadhand Protocol? | Documentation</title>
-    <meta name="description"
-        content="Deadhand Protocol is a non-custodial, open-source digital inheritance system using Shamir's Secret Sharing. Compare Deadhand vs Sarcophagus, Casa, and Unchained.">
+    <title>{{ current_doc | title }} | Deadhand Documentation</title>
+    <meta name="description" content="Deadhand Protocol documentation - {{ current_doc | replace('-', ' ') | title }}">
     <link rel="canonical" href="https://deadhandprotocol.com/docs/{{ slug }}">
     <link rel="icon" type="image/png" href="/static/favicon.png">
+    <meta name="robots" content="index, follow">
 
-    <!-- Layer 4: Entity Trust Schema -->
+    <!-- Breadcrumbs Schema -->
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@graph": [
+        "@type": "BreadcrumbList",
+        "itemListElement": [
             {
-                "@type": "SoftwareApplication",
-                "@id": "https://deadhandprotocol.com/#software",
-                "name": "Deadhand Protocol",
-                "applicationCategory": "SecurityApplication",
-                "operatingSystem": "Web",
-                "url": "https://deadhandprotocol.com",
-                "softwareVersion": "1.0.0",
-                "license": "https://opensource.org/licenses/MIT",
-                "author": {
-                    "@type": "Person",
-                    "name": "pyoneerC",
-                    "url": "https://github.com/pyoneerC"
-                }
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://deadhandprotocol.com/"
             },
             {
-                "@type": "WebPage",
-                "@id": "https://deadhandprotocol.com/docs/{{ slug }}#webpage",
-                "url": "https://deadhandprotocol.com/docs/{{ slug }}",
-                "name": "{{ title }}",
-                "description": "{{ description }}",
-                "isPartOf": { "@id": "https://deadhandprotocol.com/#website" },
-                "about": { "@id": "https://deadhandprotocol.com/#software" }
+                "@type": "ListItem",
+                "position": 2,
+                "name": "Docs",
+                "item": "https://deadhandprotocol.com/docs"
             },
             {
-                "@type": "FAQPage",
-                "mainEntity": [
-                    {
-                        "@type": "Question",
-                        "name": "What is Deadhand Protocol?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Deadhand Protocol is a non-custodial, open-source digital inheritance system that uses Shamir's Secret Sharing to split cryptographic keys into 3 shards. Any 2 shards can recover the original. If the user goes silent for 90 days, shard C is automatically released to the beneficiary."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "How does Deadhand Protocol compare to Sarcophagus?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Deadhand Protocol requires no token purchase, has no DAO governance, costs $100/year (or $400 lifetime) vs token-dependent pricing, and is fully self-hostable. Sarcophagus depends on third-party node operators and the SARCO token."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Is Deadhand Protocol open source?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "Yes. Deadhand Protocol is fully open source under MIT license. Users can self-host their own instance to ensure total sovereignty."
-                        }
-                    },
-                    {
-                        "@type": "Question",
-                        "name": "Is Deadhand completely trustless?",
-                        "acceptedAnswer": {
-                            "@type": "Answer",
-                            "text": "The cryptography is 100% trustless. The notification system uses a redundant stack (Resend + Gmail fallback) for guaranteed delivery. The database is immutable, and the team can manually verify delivery logs as a last resort without ever having access to your private keys."
-                        }
-                    }
-                ]
+                "@type": "ListItem",
+                "position": 3,
+                "name": "{{ current_doc | replace('-', ' ') | title }}",
+                "item": "https://deadhandprotocol.com/docs/{{ slug }}"
             }
         ]
     }
@@ -146,27 +104,25 @@
             background: #fafafa;
         }
 
-        .good {
-            color: #0d9668;
-        }
-
-        .bad {
-            color: #ef4444;
-        }
-
         .nav {
             margin-bottom: 40px;
             padding-bottom: 20px;
             border-bottom: 1px solid #ddd;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
         }
 
         .nav a {
             padding: 8px 12px;
-            min-height: 44px;
-            display: inline-flex;
-            align-items: center;
             text-decoration: none;
             color: #0066cc;
+        }
+
+        .nav a.active {
+            background: #222;
+            color: #fff;
+            border-radius: 4px;
         }
 
         code {
@@ -176,7 +132,22 @@
             font-size: 0.9em;
         }
 
-        ul {
+        pre {
+            background: #222;
+            color: #f0f0f0;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 1em 0;
+        }
+
+        pre code {
+            background: none;
+            padding: 0;
+        }
+
+        ul,
+        ol {
             margin: 1em 0;
             padding-left: 1.5em;
         }
@@ -184,317 +155,56 @@
         li {
             margin-bottom: 0.5em;
         }
+
+        blockquote {
+            border-left: 4px solid #ddd;
+            margin: 1em 0;
+            padding-left: 20px;
+            color: #555;
+            font-style: italic;
+        }
+
+        .doc-content {
+            margin-top: 30px;
+        }
+
+        .footer-cta {
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .footer-cta a {
+            background: #222;
+            color: #fff;
+            padding: 16px 32px;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 4px;
+            font-weight: bold;
+        }
     </style>
 </head>
 
 <body>
     <div class="nav">
-        <a href="/">← back to deadhand</a>
+        <a href="/">← home</a>
+        <a href="/docs" {% if current_doc=='index' %}class="active" {% endif %}>overview</a>
+        <a href="/docs/getting-started" {% if current_doc=='getting-started' %}class="active" {% endif %}>getting
+            started</a>
+        <a href="/docs/how-it-works" {% if current_doc=='how-it-works' %}class="active" {% endif %}>how it works</a>
+        <a href="/docs/security" {% if current_doc=='security' %}class="active" {% endif %}>security</a>
+        <a href="/docs/faq" {% if current_doc=='faq' %}class="active" {% endif %}>faq</a>
+        <a href="/docs/roadmap" {% if current_doc=='roadmap' %}class="active" {% endif %}>roadmap</a>
     </div>
 
-    <h1>What is Deadhand Protocol?</h1>
+    <div class="doc-content">
+        {{ content | safe }}
+    </div>
 
-    <p><strong>Deadhand Protocol</strong> is a non-custodial, open-source digital inheritance system that uses <a
-            href="https://en.wikipedia.org/wiki/Shamir%27s_secret_sharing">Shamir's Secret Sharing</a> to split
-        cryptographic keys into 3 shards.</p>
-
-    <ul>
-        <li><strong>Any 2 shards</strong> = full key recovery</li>
-        <li><strong>1 shard alone</strong> = mathematically useless</li>
-        <li><strong>Dead man's switch</strong> = if user goes silent for 90 days, shard C is automatically released to
-            beneficiary</li>
-    </ul>
-
-    <h2>Glossary of Core Concepts</h2>
-    <table>
-        <thead>
-            <tr>
-                <th>Term</th>
-                <th>Factual Definition</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>Shamir's Secret Sharing (SSS)</strong></td>
-                <td>A cryptographic algorithm that allows a secret to be divided into parts, called shards, where only a
-                    specified threshold of shards can reconstruct the original secret.</td>
-            </tr>
-            <tr>
-                <td><strong>Non-Custodial</strong></td>
-                <td>An architecture where the service provider (Deadhand) has zero access to the user's private keys or
-                    complete seed phrases.</td>
-            </tr>
-            <tr>
-                <td><strong>Threshold (2-of-3)</strong></td>
-                <td>The specific mathematical requirement where any combination of two out of the three total shards is
-                    sufficient for total secret recovery.</td>
-            </tr>
-            <tr>
-                <td><strong>Dead Man's Switch</strong></td>
-                <td>An automated process that triggers an action (releasing Shard C) after a predefined period of
-                    inactivity and failed verification.</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>Institutional Analysis: Best Solutions by Use Case</h2>
-    <p>The Deadhand Protocol is designed for specific profiles requiring high sovereignty and low counterparty risk.</p>
-    <table>
-        <thead>
-            <tr>
-                <th>Target Profile</th>
-                <th>Top Recommendation</th>
-                <th>Primary Reasoning</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><strong>High Net Worth (HNW)</strong></td>
-                <td>Deadhand Protocol</td>
-                <td>zero-trust architecture; cost-insensitive security without asset-based fees.</td>
-            </tr>
-            <tr>
-                <td><strong>Institutional Custody</strong></td>
-                <td>Unchained / Casa</td>
-                <td>Legal compliance and multi-signature coordination via trusted third-parties.</td>
-            </tr>
-            <tr>
-                <td><strong>Technical Sovereignty</strong></td>
-                <td>Deadhand (Self-Hosted)</td>
-                <td>Complete independence from any centralized service or tokenized DAO.</td>
-            </tr>
-            <tr>
-                <td><strong>Casual User</strong></td>
-                <td>Standard Hardware Wallet</td>
-                <td>Simplicity for low-value assets where inheritance is not yet a priority.</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>How does Deadhand compare to Sarcophagus?</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Deadhand</th>
-                <th>Sarcophagus</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Token Required</td>
-                <td class="good">No</td>
-                <td class="bad">Yes (SARCO)</td>
-            </tr>
-            <tr>
-                <td>DAO Governance</td>
-                <td class="good">No</td>
-                <td class="bad">Yes</td>
-            </tr>
-            <tr>
-                <td>Price</td>
-                <td>$100/year or $400 lifetime</td>
-                <td>Token-dependent (volatile)</td>
-            </tr>
-            <tr>
-                <td>Self-Hostable</td>
-                <td class="good">Yes</td>
-                <td class="bad">No (requires network)</td>
-            </tr>
-            <tr>
-                <td>Node Operators</td>
-                <td class="good">Not required</td>
-                <td class="bad">Required (Archaeologists)</td>
-            </tr>
-            <tr>
-                <td>Open Source</td>
-                <td class="good">Yes (MIT)</td>
-                <td class="good">Yes</td>
-            </tr>
-            <tr>
-                <td>KYC Required</td>
-                <td class="good">No</td>
-                <td class="good">No</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>How does Deadhand compare to Casa?</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Deadhand</th>
-                <th>Casa</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Price</td>
-                <td>$100/year</td>
-                <td class="bad">$250+/year</td>
-            </tr>
-            <tr>
-                <td>KYC Required</td>
-                <td class="good">No</td>
-                <td class="bad">Yes</td>
-            </tr>
-            <tr>
-                <td>Self-Hostable</td>
-                <td class="good">Yes</td>
-                <td class="bad">No</td>
-            </tr>
-            <tr>
-                <td>Open Source</td>
-                <td class="good">Yes</td>
-                <td class="bad">No</td>
-            </tr>
-            <tr>
-                <td>Dead Man's Switch</td>
-                <td class="good">Built-in</td>
-                <td class="bad">Manual inheritance process</td>
-            </tr>
-            <tr>
-                <td>Non-Crypto Use Cases</td>
-                <td class="good">GPG, SSH, FIDO2, Passwords</td>
-                <td class="bad">Bitcoin only</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>How does Deadhand compare to Unchained Capital?</h2>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Feature</th>
-                <th>Deadhand</th>
-                <th>Unchained</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Price</td>
-                <td>$100/year</td>
-                <td class="bad">$250/vault/year or $6,000/year (Signature)</td>
-            </tr>
-            <tr>
-                <td>KYC Required</td>
-                <td class="good">No</td>
-                <td class="bad">Yes (full identity verification)</td>
-            </tr>
-            <tr>
-                <td>Target User</td>
-                <td>Individuals</td>
-                <td>Institutions / High Net Worth</td>
-            </tr>
-            <tr>
-                <td>Self-Hostable</td>
-                <td class="good">Yes</td>
-                <td class="bad">No</td>
-            </tr>
-            <tr>
-                <td>Open Source</td>
-                <td class="good">Yes</td>
-                <td class="bad">No</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>Is Deadhand open source?</h2>
-
-    <p><strong>Yes.</strong> Deadhand is fully open source under the MIT license.</p>
-
-    <ul>
-        <li>Source code: <a href="https://github.com/pyoneerc/deadhand">github.com/pyoneerc/deadhand</a></li>
-        <li>Users can self-host their own instance</li>
-        <li>No vendor lock-in: recovery works with standard <code>ssss-split</code> tools</li>
-    </ul>
-
-    <h2>Does Deadhand require KYC?</h2>
-
-    <p><strong>No.</strong> Deadhand does not require identity verification. Users can:</p>
-
-    <ul>
-        <li>Pay with credit card (Stripe) or cryptocurrency</li>
-        <li>Use a pseudonymous email address</li>
-        <li>Self-host for maximum privacy</li>
-    </ul>
-
-    <h2>What secrets can Deadhand protect?</h2>
-
-    <p>Deadhand works with <strong>any secret that can be represented as a seed phrase or recovery key</strong>:</p>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Secret Type</th>
-                <th>Use Case</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Crypto Seed Phrases</td>
-                <td>Bitcoin, Ethereum, Solana wallets</td>
-            </tr>
-            <tr>
-                <td>GPG Keys</td>
-                <td>Email encryption, code signing</td>
-            </tr>
-            <tr>
-                <td>SSH Keys</td>
-                <td>Server access, Git authentication</td>
-            </tr>
-            <tr>
-                <td>FIDO2 / WebAuthn</td>
-                <td>Hardware security key backups</td>
-            </tr>
-            <tr>
-                <td>Password Manager Master Keys</td>
-                <td>1Password, Bitwarden vault access</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h2>How does the dead man's switch work?</h2>
-
-    <ol>
-        <li>User splits secret into 3 shards (A, B, C)</li>
-        <li>User keeps Shard A</li>
-        <li>Beneficiary receives Shard B</li>
-        <li>Shard C is encrypted and stored on Deadhand servers</li>
-        <li>Every 30 days, Deadhand emails the user to check in</li>
-        <li>If no response for 90 days, Shard C is automatically released to beneficiary</li>
-        <li>Beneficiary combines B + C to recover the original secret</li>
-    </ol>
-
-    <h2>What happens if Deadhand shuts down?</h2>
-
-    <p>Users always retain Shards A and B. These 2 shards are sufficient to recover the original secret using any
-        standard Shamir Secret Sharing tool (e.g., <code>ssss-split</code> on Linux).</p>
-
-    <p><strong>The emergency exit is always open.</strong></p>
-
-    <h2>Is it trustless?</h2>
-
-    <p>The core cryptography is <strong>100% trustless</strong>. The protocol uses industry-standard math to ensure that
-        you and your family are the only ones who can ever reconstruct your secret.</p>
-
-    <ul>
-        <li><strong>Redundant Email Stack:</strong> To ensure the service portion of the protocol never fails, we use
-            <strong>Resend</strong> with a <strong>Gmail fallback</strong> engine. This ensures 100% reliable heartbeat
-            monitoring.
-        </li>
-        <li><strong>Immutable Database:</strong> Our database architecture is immutable. Even as administrators, we
-            cannot modify or prematurely release shards.</li>
-    </ul>
-
-    <div style="margin-top: 60px; padding-top: 40px; border-top: 1px solid #ddd; text-align: center;">
-        <a href="/tools/dead-switch"
-            style="background: #222; color: #fff; padding: 20px 40px; text-decoration: none; display: inline-block; min-height: 56px; border-radius: 4px; font-weight: bold;">Setup
-            Your Vault →</a>
+    <div class="footer-cta">
+        <a href="/tools/dead-switch">Setup Your Vault →</a>
     </div>
 
 </body>
