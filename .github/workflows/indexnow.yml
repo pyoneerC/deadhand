@@ -1,0 +1,61 @@
+name: IndexNow Ping
+
+on:
+  # Run daily at 2am UTC
+  schedule:
+    - cron: '0 2 * * *'
+  
+  # Also run on push to main (after deploys)
+  push:
+    branches:
+      - main
+    paths:
+      - 'blog/**'
+      - 'docs/**'
+      - 'app/templates/landing.html'
+  
+  # Manual trigger
+  workflow_dispatch:
+
+jobs:
+  ping-indexnow:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Ping IndexNow
+        run: |
+          KEY="d3adh4ndpr0t0c0l2026x"
+          BASE="https://deadhandprotocol.com"
+          
+          PAGES=(
+            "/"
+            "/tools/dead-switch"
+            "/tools/optical-splitting"
+            "/tools/acoustic-masking"
+            "/buy"
+            "/blog"
+            "/docs"
+            "/docs/how-it-works"
+            "/docs/security"
+            "/docs/faq"
+            "/docs/roadmap"
+            "/recover"
+          )
+          
+          echo "🚀 Pinging IndexNow for Deadhand Protocol..."
+          
+          for page in "${PAGES[@]}"; do
+            url="${BASE}${page}"
+            response=$(curl -s -o /dev/null -w "%{http_code}" "https://api.indexnow.org/indexnow?url=${url}&key=${KEY}")
+            
+            if [ "$response" = "200" ] || [ "$response" = "202" ]; then
+              echo "✅ $page"
+            else
+              echo "⚠️ $page (status: $response)"
+            fi
+            
+            sleep 0.5
+          done
+          
+          echo ""
+          echo "✅ Done! Bing/Yandex notified."
