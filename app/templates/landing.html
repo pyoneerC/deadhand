@@ -35,6 +35,51 @@
     <link rel="dns-prefetch" href="https://platform.twitter.com/">
     <link rel="dns-prefetch" href="https://vjs.zencdn.net/">
 
+    <!-- Preload Critical Fonts (Fixes Lighthouse 'font-display' warning) -->
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2"
+        as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2"
+        as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/fonts/KaTeX_Main-Regular.woff2" as="font"
+        type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/fonts/KaTeX_Math-Italic.woff2" as="font"
+        type="font/woff2" crossorigin>
+
+    <style>
+        /* Force font-display: swap for critical external fonts (Lighthouse Fix) */
+        @font-face {
+            font-family: 'Font Awesome 6 Free';
+            font-style: normal;
+            font-weight: 900;
+            font-display: swap;
+            src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-solid-900.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'Font Awesome 6 Brands';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/webfonts/fa-brands-400.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'KaTeX_Main';
+            font-style: normal;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/fonts/KaTeX_Main-Regular.woff2) format('woff2');
+        }
+
+        @font-face {
+            font-family: 'KaTeX_Math';
+            font-style: italic;
+            font-weight: 400;
+            font-display: swap;
+            src: url(https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/fonts/KaTeX_Math-Italic.woff2) format('woff2');
+        }
+    </style>
+
 
     <!-- Non-blocking Font Awesome loading -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
