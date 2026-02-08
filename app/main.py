@@ -22,6 +22,7 @@ from PIL import Image, ImageDraw, ImageFont
 import random
 from posthog import Posthog
 import httpx
+from email.utils import formatdate
 
 # Load environment variables from .env file
 load_dotenv()
@@ -141,6 +142,13 @@ async def add_cache_control_header(request: Request, call_next):
         path.endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".mp4", ".css", ".js", ".vtt"))):
         # Cache for 1 year (31536000 seconds)
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+
+    # Security Headers (Institutional Grade)
+    response.headers["X-Frame-Options"] = "DENY" 
+    response.headers["X-Content-Type-Options"] = "nosniff" 
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+    response.headers["Strict-Transport-Security"] = "max-age=63072000; includeSubDomains; preload"
+    
     return response
 
 # Mount static files
@@ -222,6 +230,74 @@ async def sitemap():
 </urlset>"""
     
     return Response(content=sitemap_xml, media_type="application/xml")
+
+# RSS Feed (Automated Distribution)
+@app.get("/feed.xml", include_in_schema=False)
+async def rss_feed():
+    """Generate RSS 2.0 feed for blog posts and announcements"""
+    
+    # 1. Get Blog Posts
+    blog_dir = Path("blog")
+    items = []
+    
+    if blog_dir.exists():
+        # Read posts, sort by date (filename or metadata), limit to recent 10
+        # Sort by modification time, newest first
+        files = sorted(list(blog_dir.glob("*.md")), key=lambda f: f.stat().st_mtime, reverse=True)
+        
+        for file in files[:10]:
+            slug = file.stem
+            url = f"{BASE_URL.rstrip('/')}/blog/{slug}"
+            
+            # Robust Frontmatter Parsing
+            try:
+                content = file.read_text(encoding="utf-8")
+                md = markdown.Markdown(extensions=['meta'])
+                md.convert(content)
+                meta = getattr(md, 'Meta', {})
+            except:
+                meta = {}
+
+            # Extract title with fallback
+            title = meta.get('title', [slug.replace("-", " ").title()])[0]
+            
+            # Extract date with fallback to file mtime
+            date_str = meta.get('date', [''])[0]
+            try:
+                if date_str:
+                    dt = datetime.strptime(date_str, '%Y-%m-%d')
+                    pub_date = formatdate(dt.timestamp())
+                else:
+                    pub_date = formatdate(file.stat().st_mtime)
+            except:
+                pub_date = formatdate(file.stat().st_mtime)
+            
+            # Extract description
+            desc = meta.get('description', [f'Official update regarding {title}.'])[0]
+            
+            items.append(f"""
+            <item>
+                <title>{title}</title>
+                <link>{url}</link>
+                <guid>{url}</guid>
+                <pubDate>{pub_date}</pubDate>
+                <description>{desc}</description>
+            </item>""")
+            
+    rss_content = f"""<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+    <title>Deadhand Protocol Updates</title>
+    <link>{BASE_URL}</link>
+    <description>The sovereign protocol for cryptographic inheritance and digital dead man's switches.</description>
+    <language>en-us</language>
+    <lastBuildDate>{formatdate(datetime.now().timestamp())}</lastBuildDate>
+    <atom:link href="{BASE_URL.rstrip('/')}/feed.xml" rel="self" type="application/rss+xml" />
+    {"".join(items)}
+</channel>
+</rss>"""
+
+    return Response(content=rss_content, media_type="application/xml")
 
 # PSEO Directory
 @app.get("/p", response_class=HTMLResponse)
@@ -749,10 +825,10 @@ async def blog_post(request: Request, slug: str):
         "related_posts": related_posts
     })
 
-@app.get("/docs", response_class=HTMLResponse)
-async def docs_index(request: Request):
-    """Documentation index"""
-    return await render_docs(request, "README")
+@app.get("/docs")
+async def docs_index():
+    """Redirect documentation to GitHub Source"""
+    return RedirectResponse("https://github.com/pyoneerC/deadhand#how-it-works")
 
 @app.get("/docs/{doc_name}", response_class=HTMLResponse)
 async def docs_page(request: Request, doc_name: str):
