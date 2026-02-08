@@ -46,6 +46,16 @@
             background: #fafafa;
             color: #222;
             -webkit-text-size-adjust: 100%;
+        }
+
+        /* Vibe: Lowercase only for interface elements */
+        .nav a,
+        .footer,
+        .breadcrumbs,
+        h1,
+        h4,
+        .btn,
+        .stat-box .label {
             text-transform: lowercase;
         }
 
@@ -270,10 +280,11 @@
 
     <main class="container">
         <div class="breadcrumbs">
-            <a href="/">deadhand</a> / <a href="/docs">protocol</a> / {{ slug | replace('-', ' ') }}
+            <a href="/">deadhand</a> / <a href="/docs">protocol</a> / {{ slug | replace('-', ' ') }} / <span
+                style="opacity: 0.5;">cfg:{{ config_hash | default('xxxxxx') }}</span>
         </div>
 
-        <article>
+        <article style="text-transform: none;">
             <h1>{{ h1 | default(title) | lower }}</h1>
 
             <p
@@ -372,8 +383,8 @@
           "url": "https://deadhandprotocol.com/static/favicon.png"
         }
       },
-      "datePublished": "2026-01-23",
-      "dateModified": "2026-01-28",
+      "datePublished": "2026-02-01",
+      "dateModified": "{{ date_now | default('2026-02-08') }}",
       "mainEntityOfPage": {
         "@type": "WebPage",
         "@id": "https://deadhandprotocol.com/p/{{ slug }}"

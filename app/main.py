@@ -127,7 +127,7 @@ async def enforce_canonical_domain(request: Request, call_next):
         target_url = str(request.url).replace(host, canonical_host)
         if BASE_URL.startswith("https://"):
             target_url = target_url.replace("http://", "https://")
-        return RedirectResponse(url=target_url, status_code=302)
+        return RedirectResponse(url=target_url, status_code=301)
         
     return await call_next(request)
 
@@ -222,6 +222,29 @@ async def sitemap():
 </urlset>"""
     
     return Response(content=sitemap_xml, media_type="application/xml")
+
+# PSEO Directory
+@app.get("/p", response_class=HTMLResponse)
+@app.get("/p/", response_class=HTMLResponse)
+async def pseo_directory(request: Request, page: int = 1):
+    """Paginated directory for all pSEO topics to help crawler discovery"""
+    per_page = 100
+    all_slugs = sorted(list(PSEO_TOPICS.keys()))
+    total = len(all_slugs)
+    
+    start = (page - 1) * per_page
+    end = start + per_page
+    
+    paged_slugs = all_slugs[start:end]
+    topics = [(slug, PSEO_TOPICS[slug]['title']) for slug in paged_slugs]
+    
+    return templates.TemplateResponse("pseo_directory.html", {
+        "request": request,
+        "topics": topics,
+        "page": page,
+        "total_pages": (total // per_page) + 1,
+        "total_count": total
+    })
 
 # Dependency
 def get_db():
@@ -833,7 +856,9 @@ async def programmatic_seo_landing(request: Request, slug: str):
         "body": body,
         "slug": slug,
         "related_topics": related_topics,
-        "btc_price": btc_price
+        "btc_price": btc_price,
+        "date_now": datetime.now().strftime('%Y-%m-%d'),
+        "config_hash": hashlib.sha256(slug.encode()).hexdigest()[:12]
     })
 
 @app.get("/api/og/{slug}")
