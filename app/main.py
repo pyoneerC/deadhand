@@ -10,6 +10,7 @@ from fastapi import FastAPI, Request, Depends, Form, HTTPException, Response
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+from fastapi.middleware.gzip import GZipMiddleware
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 import markdown
@@ -92,6 +93,9 @@ posthog = Posthog(
 
 # Disable OpenAPI docs and schemas for minimal footprint
 app = FastAPI(openapi_url=None, docs_url=None, redoc_url=None)
+
+# Performance: Enable GZip
+app.add_middleware(GZipMiddleware, minimum_size=1000)
 
 # Global Exception Handler for PostHog
 @app.exception_handler(Exception)
