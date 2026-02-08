@@ -7,7 +7,7 @@ import re
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Depends, Form, HTTPException, Response
-from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
+from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, ORJSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.gzip import GZipMiddleware
@@ -92,7 +92,12 @@ posthog = Posthog(
 )
 
 # Disable OpenAPI docs and schemas for minimal footprint
-app = FastAPI(openapi_url=None, docs_url=None, redoc_url=None)
+app = FastAPI(
+    openapi_url=None, 
+    docs_url=None, 
+    redoc_url=None,
+    default_response_class=ORJSONResponse
+)
 
 # Performance: Enable GZip
 app.add_middleware(GZipMiddleware, minimum_size=1000)
