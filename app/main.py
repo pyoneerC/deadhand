@@ -6,7 +6,8 @@ import hashlib
 import re
 import os
 from dotenv import load_dotenv
-from fastapi import FastAPI, Request, Depends, Form, HTTPException, Response
+from fastapi import FastAPI, Request, Depends, Form, HTTPException, Response, BackgroundTasks
+import resend
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, ORJSONResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
@@ -552,18 +553,63 @@ async def buy_lifetime(request: Request):
 
 
 
+def send_founder_welcome(email: str):
+    """Send personal founder welcome email via Resend"""
+    try:
+        api_key = os.getenv("RESEND_API_KEY")
+        if not api_key:
+            return
+
+        resend.api_key = api_key
+        
+        # Determine sender from ENV or fallback
+        sender = os.getenv("FROM_EMAIL", "Max from Deadhand <max@deadhandprotocol.com>")
+        
+        # HTML Email Body - Personal, No Corporate BS
+        html_body = f"""
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #333; line-height: 1.6;">
+            <p>Hey,</p>
+            <p>I just wanted to personally say thank you.</p>
+            <p>I understand that your first order is more than just clicking "buy." It's a leap of trust, especially when it comes to securing your legacy. And I don't take that lightly.</p>
+            <p>When I started Deadhand, it wasn't some big corporate mission. It was me, obsessed with finding a way to ensure my Bitcoin wouldn't die with me, with no middlemen, no lawyers, and no BS.</p>
+            <p>That's still what drives us today. And now you're a part of that story.</p>
+            <p>If you've got questions, just hit reply. You'll get a real response, fast.</p>
+            <p>Grateful to have you here.</p>
+            <br>
+            <p>Stay Sovereign,</p>
+            <p><strong>Max Comperatore</strong> | Founder</p>
+            <p><a href="{BASE_URL}" style="color: #666; text-decoration: none;">Deadhand Protocol</a></p>
+            <br>
+            <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
+            <p style="font-size: 14px; color: #666;">P.S. While you set up your vault, <a href="{os.getenv('DISCORD_INVITE_URL', '#')}" style="color: #0066cc;">join our private Discord</a>. It's where the smart money hangs out.</p>
+        </div>
+        """
+
+        resend.Emails.send({
+            "from": sender,
+            "to": email,
+            "subject": "Thank you so much for your order",
+            "html": html_body
+        })
+    except Exception as e:
+        print(f"Failed to send welcome email: {e}")
+
 @app.get("/payment-success")
-async def payment_success(session_id: str, response: Response):
+async def payment_success(session_id: str, background_tasks: BackgroundTasks):
     """Set the access cookie and redirect to the tool"""
     try:
         session = stripe.checkout.Session.retrieve(session_id)
         email = session.customer_details.email
         
+        # Trigger welcome email in background (zero latency for user)
+        if email:
+            background_tasks.add_task(send_founder_welcome, email)
+        
         # Simple signed token: email:hash(email+secret)
         signature = hashlib.sha256(f"{email}{os.getenv('SECRET_KEY')}".encode()).hexdigest()
         token = f"{email}:{signature}"
         
-        response = RedirectResponse(url="/tools/dead-switch")
+        response = RedirectResponse(url="/tools/dead-switch", status_code=303)
         # Set cookie for 1 year
         response.set_cookie(key="dead_auth", value=token, max_age=31536000, httponly=True)
         return response
