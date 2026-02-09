@@ -53,3 +53,47 @@ def decrypt_shard(encrypted_shard: str, heartbeat_token: str) -> str:
     # Decrypt
     plaintext = aesgcm.decrypt(nonce, ciphertext, None)
     return plaintext.decode()
+
+
+def encrypt_token(token: str, master_key: str) -> str:
+    """
+    Encrypt a sensitive token (like heartbeat_token) using the server MASTER_KEY.
+    Protects against database leaks.
+    """
+    # Master key must be 32 bytes (256 bits)
+    # If string is provided, we hash it to get 32 bytes
+    if isinstance(master_key, str):
+        key = hashlib.sha256(master_key.encode()).digest()
+    else:
+        key = master_key
+        
+    aesgcm = AESGCM(key)
+    nonce = os.urandom(12)
+    ciphertext = aesgcm.encrypt(nonce, token.encode(), None)
+    return base64.b64encode(nonce + ciphertext).decode()
+
+
+def decrypt_token(encrypted_token: str, master_key: str) -> str:
+    """
+    Decrypt a sensitive token using the server MASTER_KEY.
+    """
+    if isinstance(master_key, str):
+        key = hashlib.sha256(master_key.encode()).digest()
+    else:
+        key = master_key
+        
+    aesgcm = AESGCM(key)
+    
+    try:
+        data = base64.b64decode(encrypted_token)
+        nonce = data[:12]
+        ciphertext = data[12:]
+        plaintext = aesgcm.decrypt(nonce, ciphertext, None)
+        return plaintext.decode()
+    except Exception:
+        # Fallback: maintain backward compatibility for unencrypted tokens
+        # If decryption fails (e.g. invalid base64, tag mismatch, or old plain token),
+        # return the raw string as is.
+        # This allows seamless migration for existing tokens.
+        return encrypted_token
+

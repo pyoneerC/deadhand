@@ -26,6 +26,7 @@
     <meta name="twitter:image" content="https://deadhandprotocol.com/static/og_card.png">
     <meta property="article:modified_time" content="2026-02-04T12:00:00Z">
     <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta name="csrf-token" content="{{ csrf_token }}">
 
     <!-- Performance Optimization -->
     <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
@@ -1483,10 +1484,14 @@
             resultEl.innerText = "// calculating how fast you'll lose your coins...";
 
             try {
+                const csrfMeta = document.querySelector('meta[name="csrf-token"]');
+                const csrfToken = csrfMeta ? csrfMeta.getAttribute('content') : '';
+
                 const response = await fetch("/api/roast", {
                     method: "POST",
                     headers: {
-                        "Content-Type": "application/json"
+                        "Content-Type": "application/json",
+                        "X-CSRF-Token": csrfToken
                     },
                     body: JSON.stringify({ input: input, email: email || null })
                 });

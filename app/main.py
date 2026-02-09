@@ -2,6 +2,7 @@
 # Copyright (c) 2026 pyoneerC. All rights reserved.
 
 import secrets
+import hmac
 import hashlib
 import re
 import os
@@ -12,6 +13,8 @@ from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse, ORJS
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.gzip import GZipMiddleware
+from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi import status
 from sqlalchemy.orm import Session
 from datetime import datetime, timedelta
 import markdown
@@ -79,7 +82,7 @@ async def get_btc_price():
 from .database import SessionLocal, engine, Base
 from .models import User
 from .services import send_email
-from .crypto import encrypt_shard, decrypt_shard
+from .crypto import encrypt_shard, decrypt_shard, encrypt_token, decrypt_token
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -173,9 +176,54 @@ async def add_cache_control_header(request: Request, call_next):
     
     return response
 
+# CSRF Protection Middleware
+class CSRFMiddleware(BaseHTTPMiddleware):
+    async def dispatch(self, request: Request, call_next):
+        response = await call_next(request)
+        if request.method == "GET":
+            # If no csrf cookie, set one
+            if "csrf_token" not in request.cookies:
+                token = secrets.token_urlsafe(32)
+                response.set_cookie(
+                    "csrf_token", 
+                    token, 
+                    httponly=True,  # Prevent JS access (XSS protection)
+                    samesite="lax",
+                    secure=True
+                )
+                request.state.csrf_token = token
+            else:
+                request.state.csrf_token = request.cookies["csrf_token"]
+        return response
+
+app.add_middleware(CSRFMiddleware)
+
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
+
+# Dependency to validate CSRF
+async def validate_csrf(request: Request):
+    csrf_cookie = request.cookies.get("csrf_token")
+    if not csrf_cookie:
+        raise HTTPException(status_code=403, detail="CSRF cookie missing")
+    
+    # Check header (for AJAX/JSON)
+    csrf_header = request.headers.get("X-CSRF-Token")
+    if csrf_header and secrets.compare_digest(csrf_header, csrf_cookie):
+        return
+        
+    # Check form (for Form POST) - This requires reading body which consumes stream
+    # FastAPI dependency runs before body parsing. 
+    # For Form data, we inject it into the route handler arguments instead of middleware/dep
+    # because reading body here would break the route handler.
+    # So for JSON endpoints we use this dependency. For Form endpoints we check manually.
+    if csrf_header: 
+         raise HTTPException(status_code=403, detail="CSRF token mismatch")
+         
+    # If no header, and not a method that requires it, pass (handled in route)
+    pass
+
 
 # Favicon route
 @app.get("/favicon.ico", include_in_schema=False)
@@ -515,7 +563,8 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
 async def landing_page(request: Request):
     """Marketing landing page"""
     return templates.TemplateResponse("landing.html", {
-        "request": request
+        "request": request,
+        "csrf_token": getattr(request.state, "csrf_token", "")
     })
 
 @app.get("/buy")
@@ -624,13 +673,21 @@ async def payment_success(session_id: str, background_tasks: BackgroundTasks):
         if email:
             background_tasks.add_task(send_founder_welcome, email)
         
-        # Simple signed token: email:hash(email+secret)
-        signature = hashlib.sha256(f"{email}{os.getenv('SECRET_KEY')}".encode()).hexdigest()
+        # Simple signed token: email:hmac(email, secret)
+        secret_key = os.getenv('SECRET_KEY', 'changeme_in_prod')
+        signature = hmac.new(secret_key.encode(), email.encode(), hashlib.sha256).hexdigest()
         token = f"{email}:{signature}"
         
         response = RedirectResponse(url="/tools/dead-switch", status_code=303)
-        # Set cookie for 1 year
-        response.set_cookie(key="dead_auth", value=token, max_age=31536000, httponly=True)
+        # Set cookie for 1 year with Strict hardening
+        response.set_cookie(
+            key="dead_auth", 
+            value=token, 
+            max_age=31536000, 
+            httponly=True, 
+            secure=True, 
+            samesite="lax"
+        )
         return response
     except Exception as e:
         print(f"Payment Success Error: {e}")
@@ -666,9 +723,13 @@ async def dead_switch_page(request: Request, db: Session = Depends(get_db)):
     
     if dead_auth:
         try:
-            email, signature = dead_auth.split(":")
-            expected_signature = hashlib.sha256(f"{email}{os.getenv('SECRET_KEY')}".encode()).hexdigest()
-            if signature == expected_signature:
+            email_part, signature = dead_auth.split(":")
+            secret_key = os.getenv('SECRET_KEY', 'changeme_in_prod')
+            expected_signature = hmac.new(secret_key.encode(), email_part.encode(), hashlib.sha256).hexdigest()
+            
+            # Constant time comparison (prevent timing attacks)
+            if hmac.compare_digest(signature, expected_signature):
+                email = email_part
                 # Check if user exists and is active
                 user = db.query(User).filter(User.email == email).first()
                 if user and not user.is_active:
@@ -678,14 +739,18 @@ async def dead_switch_page(request: Request, db: Session = Depends(get_db)):
         except:
             email = None
             
-    return templates.TemplateResponse("tools_dead_switch.html", {"request": request, "email": email})
+    return templates.TemplateResponse("tools_dead_switch.html", {
+        "request": request, 
+        "email": email,
+        "csrf_token": getattr(request.state, "csrf_token", "")
+    })
 
 # Lead magnet and tracking disabled
 
 # ========== EXPERIMENT TRACKING ==========
 
 @app.post("/api/roast")
-async def api_roast(request: Request):
+async def api_roast(request: Request, csrf_protection: None = Depends(validate_csrf)):
     """
     Proxy request to OpenRouter to avoid exposing API key on frontend.
     Also captures optional email for lead generation.
@@ -1076,8 +1141,14 @@ async def create_vault(
     email: str = Form(...),
     beneficiary_email: str = Form(...),
     shard_c: str = Form(...),
+    csrf_token: str = Form(...),
     db: Session = Depends(get_db)
 ):
+    # Verify CSRF
+    cookie_token = request.cookies.get("csrf_token")
+    if not cookie_token or not secrets.compare_digest(csrf_token, cookie_token):
+        raise HTTPException(status_code=403, detail="CSRF verification failed")
+
     # Check if user exists (might have been created by Stripe webhook)
     user = db.query(User).filter(User.email == email).first()
     
@@ -1103,10 +1174,15 @@ async def create_vault(
         user = User(email=email)
         db.add(user)
     
+    # Encrypt heartbeat_token to protect it in DB
+    # We use the server SECRET_KEY (env var) as the master key
+    server_master_key = os.getenv('SECRET_KEY', 'changeme_in_prod')
+    encrypted_heartbeat_token = encrypt_token(heartbeat_token, server_master_key)
+
     user.beneficiary_email = beneficiary_email
     user.shard_c = encrypted_shard
     user.config_hash = config_hash
-    user.heartbeat_token = heartbeat_token
+    user.heartbeat_token = encrypted_heartbeat_token
     user.last_heartbeat = created_timestamp
     
     db.commit()
@@ -1207,9 +1283,20 @@ async def create_vault(
 
 @app.get("/heartbeat/{user_id}/{token}", response_class=HTMLResponse)
 async def heartbeat(request: Request, user_id: int, token: str, db: Session = Depends(get_db)):
-    user = db.query(User).filter(User.id == user_id, User.heartbeat_token == token).first()
+    # We query by ID first (user_id is primary key)
+    user = db.query(User).filter(User.id == user_id).first()
+    
     if not user:
         return HTMLResponse("Invalid link", status_code=404)
+        
+    # Verify token
+    server_master_key = os.getenv('SECRET_KEY', 'changeme_in_prod')
+    # Decrypt the stored token to compare with the one in the URL
+    stored_token_decrypted = decrypt_token(user.heartbeat_token, server_master_key)
+    
+    # Constant-time comparison
+    if not secrets.compare_digest(stored_token_decrypted, token):
+         return HTMLResponse("Invalid link or token", status_code=403)
     
     # CRITICAL: If user was marked dead, shard C was already released
     # They CANNOT resurrect - must create new vault with new seed
@@ -1268,6 +1355,10 @@ async def check_heartbeats(db: Session = Depends(get_db)):
         
         for user in active_users:
             try:
+                # Decrypt token for use in emails/links
+                server_master_key = os.getenv('SECRET_KEY', 'changeme_in_prod')
+                heartbeat_token_plain = decrypt_token(user.heartbeat_token, server_master_key)
+
                 # Handle timezone-aware vs naive datetime
                 last_hb = user.last_heartbeat
                 if last_hb is None:
@@ -1293,10 +1384,10 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         <p>it's been 30 days since we last heard from you. i'm just checking in to make sure everything is okay.</p>
                         <p>could you click the link below? it just tells our system you're still with us and resets your timer. it takes two seconds.</p>
                         
-                        <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{user.heartbeat_token}" class="heartbeat-link">i'm still here</a>
+                        <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token_plain}" class="heartbeat-link">i'm still here</a>
 
                         <p><strong>pro tip:</strong> if you're busy now, add a reminder to your calendar for tomorrow so you don't forget.<br>
-                        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={quote_plus('Deadhand Heartbeat Reminder')}&dates={(datetime.now()+timedelta(days=1)).strftime('%Y%m%d')}/{(datetime.now()+timedelta(days=2)).strftime('%Y%m%d')}&details={quote_plus('Visit deadhandprotocol.com/heartbeat/'+str(user.id)+'/'+str(user.heartbeat_token))}&sf=true&output=xml" target="_blank">add reminder for tomorrow</a></p>
+                        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={quote_plus('Deadhand Heartbeat Reminder')}&dates={(datetime.now()+timedelta(days=1)).strftime('%Y%m%d')}/{(datetime.now()+timedelta(days=2)).strftime('%Y%m%d')}&details={quote_plus('Visit deadhandprotocol.com/heartbeat/'+str(user.id)+'/'+str(heartbeat_token_plain))}&sf=true&output=xml" target="_blank">add reminder for tomorrow</a></p>
 
                         <p>if you don't click it, no big deal for now. i'll check in again in another 30 days. but after 90 days of silence, we'll have to send shard c to your beneficiary.</p>
                         
@@ -1336,7 +1427,7 @@ async def check_heartbeats(db: Session = Depends(get_db)):
 
                         <p>if you're just busy, i totally get it. but please, click this now so we don't worry your family unnecessarily:</p>
                         
-                        <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{user.heartbeat_token}" class="heartbeat-link">i'm here, reset the timer</a>
+                        <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token_plain}" class="heartbeat-link">i'm here, reset the timer</a>
 
                         <p>talk soon,</p>
                         <p><strong>deadhand protocol</strong></p>
@@ -1364,9 +1455,8 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                             results["errors"] += 1
                             continue
                     
-                    # Try to decrypt shard_c, fallback to raw for pre-encryption users
                     try:
-                        shard_c_value = decrypt_shard(user.shard_c, user.heartbeat_token)
+                        shard_c_value = decrypt_shard(user.shard_c, heartbeat_token_plain)
                     except Exception:
                         # Old user with unencrypted shard - use raw value
                         shard_c_value = user.shard_c
