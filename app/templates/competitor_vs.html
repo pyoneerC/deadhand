@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ c.meta_title | lower }} | deadhand</title>
+    <meta name="description" content="{{ c.meta_description | lower }}">
+    <link rel="canonical" href="https://deadhandprotocol.com/alternatives/{{ c.slug }}-alternative">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
+
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #fafafa;
+            color: #333;
+            margin: 0;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Navigation (Lowercase Vibe) */
+        .nav {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 60px;
+            font-size: 14px;
+            font-family: monospace;
+            justify-content: center;
+        }
+
+        .nav a {
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .nav a:hover {
+            color: #000;
+            text-decoration: underline;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            letter-spacing: -0.5px;
+            color: #111;
+            font-weight: 600;
+            text-align: center;
+            text-transform: lowercase;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-top: 50px;
+            margin-bottom: 20px;
+            color: #222;
+            font-weight: 500;
+            text-align: center;
+            text-transform: lowercase;
+        }
+
+        p {
+            color: #555;
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            text-align: center;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Comparison Table - Clean & Medical */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 40px 0;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            overflow: hidden;
+        }
+
+        .comparison-table th {
+            padding: 20px;
+            text-align: left;
+            border-bottom: 2px solid #f0f0f0;
+            background: #fff;
+            font-family: monospace;
+            color: #888;
+            text-transform: lowercase;
+            font-size: 0.85em;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 20px;
+            border-bottom: 1px solid #f5f5f5;
+            vertical-align: middle;
+            color: #444;
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .check {
+            color: #10b981;
+            font-weight: 500;
+        }
+
+        .cross {
+            color: #ef4444;
+        }
+
+        /* Call to Action Box */
+        .cta-box {
+            background: #fff;
+            padding: 40px;
+            text-align: center;
+            border: 1px solid #eee;
+            margin-top: 60px;
+            border-radius: 8px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+        }
+
+        .btn {
+            display: inline-block;
+            background: #111;
+            color: #fff;
+            padding: 16px 32px;
+            text-decoration: none;
+            font-weight: 500;
+            margin-top: 20px;
+            border-radius: 6px;
+            border: 1px solid #111;
+            transition: all 0.2s;
+            font-size: 0.95em;
+            text-transform: lowercase;
+        }
+
+        .btn:hover {
+            background: #333;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Feature Grid */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .feature-card {
+            background: #fff;
+            padding: 30px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+            transition: transform 0.2s;
+        }
+
+        .feature-card:hover {
+            border-color: #ddd;
+            transform: translateY(-2px);
+        }
+
+        .feature-card h3 {
+            margin-top: 0;
+            font-size: 1.1em;
+            color: #222;
+            margin-bottom: 10px;
+            font-weight: 600;
+            text-transform: lowercase;
+        }
+
+        .feature-card p {
+            font-size: 0.95em;
+            margin-bottom: 0;
+            color: #666;
+            text-align: left;
+        }
+
+        /* Footer */
+        .footer {
+            margin-top: 100px;
+            padding-top: 60px;
+            border-top: 1px solid #eaeaea;
+            text-align: center;
+            color: #888;
+            font-size: 0.9em;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .footer a {
+            color: #555;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer a:hover {
+            color: #111;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .nav {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+
+            .comparison-table {
+                font-size: 0.9em;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 15px 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <div class="nav">
+            <a href="/">deadhand</a>
+            <a href="/tools/dead-switch">tools</a>
+            <a href="/buy">pricing</a>
+            <a href="/blog">blog</a>
+            <a href="https://github.com/pyoneerC/deadhand" target="_blank">github</a>
+        </div>
+
+        <div style="text-align: center; margin-bottom: 10px;">
+            <span
+                style="font-family: monospace; color: #888; text-transform: lowercase; font-size: 0.8em; background: #eee; padding: 4px 8px; border-radius: 4px;">alternatives
+                / {{ c.slug }}</span>
+        </div>
+
+        <h1>deadhand vs {{ competitor_name | lower }}</h1>
+        <p>why sovereign individuals are switching from {{ competitor_name | lower }} to deadhand protocol.</p>
+
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th style="width: 30%">feature</th>
+                    <th style="width: 35%">{{ competitor_name | lower }}</th>
+                    <th style="width: 35%">deadhand</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>trust model</td>
+                    <td><span class="cross">{{ c.type | lower }}</span></td>
+                    <td><span class="check">✔ non-custodial</span></td>
+                </tr>
+                <tr>
+                    <td>cost</td>
+                    <td><span class="cross">{{ c.cost | lower }}</span></td>
+                    <td><span class="check">✔ $400 lifetime</span></td>
+                </tr>
+                <tr>
+                    <td>kyc required</td>
+                    <td><span class="cross">yes (identity risk)</span></td>
+                    <td><span class="check">✔ no (zero knowledge)</span></td>
+                </tr>
+                <tr>
+                    <td>technology</td>
+                    <td><span class="cross">server-side</span></td>
+                    <td><span class="check">✔ client-side (shamir)</span></td>
+                </tr>
+                <tr>
+                    <td>inheritance</td>
+                    <td><span class="cross">manual / legal</span></td>
+                    <td><span class="check">✔ dead man's switch</span></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="cta-box"
+            style="margin: 40px 0; padding: 25px; border-left: 4px solid #111; text-align: left; background: #f9f9f9; box-shadow: none;">
+            <strong style="color: #111;">the bottom line:</strong> {{ competitor_name }} charges you <strong>{{ c.cost
+                }}</strong> and forces you to accept <strong>{{ c.weakness | lower }}</strong>. deadhand is a one-time
+            payment with zero kyc.
+        </div>
+
+        <h2>why {{ c.name | lower }} is a risk</h2>
+        <p>
+            {{ c.name | lower }} relies on a <strong>{{ c.type | lower }}</strong> model. this means you are ultimately
+            trusting a third party with either your keys, your identity, or your recovery process.
+        </p>
+
+        <h2>the deadhand advantage</h2>
+        <div class="feature-grid">
+            <div class="feature-card">
+                <h3>zero knowledge</h3>
+                <p>we don't know who you are. we don't want your ID. we can't access your funds even if we wanted to.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>{{ c.deadhand_advantage | lower }}</h3>
+                <p>unlike {{ c.name | lower }}, deadhand is built on pure math. no recurring fees, no permission asking.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>shamir's secret sharing</h3>
+                <p>we split your seed phrase into shards. mathematical security that doesn't rely on legal contracts.
+                </p>
+            </div>
+            <div class="feature-card">
+                <h3>protocol, not service</h3>
+                <p>deadhand is designed to be a set-and-forget protocol. it works even if you disappear for 5 years.</p>
+            </div>
+        </div>
+
+        <div class="cta-box">
+            <h2 style="margin-top: 0;">secure your legacy.</h2>
+            <p>stop renting your security from {{ c.name | lower }}. own it forever.</p>
+            <a href="/tools/dead-switch" class="btn">secure your vault</a>
+            <p style="margin-top: 15px; font-size: 0.85em; color: #888;">no credit card required to test.</p>
+        </div>
+
+        <div class="footer">
+            <div class="footer-links">
+                <a href="/alternatives/casa-alternative">vs casa</a>
+                <a href="/alternatives/unchained-alternative">vs unchained</a>
+                <a href="/alternatives/ledger-recover-alternative">vs ledger</a>
+                <a href="/alternatives/sarcophagus-alternative">vs sarcophagus</a>
+                <a href="/alternatives/safe-alternative">vs safe</a>
+            </div>
+            <p>&copy; 2026 deadhand protocol. all rights reserved.</p>
+        </div>
+    </div>
+
+</body>
+
+</html>

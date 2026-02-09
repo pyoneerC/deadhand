@@ -41,6 +41,18 @@ if TOPICS_FILE.exists():
     except Exception as e:
         print(f"Error loading PSEO topics: {e}")
 
+# Load Competitor Comparison Data
+COMPETITORS = {}
+COMPETITORS_FILE = Path("app/data/competitors.csv")
+if COMPETITORS_FILE.exists():
+    try:
+        with open(COMPETITORS_FILE, mode='r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            for row in reader:
+                COMPETITORS[row['slug']] = row
+    except Exception as e:
+        print(f"Error loading competitors: {e}")
+
 # Dynamic price caching
 PRICE_CACHE = {"btc": 0, "last_updated": datetime.min}
 
@@ -231,6 +243,13 @@ async def sitemap():
         <changefreq>monthly</changefreq>
         <priority>0.7</priority>
     </url>''' for slug in PSEO_TOPICS.keys()])}
+    <!-- Competitor Alternatives -->
+    {"".join([f'''
+    <url>
+        <loc>{BASE_URL.rstrip('/')}/alternatives/{slug}-alternative</loc>
+        <changefreq>monthly</changefreq>
+        <priority>0.8</priority>
+    </url>''' for slug in COMPETITORS.keys()])}
     {"".join([f'''
     <url>
         <loc>{post}</loc>
@@ -930,6 +949,22 @@ async def render_docs(request: Request, doc_name: str):
         "content": html_content,
         "current_doc": "index" if doc_name == "README" else doc_name,
         "slug": doc_name
+    })
+
+# SEO: Competitor Alternatives
+@app.get("/alternatives/{competitor}-alternative", response_class=HTMLResponse)
+async def competitor_alternative(request: Request, competitor: str):
+    """Dynamic competitor comparison pages for high-intent SEO"""
+    if competitor not in COMPETITORS:
+        raise HTTPException(status_code=404)
+        
+    data = COMPETITORS[competitor]
+    
+    return templates.TemplateResponse("competitor_vs.html", {
+        "request": request,
+        "c": data,
+        "competitor_name": data['name'],
+        "btc_price": await get_btc_price()
     })
 
 @app.get("/p/{slug}", response_class=HTMLResponse)
