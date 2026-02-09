@@ -304,6 +304,12 @@
         <h1>{{ title | lower }}</h1>
         <div class="post-meta">{{ date_formatted | lower }} // {{ reading_time }} min read // by {{ author | lower }}
         </div>
+        {% if image and image != '/static/og_card.png' %}
+        <div style="margin: 40px 0 20px 0; text-align: center;">
+            <img src="{{ image }}" alt="{{ title }}"
+                style="width: 100%; max-width: 800px; border-radius: 4px; box-shadow: 0 4px 20px rgba(0,0,0,0.08);">
+        </div>
+        {% endif %}
     </header>
 
     <main>

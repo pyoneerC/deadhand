@@ -4,7 +4,7 @@ description: "a technical side-by-side comparison of the top crypto inheritance 
 date: "2026-01-31"
 slug: "crypto-inheritance-comparison-guide"
 author: "deadhand team"
-image: "/static/TBV.jpg"
+image: "/static/blog/crypto-inheritance-comparison.jpg"
 tags: "crypto inheritance, dead man's switch, comparison, legacy"
 ---
 

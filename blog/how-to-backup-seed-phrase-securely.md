@@ -4,7 +4,7 @@ slug: "how-to-backup-seed-phrase-securely"
 date: "2025-12-28"
 author: "pyoneerC"
 description: "Paper backups fail. Single copies are risky. Here's how to backup your crypto seed phrase properly using Shamir's Secret Sharing."
-image: "/static/blog/seed-backup.jpg"
+image: "/static/blog/backup-seed-phrase.jpg"
 ---
 
 

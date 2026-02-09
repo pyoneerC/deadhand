@@ -4,7 +4,7 @@ slug: "shamirs-secret-sharing-explained"
 date: "2026-01-05"
 author: "pyoneerC"
 description: "Shamir's Secret Sharing sounds complicated. It's not. Here's how it works and why it's the best way to backup your crypto seed phrase."
-image: "/static/blog/shamir-explained.jpg"
+image: "/static/blog/shamirs-secret-sharing.jpg"
 ---
 
 

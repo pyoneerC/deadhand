@@ -5,7 +5,7 @@ description: "A dead man's switch automatically triggers an action when you stop
 author: "pyoneerC"
 date: "2025-12-15"
 tags: "dead mans switch, automation, inheritance, trustless"
-image: "/static/blog/dead-mans-switch.jpg"
+image: "/static/blog/dead-mans-switch-inheritance.jpg"
 ---
 
 

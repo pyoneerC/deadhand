@@ -4,7 +4,7 @@ slug: "seed-phrase-storage-guide"
 date: "2026-02-02"
 author: "pyoneerC"
 description: "How to store your seed phrase like a cryptographic grandmaster. Explore the evolution of security from titanium plates to digital steganography and non-custodial death switches."
-image: "/static/blog/seed_phrase_security_ultimate_guide.png"
+image: "/static/blog/seed-phrase-storage.jpg"
 ---
 
 You’ve probably heard the mantra: **Not your keys, not your coins.** But there is a second, more terrifying truth: **Lost keys, lost legacy.**
