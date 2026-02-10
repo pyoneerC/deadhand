@@ -840,6 +840,43 @@
             margin-left: -40px;
         }
 
+        /* Dropdown Menu */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 180px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            top: 100%;
+            left: 0;
+            padding: 5px 0;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
         .video-js:hover .vjs-big-play-button {
             background-color: #333;
         }
@@ -859,8 +896,15 @@
         <div class="container">
             <nav class="nav" aria-label="Main Navigation">
                 <a href="/tools/dead-switch">dead switch</a>
-                <a href="/tools/optical-splitting">optical splitting</a>
-                <a href="/tools/acoustic-masking">acoustic masking</a>
+
+                <div class="dropdown">
+                    <a href="#" style="cursor: default;">free tools</a>
+                    <div class="dropdown-content">
+                        <a href="/tools/optical-splitting">optical splitting</a>
+                        <a href="/tools/acoustic-masking">acoustic masking</a>
+                    </div>
+                </div>
+
                 <a href="/buy">pricing</a>
                 <a href="/blog">blog</a>
                 <a href="https://github.com/pyoneerC/deadhand">github</a>
