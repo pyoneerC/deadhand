@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>crypto inheritance risk calculator | deadhand</title>
+    <meta name="description"
+        content="calculate the bus factor of your crypto portfolio. determine the probability of asset loss upon incapacitation.">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="canonical" href="https://deadhandprotocol.com/tools/bus-factor">
+
+    <!-- Performance Optimization -->
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com/">
+    <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com/">
+
+    <!-- Non-blocking Font Awesome loading -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        media="print" onload="this.media='all'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    </noscript>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.7;
+            background: #fafafa;
+            color: #222;
+        }
+
+        a {
+            color: #0066cc;
+        }
+
+        .header {
+            position: sticky;
+            top: 0;
+            background: #fafafa;
+            padding: 10px 0;
+            border-bottom: 1px solid #ddd;
+            margin-bottom: 40px;
+            z-index: 100;
+        }
+
+        .nav {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px 15px;
+            font-size: 0.9em;
+        }
+
+        .nav a {
+            text-decoration: none;
+            padding: 8px 12px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            color: #666;
+        }
+
+        /* Calculator Styles */
+        .calculator-box {
+            background: #fff;
+            border: 1px solid #ddd;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.02);
+            margin-bottom: 40px;
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            font-size: 0.95em;
+        }
+
+        input[type="number"],
+        select {
+            width: 100%;
+            padding: 12px;
+            font-family: monospace;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #fafafa;
+        }
+
+        input[type="number"]:focus,
+        select:focus {
+            outline: none;
+            border-color: #222;
+            background: #fff;
+        }
+
+        .risk-meter {
+            height: 10px;
+            border-radius: 5px;
+            background: #eee;
+            margin-top: 30px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .risk-fill {
+            height: 100%;
+            width: 0%;
+            background: #ef4444;
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .result-box {
+            margin-top: 30px;
+            padding: 25px;
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            border-radius: 6px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-box.safe {
+            background: #f0fdf4;
+            border-color: #bbf7d0;
+        }
+
+        .big-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            line-height: 1.1;
+            margin: 10px 0;
+            font-family: monospace;
+        }
+
+        .btn {
+            background: #222;
+            color: #fff;
+            padding: 14px 28px;
+            border: none;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 1em;
+            width: 100%;
+            margin-top: 20px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #444;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Dropdown Menu (Shared with Landing) */
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #fff;
+            min-width: 180px;
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            top: 100%;
+            left: 0;
+            padding: 5px 0;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            font-size: 0.9em;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #f5f5f5;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
+    <!-- PostHog -->
+    <script>
+        !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init rs ls bi ns us ts ss capture calculateEventProperties vs register register_once register_for_session unregister unregister_for_session gs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fs ds createPersonProfile ps Qr opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing hs debug O cs getPageViewId captureTraceFeedback captureTraceMetric Kr".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
+        posthog.init('phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ', {
+            api_host: 'https://us.i.posthog.com',
+            defaults: '2025-11-30',
+            person_profiles: 'identified_only',
+            capture_pageview: true,
+            capture_pageleave: true
+        })
+    </script>
+</head>
+
+<body>
+
+    <div class="header">
+        <nav class="nav">
+            <a href="/">home</a>
+            <a href="/tools/dead-switch">dead switch</a>
+
+            <div class="dropdown">
+                <a href="#" style="cursor: default;">free tools</a>
+                <div class="dropdown-content">
+                    <a href="/tools/bus-factor">bus factor calc</a>
+                    <a href="/tools/optical-splitting">optical splitting</a>
+                    <a href="/tools/acoustic-masking">acoustic masking</a>
+                </div>
+            </div>
+
+            <a href="/buy">pricing</a>
+            <a href="/blog">blog</a>
+            <a href="https://github.com/pyoneerC/deadhand">github</a>
+        </nav>
+    </div>
+
+    <h1>crypto inheritance risk calculator</h1>
+    <p style="font-size: 1.1em; color: #555;">calculate the "bus factor" of your portfolio. if you disappeared today,
+        what is the mathematical probability your family recovers your assets?</p>
+
+    <div class="calculator-box">
+        <div class="input-group">
+            <label>total crypto assets ($)</label>
+            <input type="number" id="assets" placeholder="e.g. 100000" min="0">
+        </div>
+
+        <div class="input-group">
+            <label>people who can access your keys right now</label>
+            <select id="access">
+                <option value="0">0 (only me)</option>
+                <option value="1">1 person</option>
+                <option value="2">2+ people</option>
+            </select>
+            <p style="font-size: 0.8em; color: #666; margin-top: 5px;">*be honest. if they need your phone/2fa, count
+                it as 0.</p>
+        </div>
+
+        <div class="input-group">
+            <label>where are seed phrases stored?</label>
+            <select id="storage">
+                <option value="hardware">hardware wallet (ledger/trezor)</option>
+                <option value="paper">paper / steel backup</option>
+                <option value="cloud">cloud / password manager (dangerous)</option>
+                <option value="exchange">centralized exchange (coinbase/binance)</option>
+                <option value="memory">brain wallet (memory only)</option>
+            </select>
+        </div>
+
+        <!-- Hidden inputs for tracking -->
+        <input type="hidden" id="risk-vector" value="">
+
+        <button class="btn" onclick="calculateRisk()">calculate risk</button>
+
+        <div class="risk-meter">
+            <div class="risk-fill" id="riskFill"></div>
+        </div>
+
+        <!-- High Risk Result -->
+        <div id="resultHigh" class="result-box">
+            <h3 style="color: #c53030; margin-top: 0;"><i class="fa-solid fa-triangle-exclamation"></i> CRITICAL FAILURE
+                LIKELY</h3>
+            <p>If you are incapacitated today, your family has a <b id="probHigh">99.8%</b> mathematical certainty of
+                losing access.</p>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; text-align: center; margin: 20px 0;">
+                <div>
+                    <div style="font-size: 0.8em; text-transform: uppercase; color: #666;">Projected Loss</div>
+                    <div class="big-number" style="color: #c53030;" id="lossAmount">$0</div>
+                </div>
+                <div>
+                    <div style="font-size: 0.8em; text-transform: uppercase; color: #666;">Time Until Zero</div>
+                    <div class="big-number" style="font-size: 1.5em; margin-top: 15px;">IMMEDIATE</div>
+                </div>
+            </div>
+
+            <p style="font-size: 0.9em;"><b>Explanation:</b> You have a single point of failure (SPOF). Without a
+                trustless dead man's switch, your assets are cryptographically indistinguishable from unspendable dust.
+            </p>
+
+            <a href="/tools/dead-switch" class="btn" style="text-align: center; text-decoration: none;">fix this (deploy
+                switch)</a>
+        </div>
+
+        <!-- Medium Risk Result -->
+        <div id="resultMedium" class="result-box" style="background: #fffaf0; border-color: #fbd38d;">
+            <h3 style="color: #c05621; margin-top: 0;"><i class="fa-solid fa-triangle-exclamation"></i> HIGH FRICTION
+            </h3>
+            <p>Your family <i>might</i> recover funds, but they face a <b id="probMed">40-60%</b> failure rate due to
+                complexity or legal barriers.</p>
+
+            <p style="font-size: 0.9em;"><b>Risk Factor:</b> Relying on exchange custodians or a single person creates
+                legal bottlenecks (probate) or social engineering risks.</p>
+
+            <a href="/tools/dead-switch" class="btn" style="text-align: center; text-decoration: none;">secure with
+                protocol</a>
+        </div>
+
+        <!-- Low Risk Result -->
+        <div id="resultLow" class="result-box safe">
+            <h3 style="color: #2f855a; margin-top: 0;"><i class="fa-solid fa-shield-halved"></i> SECURE</h3>
+            <p>You have taken steps to ensure continuity. Ensure your beneficiaries actually know <i>how</i> to execute
+                the recovery procedure.</p>
+        </div>
+
+    </div>
+
+    <!-- Explanation -->
+    <h2>why calculate bus factor?</h2>
+    <p>in software engineering, the "bus factor" is the minimum number of team members that have to disappear (e.g., hit
+        by a bus) before a project stalls due to lack of knowledge.</p>
+    <p><b>for 95% of crypto holders, the bus factor is 1.</b></p>
+    <p>if that 1 person is you, your family's inheritance is effectively zero. fixing this requires increasing your bus
+        factor to at least 2 without trusting a third party.</p>
+
+    <div class="footer" style="margin-top: 60px; font-size: 0.9em; text-align: center; color: #666;">
+        <p><a href="/">back to deadhand</a></p>
+    </div>
+
+    <script>
+        function calculateRisk() {
+            const amount = parseFloat(document.getElementById('assets').value) || 0;
+            const access = document.getElementById('access').value; // "0", "1", "2"
+            const storage = document.getElementById('storage').value;
+
+            let riskScore = 0; // 0 to 100 (100 is doomed)
+
+            // Base risk from human access
+            if (access === "0") riskScore += 90;
+            else if (access === "1") riskScore += 40;
+            else riskScore += 10;
+
+            // modifier from storage
+            if (storage === "memory" && access === "0") riskScore = 100; // Doomed
+            if (storage === "cloud") riskScore += 20; // Hacked risk
+            if (storage === "exchange") riskScore += 30; // KYC/Probate risk
+
+            // Cap at 100
+            if (riskScore > 99.9) riskScore = 99.9;
+            if (riskScore < 0) riskScore = 0;
+
+            // Track calculation
+            try {
+                posthog.capture('calculated_risk', {
+                    amount: amount,
+                    access_level: access,
+                    storage_type: storage,
+                    risk_score: riskScore
+                });
+            } catch (e) { }
+
+            // UI Update
+            const fill = document.getElementById('riskFill');
+            fill.style.width = riskScore + "%";
+
+            // Hide all first
+            document.getElementById('resultHigh').style.display = 'none';
+            document.getElementById('resultMedium').style.display = 'none';
+            document.getElementById('resultLow').style.display = 'none';
+
+            if (riskScore >= 70) {
+                fill.style.background = "#ef4444"; // Red
+                const el = document.getElementById('resultHigh');
+                el.style.display = 'block';
+
+                document.getElementById('probHigh').innerText = riskScore.toFixed(1) + "%";
+                document.getElementById('lossAmount').innerText = "$" + amount.toLocaleString();
+
+            } else if (riskScore >= 30) {
+                fill.style.background = "#dd6b20"; // Orange
+                const el = document.getElementById('resultMedium');
+                el.style.display = 'block';
+                document.getElementById('probMed').innerText = riskScore.toFixed(0) + "%";
+
+            } else {
+                fill.style.background = "#38a169"; // Green
+                document.getElementById('resultLow').style.display = 'block';
+            }
+        }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "home",
+          "item": "https://deadhandprotocol.com/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "tools",
+          "item": "https://deadhandprotocol.com/tools"
+        },
+        {
+          "@type": "ListItem",
+          "position": 3,
+          "name": "bus factor calculator",
+          "item": "https://deadhandprotocol.com/tools/bus-factor"
+        }
+      ]
+    }
+    </script>
+</body>
+
+</html>

@@ -705,6 +705,11 @@ async def docs_page(request: Request):
 
 # ========== FREE TOOLS ==========
 
+@app.get("/tools/bus-factor", response_class=HTMLResponse)
+async def bus_factor_tool(request: Request):
+    """Bus Factor Calculator"""
+    return templates.TemplateResponse("tools_bus_factor.html", {"request": request})
+
 @app.get("/tools/optical-splitting", response_class=HTMLResponse)
 async def optical_splitting_page(request: Request):
     """Optical Splitting Tool - split images into noise shares"""
