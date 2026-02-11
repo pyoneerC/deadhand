@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Careers | Deadhand Protocol</title>
+    <meta name="description"
+        content="Join Deadhand Protocol. We are building the trustless standard for digital inheritance.">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+
+    <!-- Fonts & Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Georgia, serif;
+            font-size: 18px;
+            line-height: 1.8;
+            background: #fafafa;
+            color: #222;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        /* Header Styles (Copied from Landing) */
+        .header {
+            background: #000;
+            color: #fff;
+            padding: 18px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #222;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header a {
+            color: #fff;
+            text-decoration: none;
+        }
+
+        /* Nav Styles */
+        .nav {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+        }
+
+        .header-nav-link {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95em;
+            font-weight: 500;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .header-nav-link:hover {
+            color: #fff;
+        }
+
+        /* Dropdown Styles */
+        .header-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 6px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 0;
+            z-index: 1000;
+            margin-top: 0;
+            padding-top: 10px;
+            clip-path: inset(-10px -20px -10px -20px);
+        }
+
+        .header-dropdown:hover .header-dropdown-content {
+            display: block;
+        }
+
+        .header-dropdown-item {
+            color: #ccc;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.9em;
+            transition: background 0.1s, color 0.1s;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .header-dropdown-item:hover {
+            background-color: #111;
+            color: #fff;
+        }
+
+        /* CTA Button */
+        .header-cta {
+            background-color: #333;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+            border: 1px solid #444;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .header-cta:hover {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        /* Main Content */
+        main {
+            padding: 100px 0;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #111;
+            line-height: 1.2;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        h2 {
+            font-size: 1.5em;
+            margin-top: 1.5em;
+            margin-bottom: 0.8em;
+            border-bottom: 2px solid #111;
+            padding-bottom: 10px;
+            display: inline-block;
+        }
+
+        h3 {
+            font-size: 1.2em;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+        }
+
+        p {
+            margin-bottom: 1.2em;
+            color: #333;
+        }
+
+        ul {
+            margin-bottom: 1.5em;
+            padding-left: 1.2em;
+        }
+
+        li {
+            margin-bottom: 0.5em;
+            color: #333;
+        }
+
+        .job-meta {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 2em;
+            display: flex;
+            gap: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+        }
+
+        .apply-btn {
+            display: inline-block;
+            background: #111;
+            color: #fff;
+            padding: 16px 32px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 10px;
+            transition: background 0.2s;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        .apply-btn:hover {
+            background: #333;
+        }
+
+        /* Footer (Minimal) */
+        footer {
+            background: #fafafa;
+            border-top: 1px solid #eee;
+            padding: 60px 0;
+            margin-top: 80px;
+            font-size: 0.9em;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 900px) {
+
+            .nav-desktop,
+            .header-right {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+        }
+
+        /* Mobile Menu Styles (Copied) */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            transition: 0.3s;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 61px;
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 61px);
+            background-color: #000;
+            padding: 20px;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 1001;
+            border-top: 1px solid #222;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        .mobile-link {
+            color: #ccc;
+            text-decoration: none;
+            padding: 10px 0;
+            border-bottom: 1px solid #111;
+            font-family: sans-serif;
+        }
+
+        .mobile-sub-link {
+            color: #888;
+            text-decoration: none;
+            padding: 8px 0 8px 15px;
+            display: block;
+            font-family: sans-serif;
+        }
+    </style>
+    <script>
+        function toggleMobileMenu() {
+            var menu = document.querySelector('.mobile-menu');
+            menu.classList.toggle('open');
+        }
+    </script>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container header-container">
+            <!-- Left: Logo + Desktop Nav -->
+            <div style="display: flex; align-items: center; gap: 40px;">
+                <a href="/" style="display: flex; align-items: center; gap: 10px;">
+                    <img src="/static/favicon.png" alt="Deadhand Protocol"
+                        style="height: 28px; width: 28px; filter: invert(0);">
+                    <span
+                        style="font-weight: 700; font-size: 1.1em; letter-spacing: -0.5px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">Deadhand</span>
+                </a>
+
+                <nav class="nav nav-desktop">
+                    <div class="header-dropdown">
+                        <a href="#" class="header-nav-link" style="display: flex; align-items: center; gap: 6px;">
+                            Products <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; opacity: 0.7;"></i>
+                        </a>
+                        <div class="header-dropdown-content">
+                            <a href="/tools/dead-switch" class="header-dropdown-item">Dead Switch</a>
+                            <div style="height: 1px; background: #222; margin: 4px 0;"></div>
+                            <div
+                                style="padding: 8px 16px; font-size: 0.75em; text-transform: uppercase; color: #666; font-weight: bold; letter-spacing: 0.5px; font-family: sans-serif;">
+                                Free Tools</div>
+                            <a href="/tools/bus-factor" class="header-dropdown-item">Bus Factor Calc</a>
+                            <a href="/tools/optical-splitting" class="header-dropdown-item">Optical Splitting</a>
+                            <a href="/tools/acoustic-masking" class="header-dropdown-item">Acoustic Masking</a>
+                        </div>
+                    </div>
+                    <a href="/buy" class="header-nav-link">Pricing</a>
+                    <a href="/blog" class="header-nav-link">Blog</a>
+                    <a href="https://github.com/pyoneerC/deadhand" class="header-nav-link">GitHub</a>
+                </nav>
+            </div>
+
+            <!-- Right -->
+            <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+                <a href="/tools/dead-switch" class="header-cta">Start Now</a>
+            </div>
+
+            <!-- Mobile Toggle -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <div style="padding-bottom: 20px; border-bottom: 1px solid #111;">
+            <div
+                style="color: #666; font-size: 0.8em; text-transform: uppercase; margin-bottom: 10px; font-weight: bold; font-family: sans-serif;">
+                Products</div>
+            <a href="/tools/dead-switch" class="mobile-sub-link">Dead Switch</a>
+            <a href="/tools/bus-factor" class="mobile-sub-link">Bus Factor Calc</a>
+            <a href="/tools/optical-splitting" class="mobile-sub-link">Optical Splitting</a>
+            <a href="/tools/acoustic-masking" class="mobile-sub-link">Acoustic Masking</a>
+        </div>
+        <a href="/buy" class="mobile-link">Pricing</a>
+        <a href="/blog" class="mobile-link">Blog & Guides</a>
+        <a href="https://github.com/pyoneerC/deadhand" class="mobile-link">GitHub</a>
+        <a href="/tools/dead-switch" class="header-cta"
+            style="text-align: center; margin-top: 20px; display: block;">Start Now</a>
+    </div>
+
+    <main class="container">
+
+        <div style="max-width: 800px; margin: 0 auto;">
+            <p
+                style="margin-top: 20px; text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: #666; margin-bottom: 10px; font-family: sans-serif; font-weight: bold;">
+                Careers at Deadhand</p>
+            <h1>Content & Communications Lead</h1>
+
+            <div class="job-meta">
+                <span><i class="fa-solid fa-earth-americas"></i> Remote (Global)</span>
+                <span><i class="fa-solid fa-clock"></i> Full-Time</span>
+                <span><i class="fa-solid fa-flask"></i> Operations</span>
+            </div>
+
+            <p style="font-size: 1.1em; color: #111; margin-bottom: 2em;">
+                We are looking for a Content & Comms Producer to be the operational heart of our content strategy. You
+                will be the internal journalist, content producer, and master storyteller who transforms raw insights
+                into compelling narratives.
+            </p>
+
+            <p>
+                This role demands a blend of journalistic curiosity, creative storytelling, and rigorous project
+                management. You are crafting the very stories that will inspire and attract the next generation of
+                privacy-conscious users.
+            </p>
+
+            <h2>About the Role</h2>
+            <p>
+                Deadhand is the trustless standard for digital inheritance. We are a small, high-agency team building
+                tools that protect billions in generational wealth. We don't do fluff. We don't do corporate speak. We
+                build sovereign tools for sovereign individuals.
+            </p>
+            <p>
+                As Content & Comms Lead, you will own our voice. You will translate complex cryptographic concepts into
+                human stories. You will manage our production pipeline from initial concept to final publication across
+                all platforms.
+            </p>
+
+            <h2>Key Responsibilities</h2>
+            <ul>
+                <li><strong>Own the Story:</strong> Personally conduct interviews with founders, developers, and users
+                    to uncover the human stories behind the technology.</li>
+                <li><strong>Craft the Narrative:</strong> Write creative briefs and define story arcs for our articles
+                    and guides, ensuring every piece captures the "human closeness" that defines our brand.</li>
+                <li><strong>Produce Content:</strong> Manage the end-to-end production of our content—coordinating
+                    topics, overseeing external editors, and ensuring a consistent flow of high-quality pieces.</li>
+                <li><strong>Be the Quality Gatekeeper:</strong> Act as the final editor and arbiter of quality. You will
+                    personally refine articles to ensure they are sharp, insightful, and perfectly on-brand (Swiss
+                    Institutional).</li>
+                <li><strong>Manage the Pipeline:</strong> Run the entire content production process like a seamless
+                    workflow, automating where possible for scale.</li>
+            </ul>
+
+            <h2>You’re a good fit if you...</h2>
+            <ul>
+                <li><strong>Are a Natural Storyteller:</strong> You have a proven track record of finding the human
+                    angle in complex topics (e.g., tech journalism, crypto research).</li>
+                <li><strong>Possess Exceptional Writing Skills:</strong> You are a world-class editor who can take a
+                    good draft (human or AI) and make it truly great.</li>
+                <li><strong>Are a Systems-Builder:</strong> You thrive on creating efficient, repeatable processes.</li>
+                <li><strong>Have a Keen Eye for Quality:</strong> You are comfortable being the final decision-maker on
+                    what meets the Deadhand standard.</li>
+                <li><strong>Are Intellectually Curious:</strong> You are genuinely fascinated by cryptography,
+                    sovereignty, and game theory.</li>
+                <li><strong>Possess Exceptional Self-Discipline:</strong> You excel in a remote environment, working
+                    autonomously to drive high output.</li>
+            </ul>
+
+            <h2>Why Apply?</h2>
+            <ul>
+                <li><strong>Build with the best:</strong> Collaborate with top engineering and entrepreneurial minds in
+                    the privacy space.</li>
+                <li><strong>Shape a community:</strong> Your stories influence who joins and what future gets built.
+                </li>
+                <li><strong>Unbounded impact:</strong> Own and scale our core content assets from Day 1.</li>
+                <li><strong>True autonomy:</strong> Work remotely with freedom, responsibility, and trust.</li>
+            </ul>
+
+            <div
+                style="background: #f5f5f5; border: 1px solid #ddd; padding: 30px; border-radius: 8px; margin-top: 40px; text-align: center;">
+                <h3 style="margin-top: 0;">Ready to join the protocol?</h3>
+                <p>We can’t wait to meet you and get a taste of your work.</p>
+                <div style="display: flex; justify-content: center; width: 100%;">
+                    <a href="mailto:careers@deadhandprotocol.com?subject=Application:%20Content%20%26%20Comms%20Lead"
+                        class="apply-btn">Apply via Email</a>
+                </div>
+                <p style="font-size: 0.8em; color: #888; margin-top: 15px;">Please attach your CV/Portfolio and a brief
+                    introduction.</p>
+            </div>
+
+        </div>
+
+    </main>
+
+    <footer>
+        <div class="container" style="text-align: center; color: #666;">
+            &copy; 2026 Deadhand Protocol.
+        </div>
+    </footer>
+
+</body>
+
+</html>

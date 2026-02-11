@@ -1339,6 +1339,10 @@ async def heartbeat(request: Request, user_id: int, token: str, db: Session = De
 async def recover_page(request: Request):
     return templates.TemplateResponse("recover.html", {"request": request})
 
+@app.get("/careers", response_class=HTMLResponse)
+async def careers(request: Request):
+    return templates.TemplateResponse("careers.html", {"request": request})
+
 # ========== CRON JOBS ==========
 # Vercel Cron calls this daily at midnight
 
