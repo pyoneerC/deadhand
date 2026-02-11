@@ -1464,81 +1464,134 @@
 
     </main>
 
-    <footer class="footer" style="padding: 60px 20px; text-align: center;">
-        <div
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; border-bottom: 1px solid #ddd; padding-bottom: 40px; margin-bottom: 30px;">
-            <div>
-                <p><b>deadhand protocol</b></p>
-                <p style="font-size: 0.85em; color: #444; font-style: italic;">non-custodial, open-source, and
-                    cryptographically secure.</p>
-                <div class="social-links" style="margin: 10px 0; display: flex; justify-content: center; gap: 15px;">
-                    <a href="https://x.com/deadhandhq" target="_blank" aria-label="Follow us on X (Twitter)"><i
-                            class="fa-brands fa-x-twitter"></i></a>
-                    <a href="https://github.com/pyoneerC/deadhand" target="_blank"
-                        aria-label="View our source code on GitHub"><i class="fa-brands fa-github"></i></a>
-                    <a href="https://discord.gg/eDyCkgvBjf" target="_blank" aria-label="Join our Discord server"><i
-                            class="fa-brands fa-discord"></i></a>
+    <footer
+        style="background: #fafafa; border-top: 1px solid #eee; padding: 80px 20px 40px; font-size: 0.9em; margin-top: 100px; color: #333;">
+        <div class="container" style="max-width: 1200px; margin: 0 auto;">
+
+            <!-- Top Section: Social -->
+            <div
+                style="display: flex; justify-content: space-between; align-items: start; border-bottom: 1px solid #111; padding-bottom: 40px; margin-bottom: 50px; flex-wrap: wrap; gap: 20px;">
+                <div>
+                    <div
+                        style="font-weight: bold; margin-bottom: 15px; color: #111; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px;">
+                        Social</div>
+                    <div style="display: flex; gap: 20px; font-size: 1.3em;">
+                        <a href="https://x.com/deadhandhq" target="_blank"
+                            style="color: #111; transition: opacity 0.2s;" aria-label="X (Twitter)"><i
+                                class="fa-brands fa-x-twitter"></i></a>
+                        <a href="https://github.com/pyoneerC/deadhand" target="_blank"
+                            style="color: #111; transition: opacity 0.2s;" aria-label="GitHub"><i
+                                class="fa-brands fa-github"></i></a>
+                        <a href="https://discord.gg/eDyCkgvBjf" target="_blank"
+                            style="color: #111; transition: opacity 0.2s;" aria-label="Discord"><i
+                                class="fa-brands fa-discord"></i></a>
+                    </div>
                 </div>
             </div>
-            <div>
-                <p><b>departments</b></p>
-                <p
-                    style="font-size: 0.85em; margin-bottom: 5px; display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                    <a href="mailto:support@deadhandprotocol.com"
-                        style="color: #444; text-decoration: none; padding: 4px 0;"><i class="fa-solid fa-envelope"
-                            style="margin-right: 6px; color: #666;"></i>customer
-                        success</a>
-                    <a href="mailto:partnerships@deadhandprotocol.com"
-                        style="color: #444; text-decoration: none; padding: 4px 0;"><i class="fa-solid fa-envelope"
-                            style="margin-right: 6px; color: #666;"></i>partnerships</a>
-                    <a href="mailto:legal@deadhandprotocol.com"
-                        style="color: #444; text-decoration: none; padding: 4px 0;"><i class="fa-solid fa-envelope"
-                            style="margin-right: 6px; color: #666;"></i>legal</a>
-                    <a href="mailto:security@deadhandprotocol.com"
-                        style="color: #444; text-decoration: none; padding: 4px 0;"><i class="fa-solid fa-envelope"
-                            style="margin-right: 6px; color: #666;"></i>security</a>
-                    <a href="mailto:press@deadhandprotocol.com"
-                        style="color: #444; text-decoration: none; padding: 4px 0;"><i class="fa-solid fa-envelope"
-                            style="margin-right: 6px; color: #666;"></i>media</a>
-                </p>
+
+            <!-- Middle Section: Columns -->
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 40px; margin-bottom: 80px;">
+
+                <!-- Col 1: Product -->
+                <div>
+                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Product</h4>
+                    <ul
+                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
+                        <li><a href="/tools/dead-switch"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Dead Switch</a></li>
+                        <li><a href="/buy"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Pricing</a></li>
+                        <li><a href="/tools/bus-factor"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Bus Factor Calc</a>
+                        </li>
+                        <li><a href="/tools/optical-splitting"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Optical
+                                Splitting</a></li>
+                        <li><a href="/tools/acoustic-masking"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Acoustic Masking</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 2: Support -->
+                <div>
+                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Support</h4>
+                    <ul
+                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
+                        <li><a href="https://github.com/pyoneerC/deadhand#how-it-works"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Documentation</a>
+                        </li>
+                        <li><a href="/blog" style="color: #555; text-decoration: none; transition: color 0.2s;">Blog &
+                                Guides</a>
+                        </li>
+                        <li><a href="/docs/roadmap"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Roadmap</a></li>
+                        <li><a href="mailto:support@deadhandprotocol.com"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Help Center</a></li>
+                    </ul>
+                </div>
+
+                <!-- Col 3: Compare -->
+                <div>
+                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Compare</h4>
+                    <ul
+                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
+                        <li><a href="/alternatives/casa-alternative"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Casa</a></li>
+                        <li><a href="/alternatives/unchained-alternative"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Unchained</a>
+                        </li>
+                        <li><a href="/alternatives/ledger-recover-alternative"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Ledger</a></li>
+                        <li><a href="/alternatives/sarcophagus-alternative"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Sarcophagus</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Col 4: Company -->
+                <div>
+                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Company</h4>
+                    <ul
+                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
+                        <li><a href="mailto:partnerships@deadhandprotocol.com"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">
+                                Partnerships</a></li>
+                        <li><a href="mailto:legal@deadhandprotocol.com"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">
+                                Legal</a></li>
+                        <li><a href="mailto:security@deadhandprotocol.com"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">
+                                Security</a></li>
+                        <li><a href="mailto:press@deadhandprotocol.com"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">
+                                Media</a></li>
+                        <li><a href="https://github.com/pyoneerC/deadhand"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Open Source</a></li>
+                    </ul>
+                </div>
+
             </div>
-            <div>
-                <p><b>compare</b></p>
-                <p style="font-size: 0.85em; display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                    <a href="/alternatives/casa-alternative"
-                        style="color: #444; text-decoration: none; padding: 4px 0;">vs
-                        casa</a>
-                    <a href="/alternatives/unchained-alternative"
-                        style="color: #444; text-decoration: none; padding: 4px 0;">vs unchained</a>
-                    <a href="/alternatives/ledger-recover-alternative"
-                        style="color: #444; text-decoration: none; padding: 4px 0;">vs ledger</a>
-                    <a href="/alternatives/sarcophagus-alternative"
-                        style="color: #444; text-decoration: none; padding: 4px 0;">vs sarcophagus</a>
-                </p>
+
+            <!-- Bottom Section: Legal & Copyright -->
+            <div
+                style="padding-top: 30px; display: flex; flex-direction: column; gap: 15px; border-top: 1px solid #111;">
+                <div style="color: #111; font-size: 0.85em; font-weight: bold;">
+                    Copyright © 2026 Deadhand Protocol.
+                </div>
+                <div style="color: #555; font-size: 0.85em;">
+                    Non-custodial, open-source, and cryptographically secure. Friends don't let friends' crypto get lost
+                    with them.
+                </div>
+                <div style="display: flex; gap: 25px; font-size: 0.85em; margin-top: 10px;">
+                    <a href="/terms" style="color: #555; text-decoration: none; transition: color 0.2s;">Legal</a>
+                    <a href="/privacy" style="color: #555; text-decoration: none; transition: color 0.2s;">Privacy
+                        Policy</a>
+                </div>
             </div>
-            <div>
-                <p><b>governance</b></p>
-                <p style="font-size: 0.85em; display: flex; flex-direction: column; gap: 8px; align-items: center;">
-                    <a href="/terms" style="color: #444; text-decoration: none; padding: 4px 0;">terms of use</a>
-                    <a href="https://github.com/pyoneerC/deadhand#how-it-works"
-                        style="color: #444; text-decoration: none; padding: 4px 0;">technical
-                        docs</a>
-                    <a href="/blog" style="color: #444; text-decoration: none; padding: 4px 0;">announcements</a>
-                    <a href="/p" style="color: #444; text-decoration: none; padding: 4px 0;">protocol topics</a>
-                    <a href="/docs/roadmap" style="color: #444; text-decoration: none; padding: 4px 0;">roadmap</a>
-                    <a href="/feed.xml" style="color: #444; text-decoration: none; padding: 4px 0;">rss feed</a>
-                    <a href="https://github.com/pyoneerC/deadhand/tree/main/app/static/press-kit"
-                        style="color: #444; text-decoration: none; padding: 4px 0;" target="_blank"
-                        rel="noopener noreferrer">
-                        press kit
-                    </a>
-                </p>
-            </div>
+
         </div>
-        <p style="font-size: 0.8em; color: #4b5563;">
-            © 2026 deadhand protocol. all rights reserved. developed with technical excellence in Argentina.<br>
-            friends don't let friends' crypto get lost with them.
-        </p>
     </footer>
 
 
