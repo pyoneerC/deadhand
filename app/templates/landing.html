@@ -390,6 +390,8 @@
             /* Hide scrollbar for Firefox */
             -ms-overflow-style: none;
             /* Hide scrollbar for IE/Edge */
+            display: none;
+            /* Hide on mobile by default */
         }
 
         .ascii::-webkit-scrollbar {
@@ -515,6 +517,8 @@
 
             .ascii {
                 font-size: 9px;
+                display: block;
+                /* Show on tablet+ */
             }
 
             .container {
@@ -906,32 +910,268 @@
             backdrop-filter: blur(5px);
         }
     </style>
+
+    <style>
+        /* Header Specific Styles */
+        .header-nav-link {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.2s;
+            font-size: 0.95em;
+            font-weight: 500;
+        }
+
+        .header-nav-link:hover {
+            color: #fff;
+        }
+
+        .header-dropdown {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .header-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #000;
+            min-width: 200px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 6px;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 8px 0;
+            z-index: 1000;
+            /* Bridge the gap so mouse doesn't leave the hover area */
+            margin-top: 0;
+            padding-top: 10px;
+            clip-path: inset(-10px -20px -10px -20px);
+            /* Expanded clip-path horizontally for safe hovering */
+        }
+
+        .header-dropdown:hover .header-dropdown-content {
+            display: block;
+        }
+
+        .header-dropdown-item {
+            color: #ccc;
+            padding: 10px 16px;
+            text-decoration: none;
+            display: block;
+            font-size: 0.9em;
+            transition: background 0.1s, color 0.1s;
+        }
+
+        .header-dropdown-item:hover {
+            background-color: #111;
+            color: #fff;
+        }
+
+        .header-cta {
+            background-color: #333;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 9999px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.9em;
+            transition: background-color 0.2s;
+            border: 1px solid #444;
+        }
+
+        .header-cta:hover {
+            background-color: #555;
+            border-color: #666;
+        }
+
+        /* Mobile Menu Styles */
+        .mobile-menu-btn {
+            display: none;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            z-index: 1002;
+            padding: 0;
+        }
+
+        .mobile-menu-btn span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: #fff;
+            transition: 0.3s;
+        }
+
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 61px;
+            /* Height of header */
+            left: 0;
+            width: 100%;
+            height: calc(100vh - 61px);
+            background-color: #000;
+            padding: 20px;
+            flex-direction: column;
+            gap: 20px;
+            z-index: 1001;
+            border-top: 1px solid #222;
+        }
+
+        .mobile-menu.open {
+            display: flex;
+        }
+
+        .mobile-link {
+            font-size: 1.1em;
+            color: #ccc;
+            text-decoration: none;
+            padding: 10px 0;
+            border-bottom: 1px solid #111;
+        }
+
+        .mobile-link:hover {
+            color: #fff;
+        }
+
+        .mobile-sub-link {
+            font-size: 0.95em;
+            color: #888;
+            text-decoration: none;
+            padding: 8px 0 8px 15px;
+            display: block;
+        }
+
+        .mobile-sub-link:hover {
+            color: #fff;
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 900px) {
+            .nav-desktop {
+                display: none !important;
+            }
+
+            .header-right {
+                display: none !important;
+            }
+
+            .mobile-menu-btn {
+                display: flex;
+            }
+        }
+    </style>
+
+    <script>
+        function toggleMobileMenu() {
+            var menu = document.querySelector('.mobile-menu');
+            var btn = document.querySelector('.mobile-menu-btn');
+            menu.classList.toggle('open');
+
+            // Animate hamburger
+            /* 
+            if (menu.classList.contains('open')) {
+                // optional animation logic
+            }
+            */
+        }
+    </script>
 </head>
 
 
 <body>
     <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
 
-    <header class="header">
-        <div class="container">
-            <nav class="nav" aria-label="Main Navigation">
-                <a href="/tools/dead-switch">dead switch</a>
+    <header class="header"
+        style="background: #000; color: #fff; padding: 18px 0; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222;">
+        <div class="container header-container"
+            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; padding: 0 20px; margin: 0 auto;">
 
-                <div class="dropdown">
-                    <a href="#" style="cursor: default;">free tools</a>
-                    <div class="dropdown-content">
-                        <a href="/tools/optical-splitting">optical splitting</a>
-                        <a href="/tools/acoustic-masking">acoustic masking</a>
-                        <a href="/tools/bus-factor">bus factor calcualtor</a>
+            <!-- Left: Logo + Desktop Nav -->
+            <div style="display: flex; align-items: center; gap: 40px;">
+                <!-- Logo -->
+                <a href="/" style="display: flex; align-items: center; text-decoration: none; color: #fff; gap: 10px;">
+                    <img src="/static/favicon.png" alt="Deadhand Protocol"
+                        style="height: 28px; width: 28px; filter: invert(0);">
+                    <span style="font-weight: 700; font-size: 1.1em; letter-spacing: -0.5px;">Deadhand</span>
+                </a>
+
+                <!-- Desktop Nav -->
+                <nav class="nav nav-desktop" aria-label="Main Navigation"
+                    style="display: flex; gap: 32px; align-items: center;">
+
+                    <div class="header-dropdown">
+                        <a href="#" class="header-nav-link" style="display: flex; align-items: center; gap: 6px;">
+                            Products <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; opacity: 0.7;"></i>
+                        </a>
+                        <div class="header-dropdown-content">
+                            <a href="/tools/dead-switch" class="header-dropdown-item">
+                                Dead Switch
+                            </a>
+                            <div style="height: 1px; background: #222; margin: 4px 0;"></div>
+                            <div
+                                style="padding: 8px 16px; font-size: 0.75em; text-transform: uppercase; color: #666; font-weight: bold; letter-spacing: 0.5px;">
+                                Free Tools</div>
+                            <a href="/tools/bus-factor" class="header-dropdown-item">
+                                Bus Factor Calc
+                            </a>
+                            <a href="/tools/optical-splitting" class="header-dropdown-item">
+                                Optical Splitting
+                            </a>
+                            <a href="/tools/acoustic-masking" class="header-dropdown-item">
+                                Acoustic Masking
+                            </a>
+                        </div>
                     </div>
-                </div>
 
-                <a href="/buy">pricing</a>
-                <a href="/blog">blog</a>
-                <a href="https://github.com/pyoneerC/deadhand">github</a>
-            </nav>
+                    <a href="/buy" class="header-nav-link">Pricing</a>
+                    <a href="/blog" class="header-nav-link">Blog</a>
+                    <a href="https://github.com/pyoneerC/deadhand" class="header-nav-link">GitHub</a>
+                </nav>
+            </div>
+
+            <!-- Right: Secondary Actions (Desktop) -->
+            <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
+                <a href="/tools/dead-switch" class="header-cta">
+                    Start Now
+                </a>
+            </div>
+
+            <!-- Mobile Menu Toggle -->
+            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
         </div>
     </header>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <div style="padding-bottom: 20px; border-bottom: 1px solid #111;">
+            <div
+                style="color: #666; font-size: 0.8em; text-transform: uppercase; margin-bottom: 10px; font-weight: bold;">
+                Products</div>
+            <a href="/tools/dead-switch" class="mobile-sub-link">Dead Switch</a>
+            <a href="/tools/optical-splitting" class="mobile-sub-link">Optical Splitting</a>
+            <a href="/tools/acoustic-masking" class="mobile-sub-link">Acoustic Masking</a>
+            <a href="/tools/bus-factor" class="mobile-sub-link">Bus Factor Calc</a>
+        </div>
+        <a href="/buy" class="mobile-link">Pricing</a>
+        <a href="/blog" class="mobile-link">Blog & Guides</a>
+        <a href="https://github.com/pyoneerC/deadhand" class="mobile-link">GitHub</a>
+
+        <a href="/tools/dead-switch" class="header-cta" style="text-align: center; margin-top: 20px; display: block;">
+            Start Now
+        </a>
+    </div>
 
     <main class="container" id="main-content">
 
