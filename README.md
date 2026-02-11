@@ -224,6 +224,17 @@ By choosing minimal dependencies and low complexity, we ensure that the codebase
 
 ---
 
+## Features vs Benefits
+
+| Feature                                      | Benefit                                                                 |
+| -------------------------------------------- | ----------------------------------------------------------------------- |
+| **Shamir's Secret Sharing (2-of-3 split)**   | **Zero Danger of Theft**: Even if one shard is stolen, your funds are safe. |
+| **Dead Man's Switch (Heartbeat)**            | **Peace of Mind**: If you disappear, the protocol acts automatically.   |
+| **Non-Custodial Architecture**               | **Sovereignty**: We literally *cannot* steal your money. We don't have the keys. |
+| **Client-Side Encryption**                   | **Privacy**: Your secrets never touch our servers unencrypted.          |
+| **Open Source Codebase**                     | **Trust**: You can verify the security yourself (or hire someone to).   |
+| **SaaS & Self-Hosted Options**               | **Flexibility**: Use our managed service for ease, or host it yourself for total control. |
+
 ---
 
 ## Contributing
