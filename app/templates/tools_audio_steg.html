@@ -211,7 +211,8 @@
 
     <h1>acoustic masking</h1>
 
-    <p>hide text messages inside wav audio files. the audio sounds exactly the same to human ears, but contains hidden
+    <p><b>hide text messages inside wav audio files.</b> the audio sounds exactly the same to human ears, but contains
+        hidden
         data.</p>
 
     <p>100% client-side. your files never leave your browser.</p>
@@ -219,6 +220,8 @@
     <div class="warning">
         <b>note:</b> this tool only works with WAV files. mp3 and other compressed formats will destroy the hidden data.
     </div>
+
+    <img src="/static/audiosteg.jpg" alt="audio steg" style="width: 100%; height: auto;">
 
     <hr>
 
@@ -259,7 +262,7 @@
                     <audio id="resultOriginalAudio" controls style="width: 100%;"></audio>
                 </div>
                 <div style="flex: 1; min-width: 250px;">
-                    <p style="font-size: 0.8em; margin-bottom: 5px;">audio with secret:</p>
+                    <p style="font-size: 0.8em; margin-bottom: 5px; text-decoration: underline;">audio with secret:</p>
                     <audio id="encodedAudio" controls style="width: 100%;"></audio>
                 </div>
             </div>
