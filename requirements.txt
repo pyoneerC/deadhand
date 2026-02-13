@@ -4,11 +4,9 @@ jinja2
 python-multipart
 sqlalchemy
 python-dotenv
-httpx
-markdown
 psycopg2-binary
 cryptography
 stripe
 resend
-Pillow
 posthog
+markdown

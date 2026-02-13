@@ -23,10 +23,9 @@ import stripe
 from urllib.parse import quote_plus
 import csv
 import io
-from PIL import Image, ImageDraw, ImageFont
 import random
 from posthog import Posthog
-import httpx
+
 from email.utils import formatdate
 
 # Load environment variables from .env file
@@ -57,26 +56,9 @@ if COMPETITORS_FILE.exists():
         print(f"Error loading competitors: {e}")
 
 # Dynamic price caching
-PRICE_CACHE = {"btc": 0, "last_updated": datetime.min}
-
 async def get_btc_price():
-    """Fetch current BTC price with simple 10-min cache"""
-    global PRICE_CACHE
-    import httpx
-    if (datetime.now() - PRICE_CACHE["last_updated"]).total_seconds() < 600:
-        return PRICE_CACHE["btc"]
-    
-    try:
-        async with httpx.AsyncClient() as client:
-            resp = await client.get("https://api.coindesk.com/v1/bpi/currentprice/BTC.json", timeout=5)
-            if resp.status_code == 200:
-                price = resp.json()["bpi"]["USD"]["rate_float"]
-                PRICE_CACHE["btc"] = round(price)
-                PRICE_CACHE["last_updated"] = datetime.now()
-                return PRICE_CACHE["btc"]
-    except:
-        pass
-    return PRICE_CACHE["btc"] or 65000 # Fallback
+    """Static BTC price placeholder to remove external dependencies"""
+    return 95000  # Conservative estimate for visual purposes
 
 
 from .database import SessionLocal, engine, Base
@@ -235,24 +217,6 @@ async def favicon():
 async def robots():
     return FileResponse("robots.txt", media_type="text/plain")
 
-# IndexNow Key (for Bing/Yandex instant indexing)
-INDEXNOW_KEY = "d3adh4ndpr0t0c0l2026x"
-
-@app.get(f"/{INDEXNOW_KEY}.txt", include_in_schema=False)
-async def indexnow_key():
-    return Response(content=INDEXNOW_KEY, media_type="text/plain")
-
-async def ping_indexnow(url: str):
-    """Ping IndexNow API to request immediate crawling (Bing, Yandex, DuckDuckGo)"""
-    try:
-        async with httpx.AsyncClient() as client:
-            await client.get(
-                f"https://api.indexnow.org/indexnow?url={url}&key={INDEXNOW_KEY}",
-                timeout=5
-            )
-    except:
-        pass  # Non-critical, fail silently
-
 # Sitemap.xml
 @app.get("/sitemap.xml", include_in_schema=False)
 async def sitemap():
@@ -407,48 +371,6 @@ def get_db():
     finally:
         db.close()
 
-# Discord notification helper
-async def send_discord_notification(plan: str, amount: float, customer_email: str = None):
-    """Send purchase notification to Discord"""
-    if not DISCORD_WEBHOOK_URL:
-        return  # Skip if webhook not configured
-    
-    import httpx
-    
-    # Determine emoji and color based on plan
-    if plan == "annual":
-        emoji = "📅"
-        color = 3066993  # Green
-        plan_name = "Annual Plan"
-    else:
-        emoji = "💎"
-        color = 15844367  # Gold
-        plan_name = "Lifetime Plan"
-    
-    embed = {
-        "title": f"{emoji} New Purchase!",
-        "description": f"Someone just bought **{plan_name}**",
-        "color": color,
-        "fields": [
-            {"name": "Plan", "value": plan_name, "inline": True},
-            {"name": "Amount", "value": f"${amount:.2f}", "inline": True},
-        ],
-        "footer": {"text": "Deadhand"},
-        "timestamp": datetime.utcnow().isoformat()
-    }
-    
-    if customer_email:
-        embed["fields"].append({"name": "Email", "value": customer_email, "inline": False})
-    
-    payload = {"embeds": [embed]}
-    
-    try:
-        async with httpx.AsyncClient() as client:
-            await client.post(DISCORD_WEBHOOK_URL, json=payload)
-    except Exception as e:
-        posthog.capture_exception(e)
-        print(f"Discord webhook error: {e}")
-
 # Stripe Webhook Handler
 @app.post("/stripe/webhook")
 async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
@@ -480,9 +402,6 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
         subscription_id = session.get("subscription")
         
         print(f"✅ Payment received: {customer_email} - plan: {plan}")
-        
-        # Send Discord notification
-        await send_discord_notification(plan, amount, customer_email)
         
         # Track in PostHog
         posthog.capture(
@@ -649,7 +568,7 @@ def send_founder_welcome(email: str):
             <p><a href="{BASE_URL}" style="color: #666; text-decoration: none;">Deadhand Protocol</a></p>
             <br>
             <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-            <p style="font-size: 14px; color: #666;">P.S. While you set up your vault, <a href="{os.getenv('DISCORD_INVITE_URL', '#')}" style="color: #0066cc;">join our private Discord</a>. It's where the smart money hangs out.</p>
+            <p style="font-size: 14px; color: #666;">P.S. While you set up your vault, <a href="https://discord.gg/eDyCkgvBjf" style="color: #0066cc;">join our private Discord</a>. It's where the smart money hangs out.</p>
         </div>
         """
 
@@ -749,93 +668,6 @@ async def dead_switch_page(request: Request, db: Session = Depends(get_db)):
         "email": email,
         "csrf_token": getattr(request.state, "csrf_token", "")
     })
-
-# Lead magnet and tracking disabled
-
-# ========== EXPERIMENT TRACKING ==========
-
-@app.post("/api/roast")
-async def api_roast(request: Request, csrf_protection: None = Depends(validate_csrf)):
-    """
-    Proxy request to OpenRouter to avoid exposing API key on frontend.
-    Also captures optional email for lead generation.
-    """
-    try:
-        data = await request.json()
-    except:
-        raise HTTPException(status_code=400, detail="Invalid JSON in request")
-        
-    user_input = data.get("input")
-    user_email = data.get("email")  # Optional
-    
-    if not user_input:
-        raise HTTPException(status_code=400, detail="Input text is required for the roast")
-    
-    # Log email for lead capture (if provided)
-    if user_email:
-        # Track in PostHog
-        posthog.capture(
-            distinct_id=user_email or "anonymous",
-            event="ai_roast_requested",
-            properties={
-                "has_email": bool(user_email),
-                "input_length": len(user_input)
-            }
-        )
-
-    api_key = os.getenv("OPENROUTER_API_KEY")
-    if not api_key:
-        raise HTTPException(status_code=500, detail="Server Configuration Error: API key missing")
-
-    prompt = f"act as a paranoid programmer who is tired of people losing their crypto. a user tells you their seed phrase storage method. roast them brutally. show them how they get rekt. be raw, messy, and all lowercase. no intro, no 'here is your roast', just the cold truth. setup: {user_input}"
-    
-    try:
-        start_time = datetime.now()
-        async with httpx.AsyncClient() as client:
-            response = await client.post(
-                "https://openrouter.ai/api/v1/chat/completions",
-                headers={
-                    "Authorization": f"Bearer {api_key.strip()}",
-                    "Content-Type": "application/json",
-                    "HTTP-Referer": "https://deadhandprotocol.com",
-                    "X-Title": "Deadhand Crypto Inheritance"
-                },
-                json={
-                    "model": "nvidia/nemotron-nano-9b-v2:free",
-                    "messages": [{"role": "user", "content": prompt}]
-                },
-                timeout=30.0
-            )
-            
-            result = response.json()
-            latency = (datetime.now() - start_time).total_seconds()
-            
-            if response.status_code == 200:
-                text = result["choices"][0]["message"]["content"]
-                
-                # Manual PostHog AI Generation Capture
-                # This ensures you see the data in your LLM Analytics tab
-                posthog.capture(
-                    distinct_id=user_email or "anonymous",
-                    event="$ai_generation",
-                    properties={
-                        "$ai_model": "nvidia/nemotron-nano-9b-v2:free",
-                        "$ai_latency": latency,
-                        "$ai_input": [{"role": "user", "content": prompt}],
-                        "$ai_output_choices": [text],
-                        "$ai_input_tokens": result.get("usage", {}).get("prompt_tokens"),
-                        "$ai_output_tokens": result.get("usage", {}).get("completion_tokens"),
-                        "feature": "ai_roast"
-                    }
-                )
-                
-                return {"roast": text.lower().strip()}
-            else:
-                raise HTTPException(status_code=500, detail="AI service error")
-    except Exception as e:
-        posthog.capture_exception(e, distinct_id=user_email or "anonymous")
-        print(f"AI Roast Error: {e}")
-        raise HTTPException(status_code=500, detail=f"AI Roast failed: {str(e)}")
 
 # ========== BLOG ==========
 
@@ -976,50 +808,10 @@ async def docs_index():
 
 @app.get("/docs/{doc_name}", response_class=HTMLResponse)
 async def docs_page(request: Request, doc_name: str):
-    """Documentation pages"""
-    return await render_docs(request, doc_name)
+    """Documentation now lives on GitHub to reduce dependency surface area"""
+    return RedirectResponse(f"https://github.com/pyoneerC/deadhand/blob/main/docs/{doc_name}.md")
 
-async def render_docs(request: Request, doc_name: str):
-    """Helper to render markdown documentation"""
-    docs_path = Path("docs")
-    
-    # Map doc names to files
-    doc_files = {
-        "README": "README.md",
-        "getting-started": "getting-started.md",
-        "how-it-works": "how-it-works.md",
-        "security": "security.md",
-        "faq": "faq.md",
-        "icp": "icp.md",
-        "api-reference": "api-reference.md",
-        "self-hosting": "self-hosting.md",
-        "roadmap": "roadmap.md",
-    }
-    
-    filename = doc_files.get(doc_name, f"{doc_name}.md")
-    file_path = docs_path / filename
-    
-    if not file_path.exists():
-        # Return 404 page or redirect
-        return templates.TemplateResponse("docs.html", {
-            "request": request,
-            "content": "<h1>Page Not Found</h1><p>This documentation page doesn't exist.</p>",
-            "current_doc": doc_name
-        })
-    
-    # Read and convert markdown to HTML
-    md_content = file_path.read_text(encoding="utf-8")
-    html_content = markdown.markdown(
-        md_content, 
-        extensions=['tables', 'fenced_code', 'toc']
-    )
-    
-    return templates.TemplateResponse("docs.html", {
-        "request": request,
-        "content": html_content,
-        "current_doc": "index" if doc_name == "README" else doc_name,
-        "slug": doc_name
-    })
+# Deprecated helper function removed to save bytes
 
 # SEO: Competitor Alternatives
 @app.get("/alternatives/{competitor}-alternative", response_class=HTMLResponse)
@@ -1097,47 +889,6 @@ async def programmatic_seo_landing(request: Request, slug: str):
         "config_hash": hashlib.sha256(slug.encode()).hexdigest()[:12]
     })
 
-@app.get("/api/og/{slug}")
-async def dynamic_og_image(slug: str):
-    """Generate God Level dynamic OG images on the fly"""
-    if slug not in PSEO_TOPICS:
-        # Fallback to default
-        return FileResponse("app/static/og_card.png")
-    
-    topic = PSEO_TOPICS[slug]
-    title = topic['title'].lower()
-    
-    # Image config
-    W, H = 1200, 630
-    img = Image.new('RGB', (W, H), color='#09090b')
-    draw = ImageDraw.Draw(img)
-    
-    try:
-        # Try to find a system font
-        font_main = ImageFont.truetype("arial.ttf", 80)
-        font_sub = ImageFont.truetype("arial.ttf", 40)
-    except:
-        font_main = ImageFont.load_default()
-        font_sub = ImageFont.load_default()
-    
-    # Draw branding
-    draw.text((60, 60), "// DEADHAND PROTOCOL", fill="#10b981", font=font_sub)
-    
-    # Draw title (wrap text if needed)
-    import textwrap
-    lines = textwrap.wrap(title, width=25)
-    y_text = 180
-    for line in lines:
-        draw.text((60, y_text), line, fill="#ffffff", font=font_main)
-        y_text += 100
-    
-    # Draw Signature Quote
-    draw.text((60, 520), '"trust, but verify."', fill="#52525b", font=font_sub)
-    
-    # Save to buffer
-    buf = io.BytesIO()
-    img.save(buf, format='PNG')
-    return Response(content=buf.getvalue(), media_type="image/png")
 
 
 @app.post("/vault/create", response_class=HTMLResponse)
