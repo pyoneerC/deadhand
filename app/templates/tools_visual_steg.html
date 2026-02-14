@@ -145,6 +145,78 @@
             color: #666;
         }
     </style>
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://deadhandprotocol.com/tools/optical-splitting">
+    <meta property="og:title" content="optical splitting - deadhand">
+    <meta property="og:description"
+        content="split an image into 2 shares that look like noise. combine them to reveal the original. 100% client-side security.">
+    <meta property="og:image" content="https://deadhandprotocol.com/static/og_card.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:site_name" content="Deadhand Protocol">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@DeadhandProto">
+    <meta name="twitter:url" content="https://deadhandprotocol.com/tools/optical-splitting">
+    <meta name="twitter:title" content="optical splitting - deadhand">
+    <meta name="twitter:description"
+        content="split an image into 2 shares that look like noise. combine them to reveal the original.">
+    <meta name="twitter:image" content="https://deadhandprotocol.com/static/og_card.png">
+
+    <!-- Schema.org -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "SoftwareApplication",
+          "name": "Optical Splitting Tool",
+          "operatingSystem": "Any",
+          "applicationCategory": "SecurityApplication",
+          "url": "https://deadhandprotocol.com/tools/optical-splitting",
+          "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "USD"
+          },
+          "description": "A browser-based tool for visual cryptography. Splits images into two noise-like shares that reveal the original when overlaid.",
+          "featureList": "Client-side processing, Visual cryptography implementation, No server uploads",
+          "author": {
+            "@type": "Organization",
+            "name": "Deadhand Protocol",
+            "url": "https://deadhandprotocol.com"
+          }
+        },
+        {
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://deadhandprotocol.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Tools",
+              "item": "https://deadhandprotocol.com/tools"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Optical Splitting",
+              "item": "https://deadhandprotocol.com/tools/optical-splitting"
+            }
+          ]
+        }
+      ]
+    }
+    </script>
+
     <!-- PostHog -->
     <script>
         !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init rs ls bi ns us ts ss capture calculateEventProperties vs register register_once register_for_session unregister unregister_for_session gs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fs ds createPersonProfile ps Qr opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing hs debug O cs getPageViewId captureTraceFeedback captureTraceMetric Kr".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
