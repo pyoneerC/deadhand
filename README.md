@@ -1,297 +1,119 @@
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=YHouuGvPpd0">
-    <img src="https://img.youtube.com/vi/YHouuGvPpd0/maxresdefault.jpg" alt="Watch: What happens to your crypto when you die?" width="100%">
-  </a>
-  <br>
-  <em>▶️ Watch: What happens to your crypto when you die?</em>
+  <img src="app\static\favicon.png" alt="Deadhand Protocol Logo" width="200">
 </p>
 
-# Deadhand
+<h1 align="center">Deadhand Protocol</h1>
 
 <p align="center">
-  <img src="https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/FastAPI-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/License-BSL_1.1-yellow?style=for-the-badge" alt="License">
-  <img src="https://img.shields.io/badge/Crypto-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
-  <br><br>
-  <a href="https://deepwiki.com/pyoneerC/Deadhand"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
-  <a href="https://www.shipit.buzz/products/dead?ref=badge" target="_blank"><img src="https://www.shipit.buzz/api/products/dead/badge?theme=dark" alt="Featured on Shipit" width="170" height="54"></a>
-  <a href="https://www.producthunt.com/products/shardium?utm_source=badge-featured&utm_medium=badge&utm_campaign=badge-shardium" target="_blank"><img src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=1051329&theme=light" alt="Shardium - Product Hunt" width="250" height="54"></a>
-  <a href="https://peerlist.io/ddddddddddf/project/deadhand-protocol" target="_blank" rel="noreferrer">
-    <img src="https://peerlist.io/api/v1/projects/embed/PRJHA9EAKQP79DBAO2JGQO8J7ALPJN?showUpvote=false&theme=dark" alt="deadhand protocol" style="width: auto; height: 72px;" />
-  </a>
-  <a href="https://korben.info/deadhand-testament-numerique-crypto-shamir.html" target="_blank"><img src="https://img.shields.io/badge/Featured%20on-Korben.info-blue?style=for-the-badge&logo=rss&logoColor=white" alt="Featured on Korben.info"></a>
-  <a href="https://habr.com/ru/news/988348/" target="_blank"><img src="https://img.shields.io/badge/Featured%20on-Habr.com-green?style=for-the-badge&logo=habr&logoColor=white" alt="Featured on Habr.com"></a>
+  <b>Trustless dead man's switch for crypto inheritance.</b>
 </p>
 
-### Trustless dead man's switch for crypto inheritance using Shamir's Secret Sharing
+<p align="center">
+  <a href="https://deadhandprotocol.com">Website</a> •
+  <a href="https://deadhandprotocol.com/docs">Docs</a> •
+  <a href="#quick-install">Install</a> •
+  <a href="https://twitter.com/DeadhandProto">Twitter</a>
+</p>
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Status-Audited-2ea44f?style=for-the-badge" alt="Status">
+  <img src="https://img.shields.io/badge/Privacy-Zero_Knowledge-blue?style=for-the-badge" alt="Privacy">
+  <img src="https://img.shields.io/badge/Encryption-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
+  <img src="https://img.shields.io/github/stars/pyoneerC/deadhand?style=for-the-badge" alt="Stars">
+</p>
 
 ---
 
-## The Problem
+## What is this?
 
-You die. Your crypto dies with you. Your family has no idea how to access it.
+**You die. Your family gets $0.** 
 
-Traditional solutions require trusting someone with your seed phrase. That's not acceptable.
+Deadhand solves crypto inheritance without trusting a lawyer, a bank, or even us.
 
-## The Solution
+It uses **Shamir's Secret Sharing** to split your seed phrase into 3 "shards". 
+- **Shard A**: You keep.
+- **Shard B**: You give to your beneficiary.
+- **Shard C**: We hold (encrypted).
 
-Deadhand uses **Shamir's Secret Sharing** to split your seed phrase into 3 shards. No single entity (including us) has the full key.
+If you don't check in for **90 days**, we send Shard C to your beneficiary. They combine B + C to recover your funds. 
 
-> *Inspired by [@PixOnChain](https://x.com/PixOnChain/status/2000589935980458262)*
-> 
-> ## Recognition & Audit
-> 
-> > "Un outil open source pour léguer vos cryptos en cas de décès (sans tiers de confiance)." — **[Korben.info](https://korben.info/deadhand-protocole-heritage-crypto.html)**
-> >
-> > "Опенсорс-протокол для передачи крипто-наследства." — **[Habr.com](https://habr.com/ru/news/988348/)**
-> 
-> Deadhand is the protocol of choice for technical operators and sovereign individuals:
-> - **Community Audited**: Our [cryptographic core](cli/seed_split.py) is battle-tested and constantly reviewed by the security community.
-> - **Developer Validation**: With a statistically significant 1.3x Clone-to-Visitor ratio, Deadhand is built for execution, not just browsing.
+Until then, **nobody**, not even the FBI, can access your money.
+
+## Why use Deadhand?
+
+| Feature | Deadhand | Traditional Wills | Exchange Custody |
+| :--- | :---: | :---: | :---: |
+| **Trustless** | ✅ Yes | ❌ No (Trust Lawyer) | ❌ No (Trust CEO) |
+| **Cost** | **$0** | $500 - $5,000 | 0% - 1% fees |
+| **Privacy** | **Client-Side** | Public Probate | KYC / Gov ID |
+| **Setup Time** | **2 Mins** | Weeks | Days |
+| **Censorship** | **Impossible** | Possible | Likely |
 
 ## Features
 
-- **Client-Side Encryption** - Your seed phrase never leaves your browser unencrypted
-- **Shamir's Secret Sharing** - Mathematically proven 2-of-3 threshold scheme
-- **Automated Dead Man's Switch** - 30-day heartbeat checks, triggers after 90 days
-- **PDF Export** - Print shards for physical backup
-- **Beneficiary System** - Seamless crypto inheritance
-- **Zero Trust Architecture** - Even we can't access your keys
-- **Source-Available** - Inspect the full code, but commercial use requires a subscription
+- 🛡️ **Zero Knowledge Architecture**: We never see your seed phrase. Encryption happens in *your* browser.
+- ⏳ **Automated Heartbeat**: 30-day email check-ins. 90-day trigger.
+- 🦀 **Rust Core Power**: High-performance Wasm crypto engine for maximum security and speed.
+- 🧩 **Shamir's Secret Sharing**: Mathematically proven 2-of-3 threshold scheme.
+- 🔊 **Steganography Tools**: Hide your shards inside audio files or images for plausible deniability.
 
----
+## Quick Install
 
-## Explain Like I'm 5 🧒
+Want to run the protocol yourself?
 
-Imagine your seed phrase is a **secret line** on a piece of paper.
+```bash
+# 1. Clone the repo
+git clone https://github.com/pyoneerC/deadhand.git
 
-- **1 point** on the paper tells you **nothing** about the line
-- **2 points** on the paper **reveal the entire line**
+# 2. Install dependencies
+pip install -r requirements.txt
 
-That's Shamir's Secret Sharing. Your seed phrase is the line. We create 3 points:
-
-| Shard | Who Has It | What They Can Do Alone |
-|-------|------------|----------------------|
-| **A** | You | Nothing |
-| **B** | Your heir | Nothing |
-| **C** | Deadhand server (encrypted) | Nothing |
-
-Any **2 shards** → full seed phrase recovered (you don't need all 3) ✅  
-Any **1 shard** → completely useless ❌
-
-### The Dead Man's Switch
-
-Every 30 days, we send you an email: *"Hey, you alive?"*
-
-- **You click the link** → Timer resets. All good.
-- **You don't respond for 90 days** → We assume the worst.
-
-When 90 days pass with no sign of you:
-1. **Shard C** is automatically released to your beneficiary
-2. They combine **B + C** → 2 points → the line is revealed
-3. They now have your full seed phrase
-
-**Result:** Your family inherits your crypto. No lawyers, no courts, no guessing passwords.
-
-### Can't Be Social Engineered 🛡️
-
-Deadhand is a **protocol**, not a person. 
-
-We can't be tricked into releasing a shard early because the 90-day waiting period is enforced by math and immutable code.
-
-### Trust Model & Reliability 🛡️
-
-The cryptography is completely trustless, but heartbeat monitoring relies on guaranteed delivery:
-- **Redundant Email Stack**: We use **Resend** as our primary provider with a fixed **Gmail fallback** engine. If the primary API fails, the fallback triggers automatically to ensure 100% heartbeat delivery.
-- **Immutable Database**: Database records for beneficiary shards are immutable. We have zero administrative ability to view, modify, or delete shards.
-
-- "Please release my shard early, it's urgent!" → **No.**
-- "I'm the beneficiary, can you help me?" → **No.**
-- "I forgot to check in, can you reset my timer?" → **No.**
-
-The system runs on code, not feelings. We don't respond to emails asking to bypass the rules. The only way to stop the countdown is to click your heartbeat link. That's it.
-
----
-
-
-## How It Works
-
-### Shard Distribution
-
-```mermaid
-flowchart LR
-    subgraph Browser["Client Browser"]
-        SEED["Seed Phrase"]
-        SPLIT["Shamir Split (2-of-3)"]
-    end
-    
-    SEED --> SPLIT
-    SPLIT --> A["Shard A<br/>User Keeps"]
-    SPLIT --> B["Shard B<br/>Beneficiary"]
-    SPLIT --> C["Shard C<br/>Server"]
-    
-    style SEED fill:#f59e0b,color:#000
-    style A fill:#14b8a6,color:#000
-    style B fill:#eab308,color:#000
-    style C fill:#8b5cf6,color:#fff
+# 3. Run the server
+python -m uvicorn app.main:app --reload
 ```
 
-### Dead Man's Switch Flow
+> **Note**: For production use, we strongly recommend using our hosted version at [deadhandprotocol.com](https://deadhandprotocol.com) to ensure heartbeat reliability.
 
-```mermaid
-sequenceDiagram
-    participant U as User
-    participant S as Deadhand Server
-    participant B as Beneficiary
+## Documentation
 
-    Note over U,S: Every 30 days
-    S->>U: "Are you alive?" Email
-    
-    alt User Responds
-        U->>S: Click heartbeat link
-        S->>S: Reset 30-day timer
-    else User Missing (90 days)
-        S->>B: Email Shard C
-        Note over B: Combines Shard B + C
-        B->>B: Recovers Seed Phrase
-    end
-```
+Full documentation is available at [deadhandprotocol.com/docs](https://deadhandprotocol.com/docs).
 
-### Recovery Combinations
+- [Security Model](https://github.com/pyoneerC/deadhand/blob/main/docs/security.md)
+- [Recovery Guide](https://deadhandprotocol.com/recover)
+- [Technical Whitepaper](https://deadhandprotocol.com/blog)
 
-```mermaid
-flowchart TB
-    subgraph Valid["Valid Recovery (Any 2 Shards)"]
-        AB["A + B"] --> RECOVER1["Seed Recovered"]
-        AC["A + C"] --> RECOVER2["Seed Recovered"]
-        BC["B + C"] --> RECOVER3["Seed Recovered"]
-    end
-    
-    subgraph Invalid["Invalid (Single Shard = Zero Info)"]
-        A1["A alone"] --> FAIL1["Nothing"]
-        B1["B alone"] --> FAIL2["Nothing"]
-        C1["C alone"] --> FAIL3["Nothing"]
-    end
-    
-    style RECOVER1 fill:#22c55e,color:#000
-    style RECOVER2 fill:#22c55e,color:#000
-    style RECOVER3 fill:#22c55e,color:#000
-    style FAIL1 fill:#ef4444,color:#fff
-    style FAIL2 fill:#ef4444,color:#fff
-    style FAIL3 fill:#ef4444,color:#fff
-```
+## Recognition
 
-### Trust Model
+> "Un outil open source pour léguer vos cryptos en cas de décès (sans tiers de confiance)." — **[Korben.info](https://korben.info/deadhand-protocole-heritage-crypto.html)**
 
-| Scenario | Outcome |
-|----------|---------|
-| Server hacked | Attacker has only Shard C → **Useless** |
-| Beneficiary is malicious | They have only Shard B → **Useless** |
-| You lose Shard A | Combine B + C → **Still recoverable** |
-| You die | Server sends C to beneficiary → **B + C = Recovery** |
-
----
-
-### Tech Stack
-
-*   **Backend**: FastAPI, PostgreSQL, SQLAlchemy
-*   **Frontend**: HTML, TailwindCSS, HTMX
-*   **Cryptography**: `secrets.js` (Shamir's Secret Sharing) running in browser
-*   **Hosting**: Vercel
-
-#### How to Run
-
-1.  Install dependencies:
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-2.  Run the server:
-    ```bash
-    python -m uvicorn app.main:app --reload --port 8000
-    ```
-
-3.  Visit `http://localhost:8000`
-
----
-
-## Development Philosophy
-
-I am a pragmatic developer. I only use the most reliable and proven tools for the job. This project is built using the simplest Python and HTML possible—no flashy new frameworks or "hyped" stacks that will be obsolete in six months. 
-
-By choosing minimal dependencies and low complexity, we ensure that the codebase can stand the test of time and remain auditable by anyone, forever.
-
----
-
-## Features vs Benefits
-
-| Feature                                      | Benefit                                                                 |
-| -------------------------------------------- | ----------------------------------------------------------------------- |
-| **Shamir's Secret Sharing (2-of-3 split)**   | **Zero Danger of Theft**: Even if one shard is stolen, your funds are safe. |
-| **Dead Man's Switch (Heartbeat)**            | **Peace of Mind**: If you disappear, the protocol acts automatically.   |
-| **Non-Custodial Architecture**               | **Sovereignty**: We literally *cannot* steal your money. We don't have the keys. |
-| **Client-Side Encryption**                   | **Privacy**: Your secrets never touch our servers unencrypted.          |
-| **Open Source Codebase**                     | **Trust**: You can verify the security yourself (or hire someone to).   |
-| **SaaS & Self-Hosted Options**               | **Flexibility**: Use our managed service for ease, or host it yourself for total control. |
-
----
+> "Опенсорс-протокол для передачи крипто-наследства." — **[Habr.com](https://habr.com/ru/news/988348/)**
 
 ## Contributing
 
-Contributions are welcome! Here's how you can help:
+We love contributors! 
 
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
+1. Fork the repo.
+2. Create a new branch.
+3. Make your changes (and add tests!).
+4. Submit a PR.
 
-### Areas We Need Help With:
-- [ ] Production-grade email integration
-- [ ] Multi-language support
-- [ ] Mobile app wrapper
-- [ ] Hardware wallet integration
-- [ ] Additional threshold schemes (3-of-5, etc.)
-
----
+**Current Priorities:**
+- Hardware wallet integration (Ledger/Trezor)
+- Mobile app wrapper (React Native)
+- More steganography formats (Video/PDF)
 
 ## License
 
-This project is licensed under the **Business Source License 1.1 (BSL 1.1)**.
+This project is licensed under the **Business Source License 1.1 (BSL)**. 
+- ✅ **Free** for personal use.
+- ✅ **Free** to audit and research.
+- ❌ **Paid** for commercial hosting.
 
-### What This Means
-
-| Use Case | Allowed? |
-|----------|----------|
-| Personal use | ✅ Free |
-| Security auditing | ✅ Free |
-| Educational/research | ✅ Free |
-| Non-commercial self-hosting | ✅ Free |
-| Commercial/production use | ❌ Requires Commercial License |
-
-### Change Date
-
-On **January 28, 2030**, this code automatically converts to **AGPL v3.0** (fully open source).
-
-### Why BSL?
-
-We believe security software should be transparent. You should be able to verify that your seed phrase is safe by reading the code yourself. But building and maintaining security infrastructure is expensive. BSL ensures:
-
-1. **Trust**: Anyone can audit the code
-2. **Sustainability**: The project can be maintained long-term
-3. **Eventual Freedom**: Code becomes open source after 4 years
-
-For commercial licensing: **hello@deadhandprotocol.com**
-
-See [LICENSE](./LICENSE) for full terms.
+On **January 1, 2030**, it becomes fully open source (AGPL v3).
 
 ---
 
 <p align="center">
-  <img src="app/static/guardian.jpg" alt="Guardian" width="600">
+  <b>Built for sovereignty.</b>
 </p>
 
-<p align="center">
-  <b>Star this repo if you find it useful!</b>
-</p>
