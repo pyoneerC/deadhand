@@ -6,6 +6,7 @@ import hmac
 import hashlib
 import re
 import os
+import json
 from dotenv import load_dotenv
 from fastapi import FastAPI, Request, Depends, Form, HTTPException, Response, BackgroundTasks
 import resend
@@ -25,8 +26,36 @@ import csv
 import io
 import random
 from posthog import Posthog
+import base64
 
 from email.utils import formatdate
+
+# Passkey (WebAuthn) support
+import webauthn
+from webauthn import (
+    generate_registration_options,
+    verify_registration_response,
+    generate_authentication_options,
+    verify_authentication_response,
+    options_to_json,
+)
+from webauthn.helpers.structs import (
+    AuthenticatorSelectionCriteria,
+    UserVerificationRequirement,
+    ResidentKeyRequirement,
+    AuthenticatorAttachment,
+    PublicKeyCredentialDescriptor,
+)
+from webauthn.helpers.cose import COSEAlgorithmIdentifier
+
+# x402 crypto payment support (USDC on Base)
+from x402 import x402ResourceServerSync, ResourceConfig
+from x402.http import HTTPFacilitatorClientSync, FacilitatorConfig
+try:
+    from x402.mechanisms.evm.exact import ExactEvmServerScheme
+    _X402_EVM_AVAILABLE = True
+except ImportError:
+    _X402_EVM_AVAILABLE = False
 
 # Load environment variables from .env file
 load_dotenv()
@@ -63,7 +92,7 @@ async def get_btc_price():
 
 from .database import SessionLocal, engine, Base
 from .models import User
-from .services import send_email
+from .services import send_email, send_telegram_message
 from .crypto import encrypt_shard, decrypt_shard, encrypt_token, decrypt_token
 
 # Create database tables
@@ -81,6 +110,42 @@ STRIPE_PRICES = {
     "annual": os.getenv("STRIPE_PRICE_ANNUAL"),      # $49/year subscription
     "lifetime": os.getenv("STRIPE_PRICE_LIFETIME"),  # $129 one-time
 }
+
+# x402 USDC Payment Configuration (Base mainnet)
+X402_WALLET_ADDRESS = os.getenv("X402_WALLET_ADDRESS")  # USDC receiving wallet on Base
+X402_FACILITATOR_URL = os.getenv("X402_FACILITATOR_URL", "https://x402.org/facilitator")
+# Prices in USD for x402 crypto payments
+X402_PRICES = {
+    "annual": os.getenv("X402_PRICE_ANNUAL", "$49.00"),
+    "lifetime": os.getenv("X402_PRICE_LIFETIME", "$129.00"),
+}
+
+# Initialise x402 resource server (lazy – only if wallet is configured)
+_x402_server: x402ResourceServerSync | None = None
+
+def _get_x402_server() -> x402ResourceServerSync | None:
+    """Return a ready x402 server, or None if not configured."""
+    global _x402_server
+    if _x402_server is not None:
+        return _x402_server
+    if not X402_WALLET_ADDRESS or not _X402_EVM_AVAILABLE:
+        return None
+    try:
+        facilitator = HTTPFacilitatorClientSync(
+            FacilitatorConfig(url=X402_FACILITATOR_URL)
+        )
+        srv = x402ResourceServerSync(facilitator)
+        srv.register("eip155:8453", ExactEvmServerScheme())
+        srv.initialize()
+        _x402_server = srv
+        return _x402_server
+    except Exception as e:
+        print(f"x402 server init failed: {e}")
+        return None
+
+# In-memory store for WebAuthn challenges (keyed by email, TTL handled by expiry)
+# {email: {"challenge": bytes, "expires": datetime}}
+_passkey_challenges: dict[str, dict] = {}
 
 # PostHog Configuration
 posthog = Posthog(
@@ -539,6 +604,103 @@ async def buy_lifetime(request: Request):
         return RedirectResponse(url="/buy")
 
 
+# ========== x402 CRYPTO PAYMENTS (USDC on Base) ==========
+
+@app.get("/buy/crypto/{plan}")
+async def buy_crypto(request: Request, plan: str):
+    """
+    x402 payment endpoint for USDC on Base mainnet.
+    Returns 402 Payment Required with payment requirements if no X-PAYMENT header.
+    Verifies and activates the plan when X-PAYMENT header is present.
+    """
+    if plan not in ("annual", "lifetime"):
+        raise HTTPException(status_code=400, detail="Invalid plan")
+
+    srv = _get_x402_server()
+    if srv is None:
+        # x402 not configured – fall back to Stripe
+        return RedirectResponse(url=f"/buy/{plan}", status_code=303)
+
+    payment_header = request.headers.get("X-PAYMENT")
+
+    resource_url = f"{BASE_URL.rstrip('/')}/buy/crypto/{plan}"
+    config = ResourceConfig(
+        scheme="exact",
+        network="eip155:8453",
+        pay_to=X402_WALLET_ADDRESS,
+        price=X402_PRICES[plan],
+        resource=resource_url,
+    )
+
+    if not payment_header:
+        # No payment – return 402 with requirements
+        try:
+            requirements = srv.build_payment_requirements(config)
+            body = [r.model_dump() for r in requirements]
+            return Response(
+                content=json.dumps({"x402Version": 1, "accepts": body}),
+                status_code=402,
+                media_type="application/json",
+                headers={"X-PAYMENT-REQUIRED": "true"},
+            )
+        except Exception as e:
+            print(f"x402 build_payment_requirements error: {e}")
+            return RedirectResponse(url="/buy", status_code=303)
+
+    # Payment header present – verify it
+    try:
+        requirements = srv.build_payment_requirements(config)
+        result = srv.verify_payment(payment_header, requirements[0])
+        if not result or not getattr(result, "is_valid", False):
+            raise HTTPException(status_code=402, detail="Payment verification failed")
+
+        # Extract payer identity from the payment payload for user creation.
+        # X-PAYER-EMAIL is a custom header clients should send alongside X-PAYMENT.
+        payer_email = request.headers.get("X-PAYER-EMAIL", "")
+        if payer_email:
+            db_gen = get_db()
+            db: Session = next(db_gen)
+            try:
+                user = db.query(User).filter(User.email == payer_email).first()
+                if not user:
+                    user = User(email=payer_email, plan_type=plan, is_active=True)
+                    db.add(user)
+                else:
+                    user.plan_type = plan
+                    user.is_active = True
+                db.commit()
+            finally:
+                db.close()
+
+        # Settle the payment
+        srv.settle_payment(payment_header, requirements[0])
+
+        posthog.capture(
+            distinct_id=payer_email or "anonymous",
+            event="crypto_payment_received",
+            properties={"plan": plan, "network": "base"},
+        )
+
+        # Set auth cookie and redirect to the tool
+        secret_key = os.getenv("SECRET_KEY", "changeme_in_prod")
+        if payer_email:
+            signature = hmac.new(secret_key.encode(), payer_email.encode(), hashlib.sha256).hexdigest()
+            token = f"{payer_email}:{signature}"
+            response = RedirectResponse(url="/tools/dead-switch", status_code=303)
+            response.set_cookie(
+                key="dead_auth", value=token, max_age=31536000,
+                httponly=True, secure=True, samesite="lax",
+            )
+            return response
+
+        return Response(content=json.dumps({"status": "paid"}), status_code=200, media_type="application/json")
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"x402 verify/settle error: {e}")
+        raise HTTPException(status_code=402, detail="Payment processing failed")
+
 
 def send_founder_welcome(email: str):
     """Send personal founder welcome email via Resend"""
@@ -898,6 +1060,7 @@ async def create_vault(
     beneficiary_email: str = Form(...),
     shard_c: str = Form(...),
     csrf_token: str = Form(...),
+    telegram_chat_id: str = Form(default=""),
     db: Session = Depends(get_db)
 ):
     # Verify CSRF
@@ -940,6 +1103,8 @@ async def create_vault(
     user.config_hash = config_hash
     user.heartbeat_token = encrypted_heartbeat_token
     user.last_heartbeat = created_timestamp
+    if telegram_chat_id.strip():
+        user.telegram_chat_id = telegram_chat_id.strip()
     
     db.commit()
     db.refresh(user)
@@ -1161,6 +1326,13 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                     </html>
                     """
                     send_email(user.email, "quick check-in from Deadhand", reminder_html)
+                    # Telegram fallback notification if configured
+                    if user.telegram_chat_id:
+                        send_telegram_message(
+                            user.telegram_chat_id,
+                            f"⏰ <b>Deadhand heartbeat reminder</b>\n\nIt's been 30 days since your last check-in.\n"
+                            f"<a href='{BASE_URL.rstrip('/')}/heartbeat/{user.id}/{heartbeat_token_plain}'>Click here to reset your timer</a>",
+                        )
                     results["reminders_30d"] += 1
                 
                 # 60-day warning - urgent but human
@@ -1199,6 +1371,13 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                     </html>
                     """
                     send_email(user.email, "urgent: we haven't heard from you in 60 days", warning_html)
+                    # Telegram fallback notification if configured
+                    if user.telegram_chat_id:
+                        send_telegram_message(
+                            user.telegram_chat_id,
+                            f"⚠️ <b>URGENT – Deadhand 60-day warning</b>\n\nYou have <b>30 days left</b> before shard C is released.\n"
+                            f"<a href='{BASE_URL.rstrip('/')}/heartbeat/{user.id}/{heartbeat_token_plain}'>Click here to reset your timer NOW</a>",
+                        )
                     results["warnings_60d"] += 1
                 
                 # 90-day death trigger
@@ -1296,3 +1475,270 @@ async def check_heartbeats(db: Session = Depends(get_db)):
         return {"status": "error", "message": str(e)}
 
 # Simulate endpoint removed
+
+
+# ========== CHANGE BENEFICIARY ==========
+
+@app.post("/vault/change-beneficiary")
+async def change_beneficiary(
+    request: Request,
+    user_id: int = Form(...),
+    heartbeat_token: str = Form(...),
+    new_beneficiary_email: str = Form(...),
+    csrf_token: str = Form(...),
+    db: Session = Depends(get_db),
+):
+    """
+    Allow a vault owner to update their beneficiary email.
+    Authentication: heartbeat_token proves ownership (same token used in heartbeat links).
+    """
+    # Verify CSRF
+    cookie_token = request.cookies.get("csrf_token")
+    if not cookie_token or not secrets.compare_digest(csrf_token, cookie_token):
+        raise HTTPException(status_code=403, detail="CSRF verification failed")
+
+    # Basic email validation
+    if not re.match(r"^[^@]+@[^@]+\.[^@]+$", new_beneficiary_email):
+        raise HTTPException(status_code=400, detail="Invalid email address")
+
+    user = db.query(User).filter(User.id == user_id).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="Vault not found")
+
+    # Verify heartbeat token
+    server_master_key = os.getenv("SECRET_KEY", "changeme_in_prod")
+    stored_token = decrypt_token(user.heartbeat_token, server_master_key)
+    if not secrets.compare_digest(stored_token, heartbeat_token):
+        raise HTTPException(status_code=403, detail="Invalid heartbeat token")
+
+    if user.is_dead:
+        raise HTTPException(status_code=409, detail="Vault has already been triggered")
+
+    old_beneficiary = user.beneficiary_email
+    user.beneficiary_email = new_beneficiary_email
+
+    # Recompute config_hash to reflect the change
+    # Note: created_at is preserved from original; strip timezone for consistency
+    created_at = user.created_at
+    if created_at and hasattr(created_at, "tzinfo") and created_at.tzinfo is not None:
+        created_at = created_at.replace(tzinfo=None)
+    created_str = created_at.isoformat() if hasattr(created_at, "isoformat") else str(created_at)
+    config_string = f"{new_beneficiary_email}|{user.shard_c}|{created_str}"
+    user.config_hash = hashlib.sha256(config_string.encode()).hexdigest()
+
+    db.commit()
+
+    posthog.capture(
+        distinct_id=user.email,
+        event="beneficiary_changed",
+        properties={"old": old_beneficiary, "new": new_beneficiary_email},
+    )
+
+    # Notify the vault owner
+    notification_html = f"""
+    <!DOCTYPE html><html><body style="font-family: Georgia, serif; max-width: 600px; margin: 0 auto; padding: 40px 20px;">
+    <p>hey,</p>
+    <p>your beneficiary has been updated successfully.</p>
+    <p><strong>new beneficiary:</strong> {new_beneficiary_email}</p>
+    <p>if you didn't make this change, please contact support immediately.</p>
+    <p><strong>deadhand protocol</strong></p>
+    </body></html>
+    """
+    send_email(user.email, "your beneficiary has been updated", notification_html)
+
+    return {"status": "ok", "beneficiary_email": new_beneficiary_email}
+
+
+# ========== PASSKEYS (WebAuthn) ==========
+
+RP_ID = os.getenv("RP_ID", "deadhandprotocol.com")
+RP_NAME = "Deadhand Protocol"
+
+
+@app.get("/auth/passkey/register-options")
+async def passkey_register_options(request: Request, db: Session = Depends(get_db)):
+    """Return WebAuthn registration options for the authenticated user."""
+    dead_auth = request.cookies.get("dead_auth")
+    if not dead_auth:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    try:
+        email_part, signature = dead_auth.split(":")
+        secret_key = os.getenv("SECRET_KEY", "changeme_in_prod")
+        expected_sig = hmac.new(secret_key.encode(), email_part.encode(), hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(signature, expected_sig):
+            raise HTTPException(status_code=401, detail="Invalid auth token")
+        email = email_part
+    except (ValueError, Exception):
+        raise HTTPException(status_code=401, detail="Invalid auth token")
+
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    exclude_credentials = []
+    if user.passkey_credential_id:
+        exclude_credentials = [
+            PublicKeyCredentialDescriptor(id=user.passkey_credential_id)
+        ]
+
+    options = generate_registration_options(
+        rp_id=RP_ID,
+        rp_name=RP_NAME,
+        user_name=email,
+        user_display_name=email,
+        authenticator_selection=AuthenticatorSelectionCriteria(
+            authenticator_attachment=AuthenticatorAttachment.PLATFORM,
+            resident_key=ResidentKeyRequirement.REQUIRED,
+            user_verification=UserVerificationRequirement.REQUIRED,
+        ),
+        exclude_credentials=exclude_credentials,
+    )
+
+    # Stash challenge (expires in 5 minutes)
+    _passkey_challenges[email] = {
+        "challenge": options.challenge,
+        "expires": datetime.now() + timedelta(minutes=5),
+    }
+
+    return Response(content=options_to_json(options), media_type="application/json")
+
+
+@app.post("/auth/passkey/register")
+async def passkey_register(request: Request, db: Session = Depends(get_db)):
+    """Verify registration response and store the passkey credential."""
+    dead_auth = request.cookies.get("dead_auth")
+    if not dead_auth:
+        raise HTTPException(status_code=401, detail="Not authenticated")
+
+    try:
+        email_part, signature = dead_auth.split(":")
+        secret_key = os.getenv("SECRET_KEY", "changeme_in_prod")
+        expected_sig = hmac.new(secret_key.encode(), email_part.encode(), hashlib.sha256).hexdigest()
+        if not hmac.compare_digest(signature, expected_sig):
+            raise HTTPException(status_code=401, detail="Invalid auth token")
+        email = email_part
+    except (ValueError, Exception):
+        raise HTTPException(status_code=401, detail="Invalid auth token")
+
+    stash = _passkey_challenges.get(email)
+    if not stash or datetime.now() > stash["expires"]:
+        raise HTTPException(status_code=400, detail="Challenge expired or not found")
+
+    body = await request.json()
+    try:
+        verification = verify_registration_response(
+            credential=body,
+            expected_challenge=stash["challenge"],
+            expected_rp_id=RP_ID,
+            expected_origin=BASE_URL.rstrip("/"),
+        )
+    except Exception as e:
+        raise HTTPException(status_code=400, detail=f"Registration verification failed: {e}")
+
+    user = db.query(User).filter(User.email == email).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.passkey_credential_id = verification.credential_id
+    user.passkey_public_key = verification.credential_public_key
+    user.passkey_sign_count = verification.sign_count
+    db.commit()
+
+    # Clean up challenge
+    _passkey_challenges.pop(email, None)
+
+    return {"status": "ok", "message": "Passkey registered successfully"}
+
+
+@app.get("/auth/passkey/login-options")
+async def passkey_login_options(request: Request, db: Session = Depends(get_db)):
+    """Return WebAuthn authentication options."""
+    email = request.query_params.get("email", "")
+    if not email:
+        raise HTTPException(status_code=400, detail="email query parameter is required")
+
+    allow_credentials = []
+    user = db.query(User).filter(User.email == email).first()
+    if user and user.passkey_credential_id:
+        allow_credentials = [
+            PublicKeyCredentialDescriptor(id=user.passkey_credential_id)
+        ]
+
+    options = generate_authentication_options(
+        rp_id=RP_ID,
+        allow_credentials=allow_credentials,
+        user_verification=UserVerificationRequirement.REQUIRED,
+    )
+
+    _passkey_challenges[email] = {
+        "challenge": options.challenge,
+        "expires": datetime.now() + timedelta(minutes=5),
+        "email": email,
+    }
+
+    resp = Response(content=options_to_json(options), media_type="application/json")
+    resp.headers["X-Challenge-Key"] = email
+    return resp
+
+
+@app.post("/auth/passkey/login")
+async def passkey_login(request: Request, db: Session = Depends(get_db)):
+    """Verify passkey authentication and set session cookie."""
+    body = await request.json()
+    email = body.get("email", "") or request.headers.get("X-Challenge-Key", "")
+
+    if not email:
+        raise HTTPException(status_code=400, detail="email is required")
+
+    stash = _passkey_challenges.get(email)
+    if not stash or datetime.now() > stash["expires"]:
+        raise HTTPException(status_code=400, detail="Challenge expired or not found")
+
+    # Find user by credential_id
+    raw_id_b64 = body.get("rawId", body.get("id", ""))
+    try:
+        # Correct base64url padding before decoding
+        padding = 4 - len(raw_id_b64) % 4
+        if padding != 4:
+            raw_id_b64 += "=" * padding
+        raw_id = base64.urlsafe_b64decode(raw_id_b64)
+    except Exception:
+        raise HTTPException(status_code=400, detail="Invalid credential id")
+
+    user = db.query(User).filter(User.passkey_credential_id == raw_id).first()
+    if not user:
+        raise HTTPException(status_code=401, detail="Passkey not recognised")
+
+    try:
+        verification = verify_authentication_response(
+            credential=body,
+            expected_challenge=stash["challenge"],
+            expected_rp_id=RP_ID,
+            expected_origin=BASE_URL.rstrip("/"),
+            credential_public_key=user.passkey_public_key,
+            credential_current_sign_count=user.passkey_sign_count or 0,
+        )
+    except Exception as e:
+        raise HTTPException(status_code=401, detail=f"Authentication failed: {e}")
+
+    # Update sign count
+    user.passkey_sign_count = verification.new_sign_count
+    db.commit()
+
+    _passkey_challenges.pop(email, None)
+
+    # Issue auth cookie
+    secret_key = os.getenv("SECRET_KEY", "changeme_in_prod")
+    signature = hmac.new(secret_key.encode(), user.email.encode(), hashlib.sha256).hexdigest()
+    token = f"{user.email}:{signature}"
+
+    response = Response(
+        content=json.dumps({"status": "ok", "email": user.email}),
+        media_type="application/json",
+    )
+    response.set_cookie(
+        key="dead_auth", value=token, max_age=31536000,
+        httponly=True, secure=True, samesite="lax",
+    )
+    return response

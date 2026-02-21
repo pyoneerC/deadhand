@@ -408,6 +408,9 @@
                 <label><b>beneficiary email:</b></label>
                 <input type="email" name="beneficiary_email" required placeholder="heir@example.com">
 
+                <label style="margin-top:12px; display:block;"><b>telegram chat id <span style="font-weight:normal;color:#666;">(optional – fallback heartbeat notifications)</span>:</b></label>
+                <input type="text" name="telegram_chat_id" placeholder="e.g. 123456789" style="width:100%;padding:12px;font-family:monospace;font-size:14px;border:1px solid #ddd;margin:10px 0;">
+
                 <input type="hidden" name="shard_c" id="shardCInput">
                 <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
 
