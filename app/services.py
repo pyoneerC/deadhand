@@ -4,6 +4,8 @@
 import logging
 import os
 import smtplib
+import urllib.request
+import json
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from dotenv import load_dotenv
@@ -21,6 +23,9 @@ SMTP_HOST = os.getenv("SMTP_HOST", "smtp.gmail.com")
 SMTP_PORT = int(os.getenv("SMTP_PORT", "587"))
 SMTP_USER = os.getenv("SMTP_USER")
 SMTP_PASSWORD = os.getenv("SMTP_PASSWORD")
+
+# Telegram Bot configuration for heartbeat fallback
+TELEGRAM_BOT_TOKEN = os.getenv("TELEGRAM_BOT_TOKEN")
 
 def send_email(to_email: str, subject: str, content: str):
     """
@@ -81,3 +86,34 @@ def send_email(to_email: str, subject: str, content: str):
     with open("email_log.txt", "a") as f:
         f.write(f"To: {to_email}\nSubject: {subject}\nContent: {content}\n---\n")
     return True
+
+
+def send_telegram_message(chat_id: str, message: str) -> bool:
+    """
+    Send a Telegram message via Bot API.
+    Returns True on success, False on failure.
+    """
+    if not TELEGRAM_BOT_TOKEN or "your_" in TELEGRAM_BOT_TOKEN:
+        logger.warning("Telegram bot token not configured")
+        return False
+
+    try:
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+        payload = json.dumps({
+            "chat_id": chat_id,
+            "text": message,
+            "parse_mode": "HTML",
+        }).encode()
+        req = urllib.request.Request(
+            url,
+            data=payload,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        with urllib.request.urlopen(req, timeout=10) as resp:
+            if resp.status == 200:
+                logger.info(f"Telegram message sent to chat_id {chat_id}")
+                return True
+    except Exception as e:
+        logger.error(f"Failed to send Telegram message: {e}")
+    return False
