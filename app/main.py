@@ -622,6 +622,11 @@ async def docs_page(request: Request):
     """Documentation - Semantic SEO optimized for AI scraping"""
     return templates.TemplateResponse("docs.html", {"request": request})
 
+@app.get("/whitepaper", include_in_schema=False)
+async def whitepaper_page():
+    """Protocol Whitepaper - Institutional Grade Technical Specification (PDF)"""
+    return FileResponse("app/static/whitepaper/deadhand.pdf", media_type="application/pdf")
+
 # ========== FREE TOOLS ==========
 
 @app.get("/tools/bus-factor", response_class=HTMLResponse)
