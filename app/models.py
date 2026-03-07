@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: BUSL-1.1
 # Copyright (c) 2026 pyoneerC. All rights reserved.
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, LargeBinary
 from sqlalchemy.sql import func
 from .database import Base
 
@@ -28,5 +28,13 @@ class User(Base):
     stripe_subscription_id = Column(String, nullable=True, index=True)  # sub_xxx (for annual)
     plan_type = Column(String, default="lifetime")  # "annual" or "lifetime"
     is_active = Column(Boolean, default=True)  # False if subscription cancelled
+    
+    # Telegram fallback for heartbeat notifications
+    telegram_chat_id = Column(String, nullable=True)  # Telegram chat ID for notifications
+    
+    # Passkey (WebAuthn) credentials for passwordless auth
+    passkey_credential_id = Column(LargeBinary, nullable=True, unique=True, index=True)
+    passkey_public_key = Column(LargeBinary, nullable=True)
+    passkey_sign_count = Column(Integer, nullable=True, default=0)
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())

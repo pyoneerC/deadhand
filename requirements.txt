@@ -10,3 +10,5 @@ stripe
 resend
 posthog
 markdown
+webauthn
+x402
