@@ -183,6 +183,8 @@ app.add_middleware(CSRFMiddleware)
 # Mount static files
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
+# Make BASE_URL available globally in templates for canonical tags
+templates.env.globals["BASE_URL"] = BASE_URL.rstrip("/")
 
 # Dependency to validate CSRF
 async def validate_csrf(request: Request):

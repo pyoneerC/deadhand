@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ c.meta_title | lower }} | deadhand</title>
     <meta name="description" content="{{ c.meta_description | lower }}">
-    <link rel="canonical" href="https://deadhandprotocol.com/alternatives/{{ c.slug }}-alternative">
+    <link rel="canonical" href="{{ BASE_URL }}{{ request.url.path }}">
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
