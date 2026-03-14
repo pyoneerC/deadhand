@@ -85,7 +85,7 @@ STRIPE_PRICES = {
 # PostHog Configuration
 posthog = Posthog(
     project_api_key='phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ',
-    host='https://us.i.posthog.com',
+    host='https://t.deadhandprotocol.com',
     enable_exception_autocapture=True
 )
 
