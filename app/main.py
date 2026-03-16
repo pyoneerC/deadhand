@@ -65,6 +65,15 @@ from .database import SessionLocal, engine, Base
 from .models import User
 from .services import send_email
 from .crypto import encrypt_shard, decrypt_shard, encrypt_token, decrypt_token
+from .emails import (
+    get_language_from_email,
+    get_welcome_email,
+    get_cancellation_email,
+    get_reminder_30d_email,
+    get_warning_60d_email,
+    get_death_email,
+    SUBJECTS,
+)
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -452,32 +461,10 @@ async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
             db.commit()
             
             # Send human-centered cancellation email
-            cancellation_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
-                    .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
-                </style>
-            </head>
-            <body>
-                <p>hey,</p>
-                <p>i just got word that your subscription was cancelled. your vault is now deactivated.</p>
-                <p>i'm not going to send you a "please come back" survey or a discount code to win you over. i just want to say thanks for trusting deadhand for a while.</p>
-                <p>if you ever want to protect your family again, you know where to find me.</p>
+            lang = user.preferred_language or get_language_from_email(user.email)
+            cancellation_html = get_cancellation_email(lang)
+            send_email(user.email, SUBJECTS["cancellation"][lang], cancellation_html)
                 
-                <p>take care,</p>
-                <p><strong>deadhand protocol</strong></p>
-
-                <div class="footer">
-                    <p>sent by deadhand - built with care in argentina.</p>
-                </div>
-            </body>
-            </html>
-            """
-            send_email(user.email, "your deadhand vault has been deactivated", cancellation_html)
-    
     return {"status": "success"}
 
 @app.get("/", response_class=HTMLResponse)
@@ -934,7 +921,8 @@ async def create_vault(
     encrypted_shard = encrypt_shard(shard_c, heartbeat_token)
     
     if not user:
-        user = User(email=email)
+        lang = get_language_from_email(email)
+        user = User(email=email, preferred_language=lang)
         db.add(user)
     
     # Encrypt heartbeat_token to protect it in DB
@@ -969,80 +957,15 @@ async def create_vault(
     welcome_cal_url = f"https://www.google.com/calendar/render?action=TEMPLATE&text={cal_title}&dates={cal_date}/{cal_end}&details={cal_details}&sf=true&output=xml"
 
     # Send human-centered "Chewy-style" welcome email
-    welcome_html = f"""
-    <!DOCTYPE html>
-    <html>
-    <head>
-        <style>
-            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
-            .content {{ background: #fff; padding: 0; }}
-            h1 {{ font-size: 22px; color: #000; font-weight: normal; margin-top: 0; text-decoration: underline; }}
-            .image-container {{ text-align: left; margin: 40px 0; }}
-            .image-container img {{ max-width: 100%; border: 1px solid #eee; }}
-            .instructions {{ background: #fefefe; padding: 20px; border: 1px dashed #ccc; margin: 30px 0; font-family: monospace; font-size: 13px; }}
-            .heartbeat-link {{ display: inline-block; color: #000 !important; text-decoration: underline; font-weight: bold; margin: 20px 0; }}
-            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
-        </style>
-    </head>
-    <body>
-        <div class="content">
-            <h1>it's not just a welcome email.</h1>
-            
-            <p>hey there,</p>
-            
-            <p>i'm max, the founder of deadhand.</p>
-            
-            <p>i could have sent you a shiny, corporate html template with "action required" in the subject. but deadhand isn't a typical app, and you aren't a typical user.</p>
-            
-            <p>you just made a hard choice. thinking about what happens "after" isn't exactly fun. but the fact that you're here means you deeply care about someone and you want to protect them no matter what. that’s a powerful thing, and it deserves more than a form letter.</p>
-            
-            <p>in a digital world that's getting colder by the second, i wanted to give you something "handmade." since my actual drawing skills stopped improving in kindergarten, i used a specialized ai to help me create a "photo" of a crayon drawing i made while thinking about this project. it’s imperfect, it's a bit silly, but it’s real to me.</p>
+    lang = get_language_from_email(email)
+    heartbeat_link = f"https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token}"
+    welcome_html = get_welcome_email(lang, email, beneficiary_email, heartbeat_link)
+    send_email(email, SUBJECTS["welcome"][lang], welcome_html)
 
-            <div class="image-container">
-                <img src="https://deadhandprotocol.com/static/Deadhand_welcome_crayon_polaroid_en.png" alt="a drawing of a family for you">
-            </div>
-
-            <p>i want you to know that on the other side of this complex math is a real person who understands the weight of what you're setting up. i don't take that trust lightly.</p>
-
-            <div class="instructions">
-                <strong>vault active for: {email}</strong><br>
-                beneficiary: {beneficiary_email}<br>
-                system: 2-of-3 shamir's secret sharing<br>
-                status: secured
-            </div>
-
-            <p>take a breath. your family is safe now. there’s no rush to do anything else right now. just keep your shard a safe, and make sure your beneficiary has shard b.</p>
-
-            <p><strong>one critical thing:</strong> to make sure you're still with us, we need a "heartbeat." click the link below once just to verify you can access it. it resets your 90-day timer.</p>
-
-            <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token}" class="heartbeat-link">verify my heartbeat & reset timer</a>
-
-            <p><strong>pro tip:</strong> set a reminder so you don't forget. <a href="{welcome_cal_url}" target="_blank">add a reminder to my google calendar</a> (for 30 days from now).</p>
-
-            <div class="image-container">
-                <img src="https://deadhandprotocol.com/static/Deadhand_napkin_note.png" alt="handwritten note on a napkin: your family is safe now">
-            </div>
-
-            <p><strong>this is my personal email.</strong> if you have a question, a fear, or just want to tell me how your setup went, just reply. i read them. i answer them.</p>
-            
-            <p>deeply grateful you're here,</p>
-            
-            <p><strong>max</strong><br>
-            founder of deadhand<br>
-            <i>(the guy who sends you crayon drawings)</i></p>
-
-            <div class="footer">
-                <p>deadhand - protecting your crypto legacy.</p>
-                <p>built with care in argentina. open source. trustless by design.</p>
-            </div>
-        </div>
-    </body>
-    </html>
-    """
-    
-    send_email(email, "not just a welcome email (and a drawing for you)", welcome_html)
-
-    return templates.TemplateResponse("success.html", {"request": request})
+    return templates.TemplateResponse("success.html", {
+    "request": request,
+    "calendar_url": welcome_cal_url
+    })
 
 @app.get("/heartbeat/{user_id}/{token}", response_class=HTMLResponse)
 async def heartbeat(request: Request, user_id: int, token: str, db: Session = Depends(get_db)):
@@ -1136,76 +1059,18 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                 
                 # 30-day reminder - chewy style
                 if 29 <= days_since_heartbeat <= 31:
-                    reminder_html = f"""
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <style>
-                            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
-                            .heartbeat-link {{ display: inline-block; color: #000 !important; text-decoration: underline; font-weight: bold; margin: 20px 0; }}
-                            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
-                        </style>
-                    </head>
-                    <body>
-                        <p>hey,</p>
-                        <p>it's been 30 days since we last heard from you. i'm just checking in to make sure everything is okay.</p>
-                        <p>could you click the link below? it just tells our system you're still with us and resets your timer. it takes two seconds.</p>
-                        
-                        <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token_plain}" class="heartbeat-link">i'm still here</a>
-
-                        <p><strong>pro tip:</strong> if you're busy now, add a reminder to your calendar for tomorrow so you don't forget.<br>
-                        <a href="https://www.google.com/calendar/render?action=TEMPLATE&text={quote_plus('Deadhand Heartbeat Reminder')}&dates={(datetime.now()+timedelta(days=1)).strftime('%Y%m%d')}/{(datetime.now()+timedelta(days=2)).strftime('%Y%m%d')}&details={quote_plus('Visit deadhandprotocol.com/heartbeat/'+str(user.id)+'/'+str(heartbeat_token_plain))}&sf=true&output=xml" target="_blank">add reminder for tomorrow</a></p>
-
-                        <p>if you don't click it, no big deal for now. i'll check in again in another 30 days. but after 90 days of silence, we'll have to send shard c to your beneficiary.</p>
-                        
-                        <p>stay safe out there,</p>
-                        <p><strong>deadhand protocol</strong></p>
-
-                        <div class="footer">
-                            <p>sent by Deadhand - built with care in argentina.</p>
-                        </div>
-                    </body>
-                    </html>
-                    """
-                    send_email(user.email, "quick check-in from Deadhand", reminder_html)
-                    results["reminders_30d"] += 1
-                
+                     lang = user.preferred_language or get_language_from_email(user.email)
+                     heartbeat_link = f"https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token_plain}"
+                     reminder_html = get_reminder_30d_email(lang, heartbeat_link)
+                     send_email(user.email, SUBJECTS["reminder_30d"][lang], reminder_html)
+                     results["reminders_30d"] += 1
+                                    
                 # 60-day warning - urgent but human
                 elif 59 <= days_since_heartbeat <= 61:
-                    warning_html = f"""
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <style>
-                            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
-                            .heartbeat-link {{ display: inline-block; color: #000 !important; text-decoration: underline; font-weight: bold; margin: 20px 0; }}
-                            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
-                            .warning-box {{ border: 1px dashed #ff4444; padding: 20px; margin: 20px 0; }}
-                        </style>
-                    </head>
-                    <body>
-                        <p>hey,</p>
-                        <p>i'm getting a little worried. we haven't heard from you in 60 days.</p>
-                        
-                        <div class="warning-box">
-                            <p><strong>just 30 days left.</strong></p>
-                            <p>if you don't click the link below within the next month, our system will assume the worst and automatically send shard c to your beneficiary.</p>
-                        </div>
-
-                        <p>if you're just busy, i totally get it. but please, click this now so we don't worry your family unnecessarily:</p>
-                        
-                        <a href="https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token_plain}" class="heartbeat-link">i'm here, reset the timer</a>
-
-                        <p>talk soon,</p>
-                        <p><strong>deadhand protocol</strong></p>
-
-                        <div class="footer">
-                            <p>sent by Deadhand - protecting your crypto legacy.</p>
-                        </div>
-                    </body>
-                    </html>
-                    """
-                    send_email(user.email, "urgent: we haven't heard from you in 60 days", warning_html)
+                    lang = user.preferred_language or get_language_from_email(user.email)
+                    heartbeat_link = f"https://deadhandprotocol.com/heartbeat/{user.id}/{heartbeat_token_plain}"
+                    warning_html = get_warning_60d_email(lang, heartbeat_link)
+                    send_email(user.email, SUBJECTS["warning_60d"][lang], warning_html)
                     results["warnings_60d"] += 1
                 
                 # 90-day death trigger
@@ -1229,65 +1094,10 @@ async def check_heartbeats(db: Session = Depends(get_db)):
                         shard_c_value = user.shard_c
                     
                     user.is_dead = True
-                    death_html = f"""
-                    <!DOCTYPE html>
-                    <html>
-                    <head>
-                        <style>
-                            body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
-                            h1 {{ font-size: 22px; color: #000; font-weight: normal; margin-top: 0; text-decoration: underline; }}
-                            .shard-box {{ background: #fefefe; border: 1px dashed #ccc; padding: 25px; margin: 30px 0; font-family: monospace; font-size: 13px; word-break: break-all; color: #222; }}
-                            .instructions {{ background: #fff; border: 1px solid #eee; padding: 20px; border-radius: 4px; margin: 30px 0; }}
-                            .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
-                            .cta-box {{ background: #fafafa; border: 1px solid #ddd; padding: 25px; margin-top: 40px; text-align: center; }}
-                            .cta-link {{ display: inline-block; background: #222; color: #fff !important; text-decoration: none; padding: 12px 20px; border-radius: 4px; font-weight: bold; margin-top: 15px; }}
-                        </style>
-                    </head>
-                    <body>
-                        <h1>a message from Deadhand.</h1>
-                        
-                        <p>hello,</p>
-                        <p>i'm writing to you because 90 days ago, <strong>{user.email}</strong> entrusted our system to reach out to you if we stopped hearing from them.</p>
-                        
-                        <p>we haven't received a heartbeat check-in from them in three months. as per their explicit instructions, i am now releasing the final piece of their digital legacy to you.</p>
-
-                        <p>this is <strong>shard c</strong>. it's one of three pieces needed to access their crypto assets. if they followed our setup guide, you should already have <strong>shard b</strong> (likely a printed document or a digital file they gave you).</p>
-
-                        <div class="shard-box">
-                            <strong>shard c value:</strong><br>
-                            {shard_c_value}
-                        </div>
-
-                        <div class="instructions">
-                            <p><strong>how to use this:</strong></p>
-                            <ol>
-                                <li>locate <strong>shard b</strong> (the one they gave you).</li>
-                                <li>go to <a href="https://deadhandprotocol.com/recover">deadhandprotocol.com/recover</a>.</li>
-                                <li>enter both shard b and shard c into the tool.</li>
-                                <li>the tool will reconstruct their original seed phrase for you.</li>
-                            </ol>
-                        </div>
-
-                        <p>my deepest condolences for whatever situation has led to this email. i built Deadhand specifically so that people wouldn't have to worry about their loved ones being locked out of their hard-earned assets during difficult times.</p>
-                        
-                        <p>i hope this tool helps you in some small way.</p>
-
-                        <p>with respect,</p>
-                        <p><strong>deadhand protocol</strong></p>
-
-                        <div class="cta-box">
-                            <p style="font-size: 14px;"><strong>protect your own legacy</strong></p>
-                            <p style="font-size: 13px; color: #666;">you've just seen how Deadhand works. if you have crypto, don't leave your family in the dark. set up your own trustless switch in 5 minutes.</p>
-                            <a href="https://deadhandprotocol.com" class="cta-link">create your vault</a>
-                        </div>
-
-                        <div class="footer">
-                            <p>sent by Deadhand - built with care in argentina.</p>
-                        </div>
-                    </body>
-                    </html>
-                    """
-                    send_email(user.beneficiary_email, "important: digital recovery key for " + user.email, death_html)
+                    lang = user.preferred_language or get_language_from_email(user.beneficiary_email)
+                    death_html = get_death_email(lang, user.email, shard_c_value)
+                    subject = SUBJECTS["death"][lang].format(owner_email=user.email)
+                    send_email(user.beneficiary_email, subject, death_html)
                     results["deaths_90d"] += 1
                     
             except Exception as e:
