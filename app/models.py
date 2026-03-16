@@ -28,5 +28,7 @@ class User(Base):
     stripe_subscription_id = Column(String, nullable=True, index=True)  # sub_xxx (for annual)
     plan_type = Column(String, default="lifetime")  # "annual" or "lifetime"
     is_active = Column(Boolean, default=True)  # False if subscription cancelled
+
+    preferred_language = Column(String, default="en")
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
