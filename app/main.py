@@ -447,50 +447,11 @@ async def whitepaper_page():
 
 # ========== FREE TOOLS ==========
 
+# TOOL ROUTES REMOVED - MOVED TO DESKTOP CLIENT
 @app.get("/tools/bus-factor", response_class=HTMLResponse)
 async def bus_factor_tool(request: Request):
-    """Bus Factor Calculator"""
+    """Bus Factor Calculator - Keep as lead magnet"""
     return templates.TemplateResponse("tools_bus_factor.html", {"request": request})
-
-@app.get("/tools/optical-splitting", response_class=HTMLResponse)
-async def optical_splitting_page(request: Request):
-    """Optical Splitting Tool - split images into noise shares"""
-    return templates.TemplateResponse("tools_visual_steg.html", {"request": request})
-
-@app.get("/tools/acoustic-masking", response_class=HTMLResponse)
-async def acoustic_masking_page(request: Request):
-    """Acoustic Masking Tool - hide text in WAV files"""
-    return templates.TemplateResponse("tools_audio_steg.html", {"request": request})
-
-@app.get("/tools/dead-switch", response_class=HTMLResponse)
-async def dead_switch_page(request: Request, db: Session = Depends(get_db)):
-    """Dead Mans Switch - tool is public, activation is gated"""
-    dead_auth = request.cookies.get("dead_auth")
-    email = None
-    
-    if dead_auth:
-        try:
-            email_part, signature = dead_auth.split(":")
-            secret_key = os.getenv('SECRET_KEY', 'changeme_in_prod')
-            expected_signature = hmac.new(secret_key.encode(), email_part.encode(), hashlib.sha256).hexdigest()
-            
-            # Constant time comparison (prevent timing attacks)
-            if hmac.compare_digest(signature, expected_signature):
-                email = email_part
-                # Check if user exists and is active
-                user = db.query(User).filter(User.email == email).first()
-                if user and not user.is_active:
-                     email = None # Subscription expired/cancelled
-            else:
-                email = None
-        except:
-            email = None
-            
-    return templates.TemplateResponse("tools_dead_switch.html", {
-        "request": request, 
-        "email": email,
-        "csrf_token": getattr(request.state, "csrf_token", "")
-    })
 
 # ========== BLOG ==========
 
@@ -913,9 +874,6 @@ async def heartbeat(request: Request, user_id: int, token: str, db: Session = De
 async def recover_page(request: Request):
     return templates.TemplateResponse("recover.html", {"request": request})
 
-@app.get("/careers", response_class=HTMLResponse)
-async def careers(request: Request):
-    return templates.TemplateResponse("careers.html", {"request": request})
 
 # ========== CRON JOBS ==========
 # Vercel Cron calls this daily at midnight

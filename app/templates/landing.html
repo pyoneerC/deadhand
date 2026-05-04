@@ -192,7 +192,7 @@
                 "name": "How much does Deadhand cost?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The Deadhand Sovereign Desktop Client costs a unique one-time payment of $300. No subscriptions, no hidden fees. You own the software forever."
+                    "text": "The Deadhand Desktop Client costs a unique one-time payment of $300. No subscriptions, no hidden fees. You own the software forever."
                 }
             }
         ]
@@ -487,14 +487,14 @@
 
         .pricing-grid {
             display: block;
-            max-width: 800px;
+            max-width: 450px;
             margin: 2em auto;
         }
 
         .price-box {
             background: #fff;
             border: 2px solid #222;
-            padding: 40px;
+            padding: 30px;
             margin: 0 auto;
             border-radius: 8px;
             text-decoration: none;
@@ -1110,31 +1110,11 @@
                 <nav class="nav nav-desktop" aria-label="Main Navigation"
                     style="display: flex; gap: 32px; align-items: center;">
 
-                    <div class="header-dropdown">
-                        <a href="#" class="header-nav-link" style="display: flex; align-items: center; gap: 6px;">
-                            Products <i class="fa-solid fa-chevron-down" style="font-size: 0.7em; opacity: 0.7;"></i>
-                        </a>
-                        <div class="header-dropdown-content">
-                            <a href="/tools/dead-switch" class="header-dropdown-item">
-                                Dead Switch
-                            </a>
-                            <div style="height: 1px; background: #222; margin: 4px 0;"></div>
-                            <div
-                                style="padding: 8px 16px; font-size: 0.75em; text-transform: uppercase; color: #666; font-weight: bold; letter-spacing: 0.5px;">
-                                Free Tools</div>
-                            <a href="/tools/optical-splitting" class="header-dropdown-item">
-                                Optical Splitting
-                            </a>
-                            <a href="/tools/acoustic-masking" class="header-dropdown-item">
-                                Acoustic Masking
-                            </a>
-                            <a href="/tools/bus-factor" class="header-dropdown-item">
-                                Bus Factor Calc
-                            </a>
-                        </div>
+                    <div class="header-nav-link">
+                        <a href="/tools/bus-factor" style="color: inherit; text-decoration: none;">Bus Factor Tool</a>
                     </div>
 
-                    <a href="/download" class="header-nav-link">Sovereign Client</a>
+                    <a href="/download" class="header-nav-link">Desktop Client</a>
                     <a href="/blog" class="header-nav-link">Blog</a>
                     <a href="/whitepaper" class="header-nav-link">Whitepaper</a>
                     <a href="https://github.com/pyoneerC/deadhand" class="header-nav-link">GitHub</a>
@@ -1160,16 +1140,8 @@
 
     <!-- Mobile Menu Overlay -->
     <div class="mobile-menu">
-        <div style="padding-bottom: 20px; border-bottom: 1px solid #111;">
-            <div
-                style="color: #666; font-size: 0.8em; text-transform: uppercase; margin-bottom: 10px; font-weight: bold;">
-                Products</div>
-            <a href="/tools/dead-switch" class="mobile-sub-link">Dead Switch</a>
-            <a href="/tools/optical-splitting" class="mobile-sub-link">Optical Splitting</a>
-            <a href="/tools/acoustic-masking" class="mobile-sub-link">Acoustic Masking</a>
-            <a href="/tools/bus-factor" class="mobile-sub-link">Bus Factor Calc</a>
-        </div>
-            <a href="#pricing" class="mobile-sub-link">Sovereign Client</a>
+        <a href="/tools/bus-factor" class="mobile-link">Bus Factor Tool</a>
+        <a href="/download" class="mobile-link">Desktop Client</a>
         <a href="/blog" class="mobile-link">Blog</a>
         <a href="/whitepaper" class="mobile-link">Whitepaper</a>
         <a href="https://github.com/pyoneerC/deadhand" class="mobile-link">GitHub</a>
@@ -1207,7 +1179,7 @@
                     exactly when they need them most.</p>
                 <p style="margin-top: 25px;"><a href="/download"
                         style="display: inline-block; background: #222; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 4px; font-weight: bold;">download
-                        the sovereign client
+                        the desktop client
                         →</a></p>
             </div>
         </div>
@@ -1379,22 +1351,22 @@
         </div>
 
         <div id="pricing" class="pricing-grid">
-            <div class="price-box" style="border: 2px solid #111; padding: 50px; border-radius: 12px; text-decoration: none; color: inherit; transition: all 0.2s ease; background: #fff;">
-                <div style="background: #111; color: #fff; display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 0.75em; font-weight: bold; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px;">
-                    SOVEREIGN DESKTOP CLIENT
+            <div class="price-box" style="border: 2px solid #111; padding: 35px; border-radius: 12px; text-decoration: none; color: inherit; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #111; color: #fff; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">
+                    DESKTOP CLIENT
                 </div>
-                <h3 style="font-size: 1.8em; font-weight: bold; margin-bottom: 15px; color: #111;">Deadhand Sovereign</h3>
-                <p class="price" style="font-size: 4em; font-weight: bold; margin-bottom: 10px; color: #111;">$300</p>
-                <p style="font-size: 0.9em; color: #575757; margin-bottom: 30px; font-style: italic;">
-                    One-time payment for permanent inheritance security. No hidden fees.
+                <h3 style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px; color: #111;">Deadhand Client</h3>
+                <p class="price" style="font-size: 3em; font-weight: bold; margin-bottom: 5px; color: #111;">$300</p>
+                <p style="font-size: 0.85em; color: #575757; margin-bottom: 25px; font-style: italic;">
+                    One-time payment. Permanent security.
                 </p>
-                <div style="color: #444; font-size: 1.05em; line-height: 1.8; margin-bottom: 40px;">
+                <div style="color: #444; font-size: 0.95em; line-height: 1.7; margin-bottom: 30px;">
                     • Full Offline Shard Generation<br>
                     • Automated Beneficiary Dispatch<br>
-                    • Sovereign Heartbeat Database<br>
+                    • Local Heartbeat Database<br>
                     • No Subscriptions. No Middlemen.
                 </div>
-                <a href="/download" style="display: block; background: #111; color: #fff; padding: 20px; text-align: center; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1.2em; transition: background 0.2s;">
+                <a href="/download" style="display: block; background: #111; color: #fff; padding: 16px; text-align: center; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 1.1em; transition: background 0.2s;">
                     Download Desktop App →
                 </a>
             </div>
@@ -1586,6 +1558,7 @@
                         activation emails. Our database is immutable. Even as administrators, we cannot access or modify
                         beneficiary shards.
                     </p>
+                    <p>By moving to a <strong>Sovereign Desktop Client</strong>, we've increased security even further. All sensitive key-splitting and shard generation happens in your local environment, never touching the browser's memory space or traversing the network. This ensures your private keys stay truly offline.</p>
                 </div>
             </div>
 
@@ -1741,18 +1714,11 @@
                     <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Product</h4>
                     <ul
                         style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
-                        <li><a href="/tools/dead-switch"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Dead Switch</a></li>
-                        <li><a href="#pricing"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Sovereign Client</a></li>
+                        <li><a href="/download"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Desktop Client</a></li>
                         <li><a href="/tools/bus-factor"
                                 style="color: #555; text-decoration: none; transition: color 0.2s;">Bus Factor Calc</a>
                         </li>
-                        <li><a href="/tools/optical-splitting"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Optical
-                                Splitting</a></li>
-                        <li><a href="/tools/acoustic-masking"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Acoustic Masking</a>
                         </li>
                     </ul>
                 </div>
@@ -1810,10 +1776,6 @@
                         <li><a href="mailto:press@deadhandprotocol.com"
                                 style="color: #555; text-decoration: none; transition: color 0.2s;">
                                 Media</a></li>
-                        <li><a href="/careers" style="color: #555; text-decoration: none; transition: color 0.2s;">
-                                Careers</a></li>
-                        <li><a href="https://github.com/pyoneerC/deadhand"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Open Source</a></li>
                     </ul>
                 </div>
 
