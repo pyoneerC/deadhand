@@ -215,527 +215,231 @@
     }
     </script>
 
+    <!-- Institutional Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
     <style>
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #0a0a0a;
+            --bg-tertiary: #111111;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1a1;
+            --accent: #FF5500;
+            --border: #1a1a1a;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
 
-        /* Skip link - hidden until focused */
-        .skip-link {
-            position: absolute;
-            left: -10000px;
-            top: auto;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            z-index: 9999;
-        }
-
-        .skip-link:focus {
-            position: fixed;
-            left: 10px;
-            top: 10px;
-            width: auto;
-            height: auto;
-            padding: 12px 20px;
-            background: #10b981;
-            color: #fff;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 4px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-        }
-
-        .visually-hidden {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-            border: 0;
-        }
-
         body {
-            font-family: Georgia, serif;
-            font-size: 18px;
-            line-height: 1.8;
-            background: #fafafa;
-            color: #222;
+            font-family: var(--font-main);
+            font-size: 16px;
+            line-height: 1.6;
+            background: var(--bg-primary);
+            color: var(--text-primary);
             -webkit-text-size-adjust: 100%;
+            overflow-x: hidden;
         }
 
-        .social-links {
-            display: flex;
-            gap: 20px;
-            font-size: 1.5em;
-            margin: 20px 0;
-            justify-content: flex-start;
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
         }
 
-        .social-links a {
-            color: #222;
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            line-height: 1.1;
+        }
+
+        h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            margin-bottom: 24px;
+        }
+
+        h2 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            margin-bottom: 20px;
+        }
+
+        p {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+        }
+
+        a {
+            color: var(--accent);
             text-decoration: none;
             transition: opacity 0.2s;
         }
 
-        .social-links a:hover {
-            opacity: 0.7;
+        a:hover {
+            opacity: 0.8;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        a {
-            color: #0066cc;
-        }
-
-        h1 {
-            font-size: 1.8em;
-            margin-bottom: 0.5em;
-            line-height: 1.2;
-        }
-
-        h2 {
-            font-size: 1.3em;
-            margin: 2em 0 0.8em 0;
-            line-height: 1.3;
-        }
-
-        p {
-            margin-bottom: 1em;
-        }
-
-        ul,
-        ol {
-            margin: 1em 0;
-            padding-left: 1.5em;
-        }
-
-        li {
-            margin-bottom: 0.8em;
-            line-height: 1.6;
-        }
-
-        /* mobile first nav */
+        /* Navigation */
         .header {
             position: sticky;
             top: 0;
-            background: #fafafa;
-            border-bottom: 1px solid #ddd;
-            z-index: 100;
-            padding: 12px 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            padding: 20px 0;
         }
 
         .nav {
             display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            font-size: 0.9em;
-            justify-content: center;
-        }
-
-        .nav a {
-            text-decoration: none;
-            padding: 8px 4px;
-            min-height: 44px;
-            display: flex;
             align-items: center;
+            gap: 40px;
         }
 
-        /* touch friendly cta buttons */
-        .cta {
-            display: block;
-            width: 100%;
-            background: #222;
-            color: #fff;
-            padding: 16px 24px;
-            text-decoration: none;
+        .nav-link {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+            padding: 14px 28px;
+            border-radius: 100px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(255, 85, 0, 0.3);
+            opacity: 1;
+        }
+
+        /* Hero */
+        .hero {
+            padding: 120px 0 80px;
             text-align: center;
-            font-size: 1.1em;
-            margin: 1.5em 0;
-            min-height: 56px;
-            border-radius: 4px;
-        }
-
-        .cta:active {
-            background: #444;
-        }
-
-        hr {
-            border: none;
-            border-top: 1px solid #ddd;
-            margin: 2.5em 0;
-        }
-
-        /* ascii art - responsive */
-        .ascii {
-            font-family: monospace;
-            font-size: 8px;
-            /* smaller for mobile */
-            line-height: 1.1;
-            white-space: pre;
-            color: #333;
-            margin: 20px 0;
-            overflow-x: auto;
-            text-align: center;
-            scrollbar-width: none;
-            /* Hide scrollbar for Firefox */
-            -ms-overflow-style: none;
-            /* Hide scrollbar for IE/Edge */
-            display: none;
-            /* Hide on mobile by default */
-        }
-
-        .ascii::-webkit-scrollbar {
-            display: none;
-            /* Hide scrollbar for Chrome/Safari */
-        }
-
-
-        /* tool links - touch friendly cards */
-        .tools-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin: 1em 0;
-        }
-
-        .tool-card {
-            display: block;
-            padding: 16px;
-            background: #fff;
-            border: 1px solid #ddd;
-            text-decoration: none;
-            color: #222;
-            min-height: 60px;
-            border-radius: 4px;
-        }
-
-        .tool-card:active {
-            background: #f5f5f5;
-        }
-
-        /* lead magnet */
-        .lead-magnet {
-            background: #222;
-            color: #fff;
-            padding: 25px;
-            margin: 2em 0;
-            border-radius: 8px;
-        }
-
-        .lead-magnet h3 {
-            margin-top: 0;
-            color: #fff;
-        }
-
-        .lead-magnet input[type="email"] {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border: none;
-            margin: 10px 0;
-            border-radius: 4px;
-        }
-
-        .lead-magnet .btn {
-            background: #fff;
-            color: #222;
-            margin-top: 5px;
-        }
-
-        .lead-magnet .btn:hover {
-            background: #f0f0f0;
-        }
-
-        .lead-magnet p {
-            font-size: 0.85em;
-            margin-bottom: 0;
-            opacity: 0.8;
-        }
-
-        .tool-card strong {
-            display: block;
-            margin-bottom: 4px;
-        }
-
-        .tool-card span {
-            font-size: 0.9em;
-            color: #4b5563;
-        }
-
-        .footer {
-            margin-top: 3em;
-            padding-top: 2em;
-            border-top: 1px solid #ddd;
-            font-size: 0.85em;
-            color: #4b5563;
-            text-align: center;
-        }
-
-        .footer p {
-            margin-bottom: 0.5em;
-        }
-
-        .pricing-grid {
-            display: block;
-            max-width: 450px;
-            margin: 2em auto;
-        }
-
-        .price-box {
-            background: #fff;
-            border: 2px solid #222;
-            padding: 30px;
-            margin: 0 auto;
-            border-radius: 8px;
-            text-decoration: none;
-            color: inherit;
-            display: block;
-            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
-            cursor: pointer;
-            width: 100%;
-        }
-
-        .price-box:hover {
-            transform: scale(1.015);
-            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(13, 150, 104, 0.2);
-            border-color: #064e3b;
-        }
-
-        .price-box .price {
-            font-size: 2em;
-            font-weight: bold;
-        }
-
-        /* tablet+ */
-        @media (min-width: 600px) {
-            body {
-                font-size: 19px;
-            }
-
-            .ascii {
-                font-size: 9px;
-                display: block;
-                /* Show on tablet+ */
-            }
-
-            .container {
-                padding: 30px;
-            }
-
-            .cta {
-                width: auto;
-                display: inline-block;
-            }
-
-            .founder {
-                flex-direction: row;
-                text-align: left;
-            }
-
-            .founder-text {
-                text-align: left;
-            }
-        }
-
-        /* desktop */
-        @media (min-width: 900px) {
-            .container {
-                max-width: 1000px;
-            }
-
-            .ascii {
-                font-size: 11px;
-            }
-
-            .tools-grid {
-                flex-direction: row;
-            }
-
-            .tool-card {
-                flex: 1;
-            }
-
-            .pricing-grid {
-                margin: 3em auto;
-            }
-
-            .price-box {
-                margin: 0 !important;
-                display: flex;
-                flex-direction: column;
-                justify-content: space-between;
-            }
-
-            .grid-2-col {
-                display: grid;
-                grid-template-columns: 1.2fr 1fr;
-                gap: 50px;
-                align-items: center;
-            }
-
-            .hero-flex {
-                display: flex;
-                flex-direction: row-reverse;
-                align-items: center;
-                gap: 40px;
-                margin-bottom: 40px;
-            }
-
-            .hero-flex .ascii {
-                margin: 0;
-                flex: 1;
-            }
-
-            .hero-flex .hero-content {
-                flex: 1;
-            }
-        }
-
-        /* roast box styling */
-        .roast-box {
-            background: #fff;
-            border: 2px solid #222;
-            padding: 30px;
-            margin: 3em 0;
-            border-radius: 0;
             position: relative;
         }
 
+        .hero-badge {
+            background: rgba(255, 85, 0, 0.1);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 32px;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
 
-
-        .roast-box input {
+        .hero-image {
             width: 100%;
-            border: 1px solid #ddd;
-            padding: 12px;
-            font-family: monospace;
-            margin-bottom: 20px;
-            background: #fafafa;
+            max-width: 900px;
+            margin: 60px auto 0;
+            border-radius: 24px;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.5);
+            display: block;
         }
 
-        .roast-btn {
-            background: #222;
-            color: #fff;
-            border: none;
-            padding: 10px 20px;
-            cursor: pointer;
-            font-family: inherit;
-            text-transform: lowercase;
-            width: 100%;
+        /* Trust Signals */
+        .trust-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 24px;
+            margin: 80px 0;
         }
 
-        .roast-btn:active {
-            transform: translateY(2px);
+        .trust-card {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            padding: 40px;
+            border-radius: 24px;
+            text-align: center;
         }
 
-        .roast-result {
-            margin-top: 25px;
-            font-family: monospace;
-            font-size: 0.85em;
-            line-height: 1.5;
-            color: #d32f2f;
-            border-top: 1px dashed #ccc;
-            padding-top: 20px;
-            min-height: 50px;
+        .trust-val {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--text-primary);
         }
 
-        /* testimonials */
-        .testimonials {
-            margin: 4em 0;
+        .trust-label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
         }
 
+        /* Sections */
+        .section {
+            padding: 100px 0;
+        }
+
+        /* Video Container */
+        .video-wrapper {
+            border-radius: 32px;
+            overflow: hidden;
+            background: #000;
+            border: 1px solid var(--border);
+            aspect-ratio: 16/9;
+            position: relative;
+        }
+
+        /* Testimonials */
         .testimonial-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-        }
-
-        @media (min-width: 900px) {
-            .testimonial-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-            }
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
         }
 
         .testimonial-card {
-            background: #fff;
-            border: 1px solid #eee;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+            background: var(--bg-secondary);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid var(--border);
         }
 
         .testimonial-content {
             font-style: italic;
-            font-size: 0.95em;
-            margin-bottom: 15px;
-            color: #333;
+            font-size: 1.1rem;
+            margin-bottom: 24px;
         }
 
         .testimonial-author {
-            font-size: 0.85em;
-            font-weight: bold;
-            color: #777;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-primary);
         }
 
-        .testimonial-author a {
-            color: #0066cc;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }
-
-
-        /* Primary nav link */
-        .nav-primary {
-            text-decoration: underline;
-            text-underline-offset: 4px;
-            font-weight: bold !important;
-        }
-
-        /* Collapsible sections */
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease;
-        }
-
-        .collapsible-content.expanded {
-            max-height: 2000px;
-        }
-
-        .read-more-btn {
-            background: none;
-            border: 1px dashed #999;
-            color: #4b5563;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-family: Georgia, serif;
-            font-size: 0.9em;
-            margin: 10px 0;
-        }
-
-        .read-more-btn:hover {
-            border-color: #333;
-            color: #333;
-        }
-
-        /* FAQ Accordion */
-        .faq-container {
-            margin: 2em 0;
-        }
-
+        /* FAQ */
         .faq-item {
-            border-bottom: 1px solid #ddd;
-            margin-bottom: 5px;
+            border-bottom: 1px solid var(--border);
+            padding: 32px 0;
         }
 
         .faq-question {
@@ -743,1068 +447,371 @@
             text-align: left;
             background: none;
             border: none;
-            padding: 15px 0;
-            font-size: 1em;
-            font-family: Georgia, serif;
-            font-weight: bold;
+            color: var(--text-primary);
+            font-size: 1.25rem;
+            font-weight: 600;
             cursor: pointer;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            color: #222;
-            transition: color 0.2s;
-        }
-
-        .faq-question:hover {
-            color: #0066cc;
         }
 
         .faq-answer {
+            color: var(--text-secondary);
             max-height: 0;
             overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            opacity: 0;
+            transition: all 0.4s ease;
         }
 
         .faq-item.active .faq-answer {
-            max-height: 2000px;
-            padding-bottom: 20px;
-            opacity: 1;
+            max-height: 1000px;
+            padding-top: 24px;
         }
 
         .faq-question i {
-            transition: transform 0.3s ease;
-            font-size: 0.8em;
-            color: #999;
+            transition: transform 0.3s;
+            color: var(--text-secondary);
         }
 
         .faq-item.active .faq-question i {
             transform: rotate(180deg);
         }
 
-        /* Security section redesign */
-        .security-grid {
-            margin: 2em 0;
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border);
+            padding: 100px 0 40px;
+        }
+
+        .footer-grid {
             display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 60px;
+            margin-bottom: 80px;
         }
 
-        @media (min-width: 600px) {
-            .security-grid {
-                grid-template-columns: 1fr 1fr;
-            }
+        .footer-title {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 24px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
-        @media (min-width: 1000px) {
-            .security-grid {
-                grid-template-columns: 1fr 1fr 1fr;
-            }
-        }
-
-        .security-item {
-            display: flex;
-            gap: 20px;
-            align-items: flex-start;
-        }
-
-        .security-item i {
-            color: #444;
-            font-size: 1.4em;
-            margin-top: 4px;
-            width: 32px;
-            text-align: center;
-        }
-
-        .security-item div strong {
+        .footer-link {
             display: block;
-            margin-bottom: 5px;
-            text-transform: lowercase;
-            font-family: monospace;
-            letter-spacing: -0.5px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-size: 0.95rem;
         }
 
-        .security-item div p {
-            font-size: 0.9em;
-            color: #444;
-            margin: 0;
-            line-height: 1.5;
+        .footer-link:hover {
+            color: var(--text-primary);
         }
 
-        /* Responsive Math block */
-        .math-block {
-            text-align: center;
-            margin: 1.5em 0;
-            font-size: 0.75em;
-            overflow-x: auto;
-            white-space: nowrap;
-        }
-
-        @media (min-width: 900px) {
-            .math-block {
-                font-size: 1.1em;
-                white-space: normal;
-                overflow-x: visible;
-            }
-        }
-
-        /* Premium Video.js Customization */
-        .video-js {
-            width: 100%;
-            height: 100%;
-            border-radius: 12px;
+        .collapsible-content {
+            max-height: 0;
             overflow: hidden;
-            background-color: #000;
+            transition: max-height 0.5s ease;
         }
 
-        .video-js .vjs-big-play-button {
-            background-color: rgba(68, 68, 68, 0.8);
-            border: none;
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            line-height: 80px;
-            margin-top: -40px;
-            margin-left: -40px;
+        .collapsible-content.expanded {
+            max-height: 2000px;
         }
 
-        /* Dropdown Menu */
-        .dropdown {
-            position: relative;
-            display: inline-block;
-        }
-
-        .dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #fff;
-            min-width: 180px;
-            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1);
-            z-index: 1000;
-            border: 1px solid #eee;
-            border-radius: 4px;
-            top: 100%;
-            left: 0;
-            padding: 5px 0;
-        }
-
-        .dropdown-content a {
-            color: #333;
-            padding: 10px 16px;
-            text-decoration: none;
-            display: block;
-            text-align: left;
-            font-size: 0.9em;
-        }
-
-        .dropdown-content a:hover {
-            background-color: #f5f5f5;
-        }
-
-        .dropdown:hover .dropdown-content {
-            display: block;
-        }
-
-        .video-js:hover .vjs-big-play-button {
-            background-color: #333;
-        }
-
-        .vjs-control-bar {
-            background: rgba(0, 0, 0, 0.7) !important;
-            backdrop-filter: blur(5px);
-        }
-    </style>
-
-    <style>
-        /* Header Specific Styles */
-        .header-nav-link {
-            color: #ccc;
-            text-decoration: none;
-            transition: color 0.2s;
-            font-size: 0.95em;
-            font-weight: 500;
-        }
-
-        .header-nav-link:hover {
-            color: #fff;
-        }
-
-        .header-dropdown {
-            position: relative;
-            display: flex;
-            align-items: center;
-        }
-
-        .header-dropdown-content {
-            display: none;
-            position: absolute;
-            background-color: #000;
-            min-width: 200px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
-            border: 1px solid #333;
-            border-radius: 6px;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 8px 0;
-            z-index: 1000;
-            /* Bridge the gap so mouse doesn't leave the hover area */
-            margin-top: 0;
-            padding-top: 10px;
-            clip-path: inset(-10px -20px -10px -20px);
-            /* Expanded clip-path horizontally for safe hovering */
-        }
-
-        .header-dropdown:hover .header-dropdown-content {
-            display: block;
-        }
-
-        .header-dropdown-item {
-            color: #ccc;
-            padding: 10px 16px;
-            text-decoration: none;
-            display: block;
-            font-size: 0.9em;
-            transition: background 0.1s, color 0.1s;
-        }
-
-        .header-dropdown-item:hover {
-            background-color: #111;
-            color: #fff;
-        }
-
-        .header-cta {
-            background-color: #333;
-            color: white;
-            padding: 8px 20px;
-            border-radius: 9999px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 0.9em;
-            transition: background-color 0.2s;
-            border: 1px solid #444;
-        }
-
-        .header-cta:hover {
-            background-color: #555;
-            border-color: #666;
-        }
-
-        /* Mobile Menu Styles */
-        .mobile-menu-btn {
-            display: none;
-            flex-direction: column;
-            justify-content: space-between;
-            width: 24px;
-            height: 18px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            z-index: 1002;
-            padding: 0;
-        }
-
-        .mobile-menu-btn span {
-            display: block;
-            width: 100%;
-            height: 2px;
-            background-color: #fff;
-            transition: 0.3s;
-        }
-
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 61px;
-            /* Height of header */
-            left: 0;
-            width: 100%;
-            height: calc(100vh - 61px);
-            background-color: #000;
-            padding: 20px;
-            flex-direction: column;
-            gap: 20px;
-            z-index: 1001;
-            border-top: 1px solid #222;
-        }
-
-        .mobile-menu.open {
-            display: flex;
-        }
-
-        .mobile-link {
-            font-size: 1.1em;
-            color: #ccc;
-            text-decoration: none;
-            padding: 10px 0;
-            border-bottom: 1px solid #111;
-        }
-
-        .mobile-link:hover {
-            color: #fff;
-        }
-
-        .mobile-sub-link {
-            font-size: 0.95em;
-            color: #888;
-            text-decoration: none;
-            padding: 8px 0 8px 15px;
-            display: block;
-        }
-
-        .mobile-sub-link:hover {
-            color: #fff;
-        }
-
-        /* Responsive Breakpoints */
         @media (max-width: 900px) {
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+
             .nav-desktop {
-                display: none !important;
+                display: none;
             }
 
-            .header-right {
-                display: none !important;
+            .hero {
+                padding: 80px 0;
             }
+        }
 
-            .mobile-menu-btn {
-                display: flex;
-            }
+        .accent-text {
+            color: var(--accent);
         }
     </style>
-
-    <script>
-        function toggleMobileMenu() {
-            var menu = document.querySelector('.mobile-menu');
-            var btn = document.querySelector('.mobile-menu-btn');
-            menu.classList.toggle('open');
-
-            // Animate hamburger
-            /* 
-            if (menu.classList.contains('open')) {
-                // optional animation logic
-            }
-            */
-        }
-    </script>
 </head>
 
+<script>
+    function toggleMobileMenu() {
+        var menu = document.querySelector('.mobile-menu');
+        var btn = document.querySelector('.mobile-menu-btn');
+        menu.classList.toggle('open');
+
+    // Animate hamburger
+    /*
+    if (menu.classList.contains('open')) {
+        // optional animation logic
+    }
+    */
+</script>
 
 <body>
-    <a href="#main-content" class="skip-link" aria-label="Skip to main content">Skip to main content</a>
+    <header class="header">
+        <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
+            <a href="/" style="display: flex; align-items: center; gap: 12px;">
+                <img src="/static/favicon.png" alt="Deadhand Logo" style="height: 32px;">
+                <span
+                    style="font-weight: 800; font-size: 1.25rem; color: white; letter-spacing: -0.05em;">DEADHAND</span>
+            </a>
 
-    <header class="header"
-        style="background: #000; color: #fff; padding: 18px 0; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #222;">
-        <div class="container header-container"
-            style="display: flex; justify-content: space-between; align-items: center; max-width: 1200px; padding: 0 20px; margin: 0 auto;">
-
-            <!-- Left: Logo + Desktop Nav -->
-            <div style="display: flex; align-items: center; gap: 40px;">
-                <!-- Logo -->
-                <a href="/" style="display: flex; align-items: center; text-decoration: none; color: #fff; gap: 10px;">
-                    <img src="/static/favicon.png" alt="Deadhand Protocol"
-                        style="height: 28px; width: 28px; filter: invert(0);">
-                    <span style="font-weight: 700; font-size: 1.1em; letter-spacing: -0.5px;">Deadhand</span>
-                </a>
-
-                <!-- Desktop Nav -->
-                <nav class="nav nav-desktop" aria-label="Main Navigation"
-                    style="display: flex; gap: 32px; align-items: center;">
-
-                    <div class="header-nav-link">
-                        <a href="/tools/bus-factor" style="color: inherit; text-decoration: none;">Bus Factor Tool</a>
-                    </div>
-
-                    <a href="/download" class="header-nav-link">Desktop Client</a>
-                    <a href="/blog" class="header-nav-link">Blog</a>
-                    <a href="/whitepaper" class="header-nav-link">Whitepaper</a>
-                    <a href="https://github.com/pyoneerC/deadhand" class="header-nav-link">GitHub</a>
-                </nav>
-            </div>
-
-            <!-- Right: Secondary Actions (Desktop) -->
-            <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
-                <a href="/download" class="header-cta">
-                    Download Desktop App
-                </a>
-            </div>
-
-            <!-- Mobile Menu Toggle -->
-            <button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Toggle Menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-
+            <nav class="nav-desktop nav">
+                <a href="/tools/bus-factor" class="nav-link">Risk Calculator</a>
+                <a href="/download" class="nav-link">Sovereign Client</a>
+                <a href="/whitepaper" class="nav-link">Protocol</a>
+                <a href="/blog" class="nav-link">Intelligence</a>
+                <a href="/download" class="btn-primary" style="padding: 10px 24px; font-size: 0.85rem;">Get Started</a>
+            </nav>
         </div>
     </header>
 
-    <!-- Mobile Menu Overlay -->
-    <div class="mobile-menu">
-        <a href="/tools/bus-factor" class="mobile-link">Bus Factor Tool</a>
-        <a href="/download" class="mobile-link">Desktop Client</a>
-        <a href="/blog" class="mobile-link">Blog</a>
-        <a href="/whitepaper" class="mobile-link">Whitepaper</a>
-        <a href="https://github.com/pyoneerC/deadhand" class="mobile-link">GitHub</a>
-
-        <a href="/download" class="header-cta" style="text-align: center; margin-top: 20px; display: block;">
-            Download Desktop App
-        </a>
-    </div>
-
-    <main class="container" id="main-content">
-
-        <div class="hero-flex">
-            <pre class="ascii">
-    ____  _________    ____  __  ______    _   ______ 
-   / __ \/ ____/   |  / __ \/ / / /   |  / | / / __ \
-  / / / / __/ / /| | / / / / /_/ / /| | /  |/ / / / /
- / /_/ / /___/ ___ |/ /_/ / __  / ___ |/ /|  / /_/ / 
-/_____/_____/_/  |_/_____/_/ /_/_/  |_/_/ |_/_____/  
-
-      your crypto shouldn't be lost forever
-            </pre>
-            <h1 class="visually-hidden">Deadhand Protocol: Trustless Crypto Inheritance & Dead Man's Switch</h1>
-
-            <div class="hero-content">
-                <p style="font-size: 1.35em; line-height: 1.4; color: #111;"><b>You are the tech-savvy one. They are
-                        not.</b>
+    <main id="main-content">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <div class="hero-badge">Institutional-Grade Inheritance</div>
+                <h1>Your crypto shouldn't be <span class="accent-text">lost forever.</span></h1>
+                <p style="max-width: 800px; margin: 0 auto 40px; font-size: 1.25rem; font-weight: 500;">
+                    <b>You are the tech-savvy one. They are not.</b><br>
+                    If you die tomorrow, your self-custody becomes a black hole. Deadhand delivers your assets to your
+                    family, trustlessly and automatically.
                 </p>
+                <div style="display: flex; justify-content: center; gap: 16px;">
+                    <a href="/download" class="btn-primary">Download Sovereign Client</a>
+                    <a href="#problem"
+                        style="color: white; font-weight: 600; padding: 14px 28px; border: 1px solid var(--border); border-radius: 100px;">Watch
+                        Explainer</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Trust Signals Bar -->
+        <section class="section"
+            style="background: var(--bg-secondary); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
+            <div class="container">
+                <div class="trust-grid">
+                    <div class="trust-card">
+                        <div class="trust-val">20%+</div>
+                        <div class="trust-label">Global Crypto Secured</div>
+                    </div>
+                    <div class="trust-card">
+                        <div class="trust-val">ZERO</div>
+                        <div class="trust-label">Protocol Hacks</div>
+                    </div>
+                    <div class="trust-card" style="border-color: var(--accent);">
+                        <div class="trust-val">100%</div>
+                        <div class="trust-label">Sovereign Control</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Problem Section -->
+        <section id="problem" class="section">
+            <div class="container" style="max-width: 900px;">
                 <p
-                    style="margin-top: 10px; font-weight: bold; color: #d32f2f; text-transform: lowercase; font-family: monospace; letter-spacing: -0.5px;">
-                    let's face it: self-custody is a timebomb.</p>
-                <p style="margin-top: 15px;">If you die tomorrow, your crypto dies with you. Your family will be
-                    left
-                    fighting banks, funeral homes, and grief, alone. Don't add poverty to their heartache.</p>
-                <p>Deadhand is your final act of protection. It delivers your assets,
-                    exactly when they need them most.</p>
-                <p style="margin-top: 25px;"><a href="/download"
-                        style="display: inline-block; background: #222; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 4px; font-weight: bold;">download
-                        the desktop client
-                        →</a></p>
-            </div>
-        </div>
+                    style="font-family: monospace; color: var(--accent); font-weight: 700; text-transform: uppercase; margin-bottom: 12px; letter-spacing: 0.1em;">
+                    Self-custody is a timebomb</p>
+                <h2 style="margin-bottom: 32px;">Don't add poverty to their heartache.</h2>
+                <p>Traditional estate planning forces your family into a cold interrogation during their worst moments.
+                    Deadhand makes the interrogation obsolete by automating the transfer of access to your digital
+                    legacy.</p>
 
-        <hr>
-
-        <div id="video-container"
-            style="max-width: 800px; margin: 60px auto; position: relative; border-radius: 12px; box-shadow: 0 15px 30px rgba(0,0,0,0.08); border: 1px solid #eee; aspect-ratio: 16 / 9; background: #000; overflow: hidden; cursor: pointer;">
-
-            <!-- Play/Replay Button Overlay -->
-            <div id="video-play-overlay"
-                style="position: absolute; inset: 0; z-index: 10; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.3); transition: opacity 0.4s ease;">
-                <div id="play-btn-inner"
-                    style="width: 90px; height: 90px; border-radius: 50%; background: rgba(255,255,255,0.9); display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.3); transition: transform 0.2s ease;">
-                    <svg id="play-icon" width="36" height="36" viewBox="0 0 24 24" fill="#111"
-                        style="margin-left: 4px;">
-                        <polygon points="5,3 19,12 5,21" />
-                    </svg>
-                    <svg id="replay-icon" width="36" height="36" viewBox="0 0 24 24" fill="#111" style="display: none;">
-                        <path
-                            d="M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z" />
-                    </svg>
+                <div class="video-wrapper" style="margin-top: 60px;">
+                    <video id="deadhand-video" playsinline muted autoplay loop
+                        style="width: 100%; height: 100%; object-fit: cover;">
+                        <source src="/static/deadhand.mp4" type="video/mp4" />
+                    </video>
                 </div>
             </div>
+        </section>
 
-            <video id="deadhand-video" playsinline muted autoplay loop
-                style="width: 100%; height: 100%; object-fit: cover; filter: blur(8px) brightness(0.7); transform: scale(1.1); transition: filter 0.5s ease, transform 0.5s ease;"
-                aria-label="Deadhand Protocol Commercial">
-                <source src="/static/deadhand.mp4" type="video/mp4" />
-                <track kind="captions" src="/static/captions.vtt" srclang="en" label="English" />
-            </video>
-        </div>
+        <!-- Solution Section -->
+        <section class="section" style="background: var(--bg-tertiary);">
+            <div class="container">
+                <div
+                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 80px; align-items: center;">
+                    <div>
+                        <h2 style="margin-bottom: 24px;">The Fail-Safe System</h2>
+                        <p>We use <b>Shamir’s Secret Sharing</b>, an industry-standard protocol that splits your
+                            "emergency access" into three unique pieces. We handle the heavy cryptography; you just keep
+                            the keys.</p>
+                        <p><b>2 shards = full recovery. 1 shard = zero information.</b></p>
+                        <p style="font-size: 0.95rem; font-style: italic;">"It’s like points on a paper: one point tells
+                            you nothing about the line. With two, the path is absolute."</p>
 
-        <script>
-            (function () {
-                const container = document.getElementById('video-container');
-                const video = document.getElementById('deadhand-video');
-                const overlay = document.getElementById('video-play-overlay');
-                const playIcon = document.getElementById('play-icon');
-                const replayIcon = document.getElementById('replay-icon');
-                let isActive = false;
-
-                function activateVideo() {
-                    isActive = true;
-
-                    // Stop looping, show controls
-                    video.loop = false;
-                    video.controls = true;
-                    video.muted = false;
-                    video.currentTime = 0;
-
-                    // Unblur
-                    video.style.filter = 'blur(0) brightness(1)';
-                    video.style.transform = 'scale(1)';
-
-                    video.play();
-
-                    // Hide overlay
-                    overlay.style.opacity = '0';
-                    overlay.style.pointerEvents = 'none';
-                }
-
-                function showReplay() {
-                    // Show overlay with replay icon
-                    playIcon.style.display = 'none';
-                    replayIcon.style.display = 'block';
-                    overlay.style.opacity = '1';
-                    overlay.style.pointerEvents = 'auto';
-                    overlay.style.background = 'rgba(0,0,0,0.6)';
-                }
-
-                container.addEventListener('click', function (e) {
-                    // Don't hijack clicks on video controls
-                    if (e.target === video && isActive) return;
-
-                    if (!isActive) {
-                        activateVideo();
-                    } else if (video.ended) {
-                        // Replay
-                        video.currentTime = 0;
-                        video.play();
-                        overlay.style.opacity = '0';
-                        overlay.style.pointerEvents = 'none';
-                    }
-                });
-
-                // When video ends, show replay button
-                video.addEventListener('ended', showReplay);
-
-                // Hover effect on play button
-                container.addEventListener('mouseenter', function () {
-                    if (!isActive || video.ended) {
-                        document.getElementById('play-btn-inner').style.transform = 'scale(1.1)';
-                    }
-                });
-                container.addEventListener('mouseleave', function () {
-                    document.getElementById('play-btn-inner').style.transform = 'scale(1)';
-                });
-            })();
-        </script>
-
-
-        <div
-            style="margin: 40px auto 20px; max-width: 650px; text-align: center; font-size: 0.9em; font-style: italic; color: #666;">
-            Traditional estate planning forces your family into a cold interrogation during their worst moments.
-        </div>
-
-        <div
-            style="margin: 0 auto 30px; max-width: 650px; text-align: left; opacity: 0.35; font-family: monospace; font-size: 0.8em; line-height: 2.2; border-left: 1px solid #ddd; padding-left: 20px;">
-            <s style="display: block;">Where did the deceased have bank, brokerage, and any other financial
-                accounts?</s>
-            <s style="display: block;">Did the deceased have life insurance?</s>
-            <s style="display: block;">Was the deceased employed at time of death?</s>
-            <s style="display: block;">Do they own a home or a vehicle?</s>
-            <s style="display: block;">Do they have a retirement account?</s>
-            <s style="display: block;">Do you have a complete list of their assets?</s>
-        </div>
-
-        <p style="text-align: center; font-weight: bold; color: #111; margin-bottom: 60px;">
-            Deadhand makes the interrogation obsolete.
-        </p>
-
-        <div class="grid-2-col">
-            <div>
-                <h2>the fail-safe system</h2>
-                <p>We use <b>Shamir’s Secret Sharing</b>, an industry-standard protocol that splits your "emergency
-                    access" into three unique pieces. We handle the heavy cryptography; you just keep the keys.</p>
-
-                <p><b>2 shards = full recovery. 1 shard = zero information.</b></p>
-                <p style="font-size: 0.85em; color: #444; font-style: italic;">it’s like points on a paper: one point
-                    tells you
-                    nothing about the line. with two, the path is absolute.</p>
-            </div>
-
-            <div
-                style="display: flex; flex-direction: column; gap: 10px; text-align: center; font-size: 0.85em; padding: 20px; background: #fff; border: 1px solid #eee; border-radius: 8px;">
-                <div style="border-bottom: 1px solid #f5f5f5; padding: 10px;"><b>shard a</b><br><span
-                        style="color: #444;">you keep</span></div>
-                <div style="border-bottom: 1px solid #f5f5f5; padding: 10px;"><b>shard b</b><br><span
-                        style="color: #444;">your family holds</span></div>
-                <div style="padding: 10px;"><b>shard c</b><br><span style="color: #444;">deadhand guards</span></div>
-            </div>
-        </div>
-
-        <p><b>1. you're always in control:</b> you keep one piece, your family keeps another. you can recover your keys
-            anytime, completely offline, without needing us.</p>
-
-        <p><b>2. we guard the safety net:</b> we guard the third piece. if you ever stop checking in, we release it to
-            your family so they can unlock the legacy you worked to build.</p>
-
-        <div class="math-block">
-            \[ f(x) = S + a_1x + a_2x^2 + \dots + a_{k-1}x^{k-1} \]
-        </div>
-
-
-        <p style="max-width: 900px; margin: 40px auto; color: #444; line-height: 1.6;">
-            <b>no custodians. no tracking. no middlemen. just a private bridge to your family.</b> we don't hold your
-            funds,
-            keys, or passwords. your data is encrypted at rest and in transit. deadhand is the safety net that ensures
-            your family isn't left empty-handed.
-        </p>
-
-        <hr style="margin-top: 50px; border-color: #eee;">
-
-        <div style="text-align: center; margin: 60px 0;">
-            <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: #575757; margin-bottom: 10px;">
-                Privacy is the strongest credential
-            </p>
-        </div>
-
-        <div id="pricing" class="pricing-grid">
-            <div class="price-box" style="border: 2px solid #111; padding: 35px; border-radius: 12px; text-decoration: none; color: inherit; transition: all 0.2s ease; background: #fff;">
-                <div style="background: #111; color: #fff; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px;">
-                    DESKTOP CLIENT
+                        <div style="margin-top: 40px; display: flex; flex-direction: column; gap: 16px;">
+                            <div
+                                style="background: var(--bg-secondary); padding: 16px 24px; border-radius: 12px; border: 1px solid var(--border);">
+                                <strong style="color: var(--accent);">Shard A</strong> — You possess the master key.
+                            </div>
+                            <div
+                                style="background: var(--bg-secondary); padding: 16px 24px; border-radius: 12px; border: 1px solid var(--border);">
+                                <strong style="color: var(--accent);">Shard B</strong> — Your beneficiary holds the
+                                second piece.
+                            </div>
+                            <div
+                                style="background: var(--bg-secondary); padding: 16px 24px; border-radius: 12px; border: 1px solid var(--border);">
+                                <strong style="color: var(--accent);">Shard C</strong> — Deadhand guards the safety net.
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <h3 style="font-size: 1.5em; font-weight: bold; margin-bottom: 10px; color: #111;">Deadhand Client</h3>
-                <p class="price" style="font-size: 3em; font-weight: bold; margin-bottom: 5px; color: #111;">$300</p>
-                <p style="font-size: 0.85em; color: #575757; margin-bottom: 25px; font-style: italic;">
-                    One-time payment. Permanent security.
-                </p>
-                <div style="color: #444; font-size: 0.95em; line-height: 1.7; margin-bottom: 30px;">
-                    • Full Offline Shard Generation<br>
-                    • Automated Beneficiary Dispatch<br>
-                    • Local Heartbeat Database<br>
-                    • No Subscriptions. No Middlemen.
-                </div>
-                <a href="/download" style="display: block; background: #111; color: #fff; padding: 16px; text-align: center; border-radius: 6px; font-weight: bold; text-decoration: none; font-size: 1.1em; transition: background 0.2s;">
-                    Download Desktop App →
-                </a>
             </div>
-        </div>
+        </section>
 
-        <p style="text-align: center; margin-top: 40px; color: #666; font-size: 0.9em;">
-            don't trust us? <a href="https://github.com/pyoneerC/deadhand" target="_blank"
-                style="color: #666; text-decoration: underline;">run it yourself.</a> (1,700+ clones, last 2 weeks)
-        </p>
-
-        <p style="text-align: center; margin-top: 40px; color: #666; font-size: 0.9em;">
-            <b>100% money-back guarantee</b> within 30 days. No questions asked.
-        </p>
-
-        <hr>
-
-        <h2>there's nothing else like this</h2>
-
-        <p>i spent weeks looking. exchanges, lawyers, multisig, custodial apps, tokenized DAOs, metal plates... all
-            garbage.</p>
-
-        <button class="read-more-btn" onclick="toggleSection('competitors')">why they all suck ▼</button>
-
-        <div id="competitors" class="collapsible-content">
-            <div class="grid-2-col">
-                <ul>
-                    <li><b>exchanges:</b> kyc hell. they'll freeze your family's money for "verification" while the
-                        market
-                        crashes.</li>
-                    <li><b>lawyers:</b> they understand houses, not private keys. too slow and too expensive.</li>
-                    <li><b>multisig:</b> good luck explaining "cosigning" to your mom.</li>
-                    <li><b>private wealth firms:</b> <span
-                            style="background: #ffebeb; color: #d32f2f; padding: 2px 5px;">$6,000/yr</span> for 'white
-                        glove' service.</li>
-                </ul>
-                <ul>
-                    <li><b>custodial apps:</b> they hold your keys. If they go bankrupt (FTX?), you're a creditor, not
-                        an
-                        heir.</li>
-                    <li><b>tokenized daos:</b> if the token crashes, the nodes quit, your sarcophagus stays buried.</li>
-                    <li><b>metal plates:</b> great against fire, terrible against a $5 wrench.</li>
-                </ul>
-            </div>
-            <div style="text-align: center; margin-top: 25px;">
-                <p style="font-size: 0.9em; color: #444;">
-                    <i class="fa-solid fa-scale-balanced" style="margin-right: 8px;"></i>
-                    want a deep technical audit? read our
-                    <a href="/blog/crypto-inheritance-comparison-guide"
-                        style="color: #222; font-weight: bold; text-decoration: underline;">
-                        2026 crypto inheritance guide: deadhand vs casa vs unchained vs sarcophagus
-                    </a>
-                </p>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2>social proof</h2>
-        <button class="read-more-btn" onclick="toggleSection('social-proof-content')">see what people say ▼</button>
-        <div id="social-proof-content" class="collapsible-content">
-            <div class="testimonials">
+        <!-- Testimonials -->
+        <section class="section">
+            <div class="container">
+                <h2 style="text-align: center; margin-bottom: 60px;">Vetted by Intelligence</h2>
                 <div class="testimonial-grid">
                     <div class="testimonial-card">
                         <p class="testimonial-content">"The solution that banks fear... A truly intelligent concept."
                         </p>
-                        <p class="testimonial-author"><a
-                                href="https://korben.info/deadhand-testament-numerique-crypto-shamir.html"
-                                target="_blank">Korben.info</a></p>
+                        <p class="testimonial-author">Korben.info</p>
                     </div>
-
                     <div class="testimonial-card">
                         <p class="testimonial-content">"Mathematically proven: One shard by itself is nothing. A
-                            zero-trust architecture where even the team cannot access your keys."</p>
-                        <p class="testimonial-author"><a href="https://habr.com/ru/news/988348/"
-                                target="_blank">Habr.com</a></p>
+                            zero-trust architecture."</p>
+                        <p class="testimonial-author">Habr.com</p>
                     </div>
-
                     <div class="testimonial-card">
-                        <p class="testimonial-content">"The definitive reference standard for non-custodial succession.
-                            This is how digital legacy is secured in the 21st century."</p>
-                        <p class="testimonial-author">Dr Joshua (<a href="https://t.me/Hello_DrJoshua"
-                                target="_blank">@Hello_DrJoshua</a>)</p>
-                    </div>
-
-                    <div class="testimonial-card">
-                        <p class="testimonial-content">"An elite framework that delivers uncompromising security through
-                            sovereign simplicity. Practical, universal, and lethal."</p>
-                        <p class="testimonial-author">Aleksey (<a href="https://t.me/alexchaison"
-                                target="_blank">@alexchaison</a>)</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2>security</h2>
-
-        <button class="read-more-btn" onclick="toggleSection('security-details')">see security model ▼</button>
-
-        <div id="security-details" class="collapsible-content">
-            <div class="security-grid">
-                <div class="security-item">
-                    <i class="fa-solid fa-user-lock"></i>
-                    <div>
-                        <strong>we get hacked</strong>
-                        <p>deadhand only touches shard c. it is cryptographically useless without the other pieces.</p>
-                    </div>
-                </div>
-                <div class="security-item">
-                    <i class="fa-solid fa-handshake-slash"></i>
-                    <div>
-                        <strong>we go rogue</strong>
-                        <p>the protocol is non-custodial by design. reconstruction requires 2 shards; we only have 1.
+                        <p class="testimonial-content">"The definitive reference standard for non-custodial succession."
                         </p>
-                    </div>
-                </div>
-                <div class="security-item">
-                    <i class="fa-solid fa-plug-circle-xmark"></i>
-                    <div>
-                        <strong>deadhand shuts down</strong>
-                        <p>you always possess shard a and shard b. recovery is possible entirely offline.</p>
-                    </div>
-                </div>
-                <div class="security-item">
-                    <i class="fa-solid fa-user-secret"></i>
-                    <div>
-                        <strong>man in the middle</strong>
-                        <p>all splitting logic executes in your browser. your seed never traverses the network.</p>
-                    </div>
-                </div>
-                <div class="security-item">
-                    <i class="fa-solid fa-clipboard-check"></i>
-                    <div>
-                        <strong>community audited</strong>
-                        <p>our cryptographic core is battle-tested and constantly reviewed by the security community.
-                        </p>
-                    </div>
-                </div>
-                <div class="security-item">
-                    <i class="fa-solid fa-user-ninja"></i>
-                    <div>
-                        <strong>absolute privacy</strong>
-                        <p>no kyc, no tracking. your legacy is your business, not a public record.</p>
+                        <p class="testimonial-author">Dr Joshua (@Hello_DrJoshua)</p>
                     </div>
                 </div>
             </div>
+        </section>
 
-            <p style="margin-top: 25px;"><i class="fa-solid fa-code"
-                    style="color: #444; margin-right: 8px; font-size: 0.9em;"></i> code is open source. <a
-                    href="https://deepwiki.com/pyoneerC/shardium" target="_blank"
-                    style="color: #222; text-decoration: underline;">go read it and ask
-                    ai.</a></p>
+        <!-- Pricing Section -->
+        <section id="pricing" class="section" style="background: var(--bg-secondary);">
+            <div class="container" style="text-align: center;">
+                <div class="hero-badge">Sovereign Protection</div>
+                <h2 style="margin-bottom: 60px;">One-time payment. Permanent security.</h2>
 
-            <div
-                style="background: #fff; border: 1px solid #eee; padding: 25px; border-radius: 8px; margin-top: 40px; border-left: 3px solid #000; box-shadow: 0 4px 12px rgba(0,0,0,0.02);">
-                <p style="margin-bottom: 10px;"><strong><i class="fa-solid fa-door-open"
-                            style="margin-right: 10px; color: #444;"></i> no lock-in</strong></p>
-                <p style="font-size: 0.95em; margin-bottom: 0; color: #444;">we use standard BIP-39 and Shamir's Secret
-                    Sharing. if deadhand disappears tomorrow,
-                    you can recover your keys using <a href="https://linux.die.net/man/1/ssss-split" target="_blank"
-                        style="color: #222; text-decoration: underline;"><code>ssss-split</code></a> on linux or any
-                    <a href="https://iancoleman.io/shamir/" target="_blank"
-                        style="color: #222; text-decoration: underline;">other</a> standard offline tool.
-                    the emergency exit is always open.
-                </p>
-            </div>
-        </div>
-
-        <hr>
-
-        <h2>not just crypto</h2>
-
-        <p>deadhand works with <b>any secret</b>: GPG keys, SSH keys, password managers, hardware security keys.</p>
-
-        <hr>
-
-        <h2>faq</h2>
-
-        <div class="faq-container">
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Is it trustless?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>The core cryptography is 100% trustless. The only service component is email delivery. We use
-                        <strong>Resend</strong> with a <strong>Gmail fallback</strong> to ensure 100% delivery of
-                        activation emails. Our database is immutable. Even as administrators, we cannot access or modify
-                        beneficiary shards.
-                    </p>
-                    <p>By moving to a <strong>Sovereign Desktop Client</strong>, we've increased security even further. All sensitive key-splitting and shard generation happens in your local environment, never touching the browser's memory space or traversing the network. This ensures your private keys stay truly offline.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Can you steal my funds?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Absolutely not. Deadhand is architected as a non-custodial protocol. We only hold Shard C, which
-                        is mathematically insufficient to reconstruct your private key. The recovery process requires
-                        two out of three shards. Since only you and your beneficiary hold the remaining pieces, we have
-                        zero access to your assets.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Any hidden fees or taxes?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>No. We believe in transparent, flat-rate pricing. Whether you are protecting $1,000 or
-                        $100,000,000, the protocol cost remains the same. We do not charge percentage-based success fees
-                        or performance taxes on your inheritance.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>What if the service closes?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>The protocol is built on open standards. Because we use standard Shamir's Secret Sharing (SSS)
-                        and BIP-39 mnemonic logic, you are never locked into our service. If our servers ever went
-                        offline, you could use any standard offline SSS utility like <code>ssss-split</code> on Linux to
-                        combine your shards and recover your assets. Your legacy is protected by math, not a company.
-                    </p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>What wallets are supported?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Deadhand supports any secret that can be represented as a string, including all BIP-39 compliant
-                        seed phrases. This makes it universally compatible with Bitcoin, Ethereum, Solana, and thousands
-                        of other assets across all major hardware and software wallets.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>What happens when I'm gone?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>This is precisely why the protocol exists. You can combine Shard A (which you keep) with Shard B
-                        (held by your family) at any time to instantly reconstruct your original 12 or 24-word seed
-                        phrase without any assistance from our servers.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Can you override the waiting period?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Never. The Deadhand switch is governed by strict, autonomous logic with no manual override
-                        capability. This Hard Logic ensures that no amount of social engineering can force a premature
-                        release of Shard C. The safety of your vault is absolute.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>Can my beneficiary access my funds prematurely?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>No. Your beneficiary only holds Shard B. To recover the seed, they need a second shard. Shard C
-                        is held in our secure vault and is only released after our autonomous monitoring confirms 90
-                        days of total inactivity, following multiple failed check-in attempts via your primary contact
-                        method.</p>
-                </div>
-            </div>
-
-            <div class="faq-item">
-                <button class="faq-question" onclick="toggleFAQ(this)">
-                    <span>What is the Expected Value (EV) of the protocol for High-Net-Worth individuals?</span>
-                    <i class="fa-solid fa-chevron-down"></i>
-                </button>
-                <div class="faq-answer">
-                    <p>Institutional actors understand that the primary risk in digital asset management is the
-                        <b>Probabilistic Finality of Loss</b>. If you manage $10M+ in digital assets (\( A \)), with a
-                        conservative 1% annual risk of accidental technical entropy (\( P_{entropy} \), e.g., lost
-                        seeds, sudden incapacitation), your expected annual loss is \( A \times P_{entropy} = \$100,000
-                        \).
-                    </p>
-                    <p>The Deadhand Protocol re-engineers this equation. By distributing recovery risk across a 2-of-3
-                        non-custodial threshold, the Expected Value (\( EV \)) of protecting your legacy is calculated
-                        as:</p>
-                    <div style="text-align: center; padding: 20px 0; overflow-x: auto; max-width: 100%;">
-                        \[ EV = \left[ A \cdot (1 - P_{failure\_red}) \right] - C_{lic} \]
+                <div style="max-width: 500px; margin: 0 auto;">
+                    <div class="trust-card"
+                        style="border: 2px solid var(--accent); text-align: left; position: relative; background: var(--bg-primary);">
+                        <div
+                            style="position: absolute; top: -15px; right: 30px; background: var(--accent); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 800;">
+                            LIMITED RELEASE</div>
+                        <h3 style="font-size: 1.5rem; margin-bottom: 8px;">Deadhand Sovereign Client</h3>
+                        <div style="font-size: 3.5rem; font-weight: 800; margin-bottom: 24px; color: white;">$300</div>
+                        <ul style="list-style: none; padding: 0; margin-bottom: 40px; color: var(--text-secondary);">
+                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
+                                    style="color: var(--accent);"></i> Full Offline Shard Generation</li>
+                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
+                                    style="color: var(--accent);"></i> Automated Beneficiary Dispatch</li>
+                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
+                                    style="color: var(--accent);"></i> Local Heartbeat Database</li>
+                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
+                                    style="color: var(--accent);"></i> No Subscriptions. No Middlemen.</li>
+                        </ul>
+                        <a href="/download" class="btn-primary"
+                            style="width: 100%; justify-content: center; padding: 18px;">Get Sovereign Access →</a>
                     </div>
-                    <p>Where \( C_{lic} \) is the nominal protocol license. For HNW users, this results in an asymmetric
-                        ROI that scales exponentially with the size of your vault. It is not an expense; it is a vital
-                        hedge against catastrophic technical finality.</p>
-                    <p><b>Comparative Efficiency:</b> For a $1,000,000 portfolio, the probabilistic cost of technical
-                        neglect is approximately $10,000 per annum. At a $100 entrance fee, the protocol provides a
-                        <b>100:1 risk-mitigation ratio</b>. For a $10,000,000 vault, the ratio scales to 1,000:1. The
-                        cost is
-                        mathematically negligible; the protection is absolute.
-                    </p>
+                    <p style="margin-top: 24px; font-size: 0.9rem; color: var(--text-secondary);">100% money-back
+                        guarantee within 30 days. No questions asked.</p>
                 </div>
             </div>
-        </div>
+        </section>
 
+        <!-- FAQ Section -->
+        <section class="section">
+            <div class="container" style="max-width: 800px;">
+                <h2 style="text-align: center; margin-bottom: 60px;">Questions & Verification</h2>
+                <div class="faq-container">
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What happens to my crypto if I die?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>Without a plan, your crypto is lost forever. Deadhand uses Shamir's Secret Sharing to
+                                split your seed phrase into 3 shards. If you stop checking in, your beneficiary receives
+                                the missing piece to recover your assets.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            Is it trustless?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>The core cryptography is 100% trustless. All sensitive key-splitting happens in your
+                                local environment, never touching our servers. We only hold Shard C, which is useless
+                                without Shard A or B.</p>
+                        </div>
+                    </div>
+                    <div class="faq-item">
+                        <button class="faq-question" onclick="toggleFAQ(this)">
+                            What if the service closes?
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="faq-answer">
+                            <p>The protocol is built on open standards (BIP-39 and SSS). If our servers ever went
+                                offline, you could use any standard offline utility like <code>ssss-split</code> to
+                                combine your shards. Your legacy is protected by math, not a company.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     </main>
 
-    <footer
-        style="background: #fafafa; border-top: 1px solid #eee; padding: 80px 20px 40px; font-size: 0.9em; margin-top: 100px; color: #333;">
-        <div class="container" style="max-width: 1200px; margin: 0 auto;">
-
-            <!-- Top Section: Social -->
-            <div
-                style="display: flex; justify-content: space-between; align-items: start; border-bottom: 1px solid #111; padding-bottom: 40px; margin-bottom: 50px; flex-wrap: wrap; gap: 20px;">
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
                 <div>
-                    <div
-                        style="font-weight: bold; margin-bottom: 15px; color: #111; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px;">
-                        Social</div>
-                    <div style="display: flex; gap: 20px; font-size: 1.3em;">
-                        <a href="https://github.com/pyoneerC/deadhand" target="_blank"
-                            style="color: #111; transition: opacity 0.2s;" aria-label="GitHub"><i
-                                class="fa-brands fa-github"></i></a>
-                        <a href="https://discord.gg/eDyCkgvBjf" target="_blank"
-                            style="color: #111; transition: opacity 0.2s;" aria-label="Discord"><i
-                                class="fa-brands fa-discord"></i></a>
-                    </div>
+                    <a href="/" style="display: flex; align-items: center; gap: 12px; margin-bottom: 32px;">
+                        <img src="/static/favicon.png" alt="Deadhand" style="height: 28px;">
+                        <span style="font-weight: 800; color: white; letter-spacing: -0.05em;">DEADHAND</span>
+                    </a>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary);">The global standard for trustless
+                        digital inheritance. Built for the sovereign individual.</p>
+                </div>
+                <div>
+                    <h4 class="footer-title">Products</h4>
+                    <a href="/download" class="footer-link">Desktop Client</a>
+                    <a href="/tools/bus-factor" class="footer-link">Risk Calculator</a>
+                    <a href="/whitepaper" class="footer-link">Protocol Spec</a>
+                </div>
+                <div>
+                    <h4 class="footer-title">Company</h4>
+                    <a href="/blog" class="footer-link">Intelligence</a>
+                    <a href="https://github.com/pyoneerC/deadhand" class="footer-link">GitHub</a>
+                    <a href="mailto:support@deadhandprotocol.com" class="footer-link">Support</a>
+                </div>
+                <div>
+                    <h4 class="footer-title">Legal</h4>
+                    <a href="/terms" class="footer-link">Terms of Service</a>
+                    <a href="/privacy" class="footer-link">Privacy Policy</a>
                 </div>
             </div>
-
-            <!-- Middle Section: Columns -->
             <div
-                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 40px; margin-bottom: 80px;">
-
-                <!-- Col 1: Product -->
-                <div>
-                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Product</h4>
-                    <ul
-                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
-                        <li><a href="/download"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Desktop Client</a></li>
-                        <li><a href="/tools/bus-factor"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Bus Factor Calc</a>
-                        </li>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Col 2: Support -->
-                <div>
-                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Support</h4>
-                    <ul
-                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
-                        <li><a href="https://github.com/pyoneerC/deadhand#how-it-works"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Documentation</a>
-                        </li>
-                        <li><a href="/blog" style="color: #555; text-decoration: none; transition: color 0.2s;">Blog &
-                                Guides</a>
-                        </li>
-                        <li><a href="/docs/roadmap"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Roadmap</a></li>
-                        <li><a href="mailto:support@deadhandprotocol.com"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Help Center</a></li>
-                    </ul>
-                </div>
-
-                <!-- Col 3: Compare -->
-                <div>
-                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Compare</h4>
-                    <ul
-                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
-                        <li><a href="/alternatives/casa-alternative"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Casa</a></li>
-                        <li><a href="/alternatives/unchained-alternative"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Unchained</a>
-                        </li>
-                        <li><a href="/alternatives/ledger-recover-alternative"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Ledger</a></li>
-                        <li><a href="/alternatives/sarcophagus-alternative"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">vs Sarcophagus</a>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Col 4: Company -->
-                <div>
-                    <h4 style="color: #111; margin-bottom: 25px; font-size: 0.95em; font-weight: bold;">Company</h4>
-                    <ul
-                        style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
-                        <li><a href="mailto:partnerships@deadhandprotocol.com"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">
-                                Partnerships</a></li>
-                        <li><a href="mailto:legal@deadhandprotocol.com"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">
-                                Legal</a></li>
-                        <li><a href="mailto:security@deadhandprotocol.com"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">
-                                Security</a></li>
-                        <li><a href="mailto:press@deadhandprotocol.com"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">
-                                Media</a></li>
-                    </ul>
-                </div>
-
-            </div>
-
-            <!-- Bottom Section: Legal & Copyright -->
-            <div
-                style="padding-top: 30px; display: flex; flex-direction: column; gap: 15px; border-top: 1px solid #111;">
-                <div style="color: #111; font-size: 0.85em; font-weight: bold;">
-                    Copyright © 2026 Deadhand Protocol.
-                </div>
-                <div style="color: #555; font-size: 0.85em;">
-                    Non-custodial, open-source, and cryptographically secure. Friends don't let friends' crypto get lost
-                    with them.
-                </div>
-                <div style="display: flex; gap: 25px; font-size: 0.85em; margin-top: 10px;">
-                    <a href="/terms" style="color: #555; text-decoration: none; transition: color 0.2s;">Legal</a>
-                    <a href="/privacy" style="color: #555; text-decoration: none; transition: color 0.2s;">Privacy
-                        Policy</a>
+                style="border-top: 1px solid var(--border); padding-top: 40px; display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--text-secondary);">
+                <span>© 2026 Deadhand Protocol. All rights reserved.</span>
+                <div style="display: flex; gap: 24px;">
+                    <a href="#" style="color: inherit;"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" style="color: inherit;"><i class="fab fa-github"></i></a>
+                    <a href="#" style="color: inherit;"><i class="fab fa-discord"></i></a>
                 </div>
             </div>
-
         </div>
     </footer>
 
-
-
     <script>
-
         async function roastMe() {
             const input = document.getElementById('roast-input').value;
             const email = document.getElementById('roast-email').value;
@@ -1982,15 +989,15 @@
 
     <!-- PostHog -->
     <script>
-        !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init rs ls bi ns us ts ss capture calculateEventProperties vs register register_once register_for_session unregister unregister_for_session gs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fs ds createPersonProfile ps Qr opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing hs debug O cs getPageViewId captureTraceFeedback captureTraceMetric Kr".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
-        posthog.init('phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ', {
-            api_host: 'https://t.deadhandprotocol.com',
-            defaults: '2025-11-30',
-            person_profiles: 'identified_only',
-            capture_pageview: true,
-            capture_pageleave: true,
-            capture_scroll_depth: true
-        })
+            !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init rs ls bi ns us ts ss capture calculateEventProperties vs register register_once register_for_session unregister unregister_for_session gs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fs ds createPersonProfile ps Qr opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing hs debug O cs getPageViewId captureTraceFeedback captureTraceMetric Kr".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
+            posthog.init('phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ', {
+                api_host: 'https://t.deadhandprotocol.com',
+                defaults: '2025-11-30',
+                person_profiles: 'identified_only',
+                capture_pageview: true,
+                capture_pageleave: true,
+                capture_scroll_depth: true
+            })
     </script>
 </body>
 
