@@ -477,6 +477,86 @@
             transform: rotate(180deg);
         }
 
+        /* Pricing Grid */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 32px;
+            margin-top: 60px;
+        }
+
+        .pricing-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            padding: 48px 32px;
+            border-radius: 24px;
+            text-align: left;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s, border-color 0.3s;
+        }
+
+        .pricing-card.featured {
+            border: 2px solid var(--accent);
+            transform: scale(1.05);
+            z-index: 10;
+        }
+
+        .pricing-tier {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 12px;
+        }
+
+        .pricing-price {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 32px;
+        }
+
+        .pricing-features {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 40px;
+            flex-grow: 1;
+        }
+
+        .pricing-features li {
+            margin-bottom: 16px;
+            display: flex;
+            gap: 12px;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+
+        .pricing-features i {
+            color: var(--accent);
+            margin-top: 4px;
+        }
+
+        @media (max-width: 900px) {
+            .hero {
+                padding: 80px 0;
+            }
+
+            .pricing-card.featured {
+                transform: none;
+            }
+
+            .nav-desktop {
+                display: none;
+            }
+
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 40px;
+            }
+        }
+
         /* Footer */
         .footer {
             background: var(--bg-secondary);
@@ -509,31 +589,6 @@
 
         .footer-link:hover {
             color: var(--text-primary);
-        }
-
-        .collapsible-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease;
-        }
-
-        .collapsible-content.expanded {
-            max-height: 2000px;
-        }
-
-        @media (max-width: 900px) {
-            .footer-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 40px;
-            }
-
-            .nav-desktop {
-                display: none;
-            }
-
-            .hero {
-                padding: 80px 0;
-            }
         }
 
         .accent-text {
@@ -709,31 +764,52 @@
         <section id="pricing" class="section" style="background: var(--bg-secondary);">
             <div class="container" style="text-align: center;">
                 <div class="hero-badge">Sovereign Protection</div>
-                <h2 style="margin-bottom: 60px;">One-time payment. Permanent security.</h2>
+                <h2 style="margin-bottom: 20px;">Choose your level of autonomy</h2>
+                <p style="margin-bottom: 60px;">Professional-grade security for individuals and institutions.</p>
 
-                <div style="max-width: 500px; margin: 0 auto;">
-                    <div class="trust-card"
-                        style="border: 2px solid var(--accent); text-align: left; position: relative; background: var(--bg-primary);">
-                        <div
-                            style="position: absolute; top: -15px; right: 30px; background: var(--accent); color: white; padding: 4px 12px; border-radius: 4px; font-size: 0.75rem; font-weight: 800;">
-                            LIMITED RELEASE</div>
-                        <h3 style="font-size: 1.5rem; margin-bottom: 8px;">Deadhand Sovereign Client</h3>
-                        <div style="font-size: 3.5rem; font-weight: 800; margin-bottom: 24px; color: white;">$300</div>
-                        <ul style="list-style: none; padding: 0; margin-bottom: 40px; color: var(--text-secondary);">
-                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
-                                    style="color: var(--accent);"></i> Full Offline Shard Generation</li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
-                                    style="color: var(--accent);"></i> Automated Beneficiary Dispatch</li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
-                                    style="color: var(--accent);"></i> Local Heartbeat Database</li>
-                            <li style="margin-bottom: 12px; display: flex; gap: 12px;"><i class="fas fa-check"
-                                    style="color: var(--accent);"></i> No Subscriptions. No Middlemen.</li>
+                <div class="pricing-grid">
+                    <!-- Tier 1: Free -->
+                    <div class="pricing-card">
+                        <div class="pricing-tier">Lite</div>
+                        <div class="pricing-price">Free</div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Offline Shard Generation</li>
+                            <li><i class="fas fa-check"></i> SSS Visual Cryptography</li>
+                            <li><i class="fas fa-check"></i> Bus Factor Risk Tools</li>
+                            <li><i class="fas fa-check"></i> Open Source Spec</li>
                         </ul>
                         <a href="/download" class="btn-primary"
-                            style="width: 100%; justify-content: center; padding: 18px;">Get Sovereign Access →</a>
+                            style="background: transparent; border: 1px solid var(--border); color: white; justify-content: center;">Get Started</a>
                     </div>
-                    <p style="margin-top: 24px; font-size: 0.9rem; color: var(--text-secondary);">100% money-back
-                        guarantee within 30 days. No questions asked.</p>
+
+                    <!-- Tier 2: Sovereign (Paid) -->
+                    <div class="pricing-card featured">
+                        <div class="pricing-tier" style="color: var(--accent);">Sovereign</div>
+                        <div class="pricing-price">$300</div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <b>Everything in Lite</b></li>
+                            <li><i class="fas fa-check"></i> Automated Heartbeat System</li>
+                            <li><i class="fas fa-check"></i> Encrypted Email Dispatch</li>
+                            <li><i class="fas fa-check"></i> Permanent Software License</li>
+                            <li><i class="fas fa-check"></i> Priority Security Updates</li>
+                        </ul>
+                        <a href="/download" class="btn-primary" style="justify-content: center;">Buy Sovereign Access →</a>
+                    </div>
+
+                    <!-- Tier 3: Enterprise -->
+                    <div class="pricing-card">
+                        <div class="pricing-tier">Enterprise</div>
+                        <div class="pricing-price">Bespoke</div>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> <b>Everything in Sovereign</b></li>
+                            <li><i class="fas fa-check"></i> Institutional White-Labeling</li>
+                            <li><i class="fas fa-check"></i> Custom Protocol Integration</li>
+                            <li><i class="fas fa-check"></i> 24/7 Dedicated Support</li>
+                            <li><i class="fas fa-check"></i> Legal Compliance Suite</li>
+                        </ul>
+                        <a href="mailto:support@deadhandprotocol.com" class="btn-primary"
+                            style="background: transparent; border: 1px solid var(--border); color: white; justify-content: center;">Contact Sales</a>
+                    </div>
                 </div>
             </div>
         </section>
