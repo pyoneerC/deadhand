@@ -81,7 +81,7 @@
         "description": "Dead man's switch for crypto inheritance. Split your seed phrase into 3 shards using Shamir's Secret Sharing. If you go silent, your beneficiary recovers your assets.",
         "offers": {
             "@type": "Offer",
-            "price": "100.00",
+            "price": "300.00",
             "priceCurrency": "USD",
             "priceValidUntil": "2027-12-31"
         },
@@ -192,7 +192,7 @@
                 "name": "How much does Deadhand cost?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "Deadhand costs $100/year or $400 for lifetime access. There's also a Self-Hosted Pro option for $299 one-time."
+                    "text": "The Deadhand Sovereign Desktop Client costs a unique one-time payment of $300. No subscriptions, no hidden fees. You own the software forever."
                 }
             }
         ]
@@ -485,17 +485,24 @@
             margin-bottom: 0.5em;
         }
 
+        .pricing-grid {
+            display: block;
+            max-width: 800px;
+            margin: 2em auto;
+        }
+
         .price-box {
             background: #fff;
             border: 2px solid #222;
-            padding: 20px;
-            margin: 1.5em 0;
+            padding: 40px;
+            margin: 0 auto;
             border-radius: 8px;
             text-decoration: none;
             color: inherit;
             display: block;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             cursor: pointer;
+            width: 100%;
         }
 
         .price-box:hover {
@@ -559,10 +566,7 @@
             }
 
             .pricing-grid {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 20px;
-                margin: 2em 0;
+                margin: 3em auto;
             }
 
             .price-box {
@@ -1130,7 +1134,7 @@
                         </div>
                     </div>
 
-                    <a href="/buy" class="header-nav-link">Pricing</a>
+                    <a href="/download" class="header-nav-link">Sovereign Client</a>
                     <a href="/blog" class="header-nav-link">Blog</a>
                     <a href="/whitepaper" class="header-nav-link">Whitepaper</a>
                     <a href="https://github.com/pyoneerC/deadhand" class="header-nav-link">GitHub</a>
@@ -1139,8 +1143,8 @@
 
             <!-- Right: Secondary Actions (Desktop) -->
             <div class="header-right" style="display: flex; align-items: center; gap: 20px;">
-                <a href="/tools/dead-switch" class="header-cta">
-                    Start Now
+                <a href="/download" class="header-cta">
+                    Download Desktop App
                 </a>
             </div>
 
@@ -1165,13 +1169,13 @@
             <a href="/tools/acoustic-masking" class="mobile-sub-link">Acoustic Masking</a>
             <a href="/tools/bus-factor" class="mobile-sub-link">Bus Factor Calc</a>
         </div>
-        <a href="/buy" class="mobile-link">Pricing</a>
+            <a href="#pricing" class="mobile-sub-link">Sovereign Client</a>
         <a href="/blog" class="mobile-link">Blog</a>
         <a href="/whitepaper" class="mobile-link">Whitepaper</a>
         <a href="https://github.com/pyoneerC/deadhand" class="mobile-link">GitHub</a>
 
-        <a href="/tools/dead-switch" class="header-cta" style="text-align: center; margin-top: 20px; display: block;">
-            Start Now
+        <a href="/download" class="header-cta" style="text-align: center; margin-top: 20px; display: block;">
+            Download Desktop App
         </a>
     </div>
 
@@ -1201,9 +1205,9 @@
                     fighting banks, funeral homes, and grief, alone. Don't add poverty to their heartache.</p>
                 <p>Deadhand is your final act of protection. It delivers your assets,
                     exactly when they need them most.</p>
-                <p style="margin-top: 25px;"><a href="/tools/dead-switch"
-                        style="display: inline-block; background: #222; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 4px; font-weight: bold;">start
-                        the apex defense
+                <p style="margin-top: 25px;"><a href="/download"
+                        style="display: inline-block; background: #222; color: #fff; padding: 14px 28px; text-decoration: none; border-radius: 4px; font-weight: bold;">download
+                        the sovereign client
                         →</a></p>
             </div>
         </div>
@@ -1369,52 +1373,31 @@
         <hr style="margin-top: 50px; border-color: #eee;">
 
         <div style="text-align: center; margin: 60px 0;">
-            <p
-                style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: #575757; margin-bottom: 10px;">
-                Privacy is the strongest credential</p>
-            <h2 style="font-size: 2em; color: #111;">The Apex Defense</h2>
+            <p style="text-transform: uppercase; letter-spacing: 2px; font-size: 0.8em; color: #575757; margin-bottom: 10px;">
+                Privacy is the strongest credential
+            </p>
         </div>
 
-        <div class="pricing-grid"
-            style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; max-width: 900px; margin: 0 auto;">
-
-            <a href="/buy/lifetime" class="price-box"
-                style="border: 2px solid #111; padding: 40px; border-radius: 12px; text-decoration: none; color: inherit; transition: all 0.2s ease;">
-                <div
-                    style="background: #111; color: #fff; display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7em; font-weight: bold; margin-bottom: 20px; text-transform: uppercase;">
-                    ONLY 11 SLOTS REMAINING</div>
-                <p style="font-size: 1.1em; font-weight: bold; margin-bottom: 10px;">Lifetime Sovereignty</p>
-                <p class="price" style="font-size: 3em; font-weight: bold; margin-bottom: 5px;">$400</p>
-                <p style="font-size: 0.7em; color: #575757; margin-bottom: 20px; font-style: italic;">
-                    Equivalent to 30 minutes with a specialized estate attorney.</p>
-                <div style="color: #666; font-size: 0.9em; line-height: 1.6;">
-                    • The Watch (Permanent Heartbeat)<br>
-                    • Recurrent Updates<br>
-                    • Priority Sovereign Support<br>
-                    • Single one-time payment
+        <div id="pricing" class="pricing-grid">
+            <div class="price-box" style="border: 2px solid #111; padding: 50px; border-radius: 12px; text-decoration: none; color: inherit; transition: all 0.2s ease; background: #fff;">
+                <div style="background: #111; color: #fff; display: inline-block; padding: 6px 16px; border-radius: 20px; font-size: 0.75em; font-weight: bold; margin-bottom: 25px; text-transform: uppercase; letter-spacing: 1px;">
+                    SOVEREIGN DESKTOP CLIENT
                 </div>
-                <div
-                    style="margin-top: 30px; background: #111; color: #fff; padding: 15px; text-align: center; border-radius: 6px; font-weight: bold;">
-                    Activate The Watch →</div>
-            </a>
-
-            <a href="/buy/annual" class="price-box"
-                style="border: 1px solid #ddd; padding: 40px; border-radius: 12px; text-decoration: none; color: inherit; transition: all 0.2s ease;">
-                <p style="font-size: 1.1em; font-weight: bold; margin-bottom: 10px;">Annual Guard</p>
-                <p class="price" style="font-size: 3em; font-weight: bold; margin-bottom: 5px;">$100<span
-                        style="font-size: 0.4em; color: #575757;">/year</span></p>
-                <p style="font-size: 0.7em; color: #575757; margin-bottom: 20px; font-style: italic;">
-                    Protection for the price of a monthly subscription.</p>
-                <div style="color: #666; font-size: 0.9em; line-height: 1.6;">
-                    • The Watch (Standard Heartbeat)<br>
-                    • Secure Shard Storage<br>
-                    • Email Escalation Alerts<br>
-                    • Cancel anytime
+                <h3 style="font-size: 1.8em; font-weight: bold; margin-bottom: 15px; color: #111;">Deadhand Sovereign</h3>
+                <p class="price" style="font-size: 4em; font-weight: bold; margin-bottom: 10px; color: #111;">$300</p>
+                <p style="font-size: 0.9em; color: #575757; margin-bottom: 30px; font-style: italic;">
+                    One-time payment for permanent inheritance security. No hidden fees.
+                </p>
+                <div style="color: #444; font-size: 1.05em; line-height: 1.8; margin-bottom: 40px;">
+                    • Full Offline Shard Generation<br>
+                    • Automated Beneficiary Dispatch<br>
+                    • Sovereign Heartbeat Database<br>
+                    • No Subscriptions. No Middlemen.
                 </div>
-                <div
-                    style="margin-top: 30px; border: 1px solid #111; color: #111; padding: 15px; text-align: center; border-radius: 6px; font-weight: bold;">
-                    Protect Your Legacy</div>
-            </a>
+                <a href="/download" style="display: block; background: #111; color: #fff; padding: 20px; text-align: center; border-radius: 8px; font-weight: bold; text-decoration: none; font-size: 1.2em; transition: background 0.2s;">
+                    Download Desktop App →
+                </a>
+            </div>
         </div>
 
         <p style="text-align: center; margin-top: 40px; color: #666; font-size: 0.9em;">
@@ -1739,9 +1722,6 @@
                         style="font-weight: bold; margin-bottom: 15px; color: #111; font-size: 0.8em; text-transform: uppercase; letter-spacing: 1px;">
                         Social</div>
                     <div style="display: flex; gap: 20px; font-size: 1.3em;">
-                        <a href="https://x.com/deadhandhq" target="_blank"
-                            style="color: #111; transition: opacity 0.2s;" aria-label="X (Twitter)"><i
-                                class="fa-brands fa-x-twitter"></i></a>
                         <a href="https://github.com/pyoneerC/deadhand" target="_blank"
                             style="color: #111; transition: opacity 0.2s;" aria-label="GitHub"><i
                                 class="fa-brands fa-github"></i></a>
@@ -1763,8 +1743,8 @@
                         style="list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 14px;">
                         <li><a href="/tools/dead-switch"
                                 style="color: #555; text-decoration: none; transition: color 0.2s;">Dead Switch</a></li>
-                        <li><a href="/buy"
-                                style="color: #555; text-decoration: none; transition: color 0.2s;">Pricing</a></li>
+                        <li><a href="#pricing"
+                                style="color: #555; text-decoration: none; transition: color 0.2s;">Sovereign Client</a></li>
                         <li><a href="/tools/bus-factor"
                                 style="color: #555; text-decoration: none; transition: color 0.2s;">Bus Factor Calc</a>
                         </li>

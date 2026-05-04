@@ -69,18 +69,9 @@ from .crypto import encrypt_shard, decrypt_shard, encrypt_token, decrypt_token
 # Create database tables
 Base.metadata.create_all(bind=engine)
 
-# Stripe Configuration
-stripe.api_key = os.getenv("STRIPE_SECRET_KEY")
-STRIPE_PUBLISHABLE_KEY = os.getenv("STRIPE_PUBLISHABLE_KEY")
-STRIPE_WEBHOOK_SECRET = os.getenv("STRIPE_WEBHOOK_SECRET")
+# Stripe Configuration Removed
 BASE_URL = os.getenv("BASE_URL", "https://deadhandprotocol.com")
 DISCORD_WEBHOOK_URL = os.getenv("DISCORD_WEBHOOK_URL")  # For purchase notifications
-
-# Stripe Price IDs - Create these in Stripe Dashboard
-STRIPE_PRICES = {
-    "annual": os.getenv("STRIPE_PRICE_ANNUAL"),      # $49/year subscription
-    "lifetime": os.getenv("STRIPE_PRICE_LIFETIME"),  # $129 one-time
-}
 
 # PostHog Configuration
 posthog = Posthog(
@@ -373,113 +364,6 @@ def get_db():
     finally:
         db.close()
 
-# Stripe Webhook Handler
-@app.post("/stripe/webhook")
-async def stripe_webhook(request: Request, db: Session = Depends(get_db)):
-    """Handle Stripe webhook events"""
-    payload = await request.body()
-    sig_header = request.headers.get("stripe-signature")
-    
-    if not STRIPE_WEBHOOK_SECRET:
-        raise HTTPException(status_code=400, detail="Webhook secret not configured")
-    
-    try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, STRIPE_WEBHOOK_SECRET
-        )
-    except ValueError:
-        raise HTTPException(status_code=400, detail="Invalid payload")
-    except stripe.error.SignatureVerificationError:
-        raise HTTPException(status_code=400, detail="Invalid signature")
-    
-    # Handle checkout.session.completed
-    if event["type"] == "checkout.session.completed":
-        session = event["data"]["object"]
-        
-        # Extract data
-        customer_email = session.get("customer_details", {}).get("email")
-        amount = session.get("amount_total", 0) / 100  # Convert cents to dollars
-        plan = session.get("metadata", {}).get("plan", "annual")
-        customer_id = session.get("customer")
-        subscription_id = session.get("subscription")
-        
-        print(f"✅ Payment received: {customer_email} - plan: {plan}")
-        
-        # Track in PostHog
-        posthog.capture(
-            distinct_id=customer_email or "anonymous",
-            event="payment_received",
-            properties={
-                "plan": plan,
-                "amount": amount
-            }
-        )
-        
-        # Update or Create user in database
-        if customer_email:
-            user = db.query(User).filter(User.email == customer_email).first()
-            if not user:
-                # Create a placeholder user so they can access the tool immediately
-                user = User(
-                    email=customer_email,
-                    stripe_customer_id=customer_id,
-                    stripe_subscription_id=subscription_id,
-                    plan_type=plan,
-                    is_active=True
-                )
-                db.add(user)
-                print(f"👤 Created new user shell for {customer_email}")
-            else:
-                user.stripe_customer_id = customer_id
-                user.stripe_subscription_id = subscription_id
-                user.plan_type = plan
-                user.is_active = True
-                print(f"🔄 Updated existing user {customer_email} to active")
-            db.commit()
-    
-    # Handle subscription cancelled (user stopped paying!)
-    elif event['type'] == 'customer.subscription.deleted':
-        subscription = event['data']['object']
-        subscription_id = subscription.get('id')
-        
-        print(f"❌ Subscription cancelled: {subscription_id}")
-        
-        # Find and deactivate the user
-        user = db.query(User).filter(User.stripe_subscription_id == subscription_id).first()
-        if user:
-            print(f"🗑️ Deactivating vault for: {user.email}")
-            user.is_active = False
-            db.commit()
-            
-            # Send human-centered cancellation email
-            cancellation_html = f"""
-            <!DOCTYPE html>
-            <html>
-            <head>
-                <style>
-                    body {{ font-family: Georgia, serif; line-height: 1.6; color: #222; max-width: 600px; margin: 0 auto; padding: 40px 20px; background: #fff; }}
-                    .footer {{ font-size: 11px; color: #999; margin-top: 60px; border-top: 1px solid #eee; padding-top: 20px; }}
-                </style>
-            </head>
-            <body>
-                <p>hey,</p>
-                <p>i just got word that your subscription was cancelled. your vault is now deactivated.</p>
-                <p>i'm not going to send you a "please come back" survey or a discount code to win you over. i just want to say thanks for trusting deadhand for a while.</p>
-                <p>if you ever want to protect your family again, you know where to find me.</p>
-                
-                <p>take care,</p>
-                <p><strong>deadhand protocol</strong></p>
-
-                <div class="footer">
-                    <p>sent by deadhand - built with care in argentina.</p>
-                </div>
-            </body>
-            </html>
-            """
-            send_email(user.email, "your deadhand vault has been deactivated", cancellation_html)
-    
-    return {"status": "success"}
-
 @app.get("/", response_class=HTMLResponse)
 async def landing_page(request: Request):
     """Marketing landing page"""
@@ -490,55 +374,13 @@ async def landing_page(request: Request):
 
 @app.get("/buy")
 async def buy_chooser(request: Request):
-    """Render the pricing selection page"""
-    return templates.TemplateResponse("pricing_select.html", {"request": request})
+    """Redirect to landing or handle desktop app download"""
+    return RedirectResponse(url="/download")
 
-@app.get("/buy/annual")
-async def buy_annual(request: Request):
-    """Legacy Stripe Checkout for Annual Plan"""
-    try:
-        price_id = os.getenv("STRIPE_PRICE_ANNUAL")
-        if not price_id:
-             # Fallback if config is missing dev mode
-             return RedirectResponse(url="/buy")
-             
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[{'price': price_id, 'quantity': 1}],
-            mode='subscription',
-            success_url=f"{BASE_URL.rstrip('/')}/payment-success?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{BASE_URL.rstrip('/')}/buy",
-            metadata={"plan": "annual"}
-        )
-        return RedirectResponse(url=checkout_session.url, status_code=303)
-    except Exception as e:
-        posthog.capture_exception(e)
-        print(f"Stripe Error: {e}")
-        return RedirectResponse(url="/buy")
-
-@app.get("/buy/lifetime")
-async def buy_lifetime(request: Request):
-    """Stripe Checkout for Lifetime Plan ($400 one-time)"""
-    try:
-        # Use simple ad-hoc price if env var not set, or create dynamic price
-        price_id = os.getenv("STRIPE_PRICE_LIFETIME") 
-        
-        # If no price ID configured in env, we can't process
-        if not price_id:
-             # Fallback to annual if config missing or show error
-             return RedirectResponse(url="/buy")
-
-        checkout_session = stripe.checkout.Session.create(
-            line_items=[{'price': price_id, 'quantity': 1}],
-            mode='payment', # One-time payment, not subscription
-            success_url=f"{BASE_URL.rstrip('/')}/payment-success?session_id={{CHECKOUT_SESSION_ID}}",
-            cancel_url=f"{BASE_URL.rstrip('/')}/buy",
-            metadata={"plan": "lifetime"}
-        )
-        return RedirectResponse(url=checkout_session.url, status_code=303)
-    except Exception as e:
-        posthog.capture_exception(e)
-        print(f"Stripe Error: {e}")
-        return RedirectResponse(url="/buy")
+@app.get("/download", response_class=HTMLResponse)
+async def download_page(request: Request):
+    """Dedicated download page with OS detection"""
+    return templates.TemplateResponse("download.html", {"request": request})
 
 
 
@@ -585,34 +427,8 @@ def send_founder_welcome(email: str):
 
 @app.get("/payment-success")
 async def payment_success(session_id: str, background_tasks: BackgroundTasks):
-    """Set the access cookie and redirect to the tool"""
-    try:
-        session = stripe.checkout.Session.retrieve(session_id)
-        email = session.customer_details.email
-        
-        # Trigger welcome email in background (zero latency for user)
-        if email:
-            background_tasks.add_task(send_founder_welcome, email)
-        
-        # Simple signed token: email:hmac(email, secret)
-        secret_key = os.getenv('SECRET_KEY', 'changeme_in_prod')
-        signature = hmac.new(secret_key.encode(), email.encode(), hashlib.sha256).hexdigest()
-        token = f"{email}:{signature}"
-        
-        response = RedirectResponse(url="/tools/dead-switch", status_code=303)
-        # Set cookie for 1 year with Strict hardening
-        response.set_cookie(
-            key="dead_auth", 
-            value=token, 
-            max_age=31536000, 
-            httponly=True, 
-            secure=True, 
-            samesite="lax"
-        )
-        return response
-    except Exception as e:
-        print(f"Payment Success Error: {e}")
-        return RedirectResponse(url="/")
+    """Fallback success page"""
+    return RedirectResponse(url="/")
 
 @app.get("/terms", response_class=HTMLResponse)
 async def terms_page(request: Request):

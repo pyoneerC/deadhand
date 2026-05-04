@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Deadhand Sovereign | The Final Act of Protection</title>
+    <meta name="description" content="Download the Deadhand Sovereign Desktop Client. Secure your digital legacy with trustless inheritance.">
+    <link rel="icon" type="image/png" href="/static/favicon.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background: #09090b;
+            color: #fafafa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            text-align: center;
+        }
+        .header {
+            margin-bottom: 60px;
+        }
+        .logo {
+            height: 40px;
+            margin-bottom: 20px;
+        }
+        h1 {
+            font-size: 2.5em;
+            font-weight: 800;
+            letter-spacing: -1px;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        p.subtitle {
+            color: #a1a1aa;
+            font-size: 1.1em;
+            max-width: 500px;
+            margin: 0 auto 40px;
+        }
+        .download-card {
+            background: #18181b;
+            border: 1px solid #27272a;
+            padding: 50px 30px;
+            border-radius: 16px;
+            margin-bottom: 40px;
+            transition: border-color 0.3s;
+        }
+        .download-card:hover {
+            border-color: #10b981;
+        }
+        .os-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #111;
+            padding: 6px 12px;
+            border-radius: 99px;
+            font-size: 0.75em;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: #71717a;
+            margin-bottom: 20px;
+            border: 1px solid #27272a;
+        }
+        .detected .os-badge {
+            color: #10b981;
+            border-color: rgba(16, 185, 129, 0.3);
+            background: rgba(16, 185, 129, 0.05);
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: #fafafa;
+            color: #000;
+            padding: 16px 32px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: transform 0.2s, background 0.2s;
+        }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            background: #fff;
+        }
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+        .other-links {
+            margin-top: 40px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .other-link {
+            background: #09090b;
+            border: 1px solid #27272a;
+            padding: 15px;
+            border-radius: 8px;
+            text-decoration: none;
+            color: #a1a1aa;
+            font-size: 0.9em;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+        }
+        .other-link:hover {
+            color: #fff;
+            background: #111;
+            border-color: #3f3f46;
+        }
+        .footer {
+            padding: 40px;
+            border-top: 1px solid #18181b;
+            font-size: 0.8em;
+            color: #52525b;
+        }
+        .security-badge {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            font-size: 0.85em;
+            color: #71717a;
+        }
+        .security-badge i {
+            color: #10b981;
+        }
+        
+        #primary-os-icon { font-size: 2em; margin-bottom: 10px; display: block; }
+        
+        .loading {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <a href="/"><img src="/static/favicon.png" alt="Deadhand" class="logo"></a>
+            <h1>Sovereign Security</h1>
+            <p class="subtitle">The Apex Defense for your digital legacy. Download the desktop client to activate your vault.</p>
+        </header>
+
+        <div id="download-card" class="download-card detected">
+            <div id="os-indicator" class="os-badge">
+                <i id="os-icon" class="fa-solid fa-microchip"></i>
+                <span id="os-name">Detecting OS...</span>
+            </div>
+            
+            <i id="primary-os-icon" class="fa-brands fa-windows"></i>
+            
+            <div style="margin-bottom: 25px;">
+                <h2 id="download-title" style="margin-bottom: 8px;">Deadhand for Windows</h2>
+                <p id="download-version" style="color: #71717a; font-size: 0.9em; font-family: monospace;">v1.0.0-sovereign (64-bit)</p>
+            </div>
+
+            <a id="download-btn" href="/static/builds/deadhand_setup.exe" class="btn-primary">
+                <i class="fa-solid fa-download"></i>
+                Download Installer
+            </a>
+
+            <div class="security-badge">
+                <i class="fa-solid fa-shield-halved"></i>
+                Verified & Open Source. Zero-Trust Architecture.
+            </div>
+        </div>
+
+        <div class="other-platforms">
+            <p style="color: #52525b; font-size: 0.85em; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; font-weight: 700;">All Platforms</p>
+            <div class="other-links">
+                <a href="/static/builds/deadhand_setup.exe" class="other-link" onclick="setOS('windows')">
+                    <i class="fa-brands fa-windows"></i> Windows
+                </a>
+                <a href="/static/builds/deadhand_macos.dmg" class="other-link" onclick="setOS('macos')">
+                    <i class="fa-brands fa-apple"></i> macOS
+                </a>
+                <a href="/static/builds/deadhand_linux.AppImage" class="other-link" onclick="setOS('linux')">
+                    <i class="fa-brands fa-linux"></i> Linux
+                </a>
+                <a href="https://github.com/pyoneerC/deadhand" class="other-link" target="_blank">
+                    <i class="fa-solid fa-code"></i> Source
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>&copy; 2026 Deadhand Protocol. Built for Sovereignty.</p>
+    </footer>
+
+    <script>
+        const osData = {
+            windows: {
+                name: "Windows",
+                title: "Deadhand for Windows",
+                icon: "fa-brands fa-windows",
+                file: "/static/builds/deadhand_setup.exe",
+                version: "v1.0.0-sovereign (.exe)"
+            },
+            macos: {
+                name: "macOS",
+                title: "Deadhand for macOS",
+                icon: "fa-brands fa-apple",
+                file: "/static/builds/deadhand_macos.dmg",
+                version: "v1.0.0-sovereign (.dmg)"
+            },
+            linux: {
+                name: "Linux",
+                title: "Deadhand for Linux",
+                icon: "fa-brands fa-linux",
+                file: "/static/builds/deadhand_linux.AppImage",
+                version: "v1.0.0-sovereign (.AppImage)"
+            }
+        };
+
+        function setOS(osKey) {
+            const data = osData[osKey];
+            if (!data) return;
+
+            document.getElementById('os-name').innerText = data.name + " Detected";
+            document.getElementById('os-icon').className = "fa-solid " + (osKey === 'macos' ? 'fa-apple' : 'fa-check');
+            document.getElementById('primary-os-icon').className = data.icon;
+            document.getElementById('download-title').innerText = data.title;
+            document.getElementById('download-version').innerText = data.version;
+            document.getElementById('download-btn').href = data.file;
+        }
+
+        function detectOS() {
+            const userAgent = window.navigator.userAgent;
+            const platform = window.navigator.platform;
+            const macosPlatforms = ['Macintosh', 'MacIntel', 'MacPPC', 'Mac68K'];
+            const windowsPlatforms = ['Win32', 'Win64', 'Windows', 'WinCE'];
+            
+            if (macosPlatforms.indexOf(platform) !== -1) {
+                setOS('macos');
+            } else if (windowsPlatforms.indexOf(platform) !== -1) {
+                setOS('windows');
+            } else if (/Linux/.test(platform)) {
+                setOS('linux');
+            } else {
+                // Fallback to Windows or just show generic
+                setOS('windows');
+                document.getElementById('os-name').innerText = "Select Platform";
+            }
+        }
+
+        window.onload = detectOS;
+    </script>
+</body>
+</html>
