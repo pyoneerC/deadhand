@@ -348,13 +348,16 @@ async def pseo_directory(request: Request, page: int = 1):
     paged_slugs = all_slugs[start:end]
     topics = [(slug, PSEO_TOPICS[slug]['title']) for slug in paged_slugs]
     
-    return templates.TemplateResponse("pseo_directory.html", {
-        "request": request,
-        "topics": topics,
-        "page": page,
-        "total_pages": (total // per_page) + 1,
-        "total_count": total
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="pseo_directory.html",
+        context={
+            "topics": topics,
+            "page": page,
+            "total_pages": (total // per_page) + 1,
+            "total_count": total
+        }
+    )
 
 # Dependency
 def get_db():
@@ -367,10 +370,11 @@ def get_db():
 @app.get("/", response_class=HTMLResponse)
 async def landing_page(request: Request):
     """Marketing landing page"""
-    return templates.TemplateResponse("landing.html", {
-        "request": request,
-        "csrf_token": getattr(request.state, "csrf_token", "")
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="landing.html",
+        context={"csrf_token": getattr(request.state, "csrf_token", "")}
+    )
 
 @app.get("/buy")
 async def buy_chooser(request: Request):
@@ -380,7 +384,7 @@ async def buy_chooser(request: Request):
 @app.get("/download", response_class=HTMLResponse)
 async def download_page(request: Request):
     """Dedicated download page with OS detection"""
-    return templates.TemplateResponse("download.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="download.html", context={})
 
 
 
@@ -433,12 +437,12 @@ async def payment_success(session_id: str, background_tasks: BackgroundTasks):
 @app.get("/terms", response_class=HTMLResponse)
 async def terms_page(request: Request):
     """Terms of Service"""
-    return templates.TemplateResponse("terms.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="terms.html", context={})
 
 @app.get("/docs", response_class=HTMLResponse)
 async def docs_page(request: Request):
     """Documentation - Semantic SEO optimized for AI scraping"""
-    return templates.TemplateResponse("docs.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="docs.html", context={})
 
 @app.get("/whitepaper", include_in_schema=False)
 async def whitepaper_page():
@@ -451,7 +455,7 @@ async def whitepaper_page():
 @app.get("/tools/bus-factor", response_class=HTMLResponse)
 async def bus_factor_tool(request: Request):
     """Bus Factor Calculator - Keep as lead magnet"""
-    return templates.TemplateResponse("tools_bus_factor.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="tools_bus_factor.html", context={})
 
 # ========== BLOG ==========
 
@@ -606,12 +610,15 @@ async def competitor_alternative(request: Request, competitor: str):
         
     data = COMPETITORS[competitor]
     
-    return templates.TemplateResponse("competitor_vs.html", {
-        "request": request,
-        "c": data,
-        "competitor_name": data['name'],
-        "btc_price": await get_btc_price()
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="competitor_vs.html",
+        context={
+            "c": data,
+            "competitor_name": data['name'],
+            "btc_price": await get_btc_price()
+        }
+    )
 
 @app.get("/p/{slug}", response_class=HTMLResponse)
 async def programmatic_seo_landing(request: Request, slug: str):
@@ -659,19 +666,22 @@ async def programmatic_seo_landing(request: Request, slug: str):
     related_slugs = random.sample(other_slugs, min(4, len(other_slugs)))
     related_topics = [(s, PSEO_TOPICS[s]['title']) for s in related_slugs]
     
-    return templates.TemplateResponse("pseo.html", {
-        "request": request,
-        "title": topic.get('title'),
-        "description": topic.get('description'),
-        "h1": topic.get('h1'),
-        "intro": topic.get('intro'),
-        "body": body,
-        "slug": slug,
-        "related_topics": related_topics,
-        "btc_price": btc_price,
-        "date_now": datetime.now().strftime('%Y-%m-%d'),
-        "config_hash": hashlib.sha256(slug.encode()).hexdigest()[:12]
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="pseo.html",
+        context={
+            "title": topic.get('title'),
+            "description": topic.get('description'),
+            "h1": topic.get('h1'),
+            "intro": topic.get('intro'),
+            "body": body,
+            "slug": slug,
+            "related_topics": related_topics,
+            "btc_price": btc_price,
+            "date_now": datetime.now().strftime('%Y-%m-%d'),
+            "config_hash": hashlib.sha256(slug.encode()).hexdigest()[:12]
+        }
+    )
 
 
 
@@ -819,7 +829,7 @@ async def create_vault(
     
     send_email(email, "not just a welcome email (and a drawing for you)", welcome_html)
 
-    return templates.TemplateResponse("success.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="success.html", context={})
 
 @app.get("/heartbeat/{user_id}/{token}", response_class=HTMLResponse)
 async def heartbeat(request: Request, user_id: int, token: str, db: Session = Depends(get_db)):
@@ -841,11 +851,14 @@ async def heartbeat(request: Request, user_id: int, token: str, db: Session = De
     # CRITICAL: If user was marked dead, shard C was already released
     # They CANNOT resurrect - must create new vault with new seed
     if user.is_dead:
-        return templates.TemplateResponse("vault_triggered.html", {
-            "request": request,
-            "email": user.email,
-            "beneficiary_email": user.beneficiary_email
-        })
+        return templates.TemplateResponse(
+            request=request,
+            name="vault_triggered.html",
+            context={
+                "email": user.email,
+                "beneficiary_email": user.beneficiary_email
+            }
+        )
     
     user.last_heartbeat = datetime.now()
     db.commit()
@@ -864,15 +877,18 @@ async def heartbeat(request: Request, user_id: int, token: str, db: Session = De
     details = quote_plus(f"Time to visit deadhandprotocol.com/heartbeat/{user_id}/{token} to reset your watchdog timer. If you miss this, your beneficiary will eventually receive shard C.")
     cal_url = f"https://www.google.com/calendar/render?action=TEMPLATE&text={title}&dates={cal_date}/{cal_end}&details={details}&sf=true&output=xml"
     
-    return templates.TemplateResponse("check_in.html", {
-        "request": request, 
-        "next_date": next_check_in_str,
-        "calendar_url": cal_url
-    })
+    return templates.TemplateResponse(
+        request=request,
+        name="check_in.html",
+        context={
+            "next_date": next_check_in_str,
+            "calendar_url": cal_url
+        }
+    )
 
 @app.get("/recover", response_class=HTMLResponse)
 async def recover_page(request: Request):
-    return templates.TemplateResponse("recover.html", {"request": request})
+    return templates.TemplateResponse(request=request, name="recover.html", context={})
 
 
 # ========== CRON JOBS ==========
