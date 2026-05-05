@@ -398,7 +398,7 @@ def send_founder_welcome(email: str):
         resend.api_key = api_key
         
         # Determine sender from ENV or fallback
-        sender = os.getenv("FROM_EMAIL", "Max from Deadhand <max@deadhandprotocol.com>")
+        sender = os.getenv("FROM_EMAIL", "Deadhand Security Team <halfradiationllc@gmail.com>")
         
         # HTML Email Body - Personal, No Corporate BS
         html_body = f"""

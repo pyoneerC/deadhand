@@ -155,7 +155,7 @@ Before using in production:
 
 ## Responsible Disclosure
 
-Found a vulnerability? Please email security@deadhandprotocol.com (or open a GitHub issue).
+Found a vulnerability? Please email halfradiationllc@gmail.com (or open a GitHub issue).
 
 We commit to:
 - Acknowledging reports within 48 hours

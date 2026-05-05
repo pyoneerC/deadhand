@@ -95,6 +95,6 @@ Concepts under exploration. No promises, just possibilities.
 
 ## 💬 Have Ideas?
 
-We build in public. If you have a feature request, open an issue on [GitHub](https://github.com/pyoneerC/deadhand/issues) or reach out on Twitter.
+We build in public. If you have a feature request, open an issue on [GitHub](https://github.com/half-radiation-LLC/deadhand/issues) or reach out on Twitter.
 
 **Your legacy. Your rules. Our math.**

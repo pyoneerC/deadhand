@@ -55,4 +55,4 @@ Deadhand is built for the community. We welcome PRs for:
 *   Localized legal guides for digital inheritance.
 *   Performance optimizations for the SSS logic.
 
-[GitHub Repository](https://github.com/pyoneerC/deadhand) | [Report a Bug](https://github.com/pyoneerC/deadhand/issues)
+[GitHub Repository](https://github.com/half-radiation-LLC/deadhand) | [Report a Bug](https://github.com/half-radiation-LLC/deadhand/issues)

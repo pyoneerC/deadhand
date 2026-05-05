@@ -13,7 +13,7 @@ For institutions, family offices, or high-conviction sovereign individuals, Dead
 
 1.  **Clone the Repository**
     ```bash
-    git clone https://github.com/pyoneerC/deadhand.git
+    git clone https://github.com/half-radiation-LLC/deadhand.git
     cd deadhand
     ```
 
