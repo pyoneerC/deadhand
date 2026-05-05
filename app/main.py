@@ -1,5 +1,5 @@
-# SPDX-License-Identifier: BUSL-1.1
-# Copyright (c) 2026 pyoneerC. All rights reserved.
+# SPDX-License-Identifier: AGPL-3.0
+# Copyright (c) 2026 half radiation LLC. All rights reserved.
 
 import secrets
 import hmac
@@ -591,12 +591,12 @@ async def blog_post(request: Request, slug: str):
 @app.get("/docs")
 async def docs_index():
     """Redirect documentation to GitHub Source"""
-    return RedirectResponse("https://github.com/pyoneerC/deadhand#how-it-works")
+    return RedirectResponse("https://github.com/half-radiation-LLC/deadhand#how-it-works")
 
 @app.get("/docs/{doc_name}", response_class=HTMLResponse)
 async def docs_page(request: Request, doc_name: str):
     """Documentation now lives on GitHub to reduce dependency surface area"""
-    return RedirectResponse(f"https://github.com/pyoneerC/deadhand/blob/main/docs/{doc_name}.md")
+    return RedirectResponse(f"https://github.com/half-radiation-LLC/deadhand/blob/main/docs/{doc_name}.md")
 
 # Deprecated helper function removed to save bytes
 

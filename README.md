@@ -19,7 +19,7 @@
   <img src="https://img.shields.io/badge/Status-Audited-2ea44f?style=for-the-badge" alt="Status">
   <img src="https://img.shields.io/badge/Privacy-Zero_Knowledge-blue?style=for-the-badge" alt="Privacy">
   <img src="https://img.shields.io/badge/Encryption-Shamir's_SSS-orange?style=for-the-badge" alt="Crypto">
-  <img src="https://img.shields.io/github/stars/pyoneerC/deadhand?style=for-the-badge" alt="Stars">
+  <img src="https://img.shields.io/github/stars/half-radiation-LLC/deadhand?style=for-the-badge" alt="Stars">
 </p>
 
 ---
@@ -63,7 +63,7 @@ Want to run the protocol yourself?
 
 ```bash
 # 1. Clone the repo
-git clone https://github.com/pyoneerC/deadhand.git
+git clone https://github.com/half-radiation-LLC/deadhand.git
 
 # 2. Install dependencies
 pip install -r requirements.txt
@@ -78,7 +78,7 @@ python -m uvicorn app.main:app --reload
 
 Full documentation is available at [deadhandprotocol.com/docs](https://deadhandprotocol.com/docs).
 
-- [Security Model](https://github.com/pyoneerC/deadhand/blob/main/docs/security.md)
+- [Security Model](https://github.com/half-radiation-LLC/deadhand/blob/main/docs/security.md)
 - [Recovery Guide](https://deadhandprotocol.com/recover)
 - [Technical Whitepaper](https://deadhandprotocol.com/blog)
 

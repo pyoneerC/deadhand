@@ -2,7 +2,7 @@
 title: "Shamir's Secret Sharing Explained (For Normal People)"
 slug: "shamirs-secret-sharing-explained"
 date: "2026-01-05"
-author: "pyoneerC"
+author: "Deadhand Security Team"
 description: "Shamir's Secret Sharing sounds complicated. It's not. Here's how it works and why it's the best way to backup your crypto seed phrase."
 image: "/static/blog/shamirs-secret-sharing.jpg"
 ---
@@ -250,7 +250,7 @@ The math is complex. One mistake = permanent loss.
 
 ### Option 3: Self-Host deadhand (Free, Technical)
 
-1. Clone: `github.com/pyoneerc/deadhand`
+1. Clone: `github.com/deadhand-protocol/deadhand`
 2. Run on your own server
 3. Full control, open source
 
@@ -277,8 +277,8 @@ The math is complex. One mistake = permanent loss.
 
 - [Original Shamir paper (1979)](https://en.wikipedia.org/wiki/Shamir%27s_Secret_Sharing)
 - [BIP39 (Seed phrase standard)](https://github.com/bitcoin/bips/blob/master/bip-0039.mediawiki)
-- [deadhand source code](https://github.com/pyoneerc/deadhand)
+- [deadhand source code](https://github.com/deadhand-protocol/deadhand)
 
 ---
 
-*pyoneerC is the founder of deadhand. He's been obsessed with cryptographic security since 2017.*
+*Deadhand is developed and maintained by half radiation LLC, an independent security research group focused on sovereignty and digital inheritance.*

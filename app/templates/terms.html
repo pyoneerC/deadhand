@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>terms of service - deadhand protocol</title>
+    <title>terms of service & privacy policy - deadhand protocol</title>
     <link rel="canonical" href="{{ BASE_URL }}{{ request.url.path }}">
     <link rel="icon" type="image/png" href="/static/favicon.png">
     <style>
@@ -48,7 +48,7 @@
 
         h1 {
             color: #000;
-            font-size: 3em;
+            font-size: 2.8em;
             margin: 0.2em 0;
             line-height: 1.1;
             font-weight: normal;
@@ -61,22 +61,29 @@
             margin-bottom: 15px;
         }
 
-        .intro-text {
-            border-left: 2px solid #10b981;
-            padding-left: 20px;
-            font-style: italic;
-            color: #555;
+        .section-title {
+            margin-top: 60px;
+            font-size: 1.8em;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #000;
+            border-bottom: 3px solid #10b981;
+            display: inline-block;
+            margin-bottom: 30px;
         }
 
         section {
-            margin-bottom: 50px;
+            margin-bottom: 40px;
         }
 
         h2 {
             color: #000;
-            font-size: 1.4em;
-            margin-bottom: 20px;
+            font-size: 1.2em;
+            margin-bottom: 15px;
             font-family: monospace;
+            font-weight: bold;
             display: flex;
             align-items: center;
         }
@@ -91,29 +98,14 @@
             margin-bottom: 20px;
         }
 
-        ul {
-            margin-bottom: 25px;
-            padding-left: 25px;
-            list-style-type: square;
-        }
-
-        li {
-            margin-bottom: 12px;
-        }
-
-        .hard-logic-box {
+        .legal-notice {
             background: #fff;
             border: 1px solid #ddd;
-            padding: 30px;
-            margin: 40px 0;
-            position: relative;
-        }
-
-        .hard-logic-box b {
-            color: #000;
-            display: block;
-            margin-bottom: 10px;
-            text-decoration: underline;
+            padding: 25px;
+            margin: 30px 0;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: #444;
         }
 
         .footer {
@@ -126,16 +118,8 @@
             font-family: monospace;
         }
 
-        em {
+        b {
             color: #000;
-            font-style: normal;
-            font-weight: bold;
-        }
-
-        code {
-            background: #eee;
-            padding: 2px 6px;
-            border-radius: 3px;
         }
 
         @media (max-width: 600px) {
@@ -150,7 +134,7 @@
     </style>
     <!-- PostHog -->
     <script>
-        !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type, p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init rs ls bi ns us ts ss capture calculateEventProperties vs register register_once register_for_session unregister unregister_for_session gs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fs ds createPersonProfile ps Qr opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing hs debug O cs getPageViewId captureTraceFeedback captureTraceMetric Kr".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
+        !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init rs ls bi ns us ts ss capture calculateEventProperties vs register register_once register_for_session unregister unregister_for_session gs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fs ds createPersonProfile ps Qr opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing hs debug O cs getPageViewId captureTraceFeedback captureTraceMetric Kr".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
         posthog.init('phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ', {
             api_host: 'https://t.deadhandprotocol.com',
             defaults: '2025-11-30',
@@ -172,90 +156,87 @@
         <a href="/tools/acoustic-masking">acoustic masking</a>
         <a href="/buy">pricing</a>
         <a href="/blog">blog</a>
-        <a href="https://github.com/pyoneerC/deadhand">github</a>
+        <a href="https://github.com/half-radiation-LLC/deadhand">github</a>
     </div>
 
     <header>
-        <h1>protocol terms of use</h1>
-        <p class="subtitle">revision: 2026.01.30 // argentina jurisdiction</p>
-        <p class="intro-text">this is not "marketing copy." this is a cold, technical contract. by accessing the
-            deadhand protocol, you acknowledge the absolute finality of our logic and the total transfer of risk to
-            yourself. <b>let's face it: self-custody is a timebomb.</b></p>
+        <h1>institutional terms & privacy</h1>
+        <p class="subtitle">effective date: 2026.05.05 // jurisdiction: new mexico, usa</p>
     </header>
 
     <main>
-        <div class="hard-logic-box">
-            <b>zero-knowledge architecture</b>
-            you are interacting with an autonomous watchdog system. we do not hold your funds. we do not hold your seed
-            phrase. we hold a single shard of mathematical noise. if you fail the process, your assets will be lost. we
-            cannot "help" you. there is no reset button for death.
-        </div>
+        <div class="section-title">Terms of Service</div>
 
         <section>
-            <h2>01. total waiver of liability</h2>
-            <p>the protocol is provided "as is"—without warranty, insurance, or mercy. <em>0.00 usd</em>. that is the
-                maximum amount for which deadhand, pyoneerC, or any contributor shall be liable in the event of
-                failure.</p>
-            <p>you explicitly waive any right to claim damages for:</p>
-            <ul>
-                <li>loss of funds due to seed phrase mismanagement.</li>
-                <li>premature shard release caused by user inactivity.</li>
-                <li>delayed shard release due to network failures or server outages.</li>
-                <li>any bug, known or unknown, in the shamir secret sharing (sss) implementation.</li>
-            </ul>
+            <h2>1. acceptance of risk</h2>
+            <p>Deadhand Protocol ('Service') is an experimental cryptographic protocol. By using this Service, you acknowledge the inherent risks of digital asset management, blockchain interactions, and cryptographic storage. Company is <b>NOT</b> responsible for lost keys, lost data, or lost inheritance. <b>YOU ALONE</b> are responsible for your security.</p>
         </section>
 
         <section>
-            <h2>02. the burden of survival</h2>
-            <p>this system is autonomous. the responsibility for maintaining the "heartbeat" rests entirely on your
-                shoulders. if you ignore 30-day reminders, 60-day warnings, and 90-day final triggers, <em>the protocol
-                    will fire.</em></p>
-            <p>we do not verify "death" manually. we verify "silence." if you go on a silent retreat and forget to reset
-                your timer, your beneficiary gets shard c. that is a user error, not a system failure.</p>
+            <h2>2. intellectual property</h2>
+            <p>All content, code, architecture, and branding are the exclusive property of <b>half radiation LLC</b>. No license or right is granted except the limited, non-exclusive right to use the Service as intended.</p>
         </section>
 
         <section>
-            <h2>03. no financial mediation</h2>
-            <p>deadhand is a technical utility, not a bank. we are not fiduciaries. we do not give financial advice. we
-                do not give legal advice. inheritance is a complex legal field; if you want a lawyer, hire one. we
-                provide <em>math</em>, not counsel.</p>
+            <h2>3. prohibited uses</h2>
+            <p>You agree not to use the Service for any illegal activities, including but not limited to money laundering, fraud, or the storage of illicit materials. We reserve the right to terminate access for any user at our sole discretion.</p>
         </section>
 
         <section>
-            <h2>04. protocol privacy</h2>
-            <p>we do not want your profile. we store your email address and one encrypted shard. we do not sell your
-                data. we do not track your location. the only data we have is the data required to reach you and your
-                beneficiary. anything else is irrelevant to our function.</p>
+            <h2>4. no warranties</h2>
+            <div class="legal-notice">
+                THE SERVICE IS PROVIDED 'AS IS' AND 'AS AVAILABLE' WITHOUT WARRANTIES OF ANY KIND. WE EXPRESSLY DISCLAIM ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
+            </div>
         </section>
 
         <section>
-            <h2>05. platform finality</h2>
-            <p>we reserve the right to decommission this protocol at any time. in such an unlikely event, we will
-                attempt to provide 90-day notice via the fallback email. because we use open standards (bip-39 and
-                ssss), you can recover your seed using standard linux utilities like <code>ssss-split</code> without our
-                involvement. you are never a hostage; you are an independent operator.</p>
+            <h2>5. limitation of liability</h2>
+            <div class="legal-notice">
+                TO THE MAXIMUM EXTENT PERMITTED BY LAW, <b>HALF RADIATION LLC</b> SHALL NOT BE LIABLE FOR ANY DAMAGES (INCLUDING LOST PROFITS OR DATA) EXCEEDING ONE HUNDRED U.S. DOLLARS ($100.00).
+            </div>
         </section>
 
         <section>
-            <h2>06. jurisdictional reality</h2>
-            <p>any dispute arising from or relating to the protocol shall be settled exclusively under the laws of
-                argentina. by using this tool, you submit to this jurisdiction and waive any right to alternate legal
-                venues.</p>
+            <h2>6. governing law & arbitration</h2>
+            <p>These terms are governed by the laws of the <b>State of New Mexico</b>. Any disputes shall be resolved via binding arbitration. You waive your right to a jury trial or class action participation.</p>
         </section>
 
         <section>
-            <h2>07. indemnity clause</h2>
-            <p>if you violate these terms or your actions lead to legal action against the protocol or its founder, you
-                agree to indemnify and hold us harmless from any and all costs, including legal fees. in plain english:
-                you pay for your mistakes and ours if you're the one that brought the heat.</p>
+            <h2>7. severability</h2>
+            <p>If any portion of these Terms is found to be unenforceable, the remaining portions shall remain in full force and effect.</p>
         </section>
 
+        <div class="section-title">Privacy Policy</div>
+
+        <section>
+            <h2>1. data philosophy</h2>
+            <p>We believe in digital sovereignty. We do not collect personal identifying information (PII) for tracking purposes. We do not sell your data to third parties.</p>
+        </section>
+
+        <section>
+            <h2>2. data collection & third parties</h2>
+            <p>We may collect anonymous technical data (e.g., IP addresses, browser types) for security and performance monitoring. We may use third-party providers (e.g., hosting, analytics) who have their own privacy policies. You acknowledge and agree to these third-party interactions.</p>
+        </section>
+
+        <section>
+            <h2>3. cookies</h2>
+            <p>We may use 'cookies' to maintain your session. You can disable these in your browser settings without loss of core functionality.</p>
+        </section>
+
+        <section>
+            <h2>4. contact</h2>
+            <div class="legal-notice">
+                For all legal inquiries, contact:<br>
+                <b>half radiation LLC</b><br>
+                1209 Mountain Road PL NE, STE R<br>
+                Albuquerque, NM 87110
+            </div>
+        </section>
     </main>
 
     <div class="footer">
         <p>// deadhand protocol: autonomous legacy protection.</p>
-        <p>// checksum: 2026_01_30_V1</p>
-        <p>&copy; 2026 deadhand foundation</p>
+        <p>© 2026 half radiation LLC. all rights reserved.</p>
     </div>
 
 </body>

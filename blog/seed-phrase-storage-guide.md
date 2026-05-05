@@ -2,7 +2,7 @@
 title: "The Ultimate Guide to Seed Phrase Security: From Social Steganography to Shamir Secret Sharing"
 slug: "seed-phrase-storage-guide"
 date: "2026-02-02"
-author: "pyoneerC"
+author: "Deadhand Security Team"
 description: "How to store your seed phrase like a cryptographic grandmaster. Explore the evolution of security from titanium plates to digital steganography and non-custodial death switches."
 image: "/static/blog/seed-phrase-storage.jpg"
 ---
@@ -11,7 +11,7 @@ You’ve probably heard the mantra: **Not your keys, not your coins.** But there
 
 Most people store their 12-word recovery phrase on a piece of paper in a desk drawer. Some upgrade to a fireproof safe or a stamped titanium plate. The truly paranoid split their phrase and hide the pieces in bank deposit boxes.
 
-But in the age of sophisticated home invasions, quantum threat speculation, and the inevitable reality of human mortality, **physical storage is no longer enough.** 
+But in the age of sophisticated home invasions, quantum threat speculation, and the inevitable reality of human mortality, **physical storage is no longer enough.**
 
 This guide explores the hierarchy of seed phrase security, from the ancient art of steganography to the bleeding edge of non-custodial digital inheritance.
 
@@ -92,4 +92,4 @@ Your crypto legacy is a masterpiece of mathematics. Don't protect it with a 10-c
 
 ---
 
-*This post was brought to you by [Deadhand Protocol](https://deadhandprotocol.com), the non-custodial safety net for your digital assets.*
+*Deadhand is developed and maintained by half radiation LLC, an independent security research group focused on sovereignty and digital inheritance.*

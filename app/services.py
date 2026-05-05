@@ -1,5 +1,5 @@
-# SPDX-License-Identifier: BUSL-1.1
-# Copyright (c) 2026 pyoneerC. All rights reserved.
+# SPDX-License-Identifier: AGPL-3.0
+# Copyright (c) 2026 half radiation LLC. All rights reserved.
 
 import logging
 import os
