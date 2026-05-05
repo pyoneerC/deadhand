@@ -411,8 +411,7 @@ def send_founder_welcome(email: str):
             <p>If you've got questions, just hit reply. You'll get a real response, fast.</p>
             <p>Grateful to have you here.</p>
             <br>
-            <p>Stay Sovereign,</p>
-            <p><strong>Max Comperatore</strong> | Founder</p>
+            <p>Stay Sovereign.</p>
             <p><a href="{BASE_URL}" style="color: #666; text-decoration: none;">Deadhand Protocol</a></p>
             <br>
             <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">

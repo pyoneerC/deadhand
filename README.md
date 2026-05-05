@@ -104,16 +104,18 @@ We love contributors!
 
 ## License
 
-This project is licensed under the **Business Source License 1.1 (BSL)**. 
-- ✅ **Free** for personal use.
-- ✅ **Free** to audit and research.
-- ❌ **Paid** for commercial hosting.
-
-On **January 1, 2030**, it becomes fully open source (AGPL v3).
+This project is licensed under the **GNU Affero General Public License v3.0 (AGPL-3.0)**. 
+- ✅ **Free** for personal, commercial, and educational use.
+- ✅ **Open** to audit, research, and contribution.
+- ⚖️ **Copyleft**: Derivative works must also be licensed under AGPL-3.0.
 
 ---
 
-<p align="center">
-  <b>Built for sovereignty.</b>
-</p>
+## Ownership
 
+Deadhand is a proprietary protocol developed, owned, and maintained by **half radiation LLC**.
+
+<p align="center">
+  <b>Built for sovereignty.</b><br>
+  Developed and maintained by half radiation LLC.
+</p>
