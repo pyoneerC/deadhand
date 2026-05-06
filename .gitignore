@@ -9,3 +9,4 @@ venv/
 *.db
 .DS_Store
 email_log.txt
+.vercel
