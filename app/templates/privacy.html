@@ -1,0 +1,127 @@
+{% extends "base.html" %}
+
+{% block title %}Privacy Policy | Deadhand Protocol{% endblock %}
+
+{% block content %}
+<style>
+    .legal-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 80px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-main);
+    }
+
+    .legal-title {
+        font-size: 3.5rem;
+        margin-bottom: 10px;
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+        font-weight: 900;
+        color: #fff;
+    }
+
+    .legal-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 20px;
+        font-family: var(--font-mono);
+    }
+
+    .legal-section {
+        margin-bottom: 40px;
+    }
+
+    .legal-section h2 {
+        font-size: 1.25rem;
+        color: #fff;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+    }
+
+    .legal-section p,
+    .legal-section li {
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+        text-align: justify;
+    }
+
+    .shout {
+        color: #10b981;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+    }
+</style>
+
+<div class="legal-container">
+    <h1 class="legal-title">Privacy Policy</h1>
+
+    <div class="legal-section">
+        <h2>1. The Absolute "Zero Knowledge" Guarantee</h2>
+        <p class="shout" style="color: #e11d48;">WE COLLECT NOTHING. WE KNOW NOTHING. YOU ARE ON YOUR OWN.</p>
+        <p>Deadhand Protocol is engineered around a core, unyielding philosophy: data that is not collected cannot be
+            subpoenaed, leaked, seized by state actors, or stolen by malicious entities. We do not ask for, process,
+            store, or transmit your name, your email address (except for explicitly requested dispatch targets), your IP
+            address, your geographic jurisdiction, or any Personally Identifiable Information (PII).</p>
+        <p>Because we possess zero knowledge of your identity, we cannot comply with data requests, subpoenas, or
+            warrants aimed at identifying you. There is no database to hack, and no administrator to compel.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>2. Total Liability Exclusion for Data Breaches</h2>
+        <p>Because The Company does not collect your personal data or your cryptographic secrets, a "data breach" of our
+            infrastructure would yield precisely nothing of value regarding your digital assets. Consequently, you
+            explicitly agree that The Company bears absolutely ZERO liability for any alleged data breach, privacy
+            violation, or identity theft arising from your use of the Software. Your privacy is secured by mathematics,
+            not corporate policy.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>3. Cryptographic Anonymity & Payments</h2>
+        <p>Your entire identity within the Deadhand ecosystem is tied exclusively to a localized, mathematically
+            generated cryptographic key. We cannot, and will not attempt to, link this key to a human identity.</p>
+        <p>Furthermore, all payments made for the Sovereign Desktop Client are processed directly via decentralized
+            cryptocurrency networks (e.g., Bitcoin, Ethereum, Monero). The Company does not use third-party KYC/AML
+            payment processors (like Stripe or PayPal) for sovereign access. The on-chain transaction hash serves as
+            your only receipt.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>4. Explicit Disclaimer Regarding Blockchain Analytics</h2>
+        <p>While The Company maintains absolute privacy regarding your account, you explicitly acknowledge that public
+            blockchains (e.g., Bitcoin, Ethereum) are immutable, globally accessible ledgers. Your transactions on these
+            networks are entirely public. We accept no responsibility, and you hold us entirely harmless, for any
+            privacy breaches, forensic tracing, or deanonymization resulting from blockchain analytics firms,
+            intelligence agencies, or state actors analyzing your on-chain behavior.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>5. Local Environment Sovereignty</h2>
+        <p>The Deadhand Protocol executes entirely on your local machine. We embed zero telemetry, zero analytics
+            trackers, and zero "crash reporting" software. However, you are solely, exclusively responsible for the
+            sanctity of your local environment.</p>
+        <p>If your local machine is compromised by malware, keyloggers, screen-scraping software, or physical extraction
+            vectors, your privacy will be breached. You explicitly agree that The Company is not responsible for
+            securing your operating system, and we bear zero liability for privacy violations resulting from local
+            endpoint compromise.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>6. The Deadhand Heartbeat Payload</h2>
+        <p>If you choose to utilize the automated heartbeat network, The Company infrastructure will store heavily
+            encrypted blobs (Shard C) and an encrypted target email address. We do not possess the decryption keys. We
+            do not know what assets the shards protect. If our servers are physically seized by a hostile jurisdiction,
+            the seizing party will inherit mathematically useless noise. You agree that the storage of this encrypted
+            noise does not constitute the processing of personal data under any global privacy framework.</p>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,244 +1,182 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>terms of service & privacy policy - deadhand protocol</title>
-    <link rel="canonical" href="{{ BASE_URL }}{{ request.url.path }}">
-    <link rel="icon" type="image/png" href="/static/favicon.png">
-    <style>
-        * {
-            box-sizing: border-box;
-        }
+{% block title %}Terms of Service | Deadhand Protocol{% endblock %}
 
-        body {
-            font-family: Georgia, serif;
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 60px 40px;
-            line-height: 1.8;
-            background: #fafafa;
-            color: #222;
-            text-transform: lowercase;
-        }
+{% block content %}
+<style>
+    .legal-container {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 80px 20px;
+        color: var(--text-primary);
+        font-family: var(--font-main);
+    }
 
-        header {
-            border-bottom: 2px solid #222;
-            padding-bottom: 30px;
-            margin-bottom: 50px;
-        }
+    .legal-title {
+        font-size: 3.5rem;
+        margin-bottom: 10px;
+        letter-spacing: -0.04em;
+        text-transform: uppercase;
+        font-weight: 900;
+        color: #fff;
+    }
 
-        .nav {
-            margin-bottom: 30px;
-            font-family: monospace;
-        }
+    .legal-subtitle {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-bottom: 40px;
+        border-bottom: 2px solid var(--border);
+        padding-bottom: 20px;
+        font-family: var(--font-mono);
+    }
 
-        .nav a {
-            margin-right: 20px;
-            color: #666;
-            text-decoration: none;
-            transition: color 0.2s;
-        }
+    .legal-section {
+        margin-bottom: 40px;
+    }
 
-        .nav a:hover {
-            color: #000;
-            text-decoration: underline;
-        }
+    .legal-section h2 {
+        font-size: 1.25rem;
+        color: #fff;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+        font-weight: 800;
+        letter-spacing: 0.05em;
+    }
 
-        h1 {
-            color: #000;
-            font-size: 2.8em;
-            margin: 0.2em 0;
-            line-height: 1.1;
-            font-weight: normal;
-            letter-spacing: -1px;
-        }
+    .legal-section p,
+    .legal-section li {
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+        text-align: justify;
+    }
 
-        .subtitle {
-            color: #666;
-            font-family: monospace;
-            margin-bottom: 15px;
-        }
+    .legal-section ul {
+        list-style-type: square;
+        padding-left: 20px;
+        margin-bottom: 16px;
+    }
 
-        .section-title {
-            margin-top: 60px;
-            font-size: 1.8em;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: #000;
-            border-bottom: 3px solid #10b981;
-            display: inline-block;
-            margin-bottom: 30px;
-        }
+    .shout {
+        color: #e11d48;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-size: 1rem;
+        letter-spacing: 0.02em;
+    }
 
-        section {
-            margin-bottom: 40px;
-        }
+    .aggressive-box {
+        border: 2px solid #e11d48;
+        padding: 30px;
+        background: rgba(225, 29, 72, 0.05);
+        border-radius: 12px;
+        margin: 40px 0;
+    }
+</style>
 
-        h2 {
-            color: #000;
-            font-size: 1.2em;
-            margin-bottom: 15px;
-            font-family: monospace;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-        }
+<div class="legal-container">
+    <h1 class="legal-title">Terms of Service</h1>
 
-        h2::before {
-            content: "§";
-            color: #10b981;
-            margin-right: 10px;
-        }
-
-        p {
-            margin-bottom: 20px;
-        }
-
-        .legal-notice {
-            background: #fff;
-            border: 1px solid #ddd;
-            padding: 25px;
-            margin: 30px 0;
-            font-family: monospace;
-            font-size: 0.9em;
-            color: #444;
-        }
-
-        .footer {
-            margin-top: 80px;
-            padding-top: 30px;
-            border-top: 1px solid #eee;
-            font-size: 0.85em;
-            color: #888;
-            text-align: left;
-            font-family: monospace;
-        }
-
-        b {
-            color: #000;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 30px 20px;
-            }
-
-            h1 {
-                font-size: 2.2em;
-            }
-        }
-    </style>
-    <!-- PostHog -->
-    <script>
-        !function (t, e) { var o, n, p, r; e.__SV || (window.posthog && window.posthog.__loaded) || (window.posthog = e, e._i = [], e.init = function (i, s, a) { function g(t, e) { var o = e.split("."); 2 == o.length && (t = t[o[0]], e = o[1]), t[e] = function () { t.push([e].concat(Array.prototype.slice.call(arguments, 0))) } } (p = t.createElement("script")).type = "text/javascript", p.crossOrigin = "anonymous", p.async = !0, p.src = s.api_host.replace(".i.posthog.com", "-assets.i.posthog.com") + "/static/array.js", (r = t.getElementsByTagName("script")[0]).parentNode.insertBefore(p, r); var u = e; for (void 0 !== a ? u = e[a] = [] : a = "posthog", u.people = u.people || [], u.toString = function (t) { var e = "posthog"; return "posthog" !== a && (e += "." + a), t || (e += " (stub)"), e }, u.people.toString = function () { return u.toString(1) + ".people (stub)" }, o = "init rs ls bi ns us ts ss capture calculateEventProperties vs register register_once register_for_session unregister unregister_for_session gs getFeatureFlag getFeatureFlagPayload getFeatureFlagResult isFeatureEnabled reloadFeatureFlags updateFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSurveysLoaded onSessionId getSurveys getActiveMatchingSurveys renderSurvey displaySurvey cancelPendingSurvey canRenderSurvey canRenderSurveyAsync identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException startExceptionAutocapture stopExceptionAutocapture loadToolbar get_property getSessionProperty fs ds createPersonProfile ps Qr opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing get_explicit_consent_status is_capturing clear_opt_in_out_capturing hs debug O cs getPageViewId captureTraceFeedback captureTraceMetric Kr".split(" "), n = 0; n < o.length; n++)g(u, o[n]); e._i.push([i, s, a]) }, e.__SV = 1) }(document, window.posthog || []);
-        posthog.init('phc_sFQxcTaCFEjtTSgt2qjDYDMFIgY6XlDYn80JxSickHQ', {
-            api_host: 'https://t.deadhandprotocol.com',
-            defaults: '2025-11-30',
-            person_profiles: 'identified_only',
-            capture_pageview: true,
-            capture_pageleave: true,
-            capture_scroll_depth: true
-        })
-    </script>
-</head>
-
-
-<body>
-
-    <div class="nav">
-        <a href="/">home</a>
-        <a href="/tools/dead-switch">dead switch</a>
-        <a href="/tools/optical-splitting">optical splitting</a>
-        <a href="/tools/acoustic-masking">acoustic masking</a>
-        <a href="/buy">pricing</a>
-        <a href="/blog">blog</a>
-        <a href="https://github.com/half-radiation-LLC/deadhand">github</a>
+    <div class="legal-section aggressive-box">
+        <h2>1. Explicit Assumption of Extreme Risk & Total Disclaimer</h2>
+        <p class="shout">READ THIS CAREFULLY. IF YOU LOSE YOUR SHARDS, YOUR SEED PHRASE, OR YOUR MASTER KEY, YOUR
+            CAPITAL IS GONE FOREVER. WE DO NOT POSSESS A BACKDOOR. WE CANNOT BYPASS THE CRYPTOGRAPHY. WE CANNOT HELP
+            YOU.</p>
+        <p>By executing the Deadhand Protocol ("The Software"), you explicitly, irrevocably, and unconditionally
+            acknowledge that cryptographic self-custody involves the permanent, irrecoverable loss of funds in the event
+            of user error, hardware failure, or environmental compromise. Deadhand Protocol is an offline mathematical
+            utility and a passive cryptographic conduit. It is not a financial institution, a fiduciary, a custodian, an
+            escrow agent, or an insurer. You are exclusively responsible for your operational security.</p>
     </div>
 
-    <header>
-        <h1>institutional terms & privacy</h1>
-        <p class="subtitle">effective date: 2026.05.05 // jurisdiction: new mexico, usa</p>
-    </header>
-
-    <main>
-        <div class="section-title">Terms of Service</div>
-
-        <section>
-            <h2>1. acceptance of risk</h2>
-            <p>Deadhand Protocol ('Service') is an experimental cryptographic protocol. By using this Service, you acknowledge the inherent risks of digital asset management, blockchain interactions, and cryptographic storage. Company is <b>NOT</b> responsible for lost keys, lost data, or lost inheritance. <b>YOU ALONE</b> are responsible for your security.</p>
-        </section>
-
-        <section>
-            <h2>2. intellectual property</h2>
-            <p>All content, code, architecture, and branding are the exclusive property of <b>half radiation LLC</b>. No license or right is granted except the limited, non-exclusive right to use the Service as intended.</p>
-        </section>
-
-        <section>
-            <h2>3. prohibited uses</h2>
-            <p>You agree not to use the Service for any illegal activities, including but not limited to money laundering, fraud, or the storage of illicit materials. We reserve the right to terminate access for any user at our sole discretion.</p>
-        </section>
-
-        <section>
-            <h2>4. no warranties</h2>
-            <div class="legal-notice">
-                THE SERVICE IS PROVIDED 'AS IS' AND 'AS AVAILABLE' WITHOUT WARRANTIES OF ANY KIND. WE EXPRESSLY DISCLAIM ALL WARRANTIES, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE.
-            </div>
-        </section>
-
-        <section>
-            <h2>5. limitation of liability</h2>
-            <div class="legal-notice">
-                TO THE MAXIMUM EXTENT PERMITTED BY LAW, <b>HALF RADIATION LLC</b> SHALL NOT BE LIABLE FOR ANY DAMAGES (INCLUDING LOST PROFITS OR DATA) EXCEEDING ONE HUNDRED U.S. DOLLARS ($100.00).
-            </div>
-        </section>
-
-        <section>
-            <h2>6. governing law & arbitration</h2>
-            <p>These terms are governed by the laws of the <b>State of New Mexico</b>. Any disputes shall be resolved via binding arbitration. You waive your right to a jury trial or class action participation.</p>
-        </section>
-
-        <section>
-            <h2>7. severability</h2>
-            <p>If any portion of these Terms is found to be unenforceable, the remaining portions shall remain in full force and effect.</p>
-        </section>
-
-        <div class="section-title">Privacy Policy</div>
-
-        <section>
-            <h2>1. data philosophy</h2>
-            <p>We believe in digital sovereignty. We do not collect personal identifying information (PII) for tracking purposes. We do not sell your data to third parties.</p>
-        </section>
-
-        <section>
-            <h2>2. data collection & third parties</h2>
-            <p>We may collect anonymous technical data (e.g., IP addresses, browser types) for security and performance monitoring. We may use third-party providers (e.g., hosting, analytics) who have their own privacy policies. You acknowledge and agree to these third-party interactions.</p>
-        </section>
-
-        <section>
-            <h2>3. cookies</h2>
-            <p>We may use 'cookies' to maintain your session. You can disable these in your browser settings without loss of core functionality.</p>
-        </section>
-
-        <section>
-            <h2>4. contact</h2>
-            <div class="legal-notice">
-                For all legal inquiries, contact:<br>
-                <b>half radiation LLC</b><br>
-                1209 Mountain Road PL NE, STE R<br>
-                Albuquerque, NM 87110
-            </div>
-        </section>
-    </main>
-
-    <div class="footer">
-        <p>// deadhand protocol: autonomous legacy protection.</p>
-        <p>© 2026 half radiation LLC. all rights reserved.</p>
+    <div class="legal-section">
+        <h2>2. Software Provided Strictly "AS IS" AND "WITH ALL FAULTS"</h2>
+        <p>The Software, including the Sovereign Desktop Client, all smart contracts, open-source repositories, and any
+            associated heartbeat network tools, is provided strictly "AS IS", "AS AVAILABLE", and "WITH ALL FAULTS",
+            without warranty of any kind, whether express, implied, statutory, or otherwise. Half Radiation LLC ("The
+            Company") explicitly, unequivocally, and totally disclaims all warranties of merchantability, fitness for a
+            particular purpose, non-infringement, title, quiet enjoyment, and interoperability.</p>
+        <p>The Company makes no representation that the Software will be error-free, immune to quantum computing
+            decryption, resistant to zero-day vulnerabilities in underlying operating systems, or impervious to
+            state-sponsored cryptographic interception. You bear the entire, unmitigated risk as to the quality,
+            performance, and cryptographic integrity of the Software.</p>
     </div>
 
-</body>
+    <div class="legal-section">
+        <h2>3. Total Limitation and Exclusion of Liability</h2>
+        <p class="shout">TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE JURISDICTIONAL LAW, UNDER NO CIRCUMSTANCES SHALL
+            THE COMPANY, ITS FOUNDERS, DEVELOPERS, EMPLOYEES, CONTRACTORS, OR AFFILIATES BE LIABLE TO YOU OR ANY THIRD
+            PARTY FOR ANY LOSS WHATSOEVER.</p>
+        <p>This exclusion applies to, but is not limited to: lost digital assets, lost fiat currency, lost profits, lost
+            data, loss of goodwill, cost of procurement of substitute goods, or any direct, indirect, incidental,
+            consequential, special, punitive, or exemplary damages arising out of your use, misuse, or inability to use
+            the Software.</p>
+        <ul>
+            <li><strong>User Incompetence:</strong> We are not liable if you lose your Shards, accidentally share your
+                Master Key, or fall victim to phishing.</li>
+            <li><strong>Local Compromise:</strong> We are not liable if your local hardware is infected with keyloggers,
+                malware, or screen-scraping trojans.</li>
+            <li><strong>Dependency Failures:</strong> We are not liable for vulnerabilities in third-party libraries,
+                compilers, or operating systems upon which the Software relies.</li>
+            <li><strong>Third-Party Interference:</strong> We are not liable for the actions of hostile state actors,
+                intelligence agencies, or malicious network participants.</li>
+        </ul>
+        <p>This total exclusion of liability applies regardless of the legal theory under which damages are sought
+            (whether based in contract, tort, negligence, strict liability, warranty, or otherwise), even if The Company
+            has been advised of the possibility of such damages, and even if a remedy fails of its essential purpose.
+        </p>
+    </div>
 
-</html>
+    <div class="legal-section aggressive-box" style="border-color: var(--accent); background: rgba(255,85,0,0.05);">
+        <h2>4. The Absolute Liability Cap</h2>
+        <p>In the event that a court of competent jurisdiction ignores, invalidates, or severs the limitations of
+            liability contained in Section 3, and finds The Company liable for damages under any legal theory
+            whatsoever, <span class="shout" style="color: var(--accent);">YOU EXPLICITLY AGREE THAT OUR MAXIMUM,
+                AGGREGATE LIABILITY TO YOU FOR ALL CLAIMS COMBINED SHALL BE STRICTLY AND IRREVOCABLY CAPPED AT THE EXACT
+                AMOUNT YOU PAID TO THE COMPANY FOR THE SOFTWARE LICENSE (NOT TO EXCEED $300.00 USD).</span></p>
+        <p>You agree that this liability cap is an essential element of the bargain between you and The Company,
+            represents a reasonable allocation of risk given the decentralized and mathematical nature of the Software,
+            and that The Company would not be able to provide the Software absent such an absolute cap.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>5. Estate Planning, Probate, and Jurisdictional Defiance</h2>
+        <p>The Company engineers mathematical tools; we do not engineer legal evasion strategies. We do not provide
+            estate planning, financial, tax, or legal advice. Bypassing probate courts, avoiding state jurisdiction, and
+            structuring trustless inheritance carries severe legal consequences that vary drastically across sovereign
+            territories.</p>
+        <p>You are exclusively responsible for ensuring your use of this Software complies with applicable local,
+            national, and international laws—or you explicitly accept the consequences if it does not. The Company
+            assumes zero liability for your interactions with tax authorities, probate judges, or regulatory bodies.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>6. Binding Arbitration & Class Action Waiver</h2>
+        <p>Any and all disputes, claims, or controversies arising out of or relating to this Agreement, the Software, or
+            the breach thereof, shall be settled exclusively by final and binding arbitration administered by the
+            American Arbitration Association (AAA) under its Commercial Arbitration Rules. The arbitration shall take
+            place in a jurisdiction exclusively chosen by The Company.</p>
+        <p class="shout">YOU EXPLICITLY WAIVE ANY RIGHT TO BRING OR PARTICIPATE IN A CLASS ACTION, COLLECTIVE ACTION, OR
+            REPRESENTATIVE ACTION AGAINST THE COMPANY. YOU AGREE THAT YOU MAY BRING CLAIMS AGAINST THE COMPANY ONLY IN
+            YOUR INDIVIDUAL CAPACITY.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>7. Force Majeure & Cryptographic Obsolescence</h2>
+        <p>The Company shall not be liable for any failure or delay in performance resulting from causes beyond its
+            reasonable control, including but not limited to: acts of God, global internet outages, solar flares, EMP
+            attacks, war, terrorism, state-level firewall blockages, or the advent of cryptographic obsolescence (e.g.,
+            Quantum Computing breaking SHA-256 or Shamir's Secret Sharing mathematics). The protocol assumes the
+            underlying math remains unbroken; if the math breaks, the protocol breaks, and we are not liable.</p>
+    </div>
+
+    <div class="legal-section">
+        <h2>8. Severability & Survival</h2>
+        <p>If any provision of this Agreement is found to be invalid, illegal, or unenforceable by a court of competent
+            jurisdiction, such provision shall be modified to the minimum extent necessary to make it enforceable, and
+            the remaining provisions shall remain in full force and effect. The limitations of liability and disclaimers
+            shall survive any termination of your use of the Software.</p>
+    </div>
+</div>
+{% endblock %}

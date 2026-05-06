@@ -456,6 +456,11 @@ async def terms_page(request: Request):
     """Terms of Service"""
     return templates.TemplateResponse(request=request, name="terms.html", context={})
 
+@app.get("/privacy", response_class=HTMLResponse)
+async def privacy_page(request: Request):
+    """Privacy Policy"""
+    return templates.TemplateResponse(request=request, name="privacy.html", context={})
+
 @app.get("/docs", response_class=HTMLResponse)
 async def docs_page(request: Request):
     """Documentation - Semantic SEO optimized for AI scraping"""
