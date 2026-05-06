@@ -534,9 +534,51 @@
             margin-top: 4px;
         }
 
+        .hero-grid {
+            display: grid; 
+            grid-template-columns: 1fr 1fr; 
+            gap: 60px; 
+            align-items: center; 
+            text-align: left;
+        }
+
+        .hero-buttons {
+            display: flex; 
+            gap: 16px;
+        }
+
         @media (max-width: 900px) {
             .hero {
-                padding: 80px 0;
+                padding: 40px 0;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                text-align: center;
+            }
+
+            .hero-grid > div:first-child {
+                order: 2;
+            }
+            .hero-grid > div:last-child {
+                order: 1;
+            }
+
+            .hero-grid h1 {
+                text-align: center !important;
+                font-size: 2.5rem !important;
+            }
+
+            .hero-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .hero-buttons a {
+                width: 100%;
+                text-align: center;
+                justify-content: center;
             }
 
             .pricing-card.featured {
@@ -597,14 +639,8 @@
     function toggleMobileMenu() {
         var menu = document.querySelector('.mobile-menu');
         var btn = document.querySelector('.mobile-menu-btn');
-        menu.classList.toggle('open');
-
-    // Animate hamburger
-    /*
-    if (menu.classList.contains('open')) {
-        // optional animation logic
+        if(menu) menu.classList.toggle('open');
     }
-    */
 </script>
 
 <body>
@@ -633,14 +669,14 @@
         <!-- Hero Section -->
         <section class="hero" style="padding-top: 60px; padding-bottom: 80px;">
             <div class="container">
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; text-align: left;">
+                <div class="hero-grid">
                     <div>
                         <div class="hero-badge" style="margin-left: 0;">Outsmart The System</div>
                         <h1 style="font-size: clamp(3rem, 4.5vw, 4.5rem); text-align: left; line-height: 1.1;">Take your keys to the grave.<br><span class="accent-text">Leave the wealth.</span></h1>
                         <p style="font-size: 1.15rem; font-weight: 500; margin-bottom: 40px; line-height: 1.6; color: var(--text-secondary);">
                             You spent your life bypassing the fiat system. Don't let probate courts steal it when you die. Deadhand ensures your family gets everything, the state gets nothing, and you never have to explain a seed phrase to your spouse.
                         </p>
-                        <div style="display: flex; gap: 16px;">
+                        <div class="hero-buttons">
                             <a href="/download" class="btn-primary">Bypass The State</a>
                             <a href="#problem" style="color: white; font-weight: 600; padding: 14px 28px; border: 1px solid var(--border); border-radius: 100px;">See How It Works</a>
                         </div>
@@ -708,8 +744,7 @@
         <!-- Solution Section -->
         <section class="section" style="background: var(--bg-tertiary);">
             <div class="container">
-                <div
-                    style="display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 80px; align-items: center;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 350px), 1fr)); gap: 80px; align-items: center;">
                     <div>
                         <h2 style="margin-bottom: 24px;">The Fail-Safe System</h2>
                         <p>We use <b>Shamir’s Secret Sharing</b>, an industry-standard protocol that splits your
@@ -760,7 +795,7 @@
                     <p style="font-size: 1.15rem; color: var(--text-secondary); margin-bottom: 60px;">We do not build software. We engineer cryptographic inevitability. Deadhand is an institutional defense contractor for the sovereign individual.</p>
                 </div>
 
-                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 40px;">
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 40px;">
                     <!-- Mission -->
                     <div style="background: var(--bg-secondary); padding: 40px; border-radius: 16px; border: 1px solid var(--border); position: relative; overflow: hidden;">
                         <div style="position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--accent);"></div>
@@ -778,7 +813,7 @@
                     <!-- Values -->
                     <div style="background: var(--bg-secondary); padding: 40px; border-radius: 16px; border: 1px solid var(--border); position: relative; overflow: hidden; grid-column: 1 / -1;">
                         <h3 style="margin-bottom: 30px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-primary); text-align: center;">Core Tenets</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr)); gap: 30px;">
                             <div>
                                 <h4 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.1rem;"><i class="fas fa-code-branch" style="color: var(--accent); margin-right: 8px;"></i> AGPL Open Source</h4>
                                 <p style="font-size: 0.85rem; margin: 0;">Our code is fully transparent. Inspect it, compile it, fork it. No weird things running behind your back.</p>
