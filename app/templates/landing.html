@@ -608,6 +608,9 @@
 </script>
 
 <body>
+    <div id="vpnBanner" style="display: none; background: #e11d48; color: white; text-align: center; padding: 15px; font-weight: bold; position: sticky; top: 0; z-index: 2000;">
+        ⚠️ please disable your vpn. defaulting to tier 1 pricing.
+    </div>
     <header class="header">
         <div class="container" style="display: flex; justify-content: space-between; align-items: center;">
             <a href="/" style="display: flex; align-items: center; gap: 12px;">
@@ -763,48 +766,47 @@
                 <h2 style="margin-bottom: 20px;">Choose your level of autonomy</h2>
                 <p style="margin-bottom: 60px;">Professional-grade security for individuals and institutions.</p>
 
-                <div class="pricing-grid">
-                    <!-- Tier 1: Free -->
-                    <div class="pricing-card">
-                        <div class="pricing-tier">Lite</div>
-                        <div class="pricing-price">Free</div>
-                        <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> Offline Shard Generation</li>
-                            <li><i class="fas fa-check"></i> SSS Visual Cryptography</li>
-                            <li><i class="fas fa-check"></i> Bus Factor Risk Tools</li>
-                            <li><i class="fas fa-check"></i> Open Source Spec</li>
-                        </ul>
-                        <a href="/download" class="btn-primary"
-                            style="background: transparent; border: 1px solid var(--border); color: white; justify-content: center;">Get Started</a>
-                    </div>
-
-                    <!-- Tier 2: Sovereign (Paid) -->
-                    <div class="pricing-card featured">
-                        <div class="pricing-tier" style="color: var(--accent);">Sovereign</div>
+                <div class="pricing-grid" id="dynamicPricingGrid">
+                    <!-- Tier 1 -->
+                    <div class="pricing-card featured" id="tier1">
+                        <div class="pricing-tier" style="color: var(--accent);">Tier 1</div>
                         <div class="pricing-price">$300</div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">For high-income regions</p>
                         <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> <b>Everything in Lite</b></li>
                             <li><i class="fas fa-check"></i> Automated Heartbeat System</li>
                             <li><i class="fas fa-check"></i> Encrypted Email Dispatch</li>
                             <li><i class="fas fa-check"></i> Permanent Software License</li>
                             <li><i class="fas fa-check"></i> Priority Security Updates</li>
                         </ul>
-                        <a href="/download" class="btn-primary" style="justify-content: center;">Buy Sovereign Access →</a>
+                        <a href="/download" class="btn-primary" style="justify-content: center;">Select Tier 1 →</a>
                     </div>
 
-                    <!-- Tier 3: Enterprise -->
-                    <div class="pricing-card">
-                        <div class="pricing-tier">Enterprise</div>
-                        <div class="pricing-price">Bespoke</div>
+                    <!-- Tier 2 -->
+                    <div class="pricing-card" id="tier2">
+                        <div class="pricing-tier">Tier 2</div>
+                        <div class="pricing-price">$200</div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">For medium-income regions</p>
                         <ul class="pricing-features">
-                            <li><i class="fas fa-check"></i> <b>Everything in Sovereign</b></li>
-                            <li><i class="fas fa-check"></i> Institutional White-Labeling</li>
-                            <li><i class="fas fa-check"></i> Custom Protocol Integration</li>
-                            <li><i class="fas fa-check"></i> 24/7 Dedicated Support</li>
-                            <li><i class="fas fa-check"></i> Legal Compliance Suite</li>
+                            <li><i class="fas fa-check"></i> Automated Heartbeat System</li>
+                            <li><i class="fas fa-check"></i> Encrypted Email Dispatch</li>
+                            <li><i class="fas fa-check"></i> Permanent Software License</li>
+                            <li><i class="fas fa-check"></i> Standard Support</li>
                         </ul>
-                        <a href="mailto:halfradiationllc@gmail.com" class="btn-primary"
-                            style="background: transparent; border: 1px solid var(--border); color: white; justify-content: center;">Contact Sales</a>
+                        <a href="/download" class="btn-primary" style="background: transparent; border: 1px solid var(--border); color: white; justify-content: center;">Select Tier 2 →</a>
+                    </div>
+
+                    <!-- Tier 3 -->
+                    <div class="pricing-card" id="tier3">
+                        <div class="pricing-tier">Tier 3</div>
+                        <div class="pricing-price">$100</div>
+                        <p style="font-size: 0.9rem; color: var(--text-secondary); margin-bottom: 20px;">For developing regions</p>
+                        <ul class="pricing-features">
+                            <li><i class="fas fa-check"></i> Automated Heartbeat System</li>
+                            <li><i class="fas fa-check"></i> Encrypted Email Dispatch</li>
+                            <li><i class="fas fa-check"></i> Permanent Software License</li>
+                            <li><i class="fas fa-check"></i> Community Support</li>
+                        </ul>
+                        <a href="/download" class="btn-primary" style="background: transparent; border: 1px solid var(--border); color: white; justify-content: center;">Select Tier 3 →</a>
                     </div>
                 </div>
             </div>
@@ -1089,6 +1091,80 @@
                 capture_pageleave: true,
                 capture_scroll_depth: true
             })
+    </script>
+    <script>
+        // Simple heuristic to detect VPN/Proxy using IP API
+        async function checkVPN() {
+            try {
+                const response = await fetch('https://ipapi.co/json/');
+                if (!response.ok) return;
+                
+                const data = await response.json();
+                
+                // VPN/Proxy detection heuristic based on org keywords
+                const org = (data.org || "").toLowerCase();
+                const isVPN = org.includes('hosting') ||
+                              org.includes('datacenter') ||
+                              org.includes('cloud') ||
+                              org.includes('vpn') ||
+                              org.includes('proxy') ||
+                              org.includes('amazon') ||
+                              org.includes('digitalocean') ||
+                              org.includes('linode') ||
+                              org.includes('hetzner') ||
+                              org.includes('ovh') ||
+                              org.includes('mullvad') ||
+                              org.includes('nordvpn') ||
+                              org.includes('expressvpn');
+
+                const tier1 = document.getElementById('tier1');
+                const tier2 = document.getElementById('tier2');
+                const tier3 = document.getElementById('tier3');
+
+                if (isVPN) {
+                    document.getElementById('vpnBanner').style.display = 'block';
+                    
+                    tier2.style.opacity = '0.4';
+                    tier2.style.pointerEvents = 'none';
+                    tier2.querySelector('.btn-primary').innerText = 'Unavailable (VPN Detected)';
+                    
+                    tier3.style.opacity = '0.4';
+                    tier3.style.pointerEvents = 'none';
+                    tier3.querySelector('.btn-primary').innerText = 'Unavailable (VPN Detected)';
+                    return;
+                }
+
+                const country = data.country || "";
+                
+                const tier2Countries = ['CL', 'BR', 'MX', 'AR', 'CO', 'PE', 'ZA', 'TR', 'RU', 'CN', 'TH', 'MY', 'PL', 'RO', 'HU'];
+                const tier3Countries = ['IN', 'PK', 'BD', 'NG', 'KE', 'VN', 'ID', 'PH', 'EG', 'DZ', 'MA', 'VE', 'LK'];
+
+                if (tier3Countries.includes(country)) {
+                    tier1.style.display = 'none';
+                    tier2.style.display = 'none';
+                    tier3.classList.add('featured');
+                    tier3.querySelector('.pricing-tier').style.color = 'var(--accent)';
+                    tier3.querySelector('.pricing-tier').innerHTML += ' <span style="font-size:0.8em;">(Your Region)</span>';
+                    tier3.querySelector('.btn-primary').style.background = 'var(--accent)';
+                    tier3.querySelector('.btn-primary').style.border = 'none';
+                } else if (tier2Countries.includes(country)) {
+                    tier1.style.display = 'none';
+                    tier3.style.display = 'none';
+                    tier2.classList.add('featured');
+                    tier2.querySelector('.pricing-tier').style.color = 'var(--accent)';
+                    tier2.querySelector('.pricing-tier').innerHTML += ' <span style="font-size:0.8em;">(Your Region)</span>';
+                    tier2.querySelector('.btn-primary').style.background = 'var(--accent)';
+                    tier2.querySelector('.btn-primary').style.border = 'none';
+                } else {
+                    tier2.style.display = 'none';
+                    tier3.style.display = 'none';
+                    tier1.querySelector('.pricing-tier').innerHTML += ' <span style="font-size:0.8em;">(Your Region)</span>';
+                }
+            } catch (err) {
+                console.warn('Failed to check VPN status:', err);
+            }
+        }
+        window.addEventListener('DOMContentLoaded', checkVPN);
     </script>
 </body>
 

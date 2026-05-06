@@ -26,7 +26,7 @@
         }
 
         .container {
-            max-width: 600px;
+            max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
         }
@@ -76,17 +76,25 @@
             margin-bottom: 1em;
         }
 
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
         .price-box {
             background: #fff;
             border: 1px solid #ddd;
-            padding: 30px;
-            margin-bottom: 20px;
+            padding: 30px 20px;
             border-radius: 4px;
             text-decoration: none;
             color: inherit;
-            display: block;
+            display: flex;
+            flex-direction: column;
             transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
             cursor: pointer;
+            position: relative;
         }
 
         .price-box:hover {
@@ -95,21 +103,30 @@
             border-color: #0d9668;
         }
 
+        .price-box.popular {
+            border: 2px solid #10b981;
+            transform: scale(1.02);
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.1);
+        }
+
         .price {
             font-size: 2em;
             font-weight: bold;
             margin-bottom: 10px;
+            color: #222;
         }
 
         ul {
             list-style: none;
             margin: 1.5em 0;
+            flex-grow: 1;
         }
 
         li {
             margin-bottom: 0.8em;
             display: flex;
             align-items: center;
+            font-size: 0.85em;
         }
 
         li i {
@@ -126,7 +143,7 @@
             padding: 16px 24px;
             text-decoration: none;
             text-align: center;
-            font-size: 1.1em;
+            font-size: 1em;
             margin: 1em 0;
             border-radius: 4px;
             font-weight: bold;
@@ -134,6 +151,15 @@
 
         .cta:hover {
             background: #444;
+        }
+
+        .price-box.popular .cta {
+            background: #10b981;
+            color: #fff;
+        }
+
+        .price-box.popular .cta:hover {
+            background: #0d9668;
         }
 
         .footer {
@@ -160,13 +186,25 @@
             font-size: 0.7em;
             font-weight: bold;
             margin-bottom: 10px;
+            align-self: flex-start;
         }
 
-        /* ascii art - responsive */
+        .vpn-banner {
+            display: none;
+            background: #e11d48;
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-weight: bold;
+            font-size: 0.9em;
+            /* position: sticky;
+            top: 0; */
+            z-index: 1000;
+        }
+
         .ascii {
             font-family: monospace;
             font-size: 8px;
-            /* smaller for mobile */
             line-height: 1.1;
             white-space: pre;
             color: #333;
@@ -174,19 +212,19 @@
             overflow-x: auto;
             text-align: center;
             scrollbar-width: none;
-            /* Hide scrollbar for Firefox */
             -ms-overflow-style: none;
-            /* Hide scrollbar for IE/Edge */
         }
 
         .ascii::-webkit-scrollbar {
             display: none;
-            /* Hide scrollbar for Chrome/Safari */
         }
     </style>
 </head>
 
 <body>
+    <div id="vpnBanner" class="vpn-banner">
+        ⚠️ please disable your vpn. defaulting to tier 1 pricing.
+    </div>
 
     <header class="header">
         <nav class="nav">
@@ -212,75 +250,159 @@
 </pre>
 
         <h1>choose your protection level</h1>
-        <p style="text-align: center; color: #444;">both plans include full protocol access. the difference is only in
-            how you pay.</p>
+        <p style="text-align: center; color: #444;">dynamic pricing to ensure fair access globally.</p>
 
         <hr>
 
-        <a href="/buy/lifetime" class="price-box"
-            style="border: 1px solid #10b981; background: rgba(16, 185, 129, 0.02);">
-            <div class="badge" style="background: #e11d48;">ONLY 11 SLOTS REMAINING</div>
-            <h2>Lifetime Sovereignty</h2>
-            <div class="price">
-                <span
-                    style="text-decoration: line-through; color: #666; font-size: 0.7em; margin-right: 10px;">$500</span>$400
-                <span style="font-size: 0.5em; color: #444; font-weight: normal;">/ once</span>
-            </div>
-            <p style="font-size: 0.65em; color: #575757; margin-top: -10px; margin-bottom: 15px; font-style: italic;">
-                Equivalent to 30 minutes with a specialized estate attorney.</p>
-            <p>Own your legacy protocol forever. No subscriptions. No recurring fees.</p>
+        <div class="pricing-grid">
+            <!-- Tier 1 -->
+            <a href="/buy/tier1" class="price-box popular" id="tier1">
+                <div class="badge">STANDARD</div>
+                <h2 style="margin-top: 0; border: none; padding: 0;">Tier 1</h2>
+                <div class="price">$300</div>
+                <p style="font-size: 0.65em; color: #575757; margin-bottom: 15px; font-style: italic;">For users in high-income regions.</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> <b>The Watch (Permanent Heartbeat)</b></li>
+                    <li><i class="fa-solid fa-check"></i> <b>Recurrent Updates</b></li>
+                    <li><i class="fa-solid fa-check"></i> Priority Sovereign Support</li>
+                    <li><i class="fa-solid fa-check"></i> Secure Shard Storage</li>
+                </ul>
+                <div class="cta">Select Tier 1</div>
+            </a>
 
-            <ul>
-                <li><i class="fa-solid fa-check"></i> <b>The Watch (Permanent Heartbeat)</b></li>
-                <li><i class="fa-solid fa-check"></i> <b>Recurrent Updates</b></li>
-                <li><i class="fa-solid fa-check"></i> Priority Sovereign Support</li>
-                <li><i class="fa-solid fa-check"></i> Single one-time payment</li>
-            </ul>
+            <!-- Tier 2 -->
+            <a href="/buy/tier2" class="price-box" id="tier2">
+                <h2 style="margin-top: 0; border: none; padding: 0;">Tier 2</h2>
+                <div class="price">$200</div>
+                <p style="font-size: 0.65em; color: #575757; margin-bottom: 15px; font-style: italic;">For users in medium-income regions.</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> The Watch (Permanent Heartbeat)</li>
+                    <li><i class="fa-solid fa-check"></i> Recurrent Updates</li>
+                    <li><i class="fa-solid fa-check"></i> Standard Support</li>
+                    <li><i class="fa-solid fa-check"></i> Secure Shard Storage</li>
+                </ul>
+                <div class="cta" style="background: #fff; border: 1px solid #222; color: #222;">Select Tier 2</div>
+            </a>
 
-            <div class="cta">Activate The Watch →</div>
-            <p style="font-size: 0.7em; color: #666; text-align: center;">One-time payment via credit card or crypto</p>
-        </a>
+            <!-- Tier 3 -->
+            <a href="/buy/tier3" class="price-box" id="tier3">
+                <h2 style="margin-top: 0; border: none; padding: 0;">Tier 3</h2>
+                <div class="price">$100</div>
+                <p style="font-size: 0.65em; color: #575757; margin-bottom: 15px; font-style: italic;">For users in developing regions.</p>
+                <ul>
+                    <li><i class="fa-solid fa-check"></i> The Watch (Permanent Heartbeat)</li>
+                    <li><i class="fa-solid fa-check"></i> Recurrent Updates</li>
+                    <li><i class="fa-solid fa-check"></i> Community Support</li>
+                    <li><i class="fa-solid fa-check"></i> Secure Shard Storage</li>
+                </ul>
+                <div class="cta" style="background: #fff; border: 1px solid #222; color: #222;">Select Tier 3</div>
+            </a>
+        </div>
 
-        <a href="/buy/annual" class="price-box">
-            <h2>Annual Guard</h2>
-            <div class="price">
-                <span
-                    style="text-decoration: line-through; color: #666; font-size: 0.7em; margin-right: 10px;">$120</span>$100
-                <span style="font-size: 0.5em; color: #444; font-weight: normal;">/ year</span>
-            </div>
-            <p style="font-size: 0.65em; color: #575757; margin-top: -10px; margin-bottom: 15px; font-style: italic;">
-                Protection for the price of a monthly subscription.</p>
-            <p>Standard protection. Secure your shards for the next 12 months.</p>
+        <p style="text-align: center; margin-top: 40px; color: #666; font-size: 0.9em;">
+            don't trust us? <a href="https://github.com/half-radiation-LLC/deadhand" target="_blank"
+                style="color: #666; text-decoration: underline;">run it yourself.</a> (1,600+ clones)
+        </p>
 
-            <ul>
-                <li><i class="fa-solid fa-check"></i> The Watch (Standard Heartbeat)</li>
-                <li><i class="fa-solid fa-check"></i> Secure Shard Storage</li>
-                <li><i class="fa-solid fa-check"></i> Email Escalation Alerts</li>
-                <li><i class="fa-solid fa-check"></i> Cancel anytime</li>
-            </ul>
+        <p style="text-align: center; font-size: 0.9em; margin-top: 40px;">
+            <b>100% refund guarantee</b><br>
+            if you aren't satisfied, email <a
+                href="mailto:halfradiationllc@gmail.com">halfradiationllc@gmail.com</a> for an immediate refund. no
+            questions asked.
+        </p>
 
-            <div class="cta" style="background: #fff; border: 1px solid #222; color: #222;">Protect Your Legacy</div>
-            <p style="font-size: 0.7em; color: #666; text-align: center;">Billed annually. Cancel anytime.</p>
-        </a>
+        <footer class="footer">
+            <p>© 2026 half radiation LLC. All rights reserved.</p>
+        </footer>
     </div>
 
-    <p style="text-align: center; margin-top: 20px; color: #666; font-size: 0.9em;">
-        don't trust us? <a href="https://github.com/half-radiation-LLC/deadhand" target="_blank"
-            style="color: #666; text-decoration: underline;">run it yourself.</a> (1,600+ clones)
-    </p>
+    <script>
+        // Simple heuristic to detect VPN/Proxy using IP API
+        async function checkVPN() {
+            try {
+                // We use ipapi.co to get connection info
+                const response = await fetch('https://ipapi.co/json/');
+                if (!response.ok) return;
+                
+                const data = await response.json();
+                
+                // Typical keywords in ISP/Org names that suggest VPN/Proxy/Cloud provider
+                const org = (data.org || "").toLowerCase();
+                const isVPN = org.includes('hosting') ||
+                              org.includes('datacenter') ||
+                              org.includes('cloud') ||
+                              org.includes('vpn') ||
+                              org.includes('proxy') ||
+                              org.includes('amazon') ||
+                              org.includes('digitalocean') ||
+                              org.includes('linode') ||
+                              org.includes('hetzner') ||
+                              org.includes('ovh') ||
+                              org.includes('mullvad') ||
+                              org.includes('nordvpn') ||
+                              org.includes('expressvpn');
 
-    <p style="text-align: center; font-size: 0.9em; margin-top: 40px;">
-        <b>100% refund guarantee</b><br>
-        if you aren't satisfied with either plan, email <a
-            href="mailto:halfradiationllc@gmail.com">halfradiationllc@gmail.com</a> for an immediate refund. no
-        questions asked.
-    </p>
+                const tier1 = document.getElementById('tier1');
+                const tier2 = document.getElementById('tier2');
+                const tier3 = document.getElementById('tier3');
 
-    <footer class="footer">
-        <p>© 2026 half radiation LLC. All rights reserved.</p>
-    </footer>
-    </div>
+                if (isVPN) {
+                    // Show banner
+                    document.getElementById('vpnBanner').style.display = 'block';
+                    
+                    // Default to tier 1 by disabling other tiers
+                    tier2.style.opacity = '0.4';
+                    tier2.style.pointerEvents = 'none';
+                    tier2.querySelector('.cta').innerText = 'Unavailable (VPN Detected)';
+                    
+                    tier3.style.opacity = '0.4';
+                    tier3.style.pointerEvents = 'none';
+                    tier3.querySelector('.cta').innerText = 'Unavailable (VPN Detected)';
+                    return;
+                }
 
+                // If not VPN, determine tier by country code (ISO 3166-1 alpha-2)
+                const country = data.country || "";
+                
+                // Tier 2: Medium Income Countries
+                const tier2Countries = ['CL', 'BR', 'MX', 'AR', 'CO', 'PE', 'ZA', 'TR', 'RU', 'CN', 'TH', 'MY', 'PL', 'RO', 'HU'];
+                
+                // Tier 3: Developing Regions
+                const tier3Countries = ['IN', 'PK', 'BD', 'NG', 'KE', 'VN', 'ID', 'PH', 'EG', 'DZ', 'MA', 'VE', 'LK'];
+
+                if (tier3Countries.includes(country)) {
+                    // Enforce Tier 3
+                    tier1.style.display = 'none';
+                    tier2.style.display = 'none';
+                    
+                    tier3.classList.add('popular');
+                    tier3.querySelector('.cta').style.background = '#10b981';
+                    tier3.querySelector('.cta').style.color = '#fff';
+                    tier3.querySelector('h2').innerHTML += ' <span style="font-size:0.5em;color:#10b981;">(Your Region)</span>';
+                } else if (tier2Countries.includes(country)) {
+                    // Enforce Tier 2
+                    tier1.style.display = 'none';
+                    tier3.style.display = 'none';
+                    
+                    tier2.classList.add('popular');
+                    tier2.querySelector('.cta').style.background = '#10b981';
+                    tier2.querySelector('.cta').style.color = '#fff';
+                    tier2.querySelector('h2').innerHTML += ' <span style="font-size:0.5em;color:#10b981;">(Your Region)</span>';
+                } else {
+                    // Enforce Tier 1 (Default for US, CA, EU, GB, AU, etc.)
+                    tier2.style.display = 'none';
+                    tier3.style.display = 'none';
+                    
+                    tier1.querySelector('h2').innerHTML += ' <span style="font-size:0.5em;color:#10b981;">(Your Region)</span>';
+                }
+
+            } catch (err) {
+                console.warn('Failed to check VPN status:', err);
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', checkVPN);
+    </script>
 </body>
 
 </html>
