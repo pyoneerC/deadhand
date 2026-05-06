@@ -392,7 +392,12 @@ async def landing_page(request: Request):
 @app.get("/buy")
 async def buy_chooser(request: Request):
     """Redirect to landing or handle desktop app download"""
-    return RedirectResponse(url="/download")
+    return RedirectResponse(url="/checkout")
+
+@app.get("/checkout", response_class=HTMLResponse)
+async def checkout_page(request: Request):
+    """Anonymous checkout page generating a 16-digit key"""
+    return templates.TemplateResponse(request=request, name="checkout.html", context={})
 
 @app.get("/download", response_class=HTMLResponse)
 async def download_page(request: Request):

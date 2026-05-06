@@ -1,0 +1,204 @@
+{% extends "base.html" %}
+
+{% block title %}Checkout | Deadhand Protocol{% endblock %}
+
+{% block content %}
+<style>
+    .checkout-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+        padding: 40px 20px;
+    }
+
+    /* Add specific styles for the payment card */
+    .payment-card {
+        background: #ffffff; /* User requested layout like image, we will make it clean and modern, dark mode adapted slightly */
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 40px;
+        max-width: 450px;
+        width: 100%;
+        text-align: center;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+        margin: 0 auto;
+    }
+
+    .payment-card h2 {
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 1.5rem;
+    }
+
+    .payment-subtitle {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        margin-bottom: 20px;
+        line-height: 1.5;
+    }
+
+    .payment-link {
+        font-size: 0.85rem;
+        color: #3b82f6;
+        text-decoration: none;
+        margin-bottom: 24px;
+        display: inline-block;
+        font-style: italic;
+    }
+
+    .payment-link:hover {
+        text-decoration: underline;
+    }
+
+    .btn-disconnect {
+        background: #1f2937;
+        color: var(--text-primary);
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        width: 100%;
+        cursor: pointer;
+        margin-bottom: 24px;
+        transition: 0.2s;
+    }
+
+    .btn-disconnect:hover {
+        background: #374151;
+    }
+
+    .info-box {
+        background: #111827; 
+        border-radius: 8px;
+        padding: 20px;
+        text-align: left;
+        margin-bottom: 24px;
+    }
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 12px;
+        font-size: 0.9rem;
+    }
+
+    .info-row:last-child {
+        margin-bottom: 0;
+    }
+
+    .info-label {
+        color: var(--text-secondary);
+    }
+
+    .info-value {
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    .btn-pay {
+        background: #2563eb;
+        color: #fff;
+        border: none;
+        padding: 14px 24px;
+        border-radius: 8px;
+        font-weight: 600;
+        width: 100%;
+        cursor: pointer;
+        transition: 0.2s;
+        font-size: 1rem;
+    }
+
+    .btn-pay:hover {
+        background: #1d4ed8;
+    }
+    
+    .key-display {
+        font-family: monospace;
+        font-size: 1.5rem;
+        color: var(--accent);
+        background: #000;
+        border: 1px dashed var(--accent);
+        padding: 20px;
+        margin: 30px 0;
+        border-radius: 12px;
+        letter-spacing: 2px;
+        word-break: break-all;
+    }
+</style>
+
+<div class="checkout-wrapper">
+    <!-- STEP 1: Payment -->
+    <div class="payment-card" id="step1">
+        <h2>Payment Required</h2>
+        <p class="payment-subtitle">Access to Sovereign Desktop Client. To access this content and generate your account, please pay $300.00 USDC.</p>
+        
+        <a href="#" class="payment-link">Need USDC on Base? Get some here.</a>
+
+        <button class="btn-disconnect">Disconnect</button>
+
+        <div class="info-box">
+            <div class="info-row">
+                <span class="info-label">Wallet:</span>
+                <span class="info-value">0xfC3F...caBf</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Available balance:</span>
+                <span class="info-value">••••• USDC</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Amount:</span>
+                <span class="info-value">$300.00 USDC</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Network:</span>
+                <span class="info-value">Base</span>
+            </div>
+        </div>
+
+        <button class="btn-pay" onclick="simulatePayment()">Pay now</button>
+    </div>
+
+    <!-- STEP 2: Generation (Hidden initially) -->
+    <div class="payment-card" id="step2" style="display: none; max-width: 600px;">
+        <h2 style="margin-bottom: 10px; color: #10b981;">Payment Confirmed</h2>
+        <p style="color: var(--text-secondary); margin-bottom: 20px;">Transaction verified on Base network. Your Sovereign Account has been provisioned.</p>
+        
+        <h1 style="margin-bottom: 10px; font-size: 1.8rem;">Your Sovereign Key</h1>
+        <p style="color: #e11d48; font-weight: bold; font-size: 0.9rem;">WRITE THIS DOWN. IF YOU LOSE THIS, YOU LOSE YOUR ACCOUNT FOREVER.</p>
+        
+        <div class="key-display" id="keyOutput"></div>
+        
+        <p style="color: var(--text-secondary); margin-bottom: 30px; line-height: 1.6;">Use this key inside the desktop client to unlock all advanced features.</p>
+        
+        <a href="/download" class="btn-pay" style="text-decoration: none; display: block; background: #10b981; margin-top: 10px;">Download Client</a>
+    </div>
+</div>
+
+<script>
+    function simulatePayment() {
+        const btn = document.querySelector('.btn-pay');
+        btn.innerText = 'Processing...';
+        btn.style.opacity = '0.7';
+        btn.disabled = true;
+
+        // Simulate network delay
+        setTimeout(() => {
+            generateKey();
+        }, 1200);
+    }
+
+    function generateKey() {
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$*&%';
+        let key = '';
+        for (let i = 0; i < 24; i++) {
+            if (i > 0 && i % 6 === 0) key += '-';
+            key += chars.charAt(Math.floor(Math.random() * chars.length));
+        }
+        document.getElementById('keyOutput').innerText = key;
+        document.getElementById('step1').style.display = 'none';
+        document.getElementById('step2').style.display = 'block';
+    }
+</script>
+{% endblock %}
