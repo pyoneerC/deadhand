@@ -631,20 +631,26 @@
 
     <main id="main-content">
         <!-- Hero Section -->
-        <section class="hero">
+        <section class="hero" style="padding-top: 60px; padding-bottom: 80px;">
             <div class="container">
-                <div class="hero-badge">Institutional-Grade Inheritance</div>
-                <h1>Your crypto shouldn't be <span class="accent-text">lost forever.</span></h1>
-                <p style="max-width: 800px; margin: 0 auto 40px; font-size: 1.25rem; font-weight: 500;">
-                    <b>You are the tech-savvy one. They are not.</b><br>
-                    If you die tomorrow, your self-custody becomes a black hole. Deadhand delivers your assets to your
-                    family, trustlessly and automatically.
-                </p>
-                <div style="display: flex; justify-content: center; gap: 16px;">
-                    <a href="/download" class="btn-primary">Download Sovereign Client</a>
-                    <a href="#problem"
-                        style="color: white; font-weight: 600; padding: 14px 28px; border: 1px solid var(--border); border-radius: 100px;">Watch
-                        Explainer</a>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; text-align: left;">
+                    <div>
+                        <div class="hero-badge" style="margin-left: 0;">Institutional-Grade Inheritance</div>
+                        <h1 style="font-size: clamp(3rem, 5vw, 4.5rem); text-align: left;">Your crypto shouldn't be <span class="accent-text">lost forever.</span></h1>
+                        <p style="font-size: 1.25rem; font-weight: 500; margin-bottom: 40px; line-height: 1.6;">
+                            <b>You are the tech-savvy one. They are not.</b><br>
+                            If you die tomorrow, your self-custody becomes a black hole. Deadhand delivers your assets to your
+                            family, trustlessly and automatically.
+                        </p>
+                        <div style="display: flex; gap: 16px;">
+                            <a href="/download" class="btn-primary">Download Sovereign Client</a>
+                            <a href="#problem" style="color: white; font-weight: 600; padding: 14px 28px; border: 1px solid var(--border); border-radius: 100px;">Watch Explainer</a>
+                        </div>
+                    </div>
+                    <div style="position: relative;">
+                        <img src="/static/images/hero_art.png" alt="Abstract Monet Style Vault" style="width: 100%; height: auto; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.5); border: 1px solid var(--border);">
+                        <div style="position: absolute; inset: 0; background: linear-gradient(45deg, rgba(255,85,0,0.1) 0%, rgba(0,0,0,0) 100%); border-radius: 20px; pointer-events: none;"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -735,13 +741,22 @@
                             </div>
                         </div>
                     </div>
+                    <div style="display: flex; justify-content: center;">
+                        <div style="position: relative; border-radius: 20px; overflow: hidden; border: 1px solid var(--border); box-shadow: 0 20px 40px rgba(0,0,0,0.4); max-width: 500px;">
+                            <img src="/static/images/shards_art.png" alt="Cryptographic Shards Monet Art" style="width: 100%; display: block;">
+                            <div style="position: absolute; inset: 0; box-shadow: inset 0 0 40px rgba(0,0,0,0.8); pointer-events: none;"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
 
         <!-- Corporate Doctrine / Vision -->
-        <section class="section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);">
-            <div class="container">
+        <section class="section" style="border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); position: relative; overflow: hidden;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; display: flex; justify-content: center; align-items: center; background: #000;">
+                <img src="/static/images/legacy_art.png" alt="Neoclassical Monet Legacy Art" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.15;">
+            </div>
+            <div class="container" style="position: relative; z-index: 1;">
                 <div style="max-width: 800px; margin: 0 auto; text-align: center;">
                     <div class="hero-badge" style="background: transparent; border: 1px solid var(--border); color: var(--text-secondary);">Corporate Doctrine</div>
                     <h2 style="margin-bottom: 30px; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -0.03em;">Uncompromising Sovereignty.</h2>
@@ -766,7 +781,15 @@
                     <!-- Values -->
                     <div style="background: var(--bg-secondary); padding: 40px; border-radius: 16px; border: 1px solid var(--border); position: relative; overflow: hidden; grid-column: 1 / -1;">
                         <h3 style="margin-bottom: 30px; font-size: 1.5rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-primary); text-align: center;">Core Tenets</h3>
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 30px;">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 30px;">
+                            <div>
+                                <h4 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.1rem;"><i class="fas fa-code-branch" style="color: var(--accent); margin-right: 8px;"></i> AGPL Open Source</h4>
+                                <p style="font-size: 0.85rem; margin: 0;">Our code is fully transparent. Inspect it, compile it, fork it. No weird things running behind your back.</p>
+                            </div>
+                            <div>
+                                <h4 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.1rem;"><i class="fas fa-ban" style="color: var(--accent); margin-right: 8px;"></i> 0 Forced Updates</h4>
+                                <p style="font-size: 0.85rem; margin: 0;">We have a zero forced-update policy. The binary you download is yours forever. No secret over-the-air patches.</p>
+                            </div>
                             <div>
                                 <h4 style="color: var(--text-primary); margin-bottom: 10px; font-size: 1.1rem;"><i class="fas fa-shield-alt" style="color: var(--accent); margin-right: 8px;"></i> Trust Math, Not Men</h4>
                                 <p style="font-size: 0.85rem; margin: 0;">Human intermediaries are vulnerabilities. We rely exclusively on provable cryptography.</p>
@@ -845,7 +868,7 @@
                             <li><i class="fas fa-check"></i> Automated Heartbeat System</li>
                             <li><i class="fas fa-check"></i> Encrypted Email Dispatch</li>
                             <li><i class="fas fa-check"></i> Permanent Software License</li>
-                            <li><i class="fas fa-check"></i> Priority Security Updates</li>
+                            <li><i class="fas fa-check"></i> Immutable Client (0 Forced Updates)</li>
                         </ul>
                         <a href="/download" class="btn-primary" style="justify-content: center;">Buy Sovereign Access →</a>
                     </div>

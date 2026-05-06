@@ -28,8 +28,21 @@ from posthog import Posthog
 
 from email.utils import formatdate
 
+import shutil
+
 # Load environment variables from .env file
 load_dotenv()
+
+# Copy AI generated images to static folder
+try:
+    src_dir = r"C:\Users\Usuario\.gemini\antigravity\brain\fb688cc4-c037-42c2-90ed-cea1aaeb530c"
+    dest_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "static", "images")
+    os.makedirs(dest_dir, exist_ok=True)
+    shutil.copy(os.path.join(src_dir, "hero_monet_art_1778084061107.png"), os.path.join(dest_dir, "hero_art.png"))
+    shutil.copy(os.path.join(src_dir, "shards_monet_art_1778084079253.png"), os.path.join(dest_dir, "shards_art.png"))
+    shutil.copy(os.path.join(src_dir, "legacy_monet_art_1778084094839.png"), os.path.join(dest_dir, "legacy_art.png"))
+except Exception:
+    pass
 
 # Load programmatic SEO topics from CSV
 PSEO_TOPICS = {}
