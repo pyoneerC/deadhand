@@ -1,1 +1,1 @@
-{"vault_exists": true, "vault_name": "My Vault", "license": "111111111111111111111111", "email": "d@gmail.com", "status": "pending", "deadline": 1785933930.9851046, "payload": "shC-Mzr5miNPzczxfDE6NHU0e8ukMw=="}
+{"vault_exists": false, "vault_name": "My Vault", "license": "", "email": "", "status": "pending", "deadline": 0}

@@ -73,11 +73,17 @@ async def get_btc_price():
     """Static BTC price placeholder to remove external dependencies"""
     return 95000  # Conservative estimate for visual purposes
 
+def hash_license(key: str) -> str:
+    """Canonical hash for license keys"""
+    # Remove dashes/spaces if present before hashing
+    clean = key.replace("-", "").replace(" ", "").strip()
+    return hashlib.sha256(clean.encode()).hexdigest()
 
-from .database import SessionLocal, engine, Base
-from .models import User
-from .services import send_email
-from .crypto import encrypt_shard, decrypt_shard, encrypt_token, decrypt_token
+
+from app.database import SessionLocal, engine, Base
+from app.models import User, License
+from app.services import send_email
+from app.crypto import encrypt_shard, decrypt_shard, encrypt_token, decrypt_token
 
 # Create database tables
 Base.metadata.create_all(bind=engine)
@@ -399,8 +405,46 @@ async def buy_chooser(request: Request):
 
 @app.get("/checkout", response_class=HTMLResponse)
 async def checkout_page(request: Request):
-    """Anonymous checkout page generating a 16-digit key"""
+    """Anonymous checkout page generating a 24-digit key"""
     return templates.TemplateResponse(request=request, name="checkout.html", context={})
+
+@app.post("/checkout/generate")
+async def generate_license(db: Session = Depends(get_db)):
+    """Generate a real Deadhand license, hash it, and store it"""
+    chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    key_plain = "".join(secrets.choice(chars) for _ in range(24))
+    
+    # Hash it for the database
+    h_key = hash_license(key_plain)
+    
+    # Store in DB
+    new_lic = License(license_key=h_key, is_redeemed=False)
+    db.add(new_lic)
+    db.commit()
+    
+    # Return formatted key for the UI
+    formatted = "-".join([key_plain[i:i+6] for i in range(0, 24, 6)])
+    return {"license_key": formatted}
+
+@app.post("/redeem")
+async def redeem_license(license_key: str = Form(...), db: Session = Depends(get_db)):
+    """Verify and consume a license key from the desktop client"""
+    h_key = hash_license(license_key)
+    
+    db_lic = db.query(License).filter(License.license_key == h_key).first()
+    
+    if not db_lic:
+        raise HTTPException(status_code=404, detail="Invalid license key.")
+    
+    if db_lic.is_redeemed:
+        raise HTTPException(status_code=400, detail="License has already been used.")
+    
+    # Mark as used
+    db_lic.is_redeemed = True
+    db_lic.redeemed_at = datetime.now()
+    db.commit()
+    
+    return {"status": "success"}
 
 @app.get("/download", response_class=HTMLResponse)
 async def download_page(request: Request):

@@ -210,29 +210,33 @@
         }
     });
 
-    function simulatePayment() {
+    async function simulatePayment() {
         if (!tosCheckbox.checked) return;
 
         payBtn.innerText = 'Processing...';
         payBtn.style.opacity = '0.7';
         payBtn.disabled = true;
 
-        // Simulate network delay
-        setTimeout(() => {
-            generateKey();
-        }, 1200);
-    }
-
-    function generateKey() {
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$*&%';
-        let key = '';
-        for (let i = 0; i < 24; i++) {
-            if (i > 0 && i % 6 === 0) key += '-';
-            key += chars.charAt(Math.floor(Math.random() * chars.length));
+        try {
+            // Call real server to generate and store the license
+            const response = await fetch('/checkout/generate', { method: 'POST' });
+            const data = await response.json();
+            
+            if (data.license_key) {
+                document.getElementById('keyOutput').innerText = data.license_key;
+                document.getElementById('step1').style.display = 'none';
+                document.getElementById('step2').style.display = 'block';
+            } else {
+                alert("Server error during generation. Please contact support.");
+                payBtn.innerText = 'Pay now';
+                payBtn.disabled = false;
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Network error. Make sure the Deadhand server is running.");
+            payBtn.innerText = 'Pay now';
+            payBtn.disabled = false;
         }
-        document.getElementById('keyOutput').innerText = key;
-        document.getElementById('step1').style.display = 'none';
-        document.getElementById('step2').style.display = 'block';
     }
 </script>
 {% endblock %}

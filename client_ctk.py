@@ -12,6 +12,9 @@ import urllib.error
 
 import base64
 import os
+import urllib.parse
+
+SERVER_URL = "http://127.0.0.1:8000"
 
 def is_valid_email(email):
     # 1. Solid regex validation
@@ -280,10 +283,18 @@ class DeadhandObsidian(ctk.CTk):
 
     def show_setup_step2(self):
         self.clear_main()
+        
+        # Back Button
+        ctk.CTkButton(self.main_content, text="← Back", font=("Geist", 11), fg_color="transparent", text_color=MUTED_TEXT, hover_color="#222", width=60, command=self.show_setup_intro).pack(anchor="w", pady=(0, 20))
+
         ctk.CTkLabel(self.main_content, text="Initialize Sovereign Vault", font=FONT_TITLE, text_color=TEXT_COLOR).pack(anchor="w", pady=(0, 5))
         ctk.CTkLabel(self.main_content, text="Validate your sovereign license and assign your heir.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 30))
 
         ctk.CTkLabel(self.main_content, text="Deadhand License Key (24 chars):", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
+        
+        # License Help Link
+        ctk.CTkLabel(self.main_content, text="Get your license at deadhandprotocol.com", font=("Geist", 11), text_color=ACCENT_COLOR).pack(anchor="w", pady=(0, 10))
+
         self.key_input = ctk.CTkEntry(self.main_content, width=500, height=40, fg_color="#181818", border_color="#333", show="*")
         self.key_input.pack(anchor="w", pady=(0, 20))
 
@@ -309,6 +320,29 @@ class DeadhandObsidian(ctk.CTk):
             self.setup_err.configure(text=msg)
             return
 
+        # --- SERVER LICENSE VERIFICATION ---
+        try:
+            self.setup_err.configure(text="Verifying license...", text_color=ACCENT_COLOR)
+            self.update()
+            
+            data = urllib.parse.urlencode({"license_key": key}).encode()
+            req = urllib.request.Request(f"{SERVER_URL}/redeem", data=data, method="POST")
+            with urllib.request.urlopen(req, timeout=5) as response:
+                # Success
+                pass
+        except urllib.error.HTTPError as e:
+            if e.code == 404:
+                self.setup_err.configure(text="Invalid license key.", text_color="#e11d48")
+            elif e.code == 400:
+                self.setup_err.configure(text="License already redeemed.", text_color="#e11d48")
+            else:
+                self.setup_err.configure(text=f"Server error ({e.code}).", text_color="#e11d48")
+            return
+        except Exception:
+            self.setup_err.configure(text="Offline: Could not connect to Deadhand server.", text_color="#e11d48")
+            return
+
+        self.setup_err.configure(text="") # Clear errors
         self.state["vault_exists"] = True
         self.state["license"] = key
         self.state["email"] = email

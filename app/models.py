@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0
 # Copyright (c) 2026 half radiation LLC. All rights reserved.
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, ForeignKey
 from sqlalchemy.sql import func
 from .database import Base
 
@@ -30,3 +30,16 @@ class User(Base):
     is_active = Column(Boolean, default=True)  # False if subscription cancelled
     
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class License(Base):
+    __tablename__ = "licenses"
+
+    id = Column(Integer, primary_key=True, index=True)
+    # Store hashed license key for security (mapped to your DB column)
+    license_key = Column(String, unique=True, index=True)
+    is_redeemed = Column(Boolean, default=False)
+    user_id = Column(Integer, ForeignKey("users.id"), nullable=True)
+    
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    redeemed_at = Column(DateTime(timezone=True), nullable=True)
