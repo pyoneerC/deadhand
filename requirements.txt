@@ -1,14 +1,16 @@
+customtkinter
+pillow
+pyinstaller
+cryptography
+python-dotenv
+# Server dependencies
 fastapi
 uvicorn
 jinja2
 python-multipart
 sqlalchemy
-python-dotenv
 psycopg2-binary
-cryptography
 stripe
 resend
 posthog
 markdown
-flet
-pillow

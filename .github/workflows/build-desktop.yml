@@ -1,0 +1,70 @@
+name: Build Deadhand Desktop (Multi-Platform)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build for ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: windows-latest
+            artifact_name: Deadhand-Windows
+            binary_name: Deadhand.exe
+            sep: ";"
+          - os: macos-latest
+            artifact_name: Deadhand-macOS
+            binary_name: Deadhand
+            sep: ":"
+          - os: ubuntu-latest
+            artifact_name: Deadhand-Linux
+            binary_name: Deadhand
+            sep: ":"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.12'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Generate Icons
+      shell: bash
+      run: |
+        # Generate ICO for Windows
+        python -c "from PIL import Image; img = Image.open('app/static/favicon.png'); img.save('app/static/favicon.ico', format='ICO', sizes=[(32, 32), (64, 64)])"
+        # For Linux/Mac we just use the PNG or let them use the default binary icon for now
+
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y python3-tk tcl-dev tk-dev
+
+    - name: Build with PyInstaller
+      shell: bash
+      run: |
+        # Use platform-specific separator for --add-data
+        pyinstaller --noconsole \
+                    --onefile \
+                    --name "Deadhand" \
+                    --add-data "app/static/favicon.png${{ matrix.sep }}app/static" \
+                    --collect-all "customtkinter" \
+                    client_ctk.py
+
+    - name: Upload Build Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.artifact_name }}
+        path: dist/${{ matrix.binary_name }}
+        if-no-files-found: error
