@@ -360,11 +360,13 @@ class DeadhandObsidian(ctk.CTk):
         ctk.CTkButton(self.main_content, text="Initialize Vault", font=FONT_BOLD, fg_color=ACCENT_COLOR, hover_color="#cc4400", width=200, height=45, corner_radius=4, command=self.finalize_setup).pack(anchor="w", pady=20)
 
     def finalize_setup(self):
-        key = self.key_input.get().strip()
+        # Canonicalize: remove dashes and spaces for validation
+        raw_key = self.key_input.get().strip()
+        key = raw_key.replace("-", "").replace(" ", "")
         email = self.email_input.get().strip()
 
         if len(key) != 24:
-            self.setup_err.configure(text="Invalid License Key. Must be exactly 24 characters.")
+            self.setup_err.configure(text="Invalid License Key. Must be 24 alphanumeric characters.")
             return
             
         valid, msg = is_valid_email(email)
