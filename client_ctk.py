@@ -106,7 +106,7 @@ class DeadhandObsidian(ctk.CTk):
         super().__init__()
 
         self.title("Deadhand Protocol")
-        self.geometry("900x600")
+        self.geometry("900x700")
         self.configure(fg_color=BG_COLOR)
         self.resizable(True, True)
 
@@ -229,13 +229,64 @@ class DeadhandObsidian(ctk.CTk):
         self.sidebar.grid_remove()
         self.show_setup_intro()
 
-    # ================= SETUP FLOW =================
+    # ================= SETUP FLOW (THE HOOK) =================
     def show_setup_intro(self):
         self.clear_main()
         ctk.CTkLabel(self.main_content, text="No Vault Found", font=FONT_TITLE, text_color=TEXT_COLOR).pack(pady=(100, 10))
         ctk.CTkLabel(self.main_content, text="You have not initialized a Deadhand Vault on this device.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(pady=(0, 40))
         
-        ctk.CTkButton(self.main_content, text="Create New Vault", font=FONT_BOLD, fg_color=ACCENT_COLOR, text_color="#ffffff", hover_color="#cc4400", width=250, height=45, corner_radius=4, command=self.show_setup_step2).pack()
+        ctk.CTkButton(self.main_content, text="Create New Vault", font=FONT_BOLD, fg_color=ACCENT_COLOR, text_color="#ffffff", hover_color="#cc4400", width=250, height=45, corner_radius=4, command=self.show_setup_shards).pack()
+
+    def show_setup_shards(self):
+        """STEP 1: The Hook - Shard Generation"""
+        self.clear_main()
+        
+        # Back Button
+        ctk.CTkButton(self.main_content, text="← Back", font=("Geist", 11), fg_color="transparent", text_color=MUTED_TEXT, hover_color="#222", width=60, command=self.show_setup_intro).pack(anchor="w", pady=(0, 20))
+
+        ctk.CTkLabel(self.main_content, text="Division of Sovereign Seed", font=FONT_TITLE, text_color=TEXT_COLOR).pack(anchor="w", pady=(0, 5))
+        ctk.CTkLabel(self.main_content, text="Enter your 12 or 24-word seed phrase. We will split it into 3 cryptographic shards.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 20))
+
+        self.setup_seed_input = ctk.CTkTextbox(self.main_content, width=500, height=100, fg_color="#181818", border_color="#333", border_width=1)
+        self.setup_seed_input.pack(anchor="w", pady=(0, 20))
+
+        ctk.CTkButton(self.main_content, text="Split Secret", font=FONT_BOLD, fg_color="#333", hover_color="#444", command=self.generate_setup_shards).pack(anchor="w", pady=(0, 20))
+        
+        self.setup_shard_frame = ctk.CTkFrame(self.main_content, fg_color="transparent")
+        self.setup_shard_frame.pack(anchor="w", fill="x")
+
+    def generate_setup_shards(self):
+        seed = self.setup_seed_input.get("1.0", "end-1c").strip()
+        if not seed:
+            return
+
+        # Generate 2-of-3 Shards
+        shA, shB, shC = split_secret_2_of_3(seed)
+        
+        # Clear frame for refresh
+        for widget in self.setup_shard_frame.winfo_children():
+            widget.destroy()
+
+        # Display Shard A
+        ctk.CTkLabel(self.setup_shard_frame, text="Shard A (You hold this):", font=FONT_BOLD, text_color=ACCENT_COLOR).pack(anchor="w")
+        shA_box = ctk.CTkTextbox(self.setup_shard_frame, width=500, height=50, fg_color="#181818", border_color="#333", border_width=1)
+        shA_box.insert("1.0", shA)
+        shA_box.configure(state="disabled")
+        shA_box.pack(anchor="w", pady=(0, 10))
+
+        # Display Shard B
+        ctk.CTkLabel(self.setup_shard_frame, text="Shard B (Send to your heir):", font=FONT_BOLD, text_color="#10b981").pack(anchor="w")
+        shB_box = ctk.CTkTextbox(self.setup_shard_frame, width=500, height=50, fg_color="#181818", border_color="#333", border_width=1)
+        shB_box.insert("1.0", shB)
+        shB_box.configure(state="disabled")
+        shB_box.pack(anchor="w", pady=(0, 20))
+        
+        # Temporarily store Shard C for the next step
+        self.temp_shard_c = shC
+        self.temp_shA = shA
+        self.temp_shB = shB
+
+        ctk.CTkButton(self.setup_shard_frame, text="Next: Finalize Vault →", font=FONT_BOLD, fg_color=ACCENT_COLOR, hover_color="#cc4400", height=45, command=self.show_setup_step2).pack(anchor="w")
 
     def show_shard_generator_view(self):
         self.clear_main()
@@ -282,13 +333,14 @@ class DeadhandObsidian(ctk.CTk):
         self.save_state()
 
     def show_setup_step2(self):
+        """STEP 2: Identity & License"""
         self.clear_main()
         
         # Back Button
-        ctk.CTkButton(self.main_content, text="← Back", font=("Geist", 11), fg_color="transparent", text_color=MUTED_TEXT, hover_color="#222", width=60, command=self.show_setup_intro).pack(anchor="w", pady=(0, 20))
+        ctk.CTkButton(self.main_content, text="← Back to Shards", font=("Geist", 11), fg_color="transparent", text_color=MUTED_TEXT, hover_color="#222", width=120, command=self.show_setup_shards).pack(anchor="w", pady=(0, 20))
 
-        ctk.CTkLabel(self.main_content, text="Initialize Sovereign Vault", font=FONT_TITLE, text_color=TEXT_COLOR).pack(anchor="w", pady=(0, 5))
-        ctk.CTkLabel(self.main_content, text="Validate your sovereign license and assign your heir.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 30))
+        ctk.CTkLabel(self.main_content, text="Finalize Sovereign Vault", font=FONT_TITLE, text_color=TEXT_COLOR).pack(anchor="w", pady=(0, 5))
+        ctk.CTkLabel(self.main_content, text="Your shards are ready. Now connect your license and heir.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 30))
 
         ctk.CTkLabel(self.main_content, text="Deadhand License Key (24 chars):", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
         
@@ -346,8 +398,9 @@ class DeadhandObsidian(ctk.CTk):
         self.state["vault_exists"] = True
         self.state["license"] = key
         self.state["email"] = email
-        if "payload" not in self.state:
-            self.state["payload"] = ""
+        self.state["payload"] = self.temp_shard_c # Use the shard C from step 1
+        self.state["shard_a"] = self.temp_shA
+        self.state["shard_b"] = self.temp_shB
         self.state["status"] = "pending"
         self.state["deadline"] = time.time() + (90 * 24 * 3600) # 90 days from now
         self.save_state()
