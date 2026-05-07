@@ -150,9 +150,12 @@ async def add_cache_control_header(request: Request, call_next):
     path = request.url.path
     if (path.startswith("/static") or 
         path == "/favicon.ico" or 
-        path.endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".mp4", ".css", ".js", ".vtt"))):
+        path.endswith((".png", ".jpg", ".jpeg", ".gif", ".svg", ".webp", ".css", ".js", ".vtt"))):
         # Cache for 1 year (31536000 seconds)
         response.headers["Cache-Control"] = "public, max-age=31536000, immutable"
+    elif path.endswith(".mp4"):
+        # Lower cache for videos being actively replaced
+        response.headers["Cache-Control"] = "public, max-age=3600"
 
     # Security Headers (Institutional Grade)
     response.headers["X-Frame-Options"] = "DENY" 
@@ -805,12 +808,6 @@ async def create_vault(
             
             <p>you just made a hard choice. thinking about what happens "after" isn't exactly fun. but the fact that you're here means you deeply care about someone and you want to protect them no matter what. that’s a powerful thing, and it deserves more than a form letter.</p>
             
-            <p>in a digital world that's getting colder by the second, i wanted to give you something "handmade." since my actual drawing skills stopped improving in kindergarten, i used a specialized ai to help me create a "photo" of a crayon drawing i made while thinking about this project. it’s imperfect, it's a bit silly, but it’s real to me.</p>
-
-            <div class="image-container">
-                <img src="https://deadhandprotocol.com/static/Deadhand_welcome_crayon_polaroid_en.png" alt="a drawing of a family for you">
-            </div>
-
             <p>i want you to know that on the other side of this complex math is a real person who understands the weight of what you're setting up. i don't take that trust lightly.</p>
 
             <div class="instructions">
@@ -828,17 +825,12 @@ async def create_vault(
 
             <p><strong>pro tip:</strong> set a reminder so you don't forget. <a href="{welcome_cal_url}" target="_blank">add a reminder to my google calendar</a> (for 30 days from now).</p>
 
-            <div class="image-container">
-                <img src="https://deadhandprotocol.com/static/Deadhand_napkin_note.png" alt="handwritten note on a napkin: your family is safe now">
-            </div>
-
             <p><strong>this is my personal email.</strong> if you have a question, a fear, or just want to tell me how your setup went, just reply. i read them. i answer them.</p>
             
             <p>deeply grateful you're here,</p>
             
             <p><strong>max</strong><br>
-            founder of deadhand<br>
-            <i>(the guy who sends you crayon drawings)</i></p>
+            founder of deadhand</p>
 
             <div class="footer">
                 <p>deadhand - protecting your crypto legacy.</p>
@@ -849,7 +841,7 @@ async def create_vault(
     </html>
     """
     
-    send_email(email, "not just a welcome email (and a drawing for you)", welcome_html)
+    send_email(email, "not just a welcome email", welcome_html)
 
     return templates.TemplateResponse(request=request, name="success.html", context={})
 
