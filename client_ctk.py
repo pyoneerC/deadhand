@@ -275,7 +275,7 @@ class DeadhandObsidian(ctk.CTk):
         shA_box.pack(anchor="w", pady=(0, 10))
 
         # Display Shard B
-        ctk.CTkLabel(self.setup_shard_frame, text="Shard B (Send to your heir):", font=FONT_BOLD, text_color="#10b981").pack(anchor="w")
+        ctk.CTkLabel(self.setup_shard_frame, text="Shard B (GIVE THIS TO YOUR BENEFICIARY MANUALLY):", font=FONT_BOLD, text_color="#10b981").pack(anchor="w")
         shB_box = ctk.CTkTextbox(self.setup_shard_frame, width=500, height=50, fg_color="#181818", border_color="#333", border_width=1)
         shB_box.insert("1.0", shB)
         shB_box.configure(state="disabled")
@@ -320,13 +320,13 @@ class DeadhandObsidian(ctk.CTk):
         shA_box.pack(anchor="w", pady=(0, 10))
 
         # Display Shard B
-        ctk.CTkLabel(self.shard_frame, text="Shard B (Send this to your beneficiary):", font=FONT_BOLD).pack(anchor="w")
+        ctk.CTkLabel(self.shard_frame, text="Shard B (GIVE THIS TO YOUR BENEFICIARY MANUALLY):", font=FONT_BOLD).pack(anchor="w")
         shB_box = ctk.CTkTextbox(self.shard_frame, width=500, height=50, fg_color="#181818", border_color=ACCENT_COLOR, border_width=1)
         shB_box.insert("1.0", shB)
         shB_box.configure(state="disabled")
         shB_box.pack(anchor="w", pady=(0, 10))
         
-        ctk.CTkLabel(self.shard_frame, text="Shard C is automatically secured and will be released to your beneficiary if you fail to check in.", font=FONT_MAIN, text_color=MUTED_TEXT, wraplength=500).pack(anchor="w", pady=(5, 10))
+        ctk.CTkLabel(self.shard_frame, text="Your beneficiary will use this shard + the server-released Shard C to recover your secret when you are gone.", font=FONT_MAIN, text_color=MUTED_TEXT, wraplength=500, justify="left").pack(anchor="w", pady=(5, 10))
 
         # Save Shard C automatically to state
         self.state["payload"] = shC
