@@ -156,7 +156,7 @@ class DeadhandObsidian(ctk.CTk):
         
         # System
         ctk.CTkLabel(self.sidebar, text="SYSTEM", font=("Geist", 10, "bold"), text_color="#555").grid(row=7, column=0, padx=20, pady=(15, 0), sticky="w")
-        self.btn_settings = self.create_sidebar_btn("Vault Settings", 8, self.show_settings_view)
+        self.btn_settings = self.create_sidebar_btn("Control Panel", 8, self.show_control_panel_view)
         self.btn_recover = self.create_sidebar_btn("Recovery Mode", 9, self.show_recovery_view)
 
         self.sidebar.grid_rowconfigure(10, weight=1) # Empty spacer row taking all remaining space
@@ -224,6 +224,17 @@ class DeadhandObsidian(ctk.CTk):
             widget.destroy()
 
     def factory_reset(self):
+        # Attempt to release the fuse on the server if it exists
+        lic = self.state.get("license")
+        if lic:
+            try:
+                data = urllib.parse.urlencode({"license_key": lic}).encode()
+                req = urllib.request.Request(f"{SERVER_URL}/release", data=data, method="POST")
+                with urllib.request.urlopen(req, timeout=3) as response:
+                    pass
+            except Exception:
+                pass # Still reset locally even if offline
+
         self.state = {"vault_exists": False, "vault_name": "My Vault", "license": "", "email": "", "status": "pending", "deadline": 0}
         self.save_state()
         self.sidebar.grid_remove()
@@ -333,19 +344,19 @@ class DeadhandObsidian(ctk.CTk):
         self.save_state()
 
     def show_setup_step2(self):
-        """STEP 2: Identity & License"""
+        """STEP 2: Identity & Fuse Activation"""
         self.clear_main()
         
         # Back Button
         ctk.CTkButton(self.main_content, text="← Back to Shards", font=("Geist", 11), fg_color="transparent", text_color=MUTED_TEXT, hover_color="#222", width=120, command=self.show_setup_shards).pack(anchor="w", pady=(0, 20))
 
         ctk.CTkLabel(self.main_content, text="Finalize Sovereign Vault", font=FONT_TITLE, text_color=TEXT_COLOR).pack(anchor="w", pady=(0, 5))
-        ctk.CTkLabel(self.main_content, text="Your shards are ready. Now connect your license and heir.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 30))
+        ctk.CTkLabel(self.main_content, text="Your shards are ready. Now connect your sovereign fuse and heir.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 30))
 
-        ctk.CTkLabel(self.main_content, text="Deadhand License Key (24 chars):", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
+        ctk.CTkLabel(self.main_content, text="Deadhand Sovereign Fuse (24 chars):", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
         
-        # License Help Link
-        ctk.CTkLabel(self.main_content, text="Get your license at deadhandprotocol.com", font=("Geist", 11), text_color=ACCENT_COLOR).pack(anchor="w", pady=(0, 10))
+        # Fuse Help Link
+        ctk.CTkLabel(self.main_content, text="Obtain a fuse at deadhandprotocol.com", font=("Geist", 11), text_color=ACCENT_COLOR).pack(anchor="w", pady=(0, 10))
 
         self.key_input = ctk.CTkEntry(self.main_content, width=500, height=40, fg_color="#181818", border_color="#333", show="*")
         self.key_input.pack(anchor="w", pady=(0, 20))
@@ -366,7 +377,7 @@ class DeadhandObsidian(ctk.CTk):
         email = self.email_input.get().strip()
 
         if len(key) != 24:
-            self.setup_err.configure(text="Invalid License Key. Must be 24 alphanumeric characters.")
+            self.setup_err.configure(text="Invalid Sovereign Fuse. Must be 24 alphanumeric characters.")
             return
             
         valid, msg = is_valid_email(email)
@@ -404,9 +415,33 @@ class DeadhandObsidian(ctk.CTk):
         self.state["shard_a"] = self.temp_shA
         self.state["shard_b"] = self.temp_shB
         self.state["status"] = "pending"
+        self.state["is_active"] = True # The fuse is consumed
         self.state["deadline"] = time.time() + (90 * 24 * 3600) # 90 days from now
         self.save_state()
 
+        self.complete_setup_transition()
+
+    def show_setup_success(self):
+        self.clear_main()
+        
+        ctk.CTkLabel(self.main_content, text="VAULT INITIALIZED", font=FONT_HUGE, text_color=ACCENT_COLOR).pack(pady=(120, 10))
+        ctk.CTkLabel(self.main_content, text="The heartbeat is active. The fuse is primed.", font=FONT_BOLD, text_color=TEXT_COLOR).pack(pady=(0, 40))
+        
+        ctk.CTkButton(self.main_content, text="Enter Vault Dashboard", font=FONT_BOLD, fg_color="#18181b", text_color="#ffffff", hover_color="#333", width=250, height=50, command=self.complete_setup_transition).pack()
+
+    def show_inheritance_complete_view(self):
+        self.clear_main()
+        self.sidebar.grid_remove() # Hide sidebar for finality
+        self.btn_toggle_sidebar.pack_forget()
+
+        ctk.CTkLabel(self.main_content, text="CONGRATULATIONS", font=FONT_HUGE, text_color="#10b981").pack(pady=(120, 10))
+        ctk.CTkLabel(self.main_content, text="Inheritance complete. The fuse is consumed.", font=FONT_BOLD, text_color=TEXT_COLOR).pack(pady=(0, 40))
+        
+        ctk.CTkLabel(self.main_content, text="Your shards have been dispatched to your beneficiary.\nYour sovereign duty is fulfilled.", font=FONT_MAIN, text_color=MUTED_TEXT, justify="center").pack(pady=(0, 40))
+
+        ctk.CTkButton(self.main_content, text="Return to Shards", font=FONT_BOLD, fg_color="#18181b", text_color="#ffffff", hover_color="#333", width=250, height=50, command=self.show_shard_generator_view).pack()
+
+    def complete_setup_transition(self):
         self.sidebar.grid() # Show sidebar
         self.btn_toggle_sidebar.pack(side="left") # Show hamburger
         self.show_heartbeat_view()
@@ -461,10 +496,7 @@ class DeadhandObsidian(ctk.CTk):
         diff = self.state["deadline"] - now
         
         if diff <= 0:
-            self.timer_label.configure(text="DISPATCH TRIGGERED", text_color="#e11d48")
-            self.progress_bar.configure(progress_color="#e11d48")
-            self.progress_bar.set(0)
-            self.pulse_btn.configure(state="disabled")
+            self.show_inheritance_complete_view()
         else:
             # Update visual progress bar
             total_seconds = 90 * 24 * 3600
@@ -626,51 +658,48 @@ class DeadhandObsidian(ctk.CTk):
         self.rec_out = ctk.CTkLabel(self.main_content, text="", font=FONT_MONO, justify="left", wraplength=500)
         self.rec_out.pack(anchor="w")
 
-    # ================= VAULT SETTINGS =================
-    def show_settings_view(self):
+    # ================= CONTROL PANEL =================
+    def show_control_panel_view(self):
         self.clear_main()
-        ctk.CTkLabel(self.main_content, text="Vault Settings", font=FONT_TITLE, text_color=TEXT_COLOR).pack(anchor="w", pady=(0, 5))
-        ctk.CTkLabel(self.main_content, text="Modify your sovereign vault parameters and beneficiary details.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 30))
+        ctk.CTkLabel(self.main_content, text="Sovereign Control Panel", font=FONT_TITLE, text_color=TEXT_COLOR).pack(anchor="w", pady=(0, 5))
+        ctk.CTkLabel(self.main_content, text="Monitor your vault status and modify your vault identity.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 30))
 
-        # Vault Name
+        # Vault Name (Editable)
         ctk.CTkLabel(self.main_content, text="Vault Name:", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
         name_input = ctk.CTkEntry(self.main_content, width=500, fg_color="#181818", border_color="#333")
         name_input.insert(0, self.state.get("vault_name", "My Vault"))
         name_input.pack(anchor="w", pady=(0, 15))
 
-        # Beneficiary Email
-        ctk.CTkLabel(self.main_content, text="Beneficiary Email:", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
-        email_input = ctk.CTkEntry(self.main_content, width=500, fg_color="#181818", border_color="#333")
+        # Beneficiary Email (Read Only)
+        ctk.CTkLabel(self.main_content, text="Beneficiary Email (Locked for Security):", font=FONT_BOLD, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 5))
+        email_input = ctk.CTkEntry(self.main_content, width=500, fg_color="#101010", border_color="#222", text_color="#555")
         email_input.insert(0, self.state.get("email", ""))
+        email_input.configure(state="disabled")
         email_input.pack(anchor="w", pady=(0, 15))
 
-        # Encrypted Payload
-        ctk.CTkLabel(self.main_content, text="Encrypted Message (Shard C):", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
-        payload_input = ctk.CTkTextbox(self.main_content, width=500, height=100, fg_color="#181818", border_color="#333")
+        # Shard C (Read Only)
+        ctk.CTkLabel(self.main_content, text="Shard C (Immutable server-side shard):", font=FONT_BOLD, text_color=MUTED_TEXT).pack(anchor="w", pady=(0, 5))
+        payload_input = ctk.CTkTextbox(self.main_content, width=500, height=80, fg_color="#101010", border_color="#222", text_color="#555")
         payload_input.insert("1.0", self.state.get("payload", ""))
+        payload_input.configure(state="disabled")
         payload_input.pack(anchor="w", pady=(0, 20))
+
+        # Helpful Data
+        info_frame = ctk.CTkFrame(self.main_content, fg_color="#111", border_width=1, border_color="#222")
+        info_frame.pack(fill="x", pady=(0, 20))
+        
+        deadline = datetime.fromtimestamp(self.state.get("deadline", 0)).strftime("%Y-%m-%d %H:%M:%S")
+        
+        ctk.CTkLabel(info_frame, text=f"DISPATCH DEADLINE: {deadline}", font=FONT_MONO, text_color=ACCENT_COLOR).pack(anchor="w", padx=20, pady=(10, 5))
+        ctk.CTkLabel(info_frame, text=f"FUSE STATUS: OCCUPIED", font=FONT_MONO, text_color="#10b981").pack(anchor="w", padx=20, pady=(0, 5))
+        ctk.CTkLabel(info_frame, text=f"VAULT PROTOCOL: SHAMIR 2-OF-3", font=FONT_MONO, text_color=MUTED_TEXT).pack(anchor="w", padx=20, pady=(0, 10))
 
         def save_settings():
             self.state["vault_name"] = name_input.get().strip()
-            
-            new_email = email_input.get().strip()
-            
-            valid, msg = is_valid_email(new_email)
-            if not valid:
-                save_lbl.configure(text=f"[ERR] {msg}", text_color="#e11d48")
-                return
-
-            # If email changed, reset status to pending
-            if new_email != self.state.get("email"):
-                self.state["status"] = "pending"
-                
-            self.state["email"] = new_email
-            self.state["payload"] = payload_input.get("1.0", "end-1c").strip()
             self.save_state()
-            
-            save_lbl.configure(text="[SUCCESS] Vault Settings Saved", text_color="#10b981")
+            save_lbl.configure(text="[SUCCESS] Vault Identity Updated", text_color="#10b981")
 
-        ctk.CTkButton(self.main_content, text="Save Changes", font=FONT_BOLD, fg_color=ACCENT_COLOR, text_color="#ffffff", hover_color="#cc4400", corner_radius=4, command=save_settings).pack(anchor="w", pady=(0, 10))
+        ctk.CTkButton(self.main_content, text="Update Vault Identity", font=FONT_BOLD, fg_color=ACCENT_COLOR, text_color="#ffffff", hover_color="#cc4400", corner_radius=4, command=save_settings).pack(anchor="w", pady=(0, 10))
         
         save_lbl = ctk.CTkLabel(self.main_content, text="", font=FONT_MONO)
         save_lbl.pack(anchor="w")

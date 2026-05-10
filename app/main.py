@@ -445,6 +445,21 @@ async def redeem_license(license_key: str = Form(...), db: Session = Depends(get
     
     return {"status": "success"}
 
+@app.post("/release")
+async def release_license(license_key: str = Form(...), db: Session = Depends(get_db)):
+    """De-occupy a license key when a vault is deleted"""
+    h_key = hash_license(license_key)
+    db_lic = db.query(License).filter(License.license_key == h_key).first()
+    
+    if not db_lic:
+        raise HTTPException(status_code=404, detail="Fuse not found.")
+        
+    db_lic.is_redeemed = False
+    db_lic.redeemed_at = None
+    db.commit()
+    
+    return {"status": "released"}
+
 @app.get("/download", response_class=HTMLResponse)
 async def download_page(request: Request):
     """Dedicated download page with OS detection"""

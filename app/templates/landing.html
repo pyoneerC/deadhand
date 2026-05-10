@@ -188,7 +188,7 @@
                 "name": "How much does Deadhand cost?",
                 "acceptedAnswer": {
                     "@type": "Answer",
-                    "text": "The Deadhand Desktop Client costs a unique one-time payment of $300. No subscriptions, no hidden fees. You own the software forever."
+                    "text": "The Deadhand Desktop Client uses an Eternal Sovereign Fuse for a unique one-time payment of $300. The software is yours forever. The Fuse is occupied when your vault is active and can be de-occupied and transferred if you delete your vault."
                 }
             }
         ]
@@ -697,12 +697,12 @@
                 <div class="hero-grid">
                     <div>
                         <div class="hero-badge" style="margin-left: 0;">Outsmart The System</div>
-                        <h1 style="font-size: clamp(3rem, 4.5vw, 4.5rem); text-align: left; line-height: 1.1;">Take your keys to the grave.<br><span class="accent-text">Leave the wealth.</span></h1>
-                        <p style="font-size: 1.15rem; font-weight: 500; margin-bottom: 40px; line-height: 1.6; color: var(--text-secondary);">
+                        <h1 id="hero-headline" style="font-size: clamp(3rem, 4.5vw, 4.5rem); text-align: left; line-height: 1.1;">Take your keys to the grave.<br><span class="accent-text">Leave the wealth.</span></h1>
+                        <p id="hero-subtext" style="font-size: 1.15rem; font-weight: 500; margin-bottom: 40px; line-height: 1.6; color: var(--text-secondary);">
                             You spent your life bypassing the fiat system. Don't let probate courts steal it when you die. Deadhand ensures your family gets everything, the state gets nothing, and you never have to explain a seed phrase to your spouse.
                         </p>
                         <div class="hero-buttons">
-                            <a href="/download" class="btn-primary">Bypass The State</a>
+                            <a id="hero-cta" href="/download" class="btn-primary">Bypass The State</a>
                             <a href="#problem" style="color: white; font-weight: 600; padding: 14px 28px; border: 1px solid var(--border); border-radius: 100px;">See How It Works</a>
                         </div>
                     </div>
@@ -913,8 +913,8 @@
                             <li><i class="fas fa-check"></i> <b>Everything in Lite</b></li>
                             <li><i class="fas fa-check"></i> Automated Heartbeat System</li>
                             <li><i class="fas fa-check"></i> Encrypted Email Dispatch</li>
-                            <li><i class="fas fa-check"></i> Permanent Software License</li>
-                            <li><i class="fas fa-check"></i> Immutable Client (0 Forced Updates)</li>
+                            <li><i class="fas fa-check"></i> Eternal Sovereign Fuse</li>
+                            <li><i class="fas fa-check"></i> Transferable Access</li>
                         </ul>
                         <a href="/checkout" class="btn-primary" style="justify-content: center;">Buy Sovereign Access →</a>
                     </div>
@@ -999,7 +999,7 @@
                             <i class="fas fa-chevron-down"></i>
                         </button>
                         <div class="faq-answer">
-                            <p>A permanent, offline, immutable software license. You get the Sovereign Desktop Client to securely generate shards, plus the automated cryptographic heartbeat system. No subscriptions. No KYC. No over-the-air updates.</p>
+                            <p>An <b>Eternal Sovereign Fuse</b>. The Deadhand software is open-source and stays on your machine forever. The Fuse is what connects your local vault to the global heartbeat network. When a Fuse is in use, it is "occupied." If you delete your vault, the Fuse becomes de-occupied, allowing you to transfer it to a friend or another device. One payment. Infinite sovereignty.</p>
                         </div>
                     </div>
                 </div>
@@ -1296,6 +1296,21 @@
                     sovereignPrice.innerHTML = '<span style="text-decoration: line-through; opacity: 0.5; font-size: 0.6em; margin-right: 8px;">$300</span>$100';
                 } else if (tier2Countries.includes(country)) {
                     sovereignPrice.innerHTML = '<span style="text-decoration: line-through; opacity: 0.5; font-size: 0.6em; margin-right: 8px;">$300</span>$200';
+                }
+
+                // Localization for high-impact elements
+                const headline = document.getElementById('hero-headline');
+                const subtext = document.getElementById('hero-subtext');
+                const cta = document.getElementById('hero-cta');
+
+                if (country === 'FR') {
+                    if (headline) headline.innerHTML = 'Emportez vos clés dans la tombe.<br><span class="accent-text">Laissez la richesse.</span>';
+                    if (subtext) subtext.innerText = "Vous avez passé votre vie à contourner le système fiduciaire. Ne laissez pas les tribunaux de succession le voler à votre mort. Deadhand garantit que votre famille reçoit tout, l'État rien.";
+                    if (cta) cta.innerText = "Contourner l'État";
+                } else if (country === 'DE') {
+                    if (headline) headline.innerHTML = 'Nimm deine Schlüssel mit ins Grab.<br><span class="accent-text">Hinterlasse das Vermögen.</span>';
+                    if (subtext) subtext.innerText = "Sie haben Ihr Leben damit verbracht, das Fiat-System zu umgehen. Lassen Sie nicht zu, dass Nachlassgerichte es stehlen, wenn Sie sterben. Deadhand stellt sicher, dass Ihre Familie alles bekommt und der Staat nichts.";
+                    if (cta) cta.innerText = "Den Staat umgehen";
                 }
             } catch (err) {
                 console.warn('Failed to check VPN status:', err);
