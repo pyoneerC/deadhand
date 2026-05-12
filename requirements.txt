@@ -14,4 +14,4 @@ stripe
 resend
 posthog
 markdown
-x402
+x402[evm]
