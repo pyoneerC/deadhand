@@ -13,8 +13,12 @@ import urllib.error
 import base64
 import os
 import urllib.parse
+from cryptography.hazmat.primitives.ciphers.aead import AESGCM
+from cryptography.hazmat.primitives.kdf.pbkdf2 import PBKDF2HMAC
+from cryptography.hazmat.primitives import hashes
+import secrets
 
-SERVER_URL = "http://127.0.0.1:8000"
+SERVER_URL = "https://api.deadhandprotocol.com"
 
 def is_valid_email(email):
     # 1. Solid regex validation
@@ -183,13 +187,18 @@ class DeadhandObsidian(ctk.CTk):
         self.main_content.grid(row=1, column=0, sticky="nsew", padx=40, pady=(10, 40))
 
         # --- ROUTING ---
-        if not self.state.get("vault_exists", False):
-            self.sidebar.grid_remove() # Hide sidebar during setup
+        self.vault_password = None
+        self.raw_state = self.load_raw_state()
+
+        if self.raw_state:
+            self.sidebar.grid_remove() # Hide sidebar during unlock
             self.btn_toggle_sidebar.pack_forget() # Hide hamburger
-            self.show_setup_intro()
+            self.show_unlock_view()
         else:
-            self.show_heartbeat_view()
-            self.start_countdown_timer()
+            self.state = {"vault_exists": False, "vault_name": "My Vault", "license": "", "email": "", "status": "pending", "deadline": 0}
+            self.sidebar.grid_remove()
+            self.btn_toggle_sidebar.pack_forget()
+            self.show_setup_intro()
 
     def toggle_sidebar(self):
         # We only allow toggling if the vault is actually set up
@@ -206,18 +215,64 @@ class DeadhandObsidian(ctk.CTk):
         btn.grid(row=row, column=0, padx=10, pady=5, sticky="ew")
         return btn
 
-    def load_state(self):
+    def load_raw_state(self):
         if os.path.exists(STATE_FILE):
             try:
-                with open(STATE_FILE, "r") as f:
-                    return json.load(f)
+                with open(STATE_FILE, "rb") as f:
+                    return f.read()
             except:
                 pass
-        return {"vault_exists": False, "vault_name": "My Vault", "license": "", "email": "", "status": "pending", "deadline": 0}
+        return None
 
     def save_state(self):
-        with open(STATE_FILE, "w") as f:
-            json.dump(self.state, f)
+        if not self.vault_password:
+            return # Cannot save if no password is set
+            
+        json_data = json.dumps(self.state).encode('utf-8')
+        
+        # Derive key using PBKDF2
+        salt = secrets.token_bytes(16)
+        kdf = PBKDF2HMAC(
+            algorithm=hashes.SHA256(),
+            length=32,
+            salt=salt,
+            iterations=480000,
+        )
+        key = kdf.derive(self.vault_password.encode('utf-8'))
+        
+        # Encrypt with AES-GCM
+        aesgcm = AESGCM(key)
+        nonce = secrets.token_bytes(12)
+        ct = aesgcm.encrypt(nonce, json_data, None)
+        
+        # Save salt + nonce + ciphertext
+        final_payload = salt + nonce + ct
+        with open(STATE_FILE, "wb") as f:
+            f.write(final_payload)
+
+    def decrypt_state(self, password):
+        if not self.raw_state or len(self.raw_state) < 28:
+            return False
+            
+        salt = self.raw_state[:16]
+        nonce = self.raw_state[16:28]
+        ct = self.raw_state[28:]
+        
+        try:
+            kdf = PBKDF2HMAC(
+                algorithm=hashes.SHA256(),
+                length=32,
+                salt=salt,
+                iterations=480000,
+            )
+            key = kdf.derive(password.encode('utf-8'))
+            aesgcm = AESGCM(key)
+            pt = aesgcm.decrypt(nonce, ct, None)
+            self.state = json.loads(pt.decode('utf-8'))
+            self.vault_password = password
+            return True
+        except Exception:
+            return False
 
     def clear_main(self):
         for widget in self.main_content.winfo_children():
@@ -239,6 +294,30 @@ class DeadhandObsidian(ctk.CTk):
         self.save_state()
         self.sidebar.grid_remove()
         self.show_setup_intro()
+
+    # ================= UNLOCK FLOW =================
+    def show_unlock_view(self):
+        self.clear_main()
+        ctk.CTkLabel(self.main_content, text="Vault Locked", font=FONT_TITLE, text_color=TEXT_COLOR).pack(pady=(100, 10))
+        ctk.CTkLabel(self.main_content, text="Enter your Master Vault Password to decrypt your local shards.", font=FONT_MAIN, text_color=MUTED_TEXT).pack(pady=(0, 40))
+        
+        self.unlock_input = ctk.CTkEntry(self.main_content, width=300, height=45, fg_color="#181818", border_color="#333", show="*")
+        self.unlock_input.pack(pady=(0, 20))
+        
+        self.unlock_err = ctk.CTkLabel(self.main_content, text="", text_color="#e11d48")
+        self.unlock_err.pack()
+
+        def attempt_unlock():
+            pwd = self.unlock_input.get()
+            if self.decrypt_state(pwd):
+                self.sidebar.grid()
+                self.btn_toggle_sidebar.pack(side="left")
+                self.show_heartbeat_view()
+                self.start_countdown_timer()
+            else:
+                self.unlock_err.configure(text="Invalid Password. Vault remains encrypted.")
+
+        ctk.CTkButton(self.main_content, text="Unlock Vault", font=FONT_BOLD, fg_color=ACCENT_COLOR, text_color="#ffffff", hover_color="#cc4400", width=300, height=45, corner_radius=4, command=attempt_unlock).pack(pady=10)
 
     # ================= SETUP FLOW (THE HOOK) =================
     def show_setup_intro(self):
@@ -365,6 +444,10 @@ class DeadhandObsidian(ctk.CTk):
         self.email_input = ctk.CTkEntry(self.main_content, width=500, height=40, fg_color="#181818", border_color="#333", placeholder_text="heir@example.com")
         self.email_input.pack(anchor="w", pady=(0, 20))
 
+        ctk.CTkLabel(self.main_content, text="Master Vault Password (Local Encryption):", font=FONT_BOLD).pack(anchor="w", pady=(0, 5))
+        self.pwd_input = ctk.CTkEntry(self.main_content, width=500, height=40, fg_color="#181818", border_color="#333", show="*")
+        self.pwd_input.pack(anchor="w", pady=(0, 20))
+
         self.setup_err = ctk.CTkLabel(self.main_content, text="", text_color="#e11d48")
         self.setup_err.pack(anchor="w")
 
@@ -375,6 +458,13 @@ class DeadhandObsidian(ctk.CTk):
         raw_key = self.key_input.get().strip()
         key = raw_key.replace("-", "").replace(" ", "")
         email = self.email_input.get().strip()
+        pwd = self.pwd_input.get().strip()
+
+        if len(pwd) < 8:
+            self.setup_err.configure(text="Master Password must be at least 8 characters.")
+            return
+
+        self.vault_password = pwd
 
         if len(key) != 24:
             self.setup_err.configure(text="Invalid Sovereign Fuse. Must be 24 alphanumeric characters.")
