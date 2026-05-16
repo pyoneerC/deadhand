@@ -23,6 +23,7 @@ from fastapi import FastAPI, Request, Depends, Form, HTTPException, Response, Ba
 import resend
 from fastapi.responses import HTMLResponse, RedirectResponse, FileResponse
 from fastapi.templating import Jinja2Templates
+import markdown
 from fastapi.staticfiles import StaticFiles
 from fastapi.middleware.gzip import GZipMiddleware
 from starlette.middleware.base import BaseHTTPMiddleware
@@ -457,6 +458,21 @@ async def landing_page(request: Request):
         request=request,
         name="landing.html",
         context={"csrf_token": getattr(request.state, "csrf_token", "")}
+    )
+
+@app.get("/protocol", response_class=HTMLResponse)
+async def protocol_wiki(request: Request):
+    """Renders the official Technical Wiki"""
+    wiki_path = Path("PROTOCOL_WIKI.md")
+    content_html = ""
+    if wiki_path.exists():
+        with open(wiki_path, "r", encoding="utf-8") as f:
+            md_text = f.read()
+            content_html = markdown.markdown(md_text, extensions=['tables', 'fenced_code'])
+    return templates.TemplateResponse(
+        request=request,
+        name="wiki.html",
+        context={"content": content_html}
     )
 
 @app.get("/activate", response_class=HTMLResponse)
